@@ -1,4 +1,6 @@
-﻿Namespace Items.KeyItems
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace Items.KeyItems
 
     Public MustInherit Class KeyItem
 

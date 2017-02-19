@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Medicine
 
     <Item(32, "Rare Candy")>
@@ -10,7 +15,7 @@ Namespace Items.Medicine
         Public Overrides ReadOnly Property BattlePointsPrice As Integer = 48
 
         Public Sub New()
-            _textureRectangle = New Rectangle(192, 24, 24, 24)
+            TextureRectangle = New Rectangle(192, 24, 24, 24)
         End Sub
 
         Public Overrides Sub Use()
@@ -24,8 +29,8 @@ Namespace Items.Medicine
                 Dim beforeHP As Integer = Pokemon.MaxHP
                 Pokemon.LevelUp(False)
                 Pokemon.Experience = Pokemon.NeedExperience(Pokemon.Level)
-                If Pokemon.Status = net.Pokemon3D.Game.Pokemon.StatusProblems.Fainted Then
-                    Pokemon.Status = net.Pokemon3D.Game.Pokemon.StatusProblems.None
+                If Pokemon.Status = BasePokemon.StatusProblems.Fainted Then
+                    Pokemon.Status = BasePokemon.StatusProblems.None
                     Pokemon.HP = (Pokemon.MaxHP - beforeHP).Clamp(1, 999)
                 End If
 
@@ -57,7 +62,7 @@ Namespace Items.Medicine
                     End If
                 End If
 
-                If Pokemon.CanEvolve(EvolutionCondition.EvolutionTrigger.LevelUp, "") = True Then
+                If Pokemon.CanEVolve(EvolutionCondition.EvolutionTrigger.LevelUp, "") = True Then
                     s &= "@pokemon.evolve(" & PokeIndex & ")" & vbNewLine
                 End If
 

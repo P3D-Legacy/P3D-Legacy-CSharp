@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Poison
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Poison
 
     Public Class Venoshock
 
@@ -55,12 +58,13 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim p As Pokemon = BattleScreen.OppPokemon
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OppPokemon
             If own = False Then
-                p = BattleScreen.OwnPokemon
+                p = screen.OwnPokemon
             End If
-            If p.Status = Pokemon.StatusProblems.Poison Then
+            If p.Status = BasePokemon.StatusProblems.Poison Then
                 Return 130
             Else
                 Return Me.Power

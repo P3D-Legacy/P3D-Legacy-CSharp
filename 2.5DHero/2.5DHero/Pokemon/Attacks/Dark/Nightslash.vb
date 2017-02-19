@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Dark
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Dark
 
     Public Class Nightslash
 

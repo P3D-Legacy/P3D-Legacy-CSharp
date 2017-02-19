@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Grass
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Grass
 
     Public Class SolarBeam
 
@@ -55,10 +58,11 @@
             Me.AIField2 = AIField.MultiTurn
         End Sub
 
-        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim SolarBeam As Integer = BattleScreen.FieldEffects.OwnSolarBeam
+        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim SolarBeam As Integer = screen.FieldEffects.OwnSolarBeam
             If own = False Then
-                SolarBeam = BattleScreen.FieldEffects.OppSolarBeam
+                SolarBeam = screen.FieldEffects.OppSolarBeam
             End If
 
             If SolarBeam = 0 Then
@@ -68,10 +72,11 @@
             End If
         End Function
 
-        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As BattleScreen)
-            Dim SolarBeam As Integer = BattleScreen.FieldEffects.OwnSolarBeam
+        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As Screen)
+            Dim screen As BattleScreen = BattleScreen
+            Dim SolarBeam As Integer = screen.FieldEffects.OwnSolarBeam
             If Own = False Then
-                SolarBeam = BattleScreen.FieldEffects.OppSolarBeam
+                SolarBeam = screen.FieldEffects.OppSolarBeam
             End If
 
             If SolarBeam = 0 Then
@@ -81,32 +86,33 @@
             End If
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim p As Pokemon = BattleScreen.OwnPokemon
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OwnPokemon
             If Own = False Then
-                p = BattleScreen.OppPokemon
+                p = screen.OppPokemon
             End If
 
             Dim hasToCharge As Boolean = True
 
-            Dim beam As Integer = BattleScreen.FieldEffects.OwnSolarBeam
+            Dim beam As Integer = screen.FieldEffects.OwnSolarBeam
             If Own = False Then
-                beam = BattleScreen.FieldEffects.OppSolarBeam
+                beam = screen.FieldEffects.OppSolarBeam
             End If
 
             If beam = 0 Then
-                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " absorbed sunlight!"))
+                screen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " absorbed sunlight!"))
             Else
                 hasToCharge = False
             End If
 
             If hasToCharge = True Then
-                If BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Sunny Then
+                If screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Sunny Then
                     hasToCharge = False
                 Else
                     If Not p.Item Is Nothing Then
-                        If p.Item.Name.ToLower() = "power herb" And BattleScreen.FieldEffects.CanUseItem(Own) = True And BattleScreen.FieldEffects.CanUseOwnItem(Own, BattleScreen) = True Then
-                            If BattleScreen.Battle.RemoveHeldItem(Own, Own, BattleScreen, "Power Herb pushed the use of Solar Beam!", "move:solarbeam") = True Then
+                        If p.Item.Name.ToLower() = "power herb" And screen.FieldEffects.CanUseItem(Own) = True And screen.FieldEffects.CanUseOwnItem(Own, BattleScreen) = True Then
+                            If screen.Battle.RemoveHeldItem(Own, Own, screen, "Power Herb pushed the use of Solar Beam!", "move:solarbeam") = True Then
                                 hasToCharge = False
                             End If
                         End If
@@ -116,34 +122,36 @@
 
             If hasToCharge = True Then
                 If Own = True Then
-                    BattleScreen.FieldEffects.OwnSolarBeam = 1
+                    screen.FieldEffects.OwnSolarBeam = 1
                 Else
-                    BattleScreen.FieldEffects.OppSolarBeam = 1
+                    screen.FieldEffects.OppSolarBeam = 1
                 End If
                 Return True
             Else
                 If Own = True Then
-                    BattleScreen.FieldEffects.OwnSolarBeam = 0
+                    screen.FieldEffects.OwnSolarBeam = 0
                 Else
-                    BattleScreen.FieldEffects.OppSolarBeam = 0
+                    screen.FieldEffects.OppSolarBeam = 0
                 End If
                 Return False
             End If
         End Function
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            If BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Rain Or BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Sandstorm Or BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Hailstorm Then
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            If screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Rain Or screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Sandstorm Or screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Hailstorm Then
                 Return CInt(Me.Power / 2)
             Else
                 Return Me.Power
             End If
         End Function
 
-        Public Overrides Sub MoveSelected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveSelected(own As Boolean, BattleScreen As Screen)
+            Dim screen As BattleScreen = BattleScreen
             If own = True Then
-                BattleScreen.FieldEffects.OwnSolarBeam = 0
+                screen.FieldEffects.OwnSolarBeam = 0
             Else
-                BattleScreen.FieldEffects.OppSolarBeam = 0
+                screen.FieldEffects.OppSolarBeam = 0
             End If
         End Sub
 

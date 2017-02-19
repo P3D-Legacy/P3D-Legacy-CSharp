@@ -1,10 +1,13 @@
 ﻿Imports System.IO
 Imports System.Net.Sockets
 Imports System.Net
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Server
 
 Namespace Servers
-
     Public Class ServersManager
+        Implements IServersManager
 
         Public Const PROTOCOLVERSION As String = "0.5"
 
@@ -20,25 +23,25 @@ Namespace Servers
             Me._PlayerManager = New PlayerManager()
         End Sub
 
-        Public ReadOnly Property PlayerCollection() As PlayerCollection
+        Public ReadOnly Property PlayerCollection() As IPlayerCollection Implements IServersManager.PlayerCollection
             Get
                 Return Me._PlayerCollection
             End Get
         End Property
 
-        Public ReadOnly Property ServerConnection() As ServerConnection
+        Public ReadOnly Property ServerConnection() As IServerConnection Implements IServersManager.ServerConnection
             Get
                 Return Me._ServerConnection
             End Get
         End Property
 
-        Public ReadOnly Property PlayerManager() As PlayerManager
+        Public ReadOnly Property PlayerManager() As IPlayerManager Implements IServersManager.PlayerManager
             Get
                 Return Me._PlayerManager
             End Get
         End Property
 
-        Public Property ID() As Integer
+        Public Property ID() As Integer Implements IServersManager.ID
             Get
                 Return Me._OwnID
             End Get
@@ -56,7 +59,7 @@ Namespace Servers
             Me._PlayerManager.Reset()
         End Sub
 
-        Public Sub Connect(ByVal ServerObject As Object)
+        Public Sub Connect(ByVal ServerObject As Object) Implements IServersManager.Connect
             'Conver the ServerObject back to a Server instance and start the connection.
             Dim Server = CType(ServerObject, JoinServerScreen.Server)
 
@@ -74,7 +77,7 @@ Namespace Servers
         ''' <summary>
         ''' Updates the ServersManager and sends the player data package if needed.
         ''' </summary>
-        Public Sub Update()
+        Public Sub Update() Implements IServersManager.Update
             If JoinServerScreen.Online = True And ConnectScreen.Connected = True Then
                 If Me._PlayerManager.HasNewPlayerData() = True Then
                     Me._ServerConnection.SendGameData()

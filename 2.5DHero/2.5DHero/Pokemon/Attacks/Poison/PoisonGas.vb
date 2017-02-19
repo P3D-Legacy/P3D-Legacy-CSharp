@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Poison
 
     Public Class PoisonGas
@@ -55,7 +57,7 @@ Namespace BattleSystem.Moves.Poison
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If BattleScreen.Battle.InflictPoison(Not own, own, BattleScreen, False, "", "move:poisongas") = False Then
                 BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
             End If

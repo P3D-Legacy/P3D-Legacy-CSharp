@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Fire
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Fire
 
     Public Class SunnyDay
 
@@ -55,7 +58,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim turns As Integer = BattleCalculation.FieldEffectTurns(BattleScreen, own, Me.Name.ToLower())
             BattleScreen.Battle.ChangeWeather(own, own, BattleWeather.WeatherTypes.Sunny, turns, BattleScreen, "The sunlight turned harsh!", "move:sunnyday")
         End Sub

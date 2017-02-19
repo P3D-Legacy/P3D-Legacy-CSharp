@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Fighting
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Fighting
 
     Public Class LowKick
 
@@ -52,8 +55,9 @@
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim weight As Single = BattleScreen.FieldEffects.GetPokemonWeight(Not own, BattleScreen)
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            Dim weight As Single = screen.FieldEffects.GetPokemonWeight(Not own, BattleScreen)
 
             If weight <= 9.9F Then
                 Return 20

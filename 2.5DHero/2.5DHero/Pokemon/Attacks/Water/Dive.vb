@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Water
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Water
 
     Public Class Dive
 
@@ -57,10 +60,11 @@
             Me.AIField2 = AIField.MultiTurn
         End Sub
 
-        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim dive As Integer = BattleScreen.FieldEffects.OwnDiveCounter
+        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim dive As Integer = screen.FieldEffects.OwnDiveCounter
             If own = False Then
-                dive = BattleScreen.FieldEffects.OppDiveCounter
+                dive = screen.FieldEffects.OppDiveCounter
             End If
 
             If dive = 0 Then
@@ -70,10 +74,11 @@
             End If
         End Function
 
-        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As BattleScreen)
-            Dim dive As Integer = BattleScreen.FieldEffects.OwnDiveCounter
+        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As Screen)
+            Dim screen As BattleScreen = BattleScreen
+            Dim dive As Integer = screen.FieldEffects.OwnDiveCounter
             If Own = False Then
-                dive = BattleScreen.FieldEffects.OppDiveCounter
+                dive = screen.FieldEffects.OppDiveCounter
             End If
 
             If dive = 0 Then
@@ -83,22 +88,23 @@
             End If
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim diveCounter As Integer = BattleScreen.FieldEffects.OwnDiveCounter
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim diveCounter As Integer = screen.FieldEffects.OwnDiveCounter
 
             If Own = False Then
-                diveCounter = BattleScreen.FieldEffects.OppDiveCounter
+                diveCounter = screen.FieldEffects.OppDiveCounter
             End If
 
-            Dim p As Pokemon = BattleScreen.OwnPokemon
+            Dim p As Pokemon = screen.OwnPokemon
             If Own = False Then
-                p = BattleScreen.OppPokemon
+                p = screen.OppPokemon
             End If
 
             Dim hasToCharge As Boolean = True
             If Not p.Item Is Nothing Then
-                If p.Item.Name.ToLower() = "power herb" And BattleScreen.FieldEffects.CanUseItem(Own) = True And BattleScreen.FieldEffects.CanUseOwnItem(Own, BattleScreen) = True Then
-                    If BattleScreen.Battle.RemoveHeldItem(Own, Own, BattleScreen, "Power Herb pushed the use of Dive!", "move:dive") = True Then
+                If p.Item.Name.ToLower() = "power herb" And screen.FieldEffects.CanUseItem(Own) = True And screen.FieldEffects.CanUseOwnItem(Own, BattleScreen) = True Then
+                    If screen.Battle.RemoveHeldItem(Own, Own, BattleScreen, "Power Herb pushed the use of Dive!", "move:dive") = True Then
                         hasToCharge = False
                     End If
                 End If
@@ -106,30 +112,31 @@
 
             If diveCounter = 0 And hasToCharge = True Then
                 If Own = True Then
-                    BattleScreen.FieldEffects.OwnDiveCounter = 1
+                    screen.FieldEffects.OwnDiveCounter = 1
                 Else
-                    BattleScreen.FieldEffects.OppDiveCounter = 1
+                    screen.FieldEffects.OppDiveCounter = 1
                 End If
 
-                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " burrowed its way underground!"))
+                screen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " burrowed its way underground!"))
 
                 Return True
             Else
                 If Own = True Then
-                    BattleScreen.FieldEffects.OwnDiveCounter = 0
+                    screen.FieldEffects.OwnDiveCounter = 0
                 Else
-                    BattleScreen.FieldEffects.OppDiveCounter = 0
+                    screen.FieldEffects.OppDiveCounter = 0
                 End If
 
                 Return False
             End If
         End Function
 
-        Public Overrides Sub MoveSelected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveSelected(own As Boolean, BattleScreen As Screen)
+            Dim screen As BattleScreen = BattleScreen
             If own = True Then
-                BattleScreen.FieldEffects.OwnDiveCounter = 0
+                screen.FieldEffects.OwnDiveCounter = 0
             Else
-                BattleScreen.FieldEffects.OppDiveCounter = 0
+                screen.FieldEffects.OppDiveCounter = 0
             End If
         End Sub
 
@@ -141,15 +148,15 @@
             End If
         End Sub
 
-        Public Overrides Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
             MoveFails(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub AbsorbedBySubstitute(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub AbsorbedBySubstitute(own As Boolean, BattleScreen As Screen)
             MoveFails(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
             MoveFails(own, BattleScreen)
         End Sub
 

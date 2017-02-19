@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Ground
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Ground
 
     Public Class Earthquake
 
@@ -53,10 +56,11 @@
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim dig As Integer = BattleScreen.FieldEffects.OppDigCounter
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            Dim dig As Integer = screen.FieldEffects.OppDigCounter
             If own = False Then
-                dig = BattleScreen.FieldEffects.OwnDigCounter
+                dig = screen.FieldEffects.OwnDigCounter
             End If
 
             If dig > 0 Then

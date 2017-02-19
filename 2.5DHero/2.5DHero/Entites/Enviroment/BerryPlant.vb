@@ -1,4 +1,15 @@
-﻿Public Class BerryPlant
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Dialogues
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Pokemon.Items
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Models
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
+Public Class BerryPlant
 
     Inherits Entity
 
@@ -6,7 +17,7 @@
     Dim Grow As Integer = 0
     Dim BerryIndex As Integer = 0
     Dim BerryGrowTime As Integer = 0
-    Dim Berry As Items.Berry
+    Dim Berry As Berry
     Dim Berries As Integer = 0
     Dim PlantDate As String = ""
     Dim FullGrown As Boolean = False
@@ -16,7 +27,7 @@
     Dim LastUpdateDate As Date
 
     Public Overloads Sub Initialize(ByVal BerryIndex As Integer, ByVal BerriesYield As Integer, ByVal Watered As String, ByVal Time As String, ByVal FullGrown As Boolean)
-        Me.Berry = CType(Item.GetItemByID(BerryIndex + 2000), Items.Berry)
+        Me.Berry = CType(Item.GetItemById(BerryIndex + 2000), Berry)
         Me.Berries = BerriesYield
         Me.PlantDate = Time
         Me.BerryIndex = BerryIndex
@@ -110,7 +121,7 @@
                 y += 32
             End While
             Dim r As New Rectangle(x, y, 32, 32)
-            t = net.Pokemon3D.Game.TextureManager.GetTexture("Textures\Berries", r, "")
+            t = TextureManager.GetTexture("Textures\Berries", r, "")
         Else
             Dim r As Rectangle
             Select Case Me.Phase
@@ -119,7 +130,7 @@
                 Case 1
                     r = New Rectangle(480, 480, 32, 32)
             End Select
-            t = net.Pokemon3D.Game.TextureManager.GetTexture("Items\ItemSheet", r, "")
+            t = TextureManager.GetTexture("Items\ItemSheet", r, "")
         End If
 
         Me.Textures(0) = t
@@ -231,7 +242,7 @@
         Dim cD As Date = Date.Now
         Dim DateData As String = cD.Year & "," & cD.Month & "," & cD.Day & "," & cD.TimeOfDay.Hours & "," & cD.TimeOfDay.Minutes & "," & cD.TimeOfDay.Seconds
 
-        Dim Berry As Items.Berry = CType(Item.GetItemByID(BerryIndex + 2000), Items.Berry)
+        Dim Berry As Berry = CType(Item.GetItemById(BerryIndex + 2000), Berry)
 
         Dim BerryAmount As Integer = GetBerryAmount(Berry, 0)
 
@@ -256,7 +267,7 @@
         Core.Player.Inventory.RemoveItem(BerryIndex + 2000, 1)
     End Sub
 
-    Private Shared Function GetBerryAmount(ByVal Berry As Items.Berry, ByVal Watered As Integer) As Integer
+    Private Shared Function GetBerryAmount(ByVal Berry As Berry, ByVal Watered As Integer) As Integer
         If Watered > 0 Then
             Dim a As Integer = Berry.maxBerries
             Dim b As Integer = Berry.minBerries
@@ -270,13 +281,13 @@
 
             Dim seasonGrow As Integer = 0
             Select Case net.Pokemon3D.Game.World.CurrentSeason
-                Case net.Pokemon3D.Game.World.Seasons.Winter
+                Case SeasonEnum.Winter
                     seasonGrow = Berry.WinterGrow
-                Case net.Pokemon3D.Game.World.Seasons.Spring
+                Case SeasonEnum.Spring
                     seasonGrow = Berry.SpringGrow
-                Case net.Pokemon3D.Game.World.Seasons.Summer
+                Case SeasonEnum.Summer
                     seasonGrow = Berry.SummerGrow
-                Case net.Pokemon3D.Game.World.Seasons.Fall
+                Case SeasonEnum.Fall
                     seasonGrow = Berry.FallGrow
             End Select
 
@@ -308,7 +319,7 @@
 
             Dim DateData As String = PlantDate
 
-            Dim Berry As Items.Berry = CType(Item.GetItemByID(BerryIndex + 2000), Items.Berry)
+            Dim Berry As Berry = CType(Item.GetItemById(BerryIndex + 2000), Berry)
 
             Dim WateredData As String = ""
             Dim wateredCount As Integer = 0

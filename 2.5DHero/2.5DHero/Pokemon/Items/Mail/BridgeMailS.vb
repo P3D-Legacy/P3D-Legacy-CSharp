@@ -1,3 +1,4 @@
+Imports P3D.Legacy.Core.Pokemon
 Namespace Items.Mail
 
     <Item(326, "BridgeMail S")>
@@ -8,7 +9,7 @@ Namespace Items.Mail
         Public Overrides ReadOnly Property Description As String = "Stationery featuring a print of a sky-piercing bridge. Let a Pokémon hold it for use."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(120, 480, 24, 24)
+            TextureRectangle = New Rectangle(120, 480, 24, 24)
         End Sub
 
     End Class

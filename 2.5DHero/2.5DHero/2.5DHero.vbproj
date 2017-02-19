@@ -74,21 +74,10 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Battle\BattleAnimations\BAMove.vb" />
-    <Compile Include="Battle\BattleAnimations\BAOpacity.vb" />
-    <Compile Include="Battle\BattleAnimations\BARotation.vb" />
-    <Compile Include="Battle\BattleAnimations\BASize.vb" />
-    <Compile Include="Battle\BattleAnimations\BattleAnimation3D.vb" />
-    <Compile Include="Battle\BattleStats.vb" />
     <Compile Include="Battle\BattleSystemV2\Battle.vb" />
-    <Compile Include="Battle\BattleSystemV2\BattleAnimationScreenV2.vb" />
     <Compile Include="Battle\BattleSystemV2\BattleCalculation.vb" />
-    <Compile Include="Battle\BattleSystemV2\BattleCameraV2.vb" />
     <Compile Include="Battle\BattleSystemV2\BattleMenu.vb" />
     <Compile Include="Battle\BattleSystemV2\BattleScreen.vb" />
-    <Compile Include="Battle\BattleSystemV2\BattleWeather.vb" />
-    <Compile Include="Battle\BattleSystemV2\FieldEffects.vb" />
-    <Compile Include="Battle\BattleSystemV2\PokemonProfile.vb" />
     <Compile Include="Battle\BattleSystemV2\QueryObjects\CameraQueryObject.vb" />
     <Compile Include="Battle\BattleSystemV2\QueryObjects\ChoosePokemonQueryObject.vb" />
     <Compile Include="Battle\BattleSystemV2\QueryObjects\DelayQueryObject.vb" />
@@ -109,26 +98,17 @@
     <Compile Include="Battle\BattleSystemV2\QueryObjects\TriggerNewRoundPVPQueryObject.vb" />
     <Compile Include="Battle\BattleSystemV2\TrainerAI.vb" />
     <Compile Include="Battle\Trainer.vb" />
-    <Compile Include="Core\CommandLineArgHandler.vb" />
-    <Compile Include="Core\Core.vb" />
-    <Compile Include="Core\CoreSpriteBatch.vb" />
-    <Compile Include="Core\Encryption.vb" />
-    <Compile Include="Core\GameController.vb" />
-    <Compile Include="Core\GameOptions.vb" />
-    <Compile Include="Core\MainGameFunctions.vb" />
-    <Compile Include="Core\Program.vb" />
-    <Compile Include="Core\StringObfuscation.vb" />
-    <Compile Include="Debug\BoundingBoxRenderer.vb" />
-    <Compile Include="Debug\DebugDisplay.vb" />
-    <Compile Include="Debug\DotNetVersion.vb" />
-    <Compile Include="Debug\ForcedCrash.vb" />
-    <Compile Include="Debug\FPSMonitor.vb" />
-    <Compile Include="Debug\Logger.vb" />
+    <Compile Include="Entites\EntityManagerImplementation.vb" />
+    <Compile Include="Entites\Other\MessageBulb.vb" />
+    <Compile Include="Entites\Other\NetworkPlayer.vb" />
+    <Compile Include="Entites\Other\NetworkPokemon.vb" />
+    <Compile Include="Entites\Other\NPC.vb" />
+    <Compile Include="Entites\Other\OverworldPokemon.vb" />
+    <Compile Include="Entites\Other\OwnPlayer.vb" />
+    <Compile Include="Entites\Other\Particle.vb" />
+    <Compile Include="Program.vb" />
     <Compile Include="Debug\ObjectDump.vb" />
     <Compile Include="Dialogues\ChooseBox.vb" />
-    <Compile Include="Dialogues\PokemonImageView.vb" />
-    <Compile Include="Dialogues\TextBox.vb" />
-    <Compile Include="Entites\Entity.vb" />
     <Compile Include="Entites\Enviroment\AllSidesObject.vb" />
     <Compile Include="Entites\Enviroment\ApricornPlant.vb" />
     <Compile Include="Entites\Enviroment\BerryPlant.vb" />
@@ -156,37 +136,12 @@
     <Compile Include="Entites\Enviroment\Water.vb" />
     <Compile Include="Entites\Enviroment\Waterfall.vb" />
     <Compile Include="Entites\Enviroment\Whirlpool.vb" />
-    <Compile Include="Entites\Other\MessageBulb.vb" />
-    <Compile Include="Entites\Other\NetworkPlayer.vb" />
-    <Compile Include="Entites\Other\NetworkPokemon.vb" />
-    <Compile Include="Entites\Other\NPC.vb" />
-    <Compile Include="Entites\Other\OverworldPokemon.vb" />
-    <Compile Include="Entites\Other\OwnPlayer.vb" />
-    <Compile Include="Entites\Other\Particle.vb" />
-    <Compile Include="HelperClasses\Animation.vb" />
-    <Compile Include="HelperClasses\BasicObject.vb" />
-    <Compile Include="HelperClasses\Camera.vb" />
-    <Compile Include="HelperClasses\GameMessage.vb" />
-    <Compile Include="HelperClasses\LoadingDots.vb" />
-    <Compile Include="HelperClasses\Localization.vb" />
-    <Compile Include="HelperClasses\PlayerStatistics.vb" />
-    <Compile Include="HelperClasses\Size.vb" />
-    <Compile Include="HelperClasses\TimeHelpers.vb" />
-    <Compile Include="Input\ControllerHandler.vb" />
-    <Compile Include="Input\Controls.vb" />
-    <Compile Include="Input\KeyBindings.vb" />
-    <Compile Include="Input\KeyboardHandler.vb" />
     <Compile Include="Input\KeyboardInput.vb" />
     <Compile Include="Input\KeyCharConverter.vb" />
-    <Compile Include="Input\MouseHandler.vb" />
     <Compile Include="Modules\Extensions.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="Network\Chat.vb" />
     <Compile Include="Network\ChatScreen.vb" />
-    <Compile Include="Network\DownloadTexture2D.vb" />
-    <Compile Include="Network\GameJolt\API.vb" />
-    <Compile Include="Network\GameJolt\APICall.vb" />
-    <Compile Include="Network\GameJolt\GameJoltStatistics.vb" />
     <Compile Include="Network\GameJolt\GTS\GTSInboxScreen.vb" />
     <Compile Include="Network\GameJolt\GTS\GTSMainScreen.vb" />
     <Compile Include="Network\GameJolt\GTS\GTSSearchScreen.vb" />
@@ -195,11 +150,8 @@
     <Compile Include="Network\GameJolt\GTS\WonderTradeScreen.vb" />
     <Compile Include="Network\GameJolt\LogInScreen.vb" />
     <Compile Include="Network\GameJolt\RegisterBattleScreen.vb" />
-    <Compile Include="Network\GameJolt\SessionManager.vb" />
     <Compile Include="Network\MysteryEventScreen.vb" />
     <Compile Include="Network\OnlineStatus.vb" />
-    <Compile Include="Network\Profiles\Emblem.vb" />
-    <Compile Include="Network\Profiles\GamejoltSave.vb" />
     <Compile Include="Network\Servers\DirectTradeScreen.vb" />
     <Compile Include="Network\Servers\Package.vb" />
     <Compile Include="Network\Servers\PackageHandler.vb" />
@@ -207,7 +159,6 @@
     <Compile Include="Network\Servers\PlayerCollection.vb" />
     <Compile Include="Network\Servers\PlayerManager.vb" />
     <Compile Include="Network\Servers\PVPLobbyScreen.vb" />
-    <Compile Include="Network\Servers\Server.vb" />
     <Compile Include="Network\Servers\ServerConnection.vb" />
     <Compile Include="Network\Servers\ServersManager.vb" />
     <Compile Include="Network\Servers\StreamWriterLock.vb" />
@@ -217,13 +168,11 @@
     <Compile Include="Overworld\OverworldCamera.vb" />
     <Compile Include="Overworld\OverworldScreen.vb" />
     <Compile Include="Overworld\OverworldStorage.vb" />
-    <Compile Include="Overworld\RouteSign.vb" />
     <Compile Include="Overworld\SecretBase\SecretBase.vb" />
     <Compile Include="Overworld\SecretBase\SecretBaseCamera.vb" />
     <Compile Include="Overworld\SecretBase\SecretBaseScreen.vb" />
     <Compile Include="Player\Player.vb" />
     <Compile Include="Player\PlayerInventory.vb" />
-    <Compile Include="Player\PlayerTemp.vb" />
     <Compile Include="Player\Pokedex.vb" />
     <Compile Include="Player\SaveGameHelpers.vb" />
     <Compile Include="Pokemon\Abilities\Ability.vb" />
@@ -595,7 +544,6 @@
     <Compile Include="Pokemon\Attacks\Flying\SkyAttack.vb" />
     <Compile Include="Pokemon\Attacks\Flying\Tailwind.vb" />
     <Compile Include="Pokemon\Attacks\Flying\WingAttack.vb" />
-    <Compile Include="Pokemon\Attacks\GameModeAttackLoader.vb" />
     <Compile Include="Pokemon\Attacks\Ghost\Astonish.vb" />
     <Compile Include="Pokemon\Attacks\Ghost\ConfuseRay.vb" />
     <Compile Include="Pokemon\Attacks\Ghost\Curse.vb" />
@@ -966,7 +914,6 @@
     <Compile Include="Pokemon\Items\Apricorns\RedApricorn.vb" />
     <Compile Include="Pokemon\Items\Apricorns\WhtApricorn.vb" />
     <Compile Include="Pokemon\Items\Apricorns\YlwApricorn.vb" />
-    <Compile Include="Pokemon\Items\Balls\BallItem.vb" />
     <Compile Include="Pokemon\Items\Balls\CherishBall.vb" />
     <Compile Include="Pokemon\Items\Balls\DiveBall.vb" />
     <Compile Include="Pokemon\Items\Balls\DuskBall.vb" />
@@ -1055,10 +1002,6 @@
     <Compile Include="Pokemon\Items\Berries\WepearBerry.vb" />
     <Compile Include="Pokemon\Items\Berries\WikiBerry.vb" />
     <Compile Include="Pokemon\Items\Berries\YacheBerry.vb" />
-    <Compile Include="Pokemon\Items\Berry.vb" />
-    <Compile Include="Pokemon\Items\Item.vb" />
-    <Compile Include="Pokemon\Items\ItemAttribute.vb" />
-    <Compile Include="Pokemon\Items\ItemType.vb" />
     <Compile Include="Pokemon\Items\KeyItems\BasementKey.vb" />
     <Compile Include="Pokemon\Items\KeyItems\Bicycle.vb" />
     <Compile Include="Pokemon\Items\KeyItems\BlueCard.vb" />
@@ -1269,7 +1212,6 @@
     <Compile Include="Pokemon\Items\Machines\TM97.vb" />
     <Compile Include="Pokemon\Items\Machines\TM98.vb" />
     <Compile Include="Pokemon\Items\Machines\TM99.vb" />
-    <Compile Include="Pokemon\Items\MailItem.vb" />
     <Compile Include="Pokemon\Items\Mail\AirMail.vb" />
     <Compile Include="Pokemon\Items\Mail\BeadMail.vb" />
     <Compile Include="Pokemon\Items\Mail\BloomMail.vb" />
@@ -1307,7 +1249,6 @@
     <Compile Include="Pokemon\Items\Mail\TunnelMail.vb" />
     <Compile Include="Pokemon\Items\Mail\WaveMail.vb" />
     <Compile Include="Pokemon\Items\Mail\WoodMail.vb" />
-    <Compile Include="Pokemon\Items\MedicineItem.vb" />
     <Compile Include="Pokemon\Items\Medicine\Antidote.vb" />
     <Compile Include="Pokemon\Items\Medicine\Awakening.vb" />
     <Compile Include="Pokemon\Items\Medicine\BerryJuice.vb" />
@@ -1342,7 +1283,6 @@
     <Compile Include="Pokemon\Items\Medicine\ShinyCandy.vb" />
     <Compile Include="Pokemon\Items\Medicine\SodaPop.vb" />
     <Compile Include="Pokemon\Items\Medicine\SuperPotion.vb" />
-    <Compile Include="Pokemon\Items\MegaStone.vb" />
     <Compile Include="Pokemon\Items\MegaStones\Abomasite.vb" />
     <Compile Include="Pokemon\Items\MegaStones\Absolite.vb" />
     <Compile Include="Pokemon\Items\MegaStones\Aerodactylite.vb" />
@@ -1390,7 +1330,6 @@
     <Compile Include="Pokemon\Items\MegaStones\Swampertite.vb" />
     <Compile Include="Pokemon\Items\MegaStones\Tyranitarite.vb" />
     <Compile Include="Pokemon\Items\MegaStones\Venusaurite.vb" />
-    <Compile Include="Pokemon\Items\PlateItem.vb" />
     <Compile Include="Pokemon\Items\Plates\DracoPlate.vb" />
     <Compile Include="Pokemon\Items\Plates\DreadPlate.vb" />
     <Compile Include="Pokemon\Items\Plates\EarthPlate.vb" />
@@ -1554,44 +1493,13 @@
     <Compile Include="Pokemon\Items\XItems\XSpAtk.vb" />
     <Compile Include="Pokemon\Items\XItems\XSpDef.vb" />
     <Compile Include="Pokemon\Items\XItems\XSpeed.vb" />
-    <Compile Include="Pokemon\Monster\Element.vb" />
-    <Compile Include="Pokemon\Monster\EvolutionCondition.vb" />
-    <Compile Include="Pokemon\Monster\Nature.vb" />
-    <Compile Include="Pokemon\Monster\PokedexEntry.vb" />
     <Compile Include="Pokemon\Monster\Pokemon.vb" />
     <Compile Include="Pokemon\Monster\PokemonInteractions.vb" />
-    <Compile Include="Pokemon\Monster\Resource\EggCreator.vb" />
     <Compile Include="Pokemon\Monster\Resource\PokemonForms.vb" />
     <Compile Include="Pokemon\Monster\RoamingPokemon.vb" />
     <Compile Include="Pokemon\Monster\Shedinja.vb" />
     <Compile Include="Pokemon\Wild\FrontierSpawner.vb" />
     <Compile Include="Pokemon\Wild\Spawner.vb" />
-    <Compile Include="Resources\ContentPackManager.vb" />
-    <Compile Include="Resources\FontContainer.vb" />
-    <Compile Include="Resources\FontManager.vb" />
-    <Compile Include="Resources\GameModeManager.vb" />
-    <Compile Include="Resources\ModelManager.vb" />
-    <Compile Include="Resources\Models\2D\BillModel.vb" />
-    <Compile Include="Resources\Models\2D\CrossModel.vb" />
-    <Compile Include="Resources\Models\2D\DoubleFloorModel.vb" />
-    <Compile Include="Resources\Models\2D\FloorModel.vb" />
-    <Compile Include="Resources\Models\BaseModel.vb" />
-    <Compile Include="Resources\Models\Blocks\BlockModel.vb" />
-    <Compile Include="Resources\Models\Blocks\CornerModel.vb" />
-    <Compile Include="Resources\Models\Blocks\CubeModel.vb" />
-    <Compile Include="Resources\Models\Blocks\InsideCornerModel.vb" />
-    <Compile Include="Resources\Models\Blocks\PyramidModel.vb" />
-    <Compile Include="Resources\Models\Blocks\SlideModel.vb" />
-    <Compile Include="Resources\Models\Blocks\StairsModel.vb" />
-    <Compile Include="Resources\Models\Cliffs\CliffCornerModel.vb" />
-    <Compile Include="Resources\Models\Cliffs\CliffInsideModel.vb" />
-    <Compile Include="Resources\Models\Cliffs\CliffModel.vb" />
-    <Compile Include="Resources\Models\Other\SignModel.vb" />
-    <Compile Include="Resources\Models\Steps\InsideStepModel.vb" />
-    <Compile Include="Resources\Models\Steps\StepModel.vb" />
-    <Compile Include="Resources\Sound\MusicManager.vb" />
-    <Compile Include="Resources\Sound\SoundManager.vb" />
-    <Compile Include="Resources\TextureManager.vb" />
     <Compile Include="Screens\BattleIntroScreen.vb" />
     <Compile Include="Screens\Battle\BattleCatchScreen.vb" />
     <Compile Include="Screens\Battle\BattleGrowStatsScreen.vb" />
@@ -1600,7 +1508,6 @@
     <Compile Include="Screens\Credits\CreditsCamera.vb" />
     <Compile Include="Screens\Credits\CreditsScreen.vb" />
     <Compile Include="Screens\GUI\Button.vb" />
-    <Compile Include="Screens\GUI\Canvas.vb" />
     <Compile Include="Screens\GUI\DonationScreen.vb" />
     <Compile Include="Screens\GUI\InputScreen.vb" />
     <Compile Include="Screens\HistoryScreen.vb" />
@@ -1642,16 +1549,13 @@
     <Compile Include="Screens\Pokemon\PokemonStatusScreen.vb" />
     <Compile Include="Screens\Pokemon\TeachMovesScreen.vb" />
     <Compile Include="Screens\SaveScreen.vb" />
-    <Compile Include="Screens\Screen.vb" />
+    <Compile Include="Screens\ScreenManagerImplementation.vb" />
     <Compile Include="Screens\StatisticsScreen.vb" />
     <Compile Include="Screens\testWindowScreen.vb" />
     <Compile Include="Screens\TradeScreen.vb" />
     <Compile Include="Screens\TrainerScreen.vb" />
     <Compile Include="Screens\TransitionScreen.vb" />
     <Compile Include="Screens\WindowScreen.vb" />
-    <Compile Include="Security\FileValidation.vb" />
-    <Compile Include="Security\HackerAlerts.vb" />
-    <Compile Include="Security\HashSecureBase.vb" />
     <Compile Include="World\ActionScript\ActionScript.vb" />
     <Compile Include="World\ActionScript\Script.vb" />
     <Compile Include="World\ActionScript\ScriptConversion.vb" />
@@ -1705,7 +1609,6 @@
     <Compile Include="World\ActionScript\V2\ScriptLibrary.vb" />
     <Compile Include="World\ActionScript\V2\ScriptV2.vb" />
     <Compile Include="World\Badge.vb" />
-    <Compile Include="World\BaseEntity.vb" />
     <Compile Include="World\Level.vb" />
     <Compile Include="World\LevelLoader.vb" />
     <Compile Include="World\Lighting.vb" />
@@ -1717,6 +1620,13 @@
     <Compile Include="World\World.vb" />
     <MonoGameContentReference Include="..\2.5DHeroContent\Content.mgcb" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\P3D-Legacy Core\P3D-Legacy Core.csproj">
+      <Project>{de8ca995-ecc0-45b4-ad84-75ef6fc05b8b}</Project>
+      <Name>P3D-Legacy Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->
   <Target Name="BeforeResolveReferences">
     <CreateProperty Value="$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows,$(AssemblySearchPaths)">

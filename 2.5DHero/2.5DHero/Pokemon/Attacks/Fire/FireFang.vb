@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Fire
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Fire
 
     Public Class FireFang
 
@@ -60,7 +63,7 @@
             Me.EffectChances.Add(10)
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If BattleScreen.FieldEffects.MovesFirst(own) = True Then
                 If Core.Random.Next(0, 100) < Me.GetEffectChance(1, own, BattleScreen) Then
                     BattleScreen.Battle.InflictFlinch(Not own, own, BattleScreen, "", "move:firefang")

@@ -1,22 +1,28 @@
-Public Class OverworldPokemon
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Models
+Imports P3D.Legacy.Core.Screens
 
-    Inherits Entity
+Public Class OverworldPokemon
+    Inherits BaseOverworldPokemon
 
     Public PokemonID As Integer = 0
-    Public WithEvents PokemonReference As Pokemon = Nothing
+    Public Overrides Property PokemonReference As BasePokemon = Nothing
 
     Public Texture As Texture2D
     Dim lastRectangle As New Rectangle(0, 0, 0, 0)
-    Public faceRotation As Integer = 0
-    Public MoveSpeed As Single = 0.04F
-    Public warped As Boolean = True
+    Public Overrides Property faceRotation As Integer = 0
+    Public Overrides Property MoveSpeed As Single = 0.04F
+    Public Overrides Property warped As Boolean = True
 
     Dim AnimationX As Integer = 1
     Dim AnimationDelayLenght As Single = 2.2F
     Dim AnimationDelay As Single = AnimationDelayLenght
 
     Public Sub New(ByVal X As Single, ByVal Y As Single, ByVal Z As Single)
-        MyBase.New(X, Y, Z, "OverworldPokemon", {net.Pokemon3D.Game.TextureManager.DefaultTexture}, {0, 0}, False, 0, New Vector3(1.0F), BaseModel.BillModel, 0, "", New Vector3(1))
+        MyBase.New(X, Y, Z, "OverworldPokemon", {TextureManager.DefaultTexture}, {0, 0}, False, 0, New Vector3(1.0F), BaseModel.BillModel, 0, "", New Vector3(1))
 
         Me.Respawn()
         If Core.Player.LastPokemonPosition = New Vector3(999, 999, 999) Then
@@ -97,8 +103,8 @@ Public Class OverworldPokemon
         End If
     End Sub
 
-    Protected Overrides Function CalculateCameraDistance(CPosition As Vector3) as Single
-        Return MyBase.CalculateCameraDistance(CPosition) - 0.2f
+    Protected Overrides Function CalculateCameraDistance(CPosition As Vector3) As Single
+        Return MyBase.CalculateCameraDistance(CPosition) - 0.2F
     End Function
 
     Public Overrides Sub UpdateEntity()
@@ -113,17 +119,17 @@ Public Class OverworldPokemon
 
     Public Overrides Sub Render()
         If Me.IsVisible() = True Then
-            Dim state = GraphicsDevice.DepthStencilState
-            GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
+            Dim state = Core.GraphicsDevice.DepthStencilState
+            Core.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
             Draw(Me.Model, {Me.Textures(0)}, False)
-            GraphicsDevice.DepthStencilState = state
+            Core.GraphicsDevice.DepthStencilState = state
         End If
     End Sub
 
     ''' <summary>
     ''' If the OverworldPokémon should be rendered.
     ''' </summary>
-    Public Function IsVisible() As Boolean
+    Public Overrides Function IsVisible() As Boolean
         If CBool(GameModeManager.GetGameRuleValue("ShowFollowPokemon", "1")) = True Then
             If Screen.Level.ShowOverworldPokemon = True Then
                 If IsCorrectScreen() = True Then
@@ -142,7 +148,7 @@ Public Class OverworldPokemon
         Return False
     End Function
 
-    Public Sub ChangeRotation()
+    Public Overrides Sub ChangeRotation()
         Me.Position = New Vector3(CInt(Me.Position.X), CInt(Me.Position.Y) + 0.001F, CInt(Me.Position.Z))
         If Screen.Camera.Position.X = CInt(Me.Position.X) Or Screen.Camera.Position.Z = CInt(Me.Position.Z) Then
             If Me.Position.X < Screen.Camera.Position.X Then
@@ -206,7 +212,7 @@ Public Class OverworldPokemon
         Return True
     End Function
 
-    Public Sub MakeVisible()
+    Public Overrides Sub MakeVisible()
         If warped = True Then
             warped = False
         Else
@@ -255,23 +261,24 @@ Public Class OverworldPokemon
         End If
     End Sub
 
-    Public Sub ApplyShaders()
+    Public Overrides Sub ApplyShaders()
         Me.Shaders.Clear()
         For Each Shader As Shader In Screen.Level.Shaders
             Shader.ApplyShader({Me})
         Next
     End Sub
 
-    Private Sub PokemonReference_TexturesCleared(sender As Object, e As EventArgs) Handles PokemonReference.TexturesCleared
-        Me.Texture = Nothing
-        Me.ForceTextureChange()
-    End Sub
+    'TODO
+    'Private Sub PokemonReference_TexturesCleared(sender As Object, e As EventArgs) Handles PokemonReference.TexturesCleared
+    'Me.Texture = Nothing
+    'Me.ForceTextureChange()
+    'End Sub
 
     Private Function GetYPosition() As Single
         Return CInt(Screen.Camera.Position.Y)
     End Function
 
-    Public Sub ForceTextureChange()
+    Public Overrides Sub ForceTextureChange()
         Me.lastRectangle = New Rectangle(0, 0, 0, 0)
         Me.ChangeTexture()
     End Sub

@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Water
 
     Public Class WaterShuriken
@@ -55,7 +58,7 @@ Namespace BattleSystem.Moves.Water
             Me.AIField2 = AIField.HighPriority
         End Sub
 
-        Public Overrides Function GetTimesToAttack(own As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overloads Function GetTimesToAttack(own As Boolean, BattleScreen As BattleScreen) As Integer
             Dim p As Pokemon = BattleScreen.OwnPokemon
             Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then

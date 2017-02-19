@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Fighting
 
     Public Class BulkUp
@@ -55,7 +57,7 @@ Namespace BattleSystem.Moves.Fighting
             Me.AIField2 = AIField.RaiseDefense
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim b As Boolean = BattleScreen.Battle.RaiseStat(own, own, BattleScreen, "Attack", 1, "", "move:bulkup")
             Dim d As Boolean = BattleScreen.Battle.RaiseStat(own, own, BattleScreen, "Defense", 1, "", "move:bulkup")
             If b = False And d = False Then

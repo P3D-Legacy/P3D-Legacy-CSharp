@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Fighting
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Fighting
 
     Public Class SuperPower
 
@@ -52,7 +54,7 @@
             '#End
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             BattleScreen.Battle.LowerStat(own, own, BattleScreen, "Attack", 1, "", "move:superpower")
             BattleScreen.Battle.LowerStat(own, own, BattleScreen, "Defense", 1, "", "move:superpower")
         End Sub

@@ -1,3 +1,4 @@
+Imports P3D.Legacy.Core.Pokemon
 Namespace Items.Standard
 
     <Item(151, "Dragon Scale")>
@@ -11,7 +12,7 @@ Namespace Items.Standard
         Public Overrides ReadOnly Property CanBeUsed As Boolean = False
 
         Public Sub New()
-            _textureRectangle = New Rectangle(480, 120, 24, 24)
+            TextureRectangle = New Rectangle(480, 120, 24, 24)
         End Sub
 
     End Class

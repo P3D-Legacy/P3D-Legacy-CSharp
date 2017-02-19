@@ -1,3 +1,4 @@
+Imports P3D.Legacy.Core.Pokemon
 Namespace Items.Machines
 
     <Item(367, "TM 67")>

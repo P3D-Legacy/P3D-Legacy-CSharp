@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
 Namespace BattleSystem.Moves.Normal
 
     Public Class WringOut
@@ -52,10 +55,11 @@ Namespace BattleSystem.Moves.Normal
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim p As Pokemon = BattleScreen.OppPokemon
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen as BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OppPokemon
             If own = False Then
-                p = BattleScreen.OwnPokemon
+                p = screen.OwnPokemon
             End If
 
             Return CInt(120 * (p.HP / p.MaxHP))

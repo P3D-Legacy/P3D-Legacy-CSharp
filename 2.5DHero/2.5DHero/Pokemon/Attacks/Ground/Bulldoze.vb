@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Ground
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Ground
 
     Public Class Bulldoze
 
@@ -53,7 +55,7 @@
             '#End
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             BattleScreen.Battle.LowerStat(Not own, own, BattleScreen, "Speed", 1, "", "move:bulldoze")
         End Sub
 

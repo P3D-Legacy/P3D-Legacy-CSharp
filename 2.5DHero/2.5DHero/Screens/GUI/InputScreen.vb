@@ -1,4 +1,10 @@
-﻿Public Class InputScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class InputScreen
 
     Inherits Screen
 
@@ -173,10 +179,10 @@
         Core.SpriteBatch.DrawString(FontManager.MainFont, "Chars left: " & (MaxChars - Me.CurrentText.Length).ToString(), New Vector2(CInt((Core.windowSize.Width / 2) + 180), 477), Color.Gray)
 
         Dim d As New Dictionary(Of Buttons, String)
-        d.Add(Input.Buttons.A, "Enter")
-        d.Add(Input.Buttons.B, "Delete")
-        d.Add(Input.Buttons.Y, "Confirm")
-        d.Add(Input.Buttons.X, "Clear")
+        d.Add(Microsoft.Xna.Framework.Input.Buttons.A, "Enter")
+        d.Add(Microsoft.Xna.Framework.Input.Buttons.B, "Delete")
+        d.Add(Microsoft.Xna.Framework.Input.Buttons.Y, "Confirm")
+        d.Add(Microsoft.Xna.Framework.Input.Buttons.X, "Clear")
         Me.DrawGamePadControls(d)
     End Sub
 
@@ -240,11 +246,11 @@
             End If
         End If
 
-        If ControllerHandler.ButtonPressed(Input.Buttons.X) = True Then
+        If ControllerHandler.ButtonPressed(Microsoft.Xna.Framework.Input.Buttons.X) = True Then
             Me.CurrentText = ""
         End If
 
-        If ControllerHandler.ButtonPressed(Input.Buttons.Y) = True Then
+        If ControllerHandler.ButtonPressed(Microsoft.Xna.Framework.Input.Buttons.Y) = True Then
             If Me.ButtonSelector = New Vector2(6, 4) Then
                 Me.Confirm()
             Else
@@ -252,7 +258,7 @@
             End If
         End If
 
-        If ControllerHandler.ButtonPressed(Input.Buttons.LeftStick) = True Or ControllerHandler.ButtonPressed(Input.Buttons.RightStick) = True Then
+        If ControllerHandler.ButtonPressed(Microsoft.Xna.Framework.Input.Buttons.LeftStick) = True Or ControllerHandler.ButtonPressed(Microsoft.Xna.Framework.Input.Buttons.RightStick) = True Then
             InputButton.CapsLock = Not InputButton.CapsLock
         End If
 

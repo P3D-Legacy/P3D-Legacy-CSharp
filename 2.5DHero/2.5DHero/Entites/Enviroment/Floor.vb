@@ -1,4 +1,11 @@
-﻿Public Class Floor
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Models
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
+Public Class Floor
 
     Inherits Entity
 
@@ -47,10 +54,10 @@
     Public Overrides Sub Render()
         If changedWeatherTexture = False Then
             changedWeatherTexture = True
-            If (Screen.Level.World.CurrentMapWeather = Game.World.Weathers.Snow Or Screen.Level.World.CurrentMapWeather = Game.World.Weathers.Blizzard) = True And Me.hasSnow = True Then
+            If (Screen.Level.World.CurrentWeather = WeatherEnum.Snow Or Screen.Level.World.CurrentWeather = WeatherEnum.Blizzard) = True And Me.hasSnow = True Then
                 ChangeSnow()
             End If
-            If Screen.Level.World.CurrentMapWeather = Game.World.Weathers.Sandstorm And Me.hasSand = True Then
+            If Screen.Level.World.CurrentWeather = WeatherEnum.Sandstorm And Me.hasSand = True Then
                 ChangeSand()
             End If
         End If
@@ -63,7 +70,7 @@
     Private Sub ChangeSnow()
         Me.Rotation = New Vector3(Me.Rotation.X, 0.0F, Me.Rotation.Z)
         If Core.CurrentScreen.Identification = Screen.Identifications.BattleScreen Then
-            Me.Textures(0) = net.Pokemon3D.Game.TextureManager.GetTexture("Routes", New Rectangle(208, 16, 16, 16))
+            Me.Textures(0) = TextureManager.GetTexture("Routes", New Rectangle(208, 16, 16, 16))
             'Me.Position.Y += 0.05F
         Else
             Dim hasEntityOnAllSides As Boolean = True
@@ -95,13 +102,13 @@
             Next
 
             If hasEntityOnAllSides = False Then
-                Me.Textures = {net.Pokemon3D.Game.TextureManager.GetTexture("Routes", New Rectangle(208, 16, 16, 2)), net.Pokemon3D.Game.TextureManager.GetTexture("Routes", New Rectangle(208, 16, 16, 16))}
+                Me.Textures = {TextureManager.GetTexture("Routes", New Rectangle(208, 16, 16, 2)), TextureManager.GetTexture("Routes", New Rectangle(208, 16, 16, 16))}
                 Me.Model = BaseModel.BlockModel
                 Me.TextureIndex = {sides(0), sides(0), sides(1), sides(1), sides(2), sides(2), sides(3), sides(3), 1, 1}
                 Me.Scale = New Vector3(1, 0.1F, 1)
                 Me.Position.Y -= 0.45F
             Else
-                Me.Textures(0) = net.Pokemon3D.Game.TextureManager.GetTexture("Routes", New Rectangle(208, 16, 16, 16))
+                Me.Textures(0) = TextureManager.GetTexture("Routes", New Rectangle(208, 16, 16, 16))
                 Me.Position.Y += 0.1F
             End If
         End If
@@ -120,7 +127,7 @@
     Private Sub ChangeSand()
         Me.Rotation = New Vector3(Me.Rotation.X, 0.0F, Me.Rotation.Z)
         If Core.CurrentScreen.Identification = Screen.Identifications.BattleScreen Then
-            Me.Textures(0) = net.Pokemon3D.Game.TextureManager.GetTexture("Routes", New Rectangle(240, 80, 16, 16))
+            Me.Textures(0) = TextureManager.GetTexture("Routes", New Rectangle(240, 80, 16, 16))
             'Me.Position.Y += 0.05F
         Else
             Dim hasEntityOnAllSides As Boolean = True
@@ -152,13 +159,13 @@
             Next
 
             If hasEntityOnAllSides = False Then
-                Me.Textures = {net.Pokemon3D.Game.TextureManager.GetTexture("Routes", New Rectangle(240, 80, 16, 2)), net.Pokemon3D.Game.TextureManager.GetTexture("Routes", New Rectangle(240, 80, 16, 16))}
+                Me.Textures = {TextureManager.GetTexture("Routes", New Rectangle(240, 80, 16, 2)), TextureManager.GetTexture("Routes", New Rectangle(240, 80, 16, 16))}
                 Me.Model = BaseModel.BlockModel
                 Me.TextureIndex = {sides(0), sides(0), sides(1), sides(1), sides(2), sides(2), sides(3), sides(3), 1, 1}
                 Me.Scale = New Vector3(1, 0.1F, 1)
                 Me.Position.Y -= 0.45F
             Else
-                Me.Textures(0) = net.Pokemon3D.Game.TextureManager.GetTexture("Routes", New Rectangle(240, 80, 16, 16))
+                Me.Textures(0) = TextureManager.GetTexture("Routes", New Rectangle(240, 80, 16, 16))
                 Me.Position.Y += 0.1F
             End If
         End If

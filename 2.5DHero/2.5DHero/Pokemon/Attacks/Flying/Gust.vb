@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Flying
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Flying
 
     Public Class Gust
 
@@ -53,16 +56,17 @@
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
             Dim fly As Integer = 0
             Dim bounce As Integer = 0
 
             If own = True Then
-                fly = BattleScreen.FieldEffects.OppFlyCounter
-                bounce = BattleScreen.FieldEffects.OppBounceCounter
+                fly = screen.FieldEffects.OppFlyCounter
+                bounce = screen.FieldEffects.OppBounceCounter
             Else
-                fly = BattleScreen.FieldEffects.OwnFlyCounter
-                bounce = BattleScreen.FieldEffects.OwnBounceCounter
+                fly = screen.FieldEffects.OwnFlyCounter
+                bounce = screen.FieldEffects.OwnBounceCounter
             End If
 
             If fly > 0 Or bounce > 0 Then

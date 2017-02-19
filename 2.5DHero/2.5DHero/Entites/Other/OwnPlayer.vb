@@ -1,23 +1,50 @@
-﻿Public Class OwnPlayer
+﻿Imports System.Drawing
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.GameJolt
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Models
+Imports P3D.Legacy.Core.Screens
 
-    Inherits Entity
+Public Class OwnPlayer
+    Inherits BaseOwnPlayer
+
+    Public Overrides Property UsingGameJoltTexture As Boolean
+
+    Public Overrides Property SkinName As String
+        Get
+            Return _skinName
+        End Get
+        Set
+            _skinName = Value
+        End Set
+    End Property
+
+    Public Overrides Property DoAnimation As Boolean
+        Get
+            Return _doAnimation
+        End Get
+        Set
+            _doAnimation = Value
+        End Set
+    End Property
 
     Public Shared ReadOnly AllowedSkins() As String = {"Ethan", "Lyra", "Nate", "Rosa", "Hilbert", "Hilda", "GoldRetro"}
+    Private _doAnimation As Boolean = True
+    Private _skinName As String = "Hilbert"
 
-    Public Texture As Texture2D
-    Public SkinName As String = "Hilbert"
+    Public Overrides Property Texture As Texture2D
 
     Public HasPokemonTexture As Boolean = False
 
-    Dim lastRectangle As New Rectangle(0, 0, 0, 0)
+    Dim lastRectangle As New Microsoft.Xna.Framework.Rectangle(0, 0, 0, 0)
     Dim lastTexture As String = ""
 
     Dim AnimationX As Integer = 1
     Const AnimationDelayLenght As Single = 1.1F
     Dim AnimationDelay As Single = AnimationDelayLenght
-    Public DoAnimation As Boolean = True
-
-    Public UsingGameJoltTexture As Boolean = False
 
     Public Sub New(ByVal X As Single, ByVal Y As Single, ByVal Z As Single, ByVal Textures() As Texture2D, ByVal TextureID As String, ByVal Rotation As Integer, ByVal ActionValue As Integer, ByVal AdditionalValue As String, ByVal Name As String, ByVal ID As Integer)
         MyBase.New(X, Y, Z, "OwnPlayer", Textures, {0, 0}, False, 0, New Vector3(1.0F), BaseModel.BillModel, 0, "", New Vector3(1.0F))
@@ -30,7 +57,7 @@
         Me.DropUpdateUnlessDrawn = False
     End Sub
 
-    Public Sub SetTexture(ByVal TextureID As String, ByVal UseGameJoltID As Boolean)
+    Public Overrides Sub SetTexture(ByVal TextureID As String, ByVal UseGameJoltID As Boolean)
         Me.SkinName = TextureID
         HasPokemonTexture = False
 
@@ -53,26 +80,26 @@
             PokemonAddition = PokemonForms.GetDefaultOverworldSpriteAddition(CInt(TextureID))
         End If
 
-        If Core.Player.IsGameJoltSave = True Then
-            If texturePath & TextureID & PokemonAddition = "Textures\NPC\" & GameJolt.Emblem.GetPlayerSpriteFile(GameJolt.Emblem.GetPlayerLevel(Core.GameJoltSave.Points), Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Gender) Then
+        If Core.Player.IsGamejoltSave = True Then
+            If texturePath & TextureID & PokemonAddition = "Textures\NPC\" & Emblem.GetPlayerSpriteFile(Emblem.GetPlayerLevel(Core.GameJoltSave.Points), Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Gender) Then
                 UseGameJoltID = True
             End If
         End If
 
-        If UseGameJoltID = True And Core.Player.IsGameJoltSave = True And GameJolt.API.LoggedIn = True AndAlso Not GameJolt.Emblem.GetOnlineSprite(Core.GameJoltSave.GameJoltID) Is Nothing Then
+        If UseGameJoltID = True And Core.Player.IsGamejoltSave = True And API.LoggedIn = True AndAlso Not Emblem.GetOnlineSprite(Core.GameJoltSave.GameJoltID) Is Nothing Then
             Logger.Debug("Change player texture to the online sprite.")
-            Me.Texture = GameJolt.Emblem.GetOnlineSprite(Core.GameJoltSave.GameJoltID)
+            Me.Texture = Emblem.GetOnlineSprite(Core.GameJoltSave.GameJoltID)
             UsingGameJoltTexture = True
         Else
             Logger.Debug("Change player texture to [" & texturePath & TextureID & PokemonAddition & "]")
 
-            Me.Texture = net.Pokemon3D.Game.TextureManager.GetTexture(texturePath & TextureID & PokemonAddition)
+            Me.Texture = TextureManager.GetTexture(texturePath & TextureID & PokemonAddition)
             UsingGameJoltTexture = False
         End If
     End Sub
 
-    Protected Overrides Function CalculateCameraDistance(CPosition As Vector3) as Single
-        Return MyBase.CalculateCameraDistance(CPosition) - 0.2f
+    Protected Overrides Function CalculateCameraDistance(CPosition As Vector3) As Single
+        Return MyBase.CalculateCameraDistance(CPosition) - 0.2F
     End Function
 
     Public Overrides Sub UpdateEntity()
@@ -117,16 +144,16 @@
         End If
     End Sub
 
-    Public Sub ChangeTexture()
+    Public Overrides Sub ChangeTexture()
         If Not Me.Texture Is Nothing Then
-            Dim r As New Rectangle(0, 0, 0, 0)
+            Dim r As New Microsoft.Xna.Framework.Rectangle(0, 0, 0, 0)
             Dim cameraRotation As Integer = 0
             Dim spriteIndex As Integer = 0
 
             spriteIndex = 0
 
             If Screen.Camera.Name = "Overworld" Then
-                spriteIndex = Screen.Camera.GetPlayerFacingDirection() - Screen.Camera.GetFacingDirection() 
+                spriteIndex = Screen.Camera.GetPlayerFacingDirection() - Screen.Camera.GetFacingDirection()
                 While spriteIndex > 3
                     spriteIndex -= 4
                 End While
@@ -142,7 +169,7 @@
                 x = GetAnimationX() * frameSize.Width
             End If
 
-            r = New Rectangle(x, frameSize.Width * spriteIndex, frameSize.Width, frameSize.Height)
+            r = New Microsoft.Xna.Framework.Rectangle(x, frameSize.Width * spriteIndex, frameSize.Width, frameSize.Height)
 
             If r <> lastRectangle Or lastTexture <> SkinName Then
                 lastRectangle = r
@@ -180,10 +207,10 @@
 
     Public Overrides Sub Render()
         If InCameraFocus() = True Then
-            Dim state = GraphicsDevice.DepthStencilState
-            GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
+            Dim state = Core.GraphicsDevice.DepthStencilState
+            Core.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
             Draw(Me.Model, Me.Textures, True)
-            GraphicsDevice.DepthStencilState = state
+            Core.GraphicsDevice.DepthStencilState = state
         End If
     End Sub
 
@@ -198,7 +225,7 @@
         Return False
     End Function
 
-    Public Sub ApplyShaders()
+    Public Overrides Sub ApplyShaders()
         Me.Shaders.Clear()
         For Each Shader As Shader In Screen.Level.Shaders
             Shader.ApplyShader({Me})
@@ -206,10 +233,9 @@
     End Sub
 
     Private Function GetAnimationDelay() As Single
-        If Core.Player.IsRunning() = True Then
+        If Core.Player.IsRunning = True Then
             Return OwnPlayer.AnimationDelayLenght / 1.4F
         End If
         Return OwnPlayer.AnimationDelayLenght
     End Function
-
 End Class

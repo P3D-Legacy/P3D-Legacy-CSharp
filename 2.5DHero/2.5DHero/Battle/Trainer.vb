@@ -1,38 +1,13 @@
 ﻿Imports net.Pokemon3D.Game.ScriptVersion2
 
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Battle
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Security
+
 Public Class Trainer
-
-    Public AILevel As Integer = 0
-    Public SignatureMoves As New List(Of BattleSystem.Attack)
-    Public Pokemons As New List(Of Pokemon)
-    Public TrainerType As String = "Youngster"
-    Public TrainerType2 As String = "Youngster"
-    Public Name As String = "Joey"
-    Public Name2 As String = "Joey"
-    Public Money As Integer = 84
-    Public SpriteName As String = "14"
-    Public SpriteName2 As String = "14"
-    Public Region As String = "Johto"
-    Public Music As String = "Trainer"
-    Public TrainerFile As String = ""
-    Public DoubleTrainer As Boolean = False
-    Public Items As New List(Of Item)
-    Public Gender As Integer = -1
-    Public IntroType As Integer = 10
-    Public GameJoltID As String = ""
-
-    Public VSImageOrigin As String = "VSIntro"
-    Public VSImagePosition As Vector2 = New Vector2(0, 0)
-    Public VSImageSize As Size = New Size(61, 54)
-    Public BarImagePosition As Vector2 = New Vector2(0, 0)
-
-    Public OutroMessage As String = "TRAINER_DEFAULT_MESSAGE"
-    Public OutroMessage2 As String = "TRAINER_DEFAULT_MESSAGE"
-
-    Public IntroMessage As String = "TRAINER_DEFAULT_MESSAGE"
-    Public DefeatMessage As String = "TRAINER_DEFAULT_MESSAGE"
-
-    Public Shared FrontierTrainer As Integer = -1
+    Inherits BaseTrainer
 
     Public Function IsBeaten() As Boolean
         Return ActionScript.IsRegistered("trainer_" & TrainerFile)
@@ -49,7 +24,7 @@ Public Class Trainer
         Me.TrainerFile = TrainerFile
 
         Dim path As String = GameModeManager.GetScriptPath("Trainer\" & TrainerFile & ".trainer")
-        Security.FileValidation.CheckFileValid(path, False, "Trainer.vb")
+        FileValidation.CheckFileValid(path, False, "Trainer.vb")
 
         Dim Data() As String = System.IO.File.ReadAllLines(path)
 
@@ -60,58 +35,7 @@ Public Class Trainer
         End If
     End Sub
 
-    Private Sub LoadTrainerLegacy(ByVal Data() As String)
-        Dim newData As New List(Of String)
-        Dim sevenData As List(Of String) = Data(7).Split(CChar("|")).ToList()
-
-        newData.Add("Name|" & Data(2))
-        newData.Add("TrainerClass|" & Data(1))
-        newData.Add("Money|" & Data(0))
-        newData.Add("IntroMessage|" & Data(3))
-        newData.Add("OutroMessage|" & Data(4))
-        newData.Add("DefeatMessage|" & Data(5))
-        newData.Add("TextureID|" & Data(6))
-        newData.Add("Region|" & sevenData(0))
-
-        Me.Region = sevenData(0)
-        Me.Music = sevenData(1)
-
-        newData.Add("IniMusic|" & GetIniMusicName())
-        newData.Add("DefeatMusic|" & GetDefeatMusic())
-        newData.Add("BattleMusic|" & GetBattleMusicName())
-
-        newData.Add("Pokemon1|" & Data(8).Remove(0, 2))
-        newData.Add("Pokemon2|" & Data(9).Remove(0, 2))
-        newData.Add("Pokemon3|" & Data(10).Remove(0, 2))
-        newData.Add("Pokemon4|" & Data(11).Remove(0, 2))
-        newData.Add("Pokemon5|" & Data(12).Remove(0, 2))
-        newData.Add("Pokemon6|" & Data(13).Remove(0, 2))
-
-        If Data.Length > 14 Then
-            newData.Add("Items|" & Data(14))
-        End If
-        If Data.Length > 15 Then
-            newData.Add("AI|" & Data(15))
-        End If
-        If Data.Length > 16 Then
-            newData.Add("Gender|" & Data(16))
-        End If
-
-        Dim sequenceData As String = "Blue,Blue"
-        If sevenData.Count = 3 Then
-            sequenceData = sevenData(2) & ",Blue"
-        ElseIf sevenData.Count > 3 Then
-            sequenceData = sevenData(2) & "," & sevenData(3)
-        End If
-        newData.Add("IntroSequence|" & sequenceData)
-
-        Logger.Log(Logger.LogTypes.Warning, "Trainer.vb: Converted legacy trainer file! Generated new trainer data:")
-        Logger.Log(Logger.LogTypes.Message, newData.ToArray().ArrayToString())
-
-        LoadTrainer(newData.ToArray())
-    End Sub
-
-    Private Sub LoadTrainer(ByVal Data() As String)
+    Protected Overrides Sub LoadTrainer(ByVal Data() As String)
         Dim PokeLines As New List(Of String)
         Dim isDoubleTrainerValid As Integer = 0
         Dim vsdata As String = "blue"
@@ -179,7 +103,7 @@ Public Class Trainer
                         If value <> "" Then
                             Dim itemData() As String = ScriptCommander.Parse(value).ToString().Split(CChar(","))
                             For Each ItemID As String In itemData
-                                Items.Add(Item.GetItemByID(CInt(ItemID)))
+                                Items.Add(Item.GetItemById(CInt(ItemID)))
                             Next
                         End If
                     Case "gender"
@@ -290,11 +214,11 @@ Public Class Trainer
                         Select Case Me.Gender
                             Case 0
                                 If p.IsMale > 0.0F Then
-                                    p.Gender = Pokemon.Genders.Male
+                                    p.Gender = BasePokemon.Genders.Male
                                 End If
                             Case 1
                                 If p.IsMale < 100.0F Then
-                                    p.Gender = Pokemon.Genders.Female
+                                    p.Gender = BasePokemon.Genders.Female
                                 End If
                         End Select
                     End If
@@ -311,170 +235,5 @@ Public Class Trainer
         SetIniImage(vsdata, bardata)
         FrontierTrainer = -1
     End Sub
-
-    Private Sub SetIniImage(ByVal vsType As String, ByVal barType As String)
-        Select Case vsType.ToLower()
-            Case "blue", "0"
-                Me.VSImagePosition = New Vector2(0, 0)
-            Case "orange", "1"
-                Me.VSImagePosition = New Vector2(1, 0)
-            Case "green", "2"
-                Me.VSImagePosition = New Vector2(0, 1)
-            Case "3"
-                Me.VSImagePosition = New Vector2(1, 1)
-            Case "4"
-                Me.VSImagePosition = New Vector2(0, 2)
-            Case "5"
-                Me.VSImagePosition = New Vector2(1, 2)
-            Case "6"
-                Me.VSImagePosition = New Vector2(0, 3)
-            Case "7"
-                Me.VSImagePosition = New Vector2(1, 3)
-            Case "8"
-                Me.VSImagePosition = New Vector2(0, 4)
-            Case "9"
-                Me.VSImagePosition = New Vector2(1, 4)
-            Case "red", "10"
-                Me.VSImagePosition = New Vector2(0, 5)
-            Case "11"
-                Me.VSImagePosition = New Vector2(1, 5)
-            Case "battlefrontier"
-                Me.VSImagePosition = New Vector2(0, 0)
-                Me.VSImageOrigin = "battlefrontier"
-                Me.VSImageSize = New Size(275, 275)
-            Case Else
-                If IsNumeric(vsType) = True Then
-                    If CInt(vsType) > 11 Then
-                        Dim x As Integer = CInt(vsType)
-                        Dim y As Integer = 0
-                        While x > 1
-                            x -= 2
-                            y += 1
-                        End While
-                        Me.VSImagePosition = New Vector2(x, y)
-                    End If
-                End If
-        End Select
-        Select Case barType.ToLower()
-            Case "blue", "0"
-                Me.BarImagePosition = New Vector2(0, 0)
-            Case "orange", "1"
-                Me.BarImagePosition = New Vector2(1, 0)
-            Case "lightgreen", "2"
-                Me.BarImagePosition = New Vector2(0, 1)
-            Case "gray", "3"
-                Me.BarImagePosition = New Vector2(1, 1)
-            Case "violet", "4"
-                Me.BarImagePosition = New Vector2(0, 2)
-            Case "green", "5"
-                Me.BarImagePosition = New Vector2(1, 2)
-            Case "yellow", "6"
-                Me.BarImagePosition = New Vector2(0, 3)
-            Case "brown", "7"
-                Me.BarImagePosition = New Vector2(1, 3)
-            Case "lightblue", "8"
-                Me.BarImagePosition = New Vector2(0, 4)
-            Case "lightgray", "9"
-                Me.BarImagePosition = New Vector2(1, 4)
-            Case "red", "10"
-                Me.BarImagePosition = New Vector2(0, 5)
-            Case "11"
-                Me.BarImagePosition = New Vector2(1, 5)
-            Case Else
-                If IsNumeric(barType) = True Then
-                    If CInt(barType) > 11 Then
-                        Dim x As Integer = CInt(barType)
-                        Dim y As Integer = 0
-                        While x > 1
-                            x -= 2
-                            y += 1
-                        End While
-                        Me.BarImagePosition = New Vector2(x, y)
-                    End If
-                End If
-        End Select
-    End Sub
-
-    Private IniMusic As String = ""
-    Private DefeatMusic As String = ""
-    Private BattleMusic As String = ""
-    Private InSightMusic As String = "trainer_encounter"
-
-    Public Function GetIniMusicName() As String
-        If IniMusic <> "" Then
-            Return IniMusic
-        End If
-
-        Dim middle As String = "trainer"
-
-        Select Case Me.Music.ToLower()
-            Case "rival"
-                middle = "rival"
-            Case "leader"
-                middle = "leader"
-            Case "rocket"
-                middle = "rocket"
-        End Select
-
-        Return Region & "_" & middle & "_intro"
-    End Function
-
-    Public Function GetDefeatMusic() As String
-        If DefeatMusic <> "" Then
-            Return DefeatMusic
-        End If
-
-        Dim pre As String = "trainer"
-
-        Select Case Me.Music.ToLower()
-            Case "leader"
-                pre = "leader"
-        End Select
-
-        Return pre & "_defeat"
-    End Function
-
-    Public Function GetBattleMusicName() As String
-        If BattleMusic <> "" Then
-            Return BattleMusic
-        End If
-
-        Return Me.Region.ToLower() & "_" & Me.Music.ToLower()
-    End Function
-
-    Public Function GetInSightMusic() As String
-        Return InSightMusic
-    End Function
-
-    Public Function HasBattlePokemon() As Boolean
-        For Each Pokemon As Pokemon In Pokemons
-            If Pokemon.Status <> net.Pokemon3D.Game.Pokemon.StatusProblems.Fainted And Pokemon.HP > 0 Then
-                Return True
-            End If
-        Next
-        Return False
-    End Function
-
-    Public Sub TrainerItemUse(ByVal ItemID As Integer)
-        For i = 0 To Items.Count - 1
-            Dim item As Item = Items(i)
-            If item.ID = ItemID Then
-                Me.Items.RemoveAt(i)
-                Exit For
-            End If
-        Next
-    End Sub
-
-    Public Function CountUseablePokemon() As Integer
-        Dim i As Integer = 0
-
-        For Each p As Pokemon In Me.Pokemons
-            If p.HP > 0 And p.Status <> Pokemon.StatusProblems.Fainted Then
-                i += 1
-            End If
-        Next
-
-        Return i
-    End Function
 
 End Class

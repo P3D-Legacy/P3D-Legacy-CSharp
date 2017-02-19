@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Security
+
 Public Class ActionScript
 
     Public Scripts As New List(Of Script)
@@ -119,7 +124,7 @@ nextScript:
                     l.ScriptName = "Type: Script; Input: " & Input
 
                     Dim path As String = GameModeManager.GetScriptPath(Input & ".dat")
-                    Security.FileValidation.CheckFileValid(path, False, "ActionScript.vb")
+                    FileValidation.CheckFileValid(path, False, "ActionScript.vb")
 
                     If System.IO.File.Exists(path) = True Then
 

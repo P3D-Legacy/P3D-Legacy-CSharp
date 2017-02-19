@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Yawn
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then
@@ -63,7 +65,7 @@
                 op = BattleScreen.OwnPokemon
             End If
 
-            If ((op.Ability.Name.ToLower() = "insomnia" Or op.Ability.Name.ToLower() = "vital spirit" Or op.Ability.Name.ToLower() = "sweet veil") = True And BattleScreen.FieldEffects.CanUseAbility(Not own, BattleScreen) = True) = True Or op.Status = Pokemon.StatusProblems.Sleep Then
+            If ((op.Ability.Name.ToLower() = "insomnia" Or op.Ability.Name.ToLower() = "vital spirit" Or op.Ability.Name.ToLower() = "sweet veil") = True And BattleScreen.FieldEffects.CanUseAbility(Not own, BattleScreen) = True) = True Or op.Status = BasePokemon.StatusProblems.Sleep Then
                 BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
             Else
                 If own = True Then

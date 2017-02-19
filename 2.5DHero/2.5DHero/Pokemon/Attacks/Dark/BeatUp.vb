@@ -1,4 +1,8 @@
-﻿Namespace BattleSystem.Moves.Dark
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Dark
 
     Public Class BeatUp
 
@@ -52,38 +56,39 @@
             '#End
         End Sub
 
-        Public Overrides Function GetTimesToAttack(own As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overloads Function GetTimesToAttack(own As Boolean, BattleScreen As BattleScreen) As Integer
             Dim i As Integer = 1
             If own = True Then
                 For Each p As Pokemon In Core.Player.Pokemons
-                    If p.Status = Pokemon.StatusProblems.None Then
+                    If p.Status = BasePokemon.StatusProblems.None Then
                         i += 1
                     End If
                 Next
             ElseIf BattleScreen.IsTrainerBattle = True Then
                 For Each p As Pokemon In BattleScreen.Trainer.Pokemons
-                    If p.Status = Pokemon.StatusProblems.None Then
+                    If p.Status = BasePokemon.StatusProblems.None Then
                         i += 1
                     End If
                 Next
             End If
-            i = i-1
+            i = i - 1
             Return i
         End Function
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
             Dim avgTeamBaseAttack As Double = 0.0D
             Dim pokemonCounter As Integer = 0
             If own Then
                 For Each pokemon As Pokemon In Core.Player.Pokemons
-                    If (Not pokemon.IsEgg) AndAlso pokemon.Status <> Pokemon.StatusProblems.Fainted And pokemon.HP > 0 Then
+                    If (Not pokemon.IsEgg) AndAlso pokemon.Status <> BasePokemon.StatusProblems.Fainted And pokemon.HP > 0 Then
                         avgTeamBaseAttack += (pokemon.BaseAttack / 10)
                         pokemonCounter += 1
                     End If
                 Next
             Else
-                For Each pokemon As Pokemon In BattleScreen.Trainer.Pokemons
-                    If (Not pokemon.IsEgg) AndAlso pokemon.Status <> Pokemon.StatusProblems.Fainted And pokemon.HP > 0 Then
+                For Each pokemon As Pokemon In screen.Trainer.Pokemons
+                    If (Not pokemon.IsEgg) AndAlso pokemon.Status <> BasePokemon.StatusProblems.Fainted And pokemon.HP > 0 Then
                         avgTeamBaseAttack += (pokemon.BaseAttack / 10)
                         pokemonCounter += 1
                     End If

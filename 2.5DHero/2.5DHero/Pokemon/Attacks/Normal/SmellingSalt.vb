@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class SmellingSalt
 
@@ -52,26 +55,27 @@
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim op As Pokemon = BattleScreen.OppPokemon
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen as BattleScreen = BattleScreen
+            Dim op As Pokemon = screen.OppPokemon
             If own = False Then
-                op = BattleScreen.OwnPokemon
+                op = screen.OwnPokemon
             End If
 
-            If op.Status = Pokemon.StatusProblems.Paralyzed Then
+            If op.Status = BasePokemon.StatusProblems.Paralyzed Then
                 Return Me.Power * 2
             Else
                 Return Me.Power
             End If
         End Function
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If own = True Then
-                If BattleScreen.OppPokemon.Status = Pokemon.StatusProblems.Paralyzed Then
+                If BattleScreen.OppPokemon.Status = BasePokemon.StatusProblems.Paralyzed Then
                     BattleScreen.Battle.CureStatusProblem(Not own, own, BattleScreen, BattleScreen.OppPokemon.GetDisplayName() & " was cured of paralysis.", "move:smellingsalt")
                 End If
             Else
-                If BattleScreen.OppPokemon.Status = Pokemon.StatusProblems.Paralyzed Then
+                If BattleScreen.OppPokemon.Status = BasePokemon.StatusProblems.Paralyzed Then
                     BattleScreen.Battle.CureStatusProblem(Not own, own, BattleScreen, BattleScreen.OwnPokemon.GetDisplayName() & " was cured of paralysis.", "move:smellingsalt")
                 End If
             End If

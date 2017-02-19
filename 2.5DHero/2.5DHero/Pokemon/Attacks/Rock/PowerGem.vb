@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Rock
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Rock
 
     Public Class PowerGem
 

@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class LastResort
 
@@ -52,21 +55,22 @@
             '#End
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen as BattleScreen = BattleScreen
             Dim moveIDs As New List(Of Integer)
-            Dim p As Pokemon = BattleScreen.OwnPokemon
+            Dim p As Pokemon = screen.OwnPokemon
             If Own = False Then
-                p = BattleScreen.OppPokemon
+                p = screen.OppPokemon
             End If
 
-            For Each Attack As BattleSystem.Attack In p.Attacks
+            For Each Attack As Attack In p.Attacks
                 If moveIDs.Contains(Attack.ID) = False Then moveIDs.Add(Attack.ID)
             Next
 
             Dim usedMoves As Boolean = True
-            Dim AllUsedMoves As List(Of Integer) = BattleScreen.FieldEffects.OwnUsedMoves
+            Dim AllUsedMoves As List(Of Integer) = screen.FieldEffects.OwnUsedMoves
             If Own = False Then
-                AllUsedMoves = BattleScreen.FieldEffects.OppUsedMoves
+                AllUsedMoves = screen.FieldEffects.OppUsedMoves
             End If
 
             For Each moveID As Integer In moveIDs
@@ -77,7 +81,7 @@
             Next
 
             If usedMoves = False Then
-                BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
+                screen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
                 Return True
             Else
                 Return False

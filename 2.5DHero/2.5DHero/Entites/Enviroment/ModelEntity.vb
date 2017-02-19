@@ -1,4 +1,11 @@
-﻿Public Class ModelEntity
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Debug
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
+Public Class ModelEntity
 
     Inherits Entity
 
@@ -35,7 +42,7 @@
                             .DiffuseColor = Screen.Effect.DiffuseColor
 
                             If Not Screen.Level.World Is Nothing Then
-                                If Screen.Level.World.EnvironmentType = Game.World.EnvironmentTypes.Outside Then
+                                If Screen.Level.World.EnvironmentType = EnvironmentTypeEnum.Outside Then
                                     .DiffuseColor *= SkyDome.GetDaytimeColor(True).ToVector3()
                                 End If
                             End If

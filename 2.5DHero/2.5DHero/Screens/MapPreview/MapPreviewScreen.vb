@@ -1,4 +1,12 @@
-﻿Public Class MapPreviewScreen
+﻿Imports System.Drawing
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+
+Public Class MapPreviewScreen
 
     Inherits Screen
 
@@ -11,7 +19,7 @@
     Structure MapDisplay
         Public Position As Vector3
         Public Text As String
-        Public Color As Color
+        Public Color As Microsoft.Xna.Framework.Color
     End Structure
 
     Dim TextDisplays As New List(Of MapDisplay)
@@ -92,7 +100,7 @@
                             e.Visible = True
                             e.Shaders.Add(New Vector3(1.51337135F))
 
-                            Me.TextDisplays.Add(New MapDisplay() With {.Text = "To: " & e.AdditionalValue.GetSplit(0), .Position = e.Position, .Color = New Color(0, 232, 255, 200)})
+                            Me.TextDisplays.Add(New MapDisplay() With {.Text = "To: " & e.AdditionalValue.GetSplit(0), .Position = e.Position, .Color = New Microsoft.Xna.Framework.Color(0, 232, 255, 200)})
 
                             If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
                                 CType(e, WarpBlock).Warp(True)
@@ -115,7 +123,7 @@
                                     t = CType(e, NPC).Name & ": Script start (" & e.AdditionalValue & ")"
                             End Select
 
-                            Me.TextDisplays.Add(New MapDisplay() With {.Text = t, .Position = e.Position, .Color = Color.LightCoral})
+                            Me.TextDisplays.Add(New MapDisplay() With {.Text = t, .Position = e.Position, .Color = Microsoft.Xna.Framework.Color.LightCoral})
                         End If
                     End If
                 Case "ScriptBlock"
@@ -134,7 +142,7 @@
                             End Select
 
                             If t <> "" Then
-                                Me.TextDisplays.Add(New MapDisplay() With {.Text = t, .Position = e.Position, .Color = Color.LightGreen})
+                                Me.TextDisplays.Add(New MapDisplay() With {.Text = t, .Position = e.Position, .Color = Microsoft.Xna.Framework.Color.LightGreen})
                             End If
                         End If
                     End If
@@ -154,7 +162,7 @@
                             End Select
 
                             If t <> "" Then
-                                Me.TextDisplays.Add(New MapDisplay() With {.Text = t, .Position = e.Position, .Color = Color.LightYellow})
+                                Me.TextDisplays.Add(New MapDisplay() With {.Text = t, .Position = e.Position, .Color = Microsoft.Xna.Framework.Color.LightYellow})
                             End If
                         End If
                     End If
@@ -174,7 +182,7 @@
     End Function
 
     Private Sub ControlMap()
-        If KeyBoardHandler.KeyPressed(KeyBindings.EscapeKey) = True Or ControllerHandler.ButtonPressed(Buttons.Start) = True Then
+        If KeyBoardHandler.KeyPressed(Core.KeyBindings.Escape) = True Or ControllerHandler.ButtonPressed(Buttons.Start) = True Then
             Core.GameInstance.Exit()
         End If
 
@@ -209,11 +217,11 @@
 
         Level.Draw()
 
-        World.DrawWeather(Screen.Level.World.CurrentMapWeather)
+        World.DrawWeather(Screen.Level.World.CurrentWeather)
 
         If Core.GameOptions.ShowGUI = True Then
             Dim P As Vector2 = Core.GetMiddlePosition(New Size(16, 16))
-            Core.SpriteBatch.Draw(ParticlesTexture, New Rectangle(CInt(P.X), CInt(P.Y), 16, 16), New Rectangle(0, 0, 9, 9), Color.White)
+            Core.SpriteBatch.Draw(ParticlesTexture, New Microsoft.Xna.Framework.Rectangle(CInt(P.X), CInt(P.Y), 16, 16), New Microsoft.Xna.Framework.Rectangle(0, 0, 9, 9), Microsoft.Xna.Framework.Color.White)
 
             Dim offsetString As String = "OFF"
             If Core.GameOptions.LoadOffsetMaps > 0 Then
@@ -225,7 +233,7 @@
                 "RENDERDISTANCE: " & Core.GameOptions.RenderDistance.ToString() & vbNewLine &
                 "OFFSETMAPS: " & offsetString
 
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(2, Core.windowSize.Height - FontManager.MiniFont.MeasureString(t).Y - 2), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(2, Core.windowSize.Height - FontManager.MiniFont.MeasureString(t).Y - 2), Microsoft.Xna.Framework.Color.White)
 
             Dim t2 As String = "WASD: Move around" & vbNewLine &
                 "MOUSE SCROLL: Change camera speed" & vbNewLine &
@@ -236,10 +244,10 @@
                 "Q: Replace player" & vbNewLine &
                 "ESC: Close Map Preview"
 
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, t2, New Vector2(Core.windowSize.Width - FontManager.MiniFont.MeasureString(t2).X - 2, Core.windowSize.Height - FontManager.MiniFont.MeasureString(t2).Y - 2), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, t2, New Vector2(Core.windowSize.Width - FontManager.MiniFont.MeasureString(t2).X - 2, Core.windowSize.Height - FontManager.MiniFont.MeasureString(t2).Y - 2), Microsoft.Xna.Framework.Color.White)
 
             Dim t3 As String = "MAP PREVIEW MODE"
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, t3, New Vector2(Core.windowSize.Width - FontManager.MiniFont.MeasureString(t3).X - 2, 2), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, t3, New Vector2(Core.windowSize.Width - FontManager.MiniFont.MeasureString(t3).X - 2, 2), Microsoft.Xna.Framework.Color.White)
 
             Me.DrawMapDisplays()
         End If
@@ -250,8 +258,8 @@
             Dim p As Vector2 = des.Position.ProjectPoint(Screen.Camera.View, Screen.Camera.Projection)
             p.X -= FontManager.ChatFont.MeasureString(des.Text).X / 2.0F
 
-            SpriteBatch.DrawString(FontManager.ChatFont, des.Text, New Vector2(p.X + 2, p.Y + 2), New Color(0, 0, 0, 128), 0.0F, Vector2.Zero, 1.0F, SpriteEffects.None, 0.0F)
-            SpriteBatch.DrawString(FontManager.ChatFont, des.Text, p, des.Color, 0.0F, Vector2.Zero, 1.0F, SpriteEffects.None, 0.0F)
+            Core.SpriteBatch.DrawString(FontManager.ChatFont, des.Text, New Vector2(p.X + 2, p.Y + 2), New Microsoft.Xna.Framework.Color(0, 0, 0, 128), 0.0F, Vector2.Zero, 1.0F, SpriteEffects.None, 0.0F)
+            Core.SpriteBatch.DrawString(FontManager.ChatFont, des.Text, p, des.Color, 0.0F, Vector2.Zero, 1.0F, SpriteEffects.None, 0.0F)
         Next
     End Sub
 

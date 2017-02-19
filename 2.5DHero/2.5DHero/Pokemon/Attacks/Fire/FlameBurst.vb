@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Fire
 
     Public Class FlameBurst

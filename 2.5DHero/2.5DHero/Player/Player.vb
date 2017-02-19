@@ -1,10 +1,28 @@
-﻿Public Class Player
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Data
+Imports P3D.Legacy.Core.Dialogues
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.GameJolt
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Interfaces
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Security
+Imports P3D.Legacy.Core.Server
+Imports P3D.Legacy.Core.World
 
-    Inherits Security.HashSecureBase
+Public Class Player
+    Inherits HashSecureBase
+    Implements IPlayer
+    'Implements IPlayer
 
 #Region "Properties"
 
-    Public Property Name() As String
+    Public Property Name() As String Implements IPlayer.Name
         Get
             Assert("_name", _name)
             Return _name
@@ -15,7 +33,7 @@
         End Set
     End Property
 
-    Public Property RivalName() As String
+    Public Property RivalName() As String Implements IPlayer.RivalName
         Get
             Return _rivalName
         End Get
@@ -24,7 +42,7 @@
         End Set
     End Property
 
-    Public Property Male() As Boolean
+    Public Property Male() As Boolean Implements IPlayer.Male
         Get
             Return _male
         End Get
@@ -33,7 +51,7 @@
         End Set
     End Property
 
-    Public Property Money() As Integer
+    Public Property Money() As Integer Implements IPlayer.Money
         Get
             Return _money
         End Get
@@ -42,7 +60,7 @@
         End Set
     End Property
 
-    Public Property OT() As String
+    Public Property OT() As String Implements IPlayer.OT
         Get
             Assert("_ot", _OT)
             Return _OT
@@ -53,7 +71,7 @@
         End Set
     End Property
 
-    Public Property Points() As Integer
+    Public Property Points() As Integer Implements IPlayer.Points
         Get
             Return _points
         End Get
@@ -62,7 +80,7 @@
         End Set
     End Property
 
-    Public Property BP() As Integer
+    Public Property BP() As Integer Implements IPlayer.BP
         Get
             Return _BP
         End Get
@@ -71,7 +89,7 @@
         End Set
     End Property
 
-    Public Property Coins() As Integer
+    Public Property Coins() As Integer Implements IPlayer.Coins
         Get
             Return _coins
         End Get
@@ -80,7 +98,7 @@
         End Set
     End Property
 
-    Public Property HasPokedex() As Boolean
+    Public Property HasPokedex() As Boolean Implements IPlayer.hasPokedex
         Get
             Return _hasPokedex
         End Get
@@ -89,7 +107,7 @@
         End Set
     End Property
 
-    Public Property HasPokegear() As Boolean
+    Public Property HasPokegear() As Boolean Implements IPlayer.HasPokegear
         Get
             Return _hasPokegear
         End Get
@@ -98,7 +116,7 @@
         End Set
     End Property
 
-    Public Property LastRestPlace() As String
+    Public Property LastRestPlace() As String Implements IPlayer.LastRestPlace
         Get
             Return _lastRestPlace
         End Get
@@ -107,7 +125,7 @@
         End Set
     End Property
 
-    Public Property LastRestPlacePosition() As String
+    Public Property LastRestPlacePosition() As String Implements IPlayer.LastRestPlacePosition
         Get
             Return _lastRestPlacePosition
         End Get
@@ -116,7 +134,7 @@
         End Set
     End Property
 
-    Public Property LastSavePlace() As String
+    Public Property LastSavePlace() As String Implements IPlayer.LastSavePlace
         Get
             Return _lastSavePlace
         End Get
@@ -125,7 +143,7 @@
         End Set
     End Property
 
-    Public Property LastSavePlacePosition() As String
+    Public Property LastSavePlacePosition() As String Implements IPlayer.LastSavePlacePosition
         Get
             Return _lastSavePlacePosition
         End Get
@@ -134,7 +152,7 @@
         End Set
     End Property
 
-    Public Property RepelSteps() As Integer
+    Public Property RepelSteps() As Integer Implements IPlayer.RepelSteps
         Get
             Return _repelSteps
         End Get
@@ -143,7 +161,7 @@
         End Set
     End Property
 
-    Public Property SaveCreated() As String
+    Public Property SaveCreated() As String Implements IPlayer.SaveCreated
         Get
             Return _saveCreated
         End Get
@@ -152,7 +170,7 @@
         End Set
     End Property
 
-    Public Property DaycareSteps() As Integer
+    Public Property DaycareSteps() As Integer Implements IPlayer.DaycareSteps
         Get
             Return _daycareSteps
         End Get
@@ -161,7 +179,7 @@
         End Set
     End Property
 
-    Public Property GameMode() As String
+    Public Property GameMode() As String Implements IPlayer.GameMode
         Get
             Return _gameMode
         End Get
@@ -170,7 +188,7 @@
         End Set
     End Property
 
-    Public Property Skin() As String
+    Public Property Skin() As String Implements IPlayer.Skin
         Get
             Return _skin
         End Get
@@ -179,7 +197,7 @@
         End Set
     End Property
 
-    Public Property VisitedMaps() As String
+    Public Property VisitedMaps() As String Implements IPlayer.VisitedMaps
         Get
             Return _visitedMaps
         End Get
@@ -188,7 +206,7 @@
         End Set
     End Property
 
-    Public Property GTSStars() As Integer
+    Public Property GTSStars() As Integer Implements IPlayer.GTSStars
         Get
             Return _GTSStars
         End Get
@@ -197,7 +215,7 @@
         End Set
     End Property
 
-    Public Property SandBoxMode() As Boolean
+    Public Property SandBoxMode() As Boolean Implements IPlayer.SandBoxMode
         Get
             Assert("_sandboxmode", _sandBoxMode)
             Return _sandBoxMode
@@ -208,7 +226,7 @@
         End Set
     End Property
 
-    Public Property RegisterData() As String
+    Public Property RegisterData() As String Implements IPlayer.RegisterData
         Get
             Return _registerData
         End Get
@@ -217,7 +235,7 @@
         End Set
     End Property
 
-    Public Property BerryData() As String
+    Public Property BerryData() As String Implements IPlayer.BerryData
         Get
             Return _berryData
         End Get
@@ -226,7 +244,7 @@
         End Set
     End Property
 
-    Public Property PokedexData() As String
+    Public Property PokedexData() As String Implements IPlayer.PokedexData
         Get
             Return _pokedexData
         End Get
@@ -235,7 +253,7 @@
         End Set
     End Property
 
-    Public Property ItemData() As String
+    Public Property ItemData() As String Implements IPlayer.ItemData
         Get
             Return _itemData
         End Get
@@ -244,7 +262,7 @@
         End Set
     End Property
 
-    Public Property BoxData() As String
+    Public Property BoxData() As String Implements IPlayer.BoxData
         Get
             Return _boxData
         End Get
@@ -253,7 +271,7 @@
         End Set
     End Property
 
-    Public Property NPCData() As String
+    Public Property NPCData() As String Implements IPlayer.NPCData
         Get
             Return _NPCData
         End Get
@@ -262,7 +280,7 @@
         End Set
     End Property
 
-    Public Property ApricornData() As String
+    Public Property ApricornData() As String Implements IPlayer.ApricornData
         Get
             Return _apricornData
         End Get
@@ -271,7 +289,7 @@
         End Set
     End Property
 
-    Public Property SecretBaseData() As String
+    Public Property SecretBaseData() As String Implements IPlayer.SecretBaseData
         Get
             Return _secretBaseData
         End Get
@@ -280,7 +298,7 @@
         End Set
     End Property
 
-    Public Property DaycareData() As String
+    Public Property DaycareData() As String Implements IPlayer.DaycareData
         Get
             Return _daycareData
         End Get
@@ -289,7 +307,7 @@
         End Set
     End Property
 
-    Public Property HallOfFameData() As String
+    Public Property HallOfFameData() As String Implements IPlayer.HallOfFameData
         Get
             Return _hallOfFameData
         End Get
@@ -298,7 +316,7 @@
         End Set
     End Property
 
-    Public Property RoamingPokemonData() As String
+    Public Property RoamingPokemonData() As String Implements IPlayer.RoamingPokemonData
         Get
             Return _roamingPokemonData
         End Get
@@ -307,7 +325,7 @@
         End Set
     End Property
 
-    Public Property HistoryData() As String
+    Public Property HistoryData() As String Implements IPlayer.HistoryData
         Get
             Return _historyData
         End Get
@@ -316,7 +334,7 @@
         End Set
     End Property
 
-    Public Property IsGameJoltSave() As Boolean
+    Public Property IsGameJoltSave() As Boolean Implements IPlayer.IsGamejoltSave
         Get
             Assert("_isgamejoltsave", _isGamejoltSave)
             Return _isGamejoltSave
@@ -327,7 +345,7 @@
         End Set
     End Property
 
-    Public Property EmblemBackground() As String
+    Public Property EmblemBackground() As String Implements IPlayer.EmblemBackground
         Get
             Assert("_emblembackground", _emblemBackground)
             Return _emblemBackground
@@ -341,30 +359,11 @@
 #End Region
 
     'Non-base datatypes:
-    Public Pokemons As New List(Of Pokemon)
-    Public Pokedexes As New List(Of Pokedex)
-    Public Inventory As New PlayerInventory
-    Public Badges As New List(Of Integer)
-    Public PlayTime As TimeSpan
-    Public GameStart As Date
-    Public LastPokemonPosition As Vector3 = New Vector3(999, 999, 999)
-    Public PokeFiles As New List(Of String)
-    Public EarnedAchievements As New List(Of String)
     Public PokegearModules As New List(Of Integer)
     Public PhoneContacts As New List(Of String)
-    Public Mails As New List(Of Items.MailItem.MailData)
     Public Trophies As New List(Of Integer)
 
     'Non-secure fields:
-    Public ShowBattleAnimations As Integer = 2
-    Public BoxAmount As Integer = 10
-    Public DiagonalMovement As Boolean = False
-    Public DifficultyMode As Integer = 0
-    Public BattleStyle As Integer = 0
-    Public ShowModelsInBattle As Boolean = True
-    Public TempSurfSkin As String = "Hilbert"
-    Public TempRideSkin As String = ""
-    Public Statistics As String = ""
 
     'Secure fields:
     Private _name As String = "<playername>"
@@ -405,22 +404,9 @@
     Private _isGamejoltSave As Boolean = False
     Private _emblemBackground As String = "standard"
 
-    Public startPosition As Vector3 = New Vector3(14, 0.1, 10)
-    Public startRotation As Single = 0
-    Public startFreeCameraMode As Boolean = False
-    Public startMap As String = "barktown.dat"
-    Public startFOV As Single = 45.0F
-    Public startRotationSpeed As Integer = 12
-    Public startThirdPerson As Boolean = False
-    Public startSurfing As Boolean = False
-    Public startRiding As Boolean = False
-
     Public filePrefix As String = "nilllzz"
     Public newFilePrefix As String = ""
     Public AutosaveUsed As Boolean = False
-    Public loadedSave As Boolean = False
-
-    Public PlayerTemp As New PlayerTemp()
 
     Public Structure Temp
         Public Shared PokemonScreenIndex As Integer = 0
@@ -480,7 +466,7 @@
 
 #Region "Load"
 
-    Public Sub LoadGame(ByVal filePrefix As String)
+    Public Sub LoadGame(ByVal filePrefix As String) Implements IPlayer.LoadGame
         For Each s As String In Core.GameOptions.ContentPackNames
             ContentPackManager.Load(GameController.GamePath & "\ContentPacks\" & s & "\exceptions.dat")
         Next
@@ -509,7 +495,7 @@
             GameModeManager.SetGameModePointer(GameMode)
         End If
 
-        BattleSystem.GameModeAttackLoader.Load()
+        GameModeAttackLoader.Load()
 
         If IsGameJoltSave = True Then
             SandBoxMode = False
@@ -561,8 +547,8 @@
         End If
 
         If IsGameJoltSave = True Then
-            lastLevel = GameJolt.Emblem.GetPlayerLevel(GameJoltSave.Points)
-            OT = GameJoltSave.GameJoltID
+            lastLevel = Emblem.GetPlayerLevel(Core.GameJoltSave.Points)
+            OT = Core.GameJoltSave.GameJoltID
         End If
 
         Entity.MakeShake = Name.ToLower() = "drunknilllzz"
@@ -637,7 +623,7 @@
 
         Dim PokeData() As String
         If IsGameJoltSave = True Then
-            PokeData = GameJoltSave.Party.SplitAtNewline()
+            PokeData = Core.GameJoltSave.Party.SplitAtNewline()
         Else
             PokeData = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\Party.dat").SplitAtNewline()
         End If
@@ -664,7 +650,7 @@
     Private Sub LoadPlayer()
         Dim Data() As String
         If IsGameJoltSave = True Then
-            Data = GameJoltSave.Player.SplitAtNewline()
+            Data = Core.GameJoltSave.Player.SplitAtNewline()
         Else
             Data = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\Player.dat").SplitAtNewline()
         End If
@@ -680,20 +666,20 @@
                         Name = Value
 
                         If IsGameJoltSave = True Then
-                            If Name.ToLower() <> GameJolt.API.username.ToLower() Then
-                                Name = GameJolt.API.username
+                            If Name.ToLower() <> API.username.ToLower() Then
+                                Name = API.username
                             End If
                         End If
                     Case "position"
                         Dim v() As String = Value.Split(CChar(","))
-                        startPosition.X = CSng(v(0).Replace(".", GameController.DecSeparator))
-                        startPosition.Y = CSng(v(1).Replace(".", GameController.DecSeparator))
-                        startPosition.Z = CSng(v(2).Replace(".", GameController.DecSeparator))
+                        startPosition.X = Single.Parse(v(0).Replace(".", GameController.DecSeparator), CultureInfo.InvariantCulture)
+                        startPosition.Y = Single.Parse(v(1).Replace(".", GameController.DecSeparator), CultureInfo.InvariantCulture)
+                        startPosition.Z = Single.Parse(v(2).Replace(".", GameController.DecSeparator), CultureInfo.InvariantCulture)
                     Case "lastpokemonposition"
                         Dim v() As String = Value.Split(CChar(","))
-                        LastPokemonPosition.X = CSng(v(0).Replace(".", GameController.DecSeparator))
-                        LastPokemonPosition.Y = CSng(v(1).Replace(".", GameController.DecSeparator))
-                        LastPokemonPosition.Z = CSng(v(2).Replace(".", GameController.DecSeparator))
+                        LastPokemonPosition.X = Single.Parse(v(0).Replace(".", GameController.DecSeparator), CultureInfo.InvariantCulture)
+                        LastPokemonPosition.Y = Single.Parse(v(1).Replace(".", GameController.DecSeparator), CultureInfo.InvariantCulture)
+                        LastPokemonPosition.Z = Single.Parse(v(2).Replace(".", GameController.DecSeparator), CultureInfo.InvariantCulture)
                     Case "mapfile"
                         startMap = Value
                     Case "rivalname"
@@ -717,7 +703,7 @@
                             End If
                         End If
                     Case "rotation"
-                        startRotation = CSng(Value.Replace(".", GameController.DecSeparator))
+                        startRotation = Single.Parse(Value.Replace(".", GameController.DecSeparator), CultureInfo.InvariantCulture)
                     Case "Gender"
                         If Value = "Male" Then
                             Male = True
@@ -814,8 +800,8 @@
         Next
 
         If IsGameJoltSave = True And Screen.Level.Surfing = False Then
-            Skin = GameJolt.Emblem.GetPlayerSpriteFile(GameJolt.Emblem.GetPlayerLevel(GameJoltSave.Points), GameJoltSave.GameJoltID, GameJoltSave.Gender)
-            Select Case GameJoltSave.Gender
+            Skin = Emblem.GetPlayerSpriteFile(Emblem.GetPlayerLevel(Core.GameJoltSave.Points), Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Gender)
+            Select Case Core.GameJoltSave.Gender
                 Case "0"
                     Male = True
                 Case "1"
@@ -831,7 +817,7 @@
     Private Sub LoadOptions()
         Dim Data() As String
         If IsGameJoltSave = True Then
-            Data = GameJoltSave.Options.SplitAtNewline()
+            Data = Core.GameJoltSave.Options.SplitAtNewline()
         Else
             Data = IO.File.ReadAllLines(GameController.GamePath & "\Save\" & filePrefix & "\Options.dat")
         End If
@@ -858,7 +844,7 @@
 
         Dim Data As String
         If IsGameJoltSave = True Then
-            Data = GameJoltSave.Items
+            Data = Core.GameJoltSave.Items
         Else
             Data = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\Items.dat")
         End If
@@ -878,7 +864,7 @@
                 Else
                     If ItemDat <> "" And ItemDat.StartsWith("Mail|") = True Then
                         Dim mailData As String = ItemDat.Remove(0, 5)
-                        Mails.Add(Items.MailItem.GetMailDataFromString(mailData))
+                        Mails.Add(MailItem.GetMailDataFromString(mailData))
                     End If
                 End If
             Next
@@ -887,7 +873,7 @@
 
     Private Sub LoadBerries()
         If IsGameJoltSave = True Then
-            Core.Player.BerryData = GameJoltSave.Berries
+            Core.Player.BerryData = Core.GameJoltSave.Berries
         Else
             Core.Player.BerryData = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\Berries.dat")
         End If
@@ -895,7 +881,7 @@
 
     Private Sub LoadApricorns()
         If IsGameJoltSave = True Then
-            Core.Player.ApricornData = GameJoltSave.Apricorns
+            Core.Player.ApricornData = Core.GameJoltSave.Apricorns
         Else
             Core.Player.ApricornData = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\Apricorns.dat")
         End If
@@ -904,7 +890,7 @@
     Private Sub LoadDaycare()
         Core.Player.DaycareData = ""
         If IsGameJoltSave = True Then
-            Core.Player.DaycareData = GameJoltSave.Daycare
+            Core.Player.DaycareData = Core.GameJoltSave.Daycare
         Else
             If IO.File.Exists(GameController.GamePath & "\Save\" & filePrefix & "\Daycare.dat") = True Then
                 Core.Player.DaycareData = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\Daycare.dat")
@@ -914,7 +900,7 @@
 
     Private Sub LoadPokedex()
         If IsGameJoltSave = True Then
-            PokedexData = GameJoltSave.Pokedex
+            PokedexData = Core.GameJoltSave.Pokedex
         Else
             PokedexData = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\Pokedex.dat")
         End If
@@ -926,7 +912,7 @@
 
     Private Sub LoadRegister()
         If IsGameJoltSave = True Then
-            RegisterData = GameJoltSave.Register
+            RegisterData = Core.GameJoltSave.Register
         Else
             RegisterData = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\Register.dat")
         End If
@@ -934,7 +920,7 @@
 
     Private Sub LoadItemData()
         If IsGameJoltSave = True Then
-            ItemData = GameJoltSave.ItemData
+            ItemData = Core.GameJoltSave.ItemData
         Else
             ItemData = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\ItemData.dat")
         End If
@@ -942,7 +928,7 @@
 
     Private Sub LoadBoxData()
         If IsGameJoltSave = True Then
-            BoxData = GameJoltSave.Box
+            BoxData = Core.GameJoltSave.Box
         Else
             BoxData = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\Box.dat")
         End If
@@ -950,7 +936,7 @@
 
     Private Sub LoadNPCData()
         If IsGameJoltSave = True Then
-            NPCData = GameJoltSave.NPC
+            NPCData = Core.GameJoltSave.NPC
         Else
             NPCData = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\NPC.dat")
         End If
@@ -958,7 +944,7 @@
 
     Private Sub LoadHallOfFameData()
         If IsGameJoltSave = True Then
-            HallOfFameData = GameJoltSave.HallOfFame
+            HallOfFameData = Core.GameJoltSave.HallOfFame
         Else
             If IO.File.Exists(GameController.GamePath & "\Save\" & filePrefix & "\HallOfFame.dat") = True Then
                 HallOfFameData = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\HallOfFame.dat")
@@ -970,7 +956,7 @@
 
     Private Sub LoadSecretBaseData()
         If IsGameJoltSave = True Then
-            SecretBaseData = GameJoltSave.SecretBase
+            SecretBaseData = Core.GameJoltSave.SecretBase
         Else
             If IO.File.Exists(GameController.GamePath & "\Save\" & filePrefix & "\SecretBase.dat") = True Then
                 SecretBaseData = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\SecretBase.dat")
@@ -983,7 +969,7 @@
     Private Sub LoadRoamingPokemonData()
         RoamingPokemonData = ""
         If IsGameJoltSave = True Then
-            RoamingPokemonData = GameJoltSave.RoamingPokemon
+            RoamingPokemonData = Core.GameJoltSave.RoamingPokemon
         Else
             If IO.File.Exists(GameController.GamePath & "\Save\" & filePrefix & "\RoamingPokemon.dat") = True Then
                 For Each line As String In IO.File.ReadAllLines(GameController.GamePath & "\Save\" & filePrefix & "\RoamingPokemon.dat")
@@ -1007,7 +993,7 @@
 
     Private Sub LoadStatistics()
         If IsGameJoltSave = True Then
-            Statistics = GameJoltSave.Statistics
+            Statistics = Core.GameJoltSave.Statistics
         Else
             If IO.File.Exists(GameController.GamePath & "\Save\" & filePrefix & "\Statistics.dat") = True Then
                 Statistics = IO.File.ReadAllText(GameController.GamePath & "\Save\" & filePrefix & "\Statistics.dat")
@@ -1024,7 +1010,7 @@
 
     Dim GameJoltTempStoreString As New Dictionary(Of String, String)
 
-    Public Sub SaveGame(ByVal IsAutosave As Boolean)
+    Public Sub SaveGame(ByVal IsAutosave As Boolean) Implements IPlayer.SaveGame
         SaveGameHelpers.ResetSaveCounter()
 
         If IsAutosave = True Then
@@ -1060,7 +1046,7 @@
         filePrefix = newFilePrefix
 
         If IsGameJoltSave = True Then
-            Dim APICallSave As New GameJolt.APICall(AddressOf SaveGameHelpers.CompleteGameJoltSave)
+            Dim APICallSave As New APICall(AddressOf SaveGameHelpers.CompleteGameJoltSave)
 
             Dim keys As New List(Of String)
             Dim dataItems As New List(Of String)
@@ -1075,24 +1061,24 @@
 
             SavePublicVars()
 
-            GameJoltSave.UpdatePlayerScore()
+            Core.GameJoltSave.UpdatePlayerScore()
         End If
     End Sub
 
     Private Sub SavePublicVars()
-        If GameJolt.LogInScreen.UserBanned(GameJoltSave.GameJoltID) = False Then
-            Dim APICallPoints As New GameJolt.APICall(AddressOf SaveGameHelpers.AddGameJoltSaveCounter)
-            APICallPoints.SetStorageData("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|points", GameJoltSave.Points.ToString(), False)
+        If GameJolt.LogInScreen.UserBanned(Core.GameJoltSave.GameJoltID) = False Then
+            Dim APICallPoints As New APICall(AddressOf SaveGameHelpers.AddGameJoltSaveCounter)
+            APICallPoints.SetStorageData("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|points", Core.GameJoltSave.Points.ToString(), False)
 
-            Dim APICallEmblem As New GameJolt.APICall(AddressOf SaveGameHelpers.AddGameJoltSaveCounter)
-            APICallEmblem.SetStorageData("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|emblem", GameJoltSave.Emblem, False)
+            Dim APICallEmblem As New APICall(AddressOf SaveGameHelpers.AddGameJoltSaveCounter)
+            APICallEmblem.SetStorageData("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|emblem", Core.GameJoltSave.EmblemS, False)
 
-            Dim APICallGender As New GameJolt.APICall(AddressOf SaveGameHelpers.AddGameJoltSaveCounter)
-            APICallGender.SetStorageData("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|gender", GameJoltSave.Gender, False)
+            Dim APICallGender As New APICall(AddressOf SaveGameHelpers.AddGameJoltSaveCounter)
+            APICallGender.SetStorageData("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|gender", Core.GameJoltSave.Gender, False)
         End If
     End Sub
 
-    Public Function GetPartyData() As String
+    Public Function GetPartyData() As String Implements IPlayer.GetPartyData
         Dim Data As String = ""
         For i = 0 To Pokemons.Count - 1
             If Data <> "" Then
@@ -1103,7 +1089,7 @@
         Return Data
     End Function
 
-    Public Function GetPlayerData(ByVal IsAutosave As Boolean) As String
+    Public Function GetPlayerData(ByVal IsAutosave As Boolean) As String Implements IPlayer.GetPlayerData
         Dim GenderString As String = ""
         If Male = True Then
             GenderString = "Male"
@@ -1212,7 +1198,7 @@
         Return Data
     End Function
 
-    Public Function GetOptionsData() As String
+    Public Function GetOptionsData() As String Implements IPlayer.GetOptionsData
         Dim c As OverworldCamera = GetOverworldCamera()
 
         Dim FOVstring As String = c.FOV.ToString.Replace(",", ".")
@@ -1226,7 +1212,7 @@
         Return Data
     End Function
 
-    Public Function GetItemsData() As String
+    Public Function GetItemsData() As String Implements IPlayer.GetItemsData
         Dim Data As String = ""
 
         For Each c In Inventory
@@ -1234,69 +1220,69 @@
                 Data &= vbNewLine
             End If
 
-            Data &= "{" & c.ItemID & "|" & c.Amount & "}"
+            Data &= "{" & c.ItemId & "|" & c.Amount & "}"
         Next
 
-        For Each mail As Items.MailItem.MailData In Mails
+        For Each mail As MailItem.MailData In Mails
             If Data <> "" Then
                 Data &= vbNewLine
             End If
-            Data &= "Mail|" & Items.MailItem.GetStringFromMail(mail)
+            Data &= "Mail|" & MailItem.GetStringFromMail(mail)
         Next
 
         Return Data
     End Function
 
-    Public Function GetBerriesData() As String
+    Public Function GetBerriesData() As String Implements IPlayer.GetBerriesData
         Return BerryData
     End Function
 
-    Public Function GetApricornsData() As String
+    Public Function GetApricornsData() As String Implements IPlayer.GetApricornsData
         Return ApricornData
     End Function
 
-    Public Function GetDaycareData() As String
+    Public Function GetDaycareData() As String Implements IPlayer.GetDaycareData
         Return DaycareData
     End Function
 
-    Public Function GetPokedexData() As String
+    Public Function GetPokedexData() As String Implements IPlayer.GetPokedexData
         Return PokedexData
     End Function
 
-    Public Function GetRegisterData() As String
+    Public Function GetRegisterData() As String Implements IPlayer.GetRegisterData
         Return RegisterData
     End Function
 
-    Public Function GetItemDataData() As String
+    Public Function GetItemDataData() As String Implements IPlayer.GetItemDataData
         Return ItemData
     End Function
 
-    Public Function GetBoxData() As String
+    Public Function GetBoxData() As String Implements IPlayer.GetBoxData
         Return BoxData
     End Function
 
-    Public Function GetNPCDataData() As String
+    Public Function GetNPCDataData() As String Implements IPlayer.GetNPCDataData
         Return NPCData
     End Function
 
-    Public Function GetHallOfFameData() As String
+    Public Function GetHallOfFameData() As String Implements IPlayer.GetHallOfFameData
         Return HallOfFameData
     End Function
 
-    Public Function GetSecretBaseData() As String
+    Public Function GetSecretBaseData() As String Implements IPlayer.GetSecretBaseData
         Return SecretBaseData
     End Function
 
-    Public Function GetRoamingPokemonData() As String
+    Public Function GetRoamingPokemonData() As String Implements IPlayer.GetRoamingPokemonData
         Return RoamingPokemonData
     End Function
 
-    Public Function GetStatisticsData() As String
+    Public Function GetStatisticsData() As String Implements IPlayer.GetStatisticsData
         Return Statistics
     End Function
 
     Private Function GetOverworldCamera() As OverworldCamera
-        Dim baseScreen As Screen = CurrentScreen
+        Dim baseScreen As Screen = Core.CurrentScreen
         While Not baseScreen.PreScreen Is Nothing
             baseScreen = baseScreen.PreScreen
         End While
@@ -1316,7 +1302,7 @@
         Dim Data As String = GetPartyData()
 
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|party", Data)
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|party", Data)
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\Party.dat", Data)
         End If
@@ -1326,7 +1312,7 @@
         Dim Data As String = GetPlayerData(IsAutosave)
 
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|player", Data)
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|player", Data)
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\Player.dat", Data)
         End If
@@ -1336,7 +1322,7 @@
         Dim Data As String = GetOptionsData()
 
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|options", Data)
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|options", Data)
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\Options.dat", Data)
         End If
@@ -1348,7 +1334,7 @@
         Dim Data As String = GetItemsData()
 
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|items", Data)
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|items", Data)
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\Items.dat", Data)
         End If
@@ -1356,7 +1342,7 @@
 
     Private Sub SaveBerries()
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|berries", GetBerriesData())
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|berries", GetBerriesData())
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\Berries.dat", GetBerriesData())
         End If
@@ -1364,7 +1350,7 @@
 
     Private Sub SaveApricorns()
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|apricorns", GetApricornsData())
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|apricorns", GetApricornsData())
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\Apricorns.dat", GetApricornsData())
         End If
@@ -1372,7 +1358,7 @@
 
     Private Sub SaveDaycare()
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|daycare", GetDaycareData())
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|daycare", GetDaycareData())
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\Daycare.dat", GetDaycareData())
         End If
@@ -1380,7 +1366,7 @@
 
     Private Sub SavePokedex()
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|pokedex", GetPokedexData())
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|pokedex", GetPokedexData())
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\Pokedex.dat", GetPokedexData())
         End If
@@ -1388,7 +1374,7 @@
 
     Private Sub SaveRegister()
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|register", GetRegisterData())
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|register", GetRegisterData())
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\Register.dat", GetRegisterData())
         End If
@@ -1396,7 +1382,7 @@
 
     Private Sub SaveItemData()
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|itemdata", GetItemDataData())
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|itemdata", GetItemDataData())
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\ItemData.dat", GetItemDataData())
         End If
@@ -1404,7 +1390,7 @@
 
     Private Sub SaveBoxData()
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|box", GetBoxData())
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|box", GetBoxData())
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\Box.dat", GetBoxData())
         End If
@@ -1412,7 +1398,7 @@
 
     Private Sub SaveNPCData()
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|npc", GetNPCDataData())
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|npc", GetNPCDataData())
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\NPC.dat", GetNPCDataData())
         End If
@@ -1420,7 +1406,7 @@
 
     Private Sub SaveHallOfFameData()
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|halloffame", GetHallOfFameData())
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|halloffame", GetHallOfFameData())
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\HallOfFame.dat", GetHallOfFameData())
         End If
@@ -1428,7 +1414,7 @@
 
     Private Sub SaveSecretBaseData()
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|secretbase", GetSecretBaseData())
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|secretbase", GetSecretBaseData())
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\SecretBase.dat", GetSecretBaseData())
         End If
@@ -1436,7 +1422,7 @@
 
     Private Sub SaveRoamingPokemonData()
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|roamingpokemon", GetRoamingPokemonData())
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|roamingpokemon", GetRoamingPokemonData())
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\RoamingPokemon.dat", GetRoamingPokemonData())
         End If
@@ -1445,7 +1431,7 @@
     Private Sub SaveStatistics()
         Statistics = PlayerStatistics.GetData()
         If IsGameJoltSave = True Then
-            GameJoltTempStoreString.Add("saveStorageV" & GameJolt.GamejoltSave.VERSION & "|" & GameJoltSave.GameJoltID & "|statistics", GetStatisticsData())
+            GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|statistics", GetStatisticsData())
         Else
             IO.File.WriteAllText(GameController.GamePath & "\Save\" & filePrefix & "\Statistics.dat", GetStatisticsData())
         End If
@@ -1455,13 +1441,13 @@
 
 #Region "Heal"
 
-    Public Sub HealParty()
+    Public Sub HealParty() Implements IPlayer.HealParty
         For i = 0 To Pokemons.Count - 1
             Pokemons(i).FullRestore()
         Next
     End Sub
 
-    Public Sub HealParty(ByVal Members() As Integer)
+    Public Sub HealParty(ByVal Members() As Integer) Implements IPlayer.HealParty
         For Each member As Integer In Members
             If Pokemons.Count - 1 >= member Then
                 Pokemons(member).FullRestore()
@@ -1473,12 +1459,12 @@
 
 #Region "Pokemon"
 
-    Public ReadOnly Property CountFightablePokemon() As Integer
+    Public ReadOnly Property CountFightablePokemon() As Integer Implements IPlayer.CountFightablePokemon
         Get
             Dim i As Integer = 0
 
             For Each Pokemon As Pokemon In Pokemons
-                If Pokemon.Status <> Pokemon.StatusProblems.Fainted And Pokemon.EggSteps = 0 And Pokemon.HP > 0 Then
+                If Pokemon.Status <> BasePokemon.StatusProblems.Fainted And Pokemon.EggSteps = 0 And Pokemon.HP > 0 Then
                     i += 1
                 End If
             Next
@@ -1486,7 +1472,7 @@
         End Get
     End Property
 
-    Public ReadOnly Property CanCatchPokémon() As Boolean
+    Public ReadOnly Property CanCatchPokémon() As Boolean Implements IPlayer.CanCatchPokémon
         Get
             Dim data() As String = BoxData.ToArray("§")
             If data.Count >= BoxAmount * 30 Then
@@ -1496,7 +1482,7 @@
         End Get
     End Property
 
-    Public ReadOnly Property SurfPokemon() As Integer
+    Public ReadOnly Property SurfPokemon() As Integer Implements IPlayer.SurfPokemon
         Get
             For i = 0 To Pokemons.Count - 1
                 Dim p As Pokemon = Pokemons(i)
@@ -1517,23 +1503,23 @@
         End Get
     End Property
 
-    Public Function GetWalkPokemon() As Pokemon
+    Public Function GetWalkPokemon() As BasePokemon Implements IPlayer.GetWalkPokemon
         If Pokemons.Count = 0 Then
             Return Nothing
         End If
 
         For i = 0 To Pokemons.Count - 1
-            If Pokemons(i).Status <> Pokemon.StatusProblems.Fainted And Pokemons(i).IsEgg() = False Then
+            If Pokemons(i).Status <> BasePokemon.StatusProblems.Fainted And Pokemons(i).IsEgg() = False Then
                 Return Pokemons(i)
             End If
         Next
         Return Nothing
     End Function
 
-    Public Function GetValidPokemonCount() As Integer
+    Public Function GetValidPokemonCount() As Integer Implements IPlayer.GetValidPokemonCount
         Dim c As Integer = 0
         For Each p As Pokemon In Core.Player.Pokemons
-            If p.Status <> Pokemon.StatusProblems.Fainted And p.EggSteps = 0 Then
+            If p.Status <> BasePokemon.StatusProblems.Fainted And p.EggSteps = 0 Then
                 c += 1
             End If
         Next
@@ -1543,8 +1529,6 @@
 #End Region
 
 #Region "Steps"
-
-    Public IsFlying As Boolean = False
 
     '===STEP EVENT INFORMATION===
     'Events when taking a step	| Priority	| Event Type    | Resolution if Not fired
@@ -1571,7 +1555,7 @@
     Private _stepEventRepelMessage As Boolean = False
     Private _stepEventEggHatched As Boolean = False
 
-    Public Sub TakeStep(ByVal stepAmount As Integer)
+    Public Sub TakeStep(ByVal stepAmount As Integer) Implements IPlayer.TakeStep
         _stepEventEggHatched = False
         _stepEventRepelMessage = False
         _stepEventStartedTrainer = False
@@ -1593,8 +1577,8 @@
 
                 'Every 256 steps, add friendship to the Pokémon in the player's team.
                 For Each p As Pokemon In Pokemons
-                    If p.Status <> Pokemon.StatusProblems.Fainted And p.IsEgg() = False Then
-                        p.ChangeFriendShip(Pokemon.FriendShipCauses.Walking)
+                    If p.Status <> BasePokemon.StatusProblems.Fainted And p.IsEgg() = False Then
+                        p.ChangeFriendShip(BasePokemon.FriendShipCauses.Walking)
                     End If
                 Next
 
@@ -1626,8 +1610,8 @@
     Private Sub StepEventCheckTrainers()
         If CanFireStepEvent() = True Then
             Screen.Level.CheckTrainerSights()
-            If CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
-                If CType(CurrentScreen, OverworldScreen).ActionScript.IsReady = False Then
+            If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
+                If CType(Core.CurrentScreen, OverworldScreen).ActionScript.IsReady = False Then
                     _stepEventStartedTrainer = True
                 End If
             End If
@@ -1639,7 +1623,7 @@
             Dim addEggSteps As Integer = stepAmount
             For Each p As Pokemon In Pokemons
                 If p.Ability.Name.ToLower() = "magma armor" Or p.Ability.Name.ToLower() = "flame body" Then
-                    addEggSteps *= Random.Next(1, 4)
+                    addEggSteps *= Core.Random.Next(1, 4)
                     Exit For
                 End If
             Next
@@ -1659,7 +1643,7 @@
                     Pokemons.Remove(p)
                 Next
 
-                SetScreen(New TransitionScreen(CurrentScreen, New HatchEggScreen(CurrentScreen, eggsReady), Color.White, False))
+                Core.SetScreen(New TransitionScreen(Core.CurrentScreen, New HatchEggScreen(Core.CurrentScreen, eggsReady), Color.White, False))
 
                 _stepEventEggHatched = True
             End If
@@ -1671,7 +1655,7 @@
             RepelSteps -= stepAmount
 
             If RepelSteps <= 0 Then
-                If CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
+                If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
                     If CanFireStepEvent() = True Then
                         Screen.Level.WalkedSteps = 0
 
@@ -1697,7 +1681,7 @@
                             End If
                         End If
 
-                        CType(CurrentScreen, OverworldScreen).ActionScript.StartScript(s, 2, False)
+                        CType(Core.CurrentScreen, OverworldScreen).ActionScript.StartScript(s, 2, False)
                         _stepEventRepelMessage = True
                     Else
                         _repelSteps = 1
@@ -1710,7 +1694,7 @@
     Private Sub StepEventWildPokemon()
         If CanFireStepEvent() = True Then
             If Screen.Level.WildPokemonFloor = True And Screen.Level.Surfing = False Then
-                Screen.Level.PokemonEncounter.TryEncounterWildPokemon(Screen.Camera.Position, Spawner.EncounterMethods.Land, "")
+                Screen.Level.PokemonEncounter.TryEncounterWildPokemon(Screen.Camera.Position, EncounterMethods.Land, "")
             End If
         End If
     End Sub
@@ -1721,7 +1705,7 @@
                 If Temp.LastCall < 256 Then
                     Temp.LastCall += 1
                 Else
-                    If Random.Next(0, 700) = 0 Then
+                    If Core.Random.Next(0, 700) = 0 Then
                         GameJolt.PokegearScreen.RandomCall()
                         Temp.LastCall = 0
                     End If
@@ -1747,8 +1731,8 @@
 
     Private Sub MakeWildPokemonNoise()
         If Screen.Level.WildPokemonGrass = True Then
-            If Random.Next(0, 193) = 0 Then
-                Dim p As Pokemon = Spawner.GetPokemon(Screen.Level.LevelFile, Spawner.EncounterMethods.Land, False, "")
+            If Core.Random.Next(0, 193) = 0 Then
+                Dim p As Pokemon = Spawner.GetPokemon(Screen.Level.LevelFile, EncounterMethods.Land, False, "")
 
                 If Not p Is Nothing Then
                     PlayWildPokemonNoise(p.Number)
@@ -1756,8 +1740,8 @@
             End If
         End If
         If Screen.Level.WildPokemonFloor = True Then
-            If Random.Next(0, 193) = 0 Then
-                Dim p As Pokemon = Spawner.GetPokemon(Screen.Level.LevelFile, Spawner.EncounterMethods.Land, False, "")
+            If Core.Random.Next(0, 193) = 0 Then
+                Dim p As Pokemon = Spawner.GetPokemon(Screen.Level.LevelFile, EncounterMethods.Land, False, "")
 
                 If Not p Is Nothing Then
                     PlayWildPokemonNoise(p.Number)
@@ -1766,8 +1750,8 @@
             End If
         End If
         If Screen.Level.WildPokemonWater = True Then
-            If Random.Next(0, 193) = 0 Then
-                Dim p As Pokemon = Spawner.GetPokemon(Screen.Level.LevelFile, Spawner.EncounterMethods.Surfing, False, "")
+            If Core.Random.Next(0, 193) = 0 Then
+                Dim p As Pokemon = Spawner.GetPokemon(Screen.Level.LevelFile, EncounterMethods.Surfing, False, "")
 
                 If Not p Is Nothing Then
                     PlayWildPokemonNoise(p.Number)
@@ -1778,12 +1762,12 @@
     End Sub
 
     Private Sub PlayWildPokemonNoise(ByVal number As Integer)
-        SoundManager.PlayPokemonCry(number, Random.Next(0, 6) / 10.0F, Random.Next(0, 20) / 10.0F - 1, SoundManager.Volume * 0.35F)
+        SoundManager.PlayPokemonCry(number, Core.Random.Next(0, 6) / 10.0F, Core.Random.Next(0, 20) / 10.0F - 1, SoundManager.Volume * 0.35F)
     End Sub
 
 #End Region
 
-    Public Sub AddVisitedMap(ByVal mapFile As String)
+    Public Sub AddVisitedMap(ByVal mapFile As String) Implements IPlayer.AddVisitedMap
         Dim maps As List(Of String) = VisitedMaps.Split(CChar(",")).ToList()
 
         If maps.Contains(mapFile) = False Then
@@ -1798,7 +1782,7 @@
         End If
     End Sub
 
-    Public Sub AddPoints(ByVal amount As Integer, ByVal reason As String)
+    Public Sub AddPoints(ByVal amount As Integer, ByVal reason As String) Implements IPlayer.AddPoints
         Dim addPoints As Integer = amount
 
         For Each mysteryEvent As MysteryEventScreen.MysteryEvent In MysteryEventScreen.ActivatedMysteryEvents
@@ -1808,8 +1792,8 @@
         Next
 
         If IsGameJoltSave = True Then
-            If GameJolt.LogInScreen.UserBanned(GameJoltSave.GameJoltID) = False Then
-                GameJoltSave.Points += addPoints
+            If GameJolt.LogInScreen.UserBanned(Core.GameJoltSave.GameJoltID) = False Then
+                Core.GameJoltSave.Points += addPoints
             End If
         Else
             Points += addPoints
@@ -1818,41 +1802,89 @@
         HistoryScreen.HistoryHandler.AddHistoryItem("Obtained game points", "Amount: " & addPoints.ToString() & "; Reason: " & reason, False, False)
     End Sub
 
-    Public Sub ResetNewLevel()
+    Public Sub ResetNewLevel() Implements IPlayer.ResetNewLevel
         lastLevel = 0
         displayEmblemDelay = 0.0F
-        emblemPositionX = windowSize.Width
+        emblemPositionX = Core.WindowSize.Width
     End Sub
 
     Dim lastLevel As Integer = 0
     Dim displayEmblemDelay As Single = 0.0F
-    Dim emblemPositionX As Integer = windowSize.Width
+    Dim emblemPositionX As Integer = Core.WindowSize.Width
+    Private _startMap As String = "barktown.dat"
+    Private _pokemons As New List(Of BasePokemon)
+    Private _showBattleAnimations As Integer = 2
+    Private _inventory As IPlayerInventory = New PlayerInventory()
+    Private _difficultyMode As Integer
+    Private _tempSurfSkin As String = "Hilbert"
+    Private _texture As Texture2D
+    Private _opacity As Single
+    Private _lastPokemonPosition As Vector3 = New Vector3(999, 999, 999)
+    Private _cameraDistance As Single
+    Private _loadedSave As Boolean
+    Private _playTime As TimeSpan
+    Private _gameStart As Date
+    Private _startPosition As Vector3 = New Vector3(14, 0.1, 10)
+    Private _startThirdPerson As Boolean
+    Private _startRotationSpeed As Double = 12
+    Private _startFov As Single = 45.0F
+    Private _startRotation As Single
+    Private _startFreeCameraMode As Boolean
+    Private _doAnimation As Boolean
+    Private _skinName As String
+    Private _startSurfing As Boolean
+    Private _tempRideSkin As String = ""
+    Private _pokedexes As New List(Of BasePokedex)
+    Private _badges As New List(Of Integer)
+    Private _pokeFiles As New List(Of String)
+    Private _showModelsInBattle As Boolean = True
+    Private _playerTemp As New PlayerTemp()
+    Private _earnedAchievements As New List(Of String)
+    Private _isFlying As Boolean
+    Private _diagonalMovement As Boolean
+    Private _battleStyle As Integer
+    Private _mails As New List(Of MailItem.MailData)
+    Private _boxAmount As Integer = 10
+    Private _serversId As Integer
+    Private _gameJoltId As String
+    Private _busyType As Integer
+    Private _position As Vector3
+    Private _initialized As Boolean
+    Private _pokemonPosition As Vector3
+    Private _pokemonSkin As String
+    Private _pokemonVisible As Boolean
+    Private _pokemonFacing As Integer
+    Private _facing As Integer
+    Private _levelFile As String
+    Private _moving As Boolean
+    Private _usingGameJoltTexture As Boolean
+    Private _statistics As String = ""
 
-    Public Sub DrawLevelUp()
+    Public Sub DrawLevelUp() Implements IPlayer.DrawLevelUp
         If IsGameJoltSave = True Then
-            If lastLevel <> GameJolt.Emblem.GetPlayerLevel(GameJoltSave.Points) And lastLevel <> 0 Then
-                lastLevel = GameJolt.Emblem.GetPlayerLevel(GameJoltSave.Points)
+            If lastLevel <> Emblem.GetPlayerLevel(Core.GameJoltSave.Points) And lastLevel <> 0 Then
+                lastLevel = Emblem.GetPlayerLevel(Core.GameJoltSave.Points)
                 displayEmblemDelay = 35.0F
-                Skin = GameJolt.Emblem.GetPlayerSpriteFile(lastLevel, GameJoltSave.GameJoltID, GameJoltSave.Gender)
+                Skin = Emblem.GetPlayerSpriteFile(lastLevel, Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Gender)
             End If
 
             If displayEmblemDelay > 0.0F Then
                 displayEmblemDelay -= 0.1F
                 If displayEmblemDelay <= 6.4F Then
-                    If emblemPositionX < windowSize.Width Then
+                    If emblemPositionX < Core.WindowSize.Width Then
                         emblemPositionX += 8
                     End If
                 Else
-                    If emblemPositionX > windowSize.Width - 512 Then
+                    If emblemPositionX > Core.WindowSize.Width - 512 Then
                         emblemPositionX -= 8
                     End If
                 End If
 
-                GameJolt.Emblem.Draw(GameJolt.API.username, GameJoltSave.GameJoltID, GameJoltSave.Points, GameJoltSave.Gender, GameJoltSave.Emblem, New Vector2(emblemPositionX, 0), 4, GameJoltSave.DownloadedSprite)
+                Emblem.Draw(API.username, Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Points, Core.GameJoltSave.Gender, Core.GameJoltSave.EmblemS, New Vector2(emblemPositionX, 0), 4, Core.GameJoltSave.DownloadedSprite)
 
                 If displayEmblemDelay <= 0.0F Then
                     displayEmblemDelay = 0.0F
-                    emblemPositionX = windowSize.Width
+                    emblemPositionX = Core.WindowSize.Width
                 End If
             End If
         End If
@@ -1871,17 +1903,19 @@
         Return False
     End Function
 
-    Public Function IsRunning() As Boolean
-        If KeyBoardHandler.KeyDown(Keys.LeftShift) = True Or ControllerHandler.ButtonDown(Buttons.B) = True Then
-            If Screen.Level.Riding = False And Screen.Level.Surfing = False And Inventory.HasRunningShoes = True Then
-                Return True
+    Public ReadOnly Property IsRunning As Boolean Implements IPlayer.IsRunning
+        Get
+            If KeyBoardHandler.KeyDown(Keys.LeftShift) = True Or ControllerHandler.ButtonDown(Buttons.B) = True Then
+                If Screen.Level.Riding = False And Screen.Level.Surfing = False And Inventory.HasRunningShoes = True Then
+                    Return True
+                End If
             End If
-        End If
 
-        Return False
-    End Function
+            Return False
+        End Get
+    End Property
 
-    Public Sub Unload()
+    Public Sub Unload() Implements IPlayer.Unload
         'This function clears all data from the loaded player and restores the default values.
 
         If loadedSave = True Then
@@ -1967,4 +2001,458 @@
         End If
     End Sub
 
+    Public Property startMap As String Implements IPlayer.startMap
+        Get
+            Return _startMap
+        End Get
+        Set
+            _startMap = Value
+        End Set
+    End Property
+
+    Public Property Pokemons As List(Of BasePokemon) Implements IPlayer.Pokemons
+        Get
+            Return _pokemons
+        End Get
+        Set
+            _pokemons = Value
+        End Set
+    End Property
+
+    Public Property ShowBattleAnimations As Integer Implements IPlayer.ShowBattleAnimations
+        Get
+            Return _showBattleAnimations
+        End Get
+        Set
+            _showBattleAnimations = Value
+        End Set
+    End Property
+
+    Public Property Inventory As IPlayerInventory Implements IPlayer.Inventory
+        Get
+            Return _inventory
+        End Get
+        Set
+            _inventory = Value
+        End Set
+    End Property
+
+    Public Property DifficultyMode As Integer Implements IPlayer.DifficultyMode
+        Get
+            Return _difficultyMode
+        End Get
+        Set
+            _difficultyMode = Value
+        End Set
+    End Property
+
+    Public Property TempSurfSkin As String Implements IPlayer.TempSurfSkin
+        Get
+            Return _tempSurfSkin
+        End Get
+        Set
+            _tempSurfSkin = Value
+        End Set
+    End Property
+
+    Public Property Texture As Texture2D Implements IPlayer.Texture
+        Get
+            Return _texture
+        End Get
+        Set
+            _texture = Value
+        End Set
+    End Property
+
+    Public Property Opacity As Single Implements IPlayer.Opacity
+        Get
+            Return _opacity
+        End Get
+        Set
+            _opacity = Value
+        End Set
+    End Property
+
+    Public Property LastPokemonPosition As Vector3C Implements IPlayer.LastPokemonPosition
+        Get
+            Return _lastPokemonPosition
+        End Get
+        Set
+            _lastPokemonPosition = Value
+        End Set
+    End Property
+
+    Public Property CameraDistance As Single Implements IPlayer.CameraDistance
+        Get
+            Return _cameraDistance
+        End Get
+        Set
+            _cameraDistance = Value
+        End Set
+    End Property
+
+    Public Property loadedSave As Boolean Implements IPlayer.loadedSave
+        Get
+            Return _loadedSave
+        End Get
+        Set
+            _loadedSave = Value
+        End Set
+    End Property
+
+    Public Property PlayTime As TimeSpan Implements IPlayer.PlayTime
+        Get
+            Return _playTime
+        End Get
+        Set
+            _playTime = Value
+        End Set
+    End Property
+
+    Public Property GameStart As Date Implements IPlayer.GameStart
+        Get
+            Return _gameStart
+        End Get
+        Set
+            _gameStart = Value
+        End Set
+    End Property
+
+    Public Property startPosition As Vector3C Implements IPlayer.startPosition
+        Get
+            Return _startPosition
+        End Get
+        Set
+            _startPosition = Value
+        End Set
+    End Property
+
+    Public Property startThirdPerson As Boolean Implements IPlayer.startThirdPerson
+        Get
+            Return _startThirdPerson
+        End Get
+        Set
+            _startThirdPerson = Value
+        End Set
+    End Property
+
+    Public Property startRotationSpeed As Double Implements IPlayer.startRotationSpeed
+        Get
+            Return _startRotationSpeed
+        End Get
+        Set
+            _startRotationSpeed = Value
+        End Set
+    End Property
+
+    Public Property startFOV As Single Implements IPlayer.startFOV
+        Get
+            Return _startFov
+        End Get
+        Set
+            _startFov = Value
+        End Set
+    End Property
+
+    Public Property startRotation As Single Implements IPlayer.startRotation
+        Get
+            Return _startRotation
+        End Get
+        Set
+            _startRotation = Value
+        End Set
+    End Property
+
+    Public Property startFreeCameraMode As Boolean Implements IPlayer.startFreeCameraMode
+        Get
+            Return _startFreeCameraMode
+        End Get
+        Set
+            _startFreeCameraMode = Value
+        End Set
+    End Property
+
+    Public Property DoAnimation As Boolean Implements IPlayer.DoAnimation
+        Get
+            Return _doAnimation
+        End Get
+        Set
+            _doAnimation = Value
+        End Set
+    End Property
+
+    Public Property SkinName As String Implements IPlayer.SkinName
+        Get
+            Return _skinName
+        End Get
+        Set
+            _skinName = Value
+        End Set
+    End Property
+
+    Public Property startSurfing As Boolean Implements IPlayer.startSurfing
+        Get
+            Return _startSurfing
+        End Get
+        Set
+            _startSurfing = Value
+        End Set
+    End Property
+
+
+    Public Property startRiding As Boolean Implements IPlayer.startRiding
+
+    Public Property TempRideSkin As String Implements IPlayer.TempRideSkin
+        Get
+            Return _tempRideSkin
+        End Get
+        Set
+            _tempRideSkin = Value
+        End Set
+    End Property
+
+    Public Property Pokedexes As List(Of BasePokedex) Implements IPlayer.Pokedexes
+        Get
+            Return _pokedexes
+        End Get
+        Set
+            _pokedexes = Value
+        End Set
+    End Property
+
+    Public Property Badges As List(Of Integer) Implements IPlayer.Badges
+        Get
+            Return _badges
+        End Get
+        Set
+            _badges = Value
+        End Set
+    End Property
+
+    Public Property PokeFiles As List(Of String) Implements IPlayer.PokeFiles
+        Get
+            Return _pokeFiles
+        End Get
+        Set
+            _pokeFiles = Value
+        End Set
+    End Property
+
+    Public Property ShowModelsInBattle As Boolean Implements IPlayer.ShowModelsInBattle
+        Get
+            Return _showModelsInBattle
+        End Get
+        Set
+            _showModelsInBattle = Value
+        End Set
+    End Property
+
+    Public Property PlayerTemp As PlayerTemp Implements IPlayer.PlayerTemp
+        Get
+            Return _playerTemp
+        End Get
+        Set
+            _playerTemp = Value
+        End Set
+    End Property
+
+    Public Property EarnedAchievements As List(Of String) Implements IPlayer.EarnedAchievements
+        Get
+            Return _earnedAchievements
+        End Get
+        Set
+            _earnedAchievements = Value
+        End Set
+    End Property
+
+    Public Property IsFlying As Boolean Implements IPlayer.IsFlying
+        Get
+            Return _isFlying
+        End Get
+        Set
+            _isFlying = Value
+        End Set
+    End Property
+
+    Public Property DiagonalMovement As Boolean Implements IPlayer.DiagonalMovement
+        Get
+            Return _diagonalMovement
+        End Get
+        Set
+            _diagonalMovement = Value
+        End Set
+    End Property
+
+    Public Property BattleStyle As Integer Implements IPlayer.BattleStyle
+        Get
+            Return _battleStyle
+        End Get
+        Set
+            _battleStyle = Value
+        End Set
+    End Property
+
+    Public Property Mails As List(Of MailItem.MailData) Implements IPlayer.Mails
+        Get
+            Return _mails
+        End Get
+        Set
+            _mails = Value
+        End Set
+    End Property
+
+    Public Property BoxAmount As Integer Implements IPlayer.BoxAmount
+        Get
+            Return _boxAmount
+        End Get
+        Set
+            _boxAmount = Value
+        End Set
+    End Property
+
+    Public Property ServersID As Integer Implements IPlayer.ServersID
+        Get
+            Return _serversId
+        End Get
+        Set
+            _serversId = Value
+        End Set
+    End Property
+
+    Public Property GameJoltId As String Implements IPlayer.GameJoltId
+        Get
+            Return _gameJoltId
+        End Get
+        Set
+            _gameJoltId = Value
+        End Set
+    End Property
+
+    Public Property BusyType As Integer Implements IPlayer.BusyType
+        Get
+            Return _busyType
+        End Get
+        Set
+            _busyType = Value
+        End Set
+    End Property
+
+    Public Property Position As Vector3 Implements IPlayer.Position
+        Get
+            Return _position
+        End Get
+        Set
+            _position = Value
+        End Set
+    End Property
+
+    Public Property Initialized As Boolean Implements IPlayer.Initialized
+        Get
+            Return _initialized
+        End Get
+        Set
+            _initialized = Value
+        End Set
+    End Property
+
+    Public Property PokemonPosition As Vector3 Implements IPlayer.PokemonPosition
+        Get
+            Return _pokemonPosition
+        End Get
+        Set
+            _pokemonPosition = Value
+        End Set
+    End Property
+
+    Public Property PokemonSkin As String Implements IPlayer.PokemonSkin
+        Get
+            Return _pokemonSkin
+        End Get
+        Set
+            _pokemonSkin = Value
+        End Set
+    End Property
+
+    Public Property PokemonVisible As Boolean Implements IPlayer.PokemonVisible
+        Get
+            Return _pokemonVisible
+        End Get
+        Set
+            _pokemonVisible = Value
+        End Set
+    End Property
+
+    Public Property PokemonFacing As Integer Implements IPlayer.PokemonFacing
+        Get
+            Return _pokemonFacing
+        End Get
+        Set
+            _pokemonFacing = Value
+        End Set
+    End Property
+
+    Public Property Facing As Integer Implements IPlayer.Facing
+        Get
+            Return _facing
+        End Get
+        Set
+            _facing = Value
+        End Set
+    End Property
+
+    Public Property LevelFile As String Implements IPlayer.LevelFile
+        Get
+            Return _levelFile
+        End Get
+        Set
+            _levelFile = Value
+        End Set
+    End Property
+
+    Public Property Moving As Boolean Implements IPlayer.Moving
+        Get
+            Return _moving
+        End Get
+        Set
+            _moving = Value
+        End Set
+    End Property
+
+    Public Property UsingGameJoltTexture As Boolean Implements IPlayer.UsingGameJoltTexture
+        Get
+            Return _usingGameJoltTexture
+        End Get
+        Set
+            _usingGameJoltTexture = Value
+        End Set
+    End Property
+
+    Public Property Statistics As String Implements IPlayer.Statistics
+        Get
+            Return _statistics
+        End Get
+        Set
+            _statistics = Value
+        End Set
+    End Property
+
+    Public Sub ChangeTexture() Implements IPlayer.ChangeTexture
+        Throw New NotImplementedException
+    End Sub
+
+    Public Sub SetTexture(tempSurfSkin As String, [boolean] As Boolean) Implements IPlayer.SetTexture
+        Throw New NotImplementedException
+    End Sub
+
+    Public Function ApplyShaders() As String Implements IPlayer.ApplyShaders
+        Throw New NotImplementedException
+    End Function
+
+    Public Sub UpdateEntity() Implements IPlayer.UpdateEntity
+        Throw New NotImplementedException
+    End Sub
+
+    Public Sub ApplyNewData(package As IPackage) Implements IPlayer.ApplyNewData
+        Throw New NotImplementedException
+    End Sub
 End Class

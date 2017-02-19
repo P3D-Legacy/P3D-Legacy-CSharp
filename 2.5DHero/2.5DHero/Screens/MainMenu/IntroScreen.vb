@@ -1,4 +1,8 @@
-﻿Public Class IntroScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class IntroScreen
 
     Inherits Screen
 
@@ -25,8 +29,8 @@
         Me.MouseVisible = True
         Me.CanGoFullscreen = False
 
-        Me._pokemonLogoTexture = Content.Load(Of Texture2D)("GUI\Logos\Pokemon_Small")
-        Me._3DLogoTexture = Content.Load(Of Texture2D)("GUI\Logos\3D")
+        Me._pokemonLogoTexture = Core.Content.Load(Of Texture2D)("GUI\Logos\Pokemon_Small")
+        Me._3DLogoTexture = Core.Content.Load(Of Texture2D)("GUI\Logos\3D")
 
         Me._3Dposition = -(Me._3DLogoTexture.Height * 2)
         Me._pokemonLogoOffset = CInt(Core.windowSize.Height / 2 - Me._pokemonLogoTexture.Height)

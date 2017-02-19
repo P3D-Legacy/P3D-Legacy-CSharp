@@ -1,3 +1,7 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Interfaces
+Imports P3D.Legacy.Core.Server
+
 Namespace Servers
 
     ''' <summary>
@@ -5,12 +9,13 @@ Namespace Servers
     ''' </summary>
     Public Class PlayerCollection
 
-        Inherits List(Of Player)
+        Inherits List(Of IPlayer)
+        Implements IPlayerCollection
 
         ''' <summary>
         ''' Removes all players from the collection that have the specified name.
         ''' </summary>
-        Public Sub RemoveByName(ByVal Name As String)
+        Public Sub RemoveByName(ByVal Name As String) Implements IPlayerCollection.RemoveByName
             For i = 0 To Me.Count - 1
                 If i <= Me.Count - 1 Then
                     If Me(i).Name = Name Then
@@ -23,7 +28,7 @@ Namespace Servers
             Next
         End Sub
 
-        Public Sub RemoveByID(ByVal ID As Integer)
+        Public Sub RemoveById(ByVal ID As Integer) Implements IPlayerCollection.RemoveById
             For i = 0 To Me.Count - 1
                 If i <= Me.Count - 1 Then
                     If Me(i).ServersID = ID Then
@@ -36,7 +41,7 @@ Namespace Servers
             Next
         End Sub
 
-        Public Function HasPlayer(ByVal ID As Integer) As Boolean
+        Public Function HasPlayer(ByVal ID As Integer) As Boolean Implements IPlayerCollection.HasPlayer
             For i = 0 To Me.Count - 1
                 If i <= Me.Count - 1 Then
                     If Me(i).ServersID = ID Then
@@ -47,7 +52,7 @@ Namespace Servers
             Return False
         End Function
 
-        Public Function HasPlayer(ByVal Name As String) As Boolean
+        Public Function HasPlayer(ByVal Name As String) As Boolean Implements IPlayerCollection.HasPlayer
             For i = 0 To Me.Count - 1
                 If i <= Me.Count - 1 Then
                     If Me(i).Name.ToLower() = Name.ToLower() Then
@@ -58,7 +63,7 @@ Namespace Servers
             Return False
         End Function
 
-        Public Function GetPlayer(ByVal ID As Integer) As Player
+        Public Function GetPlayer(ByVal ID As Integer) As IPlayer Implements IPlayerCollection.GetPlayer
             For Each p As Player In Me
                 If p.ServersID = ID Then
                     Return p
@@ -67,7 +72,7 @@ Namespace Servers
             Return Nothing
         End Function
 
-        Public Function GetPlayer(ByVal Name As String) As Player
+        Public Function GetPlayer(ByVal Name As String) As IPlayer Implements IPlayerCollection.GetPlayer
             For i = 0 To Me.Count - 1
                 If i <= Me.Count - 1 Then
                     If Me(i).Name = Name Then
@@ -78,7 +83,7 @@ Namespace Servers
             Return Nothing
         End Function
 
-        Public Function GetPlayerName(ByVal ID As Integer) As String
+        Public Function GetPlayerName(ByVal ID As Integer) As String Implements IPlayerCollection.GetPlayerName
             If ID = -1 Then
                 Return "[SERVER]"
             End If
@@ -97,7 +102,7 @@ Namespace Servers
             Return ""
         End Function
 
-        Public Sub ApplyPlayerDataPackage(ByVal p As Package)
+        Public Sub ApplyPlayerDataPackage(ByVal p As IPackage) Implements IPlayerCollection.ApplyPlayerDataPackage
             If p.DataItems.Count = Player.PLAYERDATAITEMSCOUNT Then
                 If p.Origin <> Core.ServersManager.ID Then
                     Dim targetPlayer = GetPlayer(p.Origin)
@@ -109,7 +114,7 @@ Namespace Servers
             End If
         End Sub
 
-        Public Function GetMatchingPlayerName(ByVal expression As String) As String
+        Public Function GetMatchingPlayerName(ByVal expression As String) As String Implements IPlayerCollection.GetMatchingPlayerName
             For i = 0 To Me.Count - 1
                 If i <= Me.Count - 1 Then
                     If Me(i).Name.ToLower().StartsWith(expression.ToLower()) = True Then

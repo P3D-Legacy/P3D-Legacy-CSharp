@@ -1,4 +1,12 @@
-﻿Public Class LearnAttackScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class LearnAttackScreen
 
     Inherits Screen
 
@@ -278,7 +286,7 @@
                     PlayerStatistics.Track("TMs/HMs used", 1)
                     If Core.Player.DifficultyMode > 0 Then
                         Dim TechMachine As Item = Item.GetItemByID(Me.MachineItemID)
-                        If TechMachine.ItemType = Items.ItemTypes.Machines Then
+                        If TechMachine.ItemType = Item.ItemTypes.Machines Then
                             If CType(TechMachine, Items.TechMachine).IsTM = True Then
                                 Core.Player.Inventory.RemoveItem(Me.MachineItemID, 1)
                             End If

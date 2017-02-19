@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Flying
 
     Public Class FeatherDance
@@ -55,7 +57,7 @@ Namespace BattleSystem.Moves.Flying
             Me.AIField2 = AIField.LowerAttack
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim b As Boolean = BattleScreen.Battle.LowerStat(Not own, own, BattleScreen, "Attack", 2, "", "move:featherdance")
             If b = False Then
                 BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))

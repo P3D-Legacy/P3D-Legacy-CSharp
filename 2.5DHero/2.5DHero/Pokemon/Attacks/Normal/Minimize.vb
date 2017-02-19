@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Minimize
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If BattleScreen.Battle.RaiseStat(own, own, BattleScreen, "Evasion", 2, "", "move:minimize") = False Then
                 BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
             Else

@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Dragon
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Dragon
 
     Public Class DragonClaw
 

@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Psychic
 
     Public Class Amnesia
@@ -55,7 +57,7 @@ Namespace BattleSystem.Moves.Psychic
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If BattleScreen.Battle.RaiseStat(own, own, BattleScreen, "Special Defense", 2, "", "move:amnesia") = False Then
                 BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
             End If

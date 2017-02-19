@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Swallow
 
@@ -55,21 +58,22 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim stockpiled As Integer = BattleScreen.FieldEffects.OwnStockpileCount
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen as BattleScreen = BattleScreen
+            Dim stockpiled As Integer = screen.FieldEffects.OwnStockpileCount
             If Own = False Then
-                stockpiled = BattleScreen.FieldEffects.OppStockpileCount
+                stockpiled = screen.FieldEffects.OppStockpileCount
             End If
 
             If stockpiled = 0 Then
-                BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
+                screen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
                 Return True
             Else
                 Return False
             End If
         End Function
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim stockpiled As Integer = BattleScreen.FieldEffects.OwnStockpileCount
             If own = False Then
                 stockpiled = BattleScreen.FieldEffects.OppStockpileCount

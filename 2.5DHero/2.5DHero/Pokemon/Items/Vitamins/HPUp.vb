@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Vitamins
 
     <Item(26, "HP Up")>
@@ -8,7 +13,7 @@ Namespace Items.Vitamins
         Public Overrides ReadOnly Property Description As String = "A nutritious drink for Pokémon. When consumed, it raises the base HP of a single Pokémon."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(48, 24, 24, 24)
+            TextureRectangle = New Rectangle(48, 24, 24, 24)
         End Sub
 
         Public Overrides Function UseOnPokemon(PokeIndex As Integer) As Boolean
@@ -16,7 +21,7 @@ Namespace Items.Vitamins
 
             If CanUseVitamin(p.EVHP, p) = True Then
                 p.EVHP += 10
-                p.ChangeFriendShip(Pokemon.FriendShipCauses.Vitamin)
+                p.ChangeFriendShip(BasePokemon.FriendShipCauses.Vitamin)
 
                 SoundManager.PlaySound("single_heal", False)
                 Screen.TextBox.Show("Raised " & p.GetDisplayName() & "'s~HP.", {}, False, False)

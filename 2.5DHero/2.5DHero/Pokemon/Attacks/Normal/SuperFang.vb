@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class SuperFang
 
@@ -52,10 +55,11 @@
             '#End
         End Sub
 
-        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim op As Pokemon = BattleScreen.OppPokemon
+        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As Screen) As Integer
+            Dim screen as BattleScreen = BattleScreen
+            Dim op As Pokemon = screen.OppPokemon
             If Own = False Then
-                op = BattleScreen.OwnPokemon
+                op = screen.OwnPokemon
             End If
 
             Dim damage As Integer = CInt(Math.Floor(op.HP / 2))

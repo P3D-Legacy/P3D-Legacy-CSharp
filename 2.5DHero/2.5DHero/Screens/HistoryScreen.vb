@@ -1,4 +1,6 @@
-﻿Public Class HistoryScreen
+﻿Imports P3D.Legacy.Core
+
+Public Class HistoryScreen
 
     Public Class HistoryHandler
 

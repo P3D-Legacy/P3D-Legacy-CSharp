@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Psychic
 
     Public Class PsychoShift
@@ -52,7 +54,7 @@ Namespace BattleSystem.Moves.Psychic
             '#End
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim fails As Boolean = False
             Dim p As Pokemon = BattleScreen.OwnPokemon
             Dim o As Pokemon = BattleScreen.OppPokemon
@@ -60,24 +62,24 @@ Namespace BattleSystem.Moves.Psychic
                 p = BattleScreen.OppPokemon
                 o = BattleScreen.OwnPokemon
             End If
-            Dim status As Pokemon.StatusProblems = p.Status
+            Dim status As BasePokemon.StatusProblems = p.Status
 
-            If o.status <> Pokemon.StatusProblems.none Then
+            If o.Status <> BasePokemon.StatusProblems.None Then
                 fails = True
             End If
 
             Select Case p.Status
-                Case Pokemon.StatusProblems.Poison
+                Case BasePokemon.StatusProblems.Poison
                     fails = Not BattleScreen.Battle.InflictPoison(Not own, own, BattleScreen, False, "", "move:psychoshift")
-                Case Pokemon.StatusProblems.BadPoison
+                Case BasePokemon.StatusProblems.BadPoison
                     fails = Not BattleScreen.Battle.InflictPoison(Not own, own, BattleScreen, True, "", "move:psychoshift")
-                Case Pokemon.StatusProblems.Sleep
+                Case BasePokemon.StatusProblems.Sleep
                     fails = Not BattleScreen.Battle.InflictSleep(Not own, own, BattleScreen, -1, "", "move:psychoshift")
-                Case Pokemon.StatusProblems.Paralyzed
+                Case BasePokemon.StatusProblems.Paralyzed
                     fails = Not BattleScreen.Battle.InflictParalysis(Not own, own, BattleScreen, "", "move:psychoshift")
-                Case Pokemon.StatusProblems.Freeze
+                Case BasePokemon.StatusProblems.Freeze
                     fails = Not BattleScreen.Battle.InflictFreeze(Not own, own, BattleScreen, "", "move:psychoshift")
-                Case Pokemon.StatusProblems.Burn
+                Case BasePokemon.StatusProblems.Burn
                     fails = Not BattleScreen.Battle.InflictBurn(Not own, own, BattleScreen, "", "move:psychoshift")
                 Case Else
                     fails = True

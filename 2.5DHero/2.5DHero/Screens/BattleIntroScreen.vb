@@ -1,4 +1,11 @@
-﻿Public Class BattleIntroScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class BattleIntroScreen
 
     Inherits Screen
 
@@ -186,8 +193,8 @@
         End If
 
         If Trainer.GameJoltID <> "" Then
-            If GameJolt.Emblem.HasDownloadedSprite(Trainer.GameJoltID) = True Then
-                Dim t As Texture2D = GameJolt.Emblem.GetOnlineSprite(Trainer.GameJoltID)
+            If Emblem.HasDownloadedSprite(Trainer.GameJoltID) = True Then
+                Dim t As Texture2D = Emblem.GetOnlineSprite(Trainer.GameJoltID)
                 If Not t Is Nothing Then
                     Dim spriteSize As New Vector2(t.Width / 3.0F, t.Height / 4.0F)
                     t3 = TextureManager.GetTexture(t, New Rectangle(0, CInt(spriteSize.Y * 2), CInt(spriteSize.X), CInt(spriteSize.Y)))
@@ -248,8 +255,8 @@
         End If
 
         If Trainer.GameJoltID <> "" Then
-            If GameJolt.Emblem.HasDownloadedSprite(Trainer.GameJoltID) = True Then
-                Dim t As Texture2D = GameJolt.Emblem.GetOnlineSprite(Trainer.GameJoltID)
+            If Emblem.HasDownloadedSprite(Trainer.GameJoltID) = True Then
+                Dim t As Texture2D = Emblem.GetOnlineSprite(Trainer.GameJoltID)
                 If Not t Is Nothing Then
                     Dim spriteSize As New Vector2(t.Width / 3.0F, t.Height / 4.0F)
                     t3 = TextureManager.GetTexture(t, New Rectangle(0, CInt(spriteSize.Y * 2), CInt(spriteSize.X), CInt(spriteSize.Y)))

@@ -1,4 +1,10 @@
-﻿Public Class Waterfall
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Objects
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+
+Public Class Waterfall
 
     Inherits Entity
 

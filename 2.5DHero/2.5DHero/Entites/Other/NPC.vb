@@ -1,6 +1,16 @@
-﻿Public Class NPC
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.GameJolt
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.HelperClasses
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Security
 
-    Inherits Entity
+Public Class NPC
+    Inherits BaseNPC
 
     Const STANDARD_SPEED As Single = 0.04F
 
@@ -14,9 +24,11 @@
         Pokeball
     End Enum
 
+    Public Property FaceRotation As Integer
+
+
     Public Name As String
     Public NPCID As Integer
-    Public faceRotation As Integer
     Public TextureID As String
     Dim lastRectangle As New Rectangle(0, 0, 0, 0)
     Dim FrameSize As New Vector2(32, 32)
@@ -25,7 +37,7 @@
 
     Public HasPokemonTexture As Boolean = False
 
-    Public IsTrainer As Boolean = False
+    Public Overrides Property IsTrainer As Boolean
     Public TrainerSight As Integer = 1
     Public TrainerBeaten As Boolean = False
     Public TrainerChecked As Boolean = False
@@ -41,13 +53,14 @@
 
     Public MoveY As Single = 0.0F
     Public MoveAsync As Boolean = False
+    Private _moved As Integer
 
     Public Overloads Sub Initialize(ByVal TextureID As String, ByVal Rotation As Integer, ByVal Name As String, ByVal ID As Integer, ByVal AnimateIdle As Boolean, ByVal Movement As String, ByVal MoveRectangles As List(Of Rectangle))
         MyBase.Initialize()
 
         Me.Name = Name
         Me.NPCID = ID
-        Me.faceRotation = Rotation
+        Me.FaceRotation = Rotation
         Me.TextureID = TextureID
         Me.MoveRectangles = MoveRectangles
         Me.AnimateIdle = AnimateIdle
@@ -111,10 +124,10 @@
             End If
         End If
 
-        If UseGameJoltID = True And Core.Player.IsGameJoltSave = True And GameJolt.API.LoggedIn = True AndAlso Not GameJolt.Emblem.GetOnlineSprite(GameJoltID) Is Nothing Then
-            Me.Texture = GameJolt.Emblem.GetOnlineSprite(GameJoltID)
+        If UseGameJoltID = True And Core.Player.IsGamejoltSave = True And API.LoggedIn = True AndAlso Not Emblem.GetOnlineSprite(GameJoltID) Is Nothing Then
+            Me.Texture = Emblem.GetOnlineSprite(GameJoltID)
         Else
-            Me.Texture = net.Pokemon3D.Game.TextureManager.GetTexture(texturePath & Me.TextureID & PokemonAddition)
+            Me.Texture = TextureManager.GetTexture(texturePath & Me.TextureID & PokemonAddition)
         End If
 
         Me.FrameSize = New Vector2(CInt(Me.Texture.Width / 3), CInt(Me.Texture.Height / 4))
@@ -229,7 +242,7 @@
         If Not Me.Texture Is Nothing Then
             Dim r As New Rectangle(0, 0, 0, 0)
             Dim cameraRotation As Integer = Me.getCameraRotation()
-            Dim spriteIndex As Integer = Me.faceRotation - cameraRotation
+            Dim spriteIndex As Integer = Me.FaceRotation - cameraRotation
 
             If spriteIndex < 0 Then
                 spriteIndex += 4
@@ -305,11 +318,11 @@
                             distance = CInt(CInt(Me.Position.Z) - Screen.Camera.Position.Z)
 
                             If distance > 0 Then
-                                If Me.faceRotation = 0 Then
+                                If Me.FaceRotation = 0 Then
                                     correctFacing = True
                                 End If
                             Else
-                                If Me.faceRotation = 2 Then
+                                If Me.FaceRotation = 2 Then
                                     correctFacing = True
                                 End If
                             End If
@@ -317,11 +330,11 @@
                             distance = CInt(CInt(Me.Position.X) - Screen.Camera.Position.X)
 
                             If distance > 0 Then
-                                If Me.faceRotation = 1 Then
+                                If Me.FaceRotation = 1 Then
                                     correctFacing = True
                                 End If
                             Else
-                                If Me.faceRotation = 3 Then
+                                If Me.FaceRotation = 3 Then
                                     correctFacing = True
                                 End If
                             End If
@@ -335,7 +348,7 @@
 
                                 If Me.IsTrainer = True Then
                                     Dim trainerFilePath As String = GameModeManager.GetScriptPath(Me.AdditionalValue & ".dat")
-                                    Security.FileValidation.CheckFileValid(trainerFilePath, False, "NPC.vb")
+                                    FileValidation.CheckFileValid(trainerFilePath, False, "NPC.vb")
 
                                     Dim trainerContent() As String = System.IO.File.ReadAllLines(trainerFilePath)
                                     For Each line As String In trainerContent
@@ -360,7 +373,7 @@
                                 End If
 
                                 Dim needFacing As Integer = 0
-                                Select Case Me.faceRotation
+                                Select Case Me.FaceRotation
                                     Case 0
                                         needFacing = 2
                                     Case 1
@@ -383,7 +396,7 @@
                                 Me.Movement = Movements.Still
 
                                 Dim offset As New Vector2(0, 0)
-                                Select Case Me.faceRotation
+                                Select Case Me.FaceRotation
                                     Case 0
                                         offset.Y = -0.01F
                                     Case 1
@@ -432,7 +445,7 @@
         If newHeading < 0 Then
             newHeading += 4
         End If
-        Me.faceRotation = newHeading
+        Me.FaceRotation = newHeading
 
         If Me.Moved = 0.0F Then
             ActivateScript()
@@ -448,8 +461,8 @@
         MyBase.Update()
     End Sub
 
-    Protected Overrides Function CalculateCameraDistance(CPosition As Vector3) as Single
-        Return MyBase.CalculateCameraDistance(CPosition) - 0.2f
+    Protected Overrides Function CalculateCameraDistance(CPosition As Vector3) As Single
+        Return MyBase.CalculateCameraDistance(CPosition) - 0.2F
     End Function
 
     Public Overrides Sub UpdateEntity()
@@ -461,10 +474,10 @@
     End Sub
 
     Public Overrides Sub Render()
-        Dim state = GraphicsDevice.DepthStencilState
-        GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
+        Dim state = Core.GraphicsDevice.DepthStencilState
+        Core.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
         Draw(Me.Model, Me.Textures, True)
-        GraphicsDevice.DepthStencilState = state
+        Core.GraphicsDevice.DepthStencilState = state
     End Sub
 
 #Region "Movement and Camera"
@@ -484,9 +497,9 @@
                     If TurningDelay <= 0.0F Then
                         Me.TurningDelay = 3.0F
 
-                        Me.faceRotation += 1
-                        If Me.faceRotation = 4 Then
-                            Me.faceRotation = 0
+                        Me.FaceRotation += 1
+                        If Me.FaceRotation = 4 Then
+                            Me.FaceRotation = 0
                         End If
                         If Me.IsTrainer = True Then
                             CheckInSight()
@@ -496,11 +509,11 @@
             Case Movements.Looking
                 If Me.Moved = 0.0F Then
                     If Core.Random.Next(0, 220) = 0 Then
-                        Dim newRotation As Integer = Me.faceRotation
-                        While newRotation = Me.faceRotation
+                        Dim newRotation As Integer = Me.FaceRotation
+                        While newRotation = Me.FaceRotation
                             newRotation = Core.Random.Next(0, 4)
                         End While
-                        Me.faceRotation = newRotation
+                        Me.FaceRotation = newRotation
                         If Me.IsTrainer = True Then
                             CheckInSight()
                         End If
@@ -508,22 +521,22 @@
                 End If
             Case Movements.FacePlayer
                 If Me.Moved = 0.0F Then
-                    Dim oldRotation As Integer = Me.faceRotation
+                    Dim oldRotation As Integer = Me.FaceRotation
 
                     If Screen.Camera.Position.X = Me.Position.X Or Screen.Camera.Position.Z = Me.Position.Z Then
                         If Me.Position.X < Screen.Camera.Position.X Then
-                            Me.faceRotation = 3
+                            Me.FaceRotation = 3
                         ElseIf Me.Position.X > Screen.Camera.Position.X Then
-                            Me.faceRotation = 1
+                            Me.FaceRotation = 1
                         End If
                         If Me.Position.Z < Screen.Camera.Position.Z Then
-                            Me.faceRotation = 2
+                            Me.FaceRotation = 2
                         ElseIf Me.Position.Z > Screen.Camera.Position.Z Then
-                            Me.faceRotation = 0
+                            Me.FaceRotation = 0
                         End If
                     End If
 
-                    If oldRotation <> Me.faceRotation And Me.IsTrainer = True Then
+                    If oldRotation <> Me.FaceRotation And Me.IsTrainer = True Then
                         CheckInSight()
                     End If
                 End If
@@ -531,11 +544,11 @@
                 If Me.Moved = 0.0F Then
                     If Core.Random.Next(0, 120) = 0 Then
                         If Core.Random.Next(0, 3) = 0 Then
-                            Dim newRotation As Integer = Me.faceRotation
-                            While newRotation = Me.faceRotation
+                            Dim newRotation As Integer = Me.FaceRotation
+                            While newRotation = Me.FaceRotation
                                 newRotation = Core.Random.Next(0, 4)
                             End While
-                            Me.faceRotation = newRotation
+                            Me.FaceRotation = newRotation
                         End If
                         Dim contains As Boolean = False
                         Dim newPosition As Vector3 = (GetMove() / Speed) + Me.Position
@@ -555,11 +568,11 @@
             Case Movements.Straight
                 If Me.Moved = 0.0F Then
                     If Core.Random.Next(0, 15) = 0 Then
-                        Dim newRotation As Integer = Me.faceRotation
-                        While newRotation = Me.faceRotation
+                        Dim newRotation As Integer = Me.FaceRotation
+                        While newRotation = Me.FaceRotation
                             newRotation = Core.Random.Next(0, 4)
                         End While
-                        Me.faceRotation = newRotation
+                        Me.FaceRotation = newRotation
                     End If
                     Dim contains As Boolean = False
                     Dim newPosition As Vector3 = (GetMove() / Speed) + Me.Position
@@ -677,7 +690,7 @@
 
     Private Function GetMove() As Vector3
         Dim moveVector As Vector3
-        Select Case Me.faceRotation
+        Select Case Me.FaceRotation
             Case 0
                 moveVector = New Vector3(0, 0, -1) * Speed
             Case 1

@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
 ''' <summary>
 ''' A generic class for a screen with a window GUI.
 ''' </summary>

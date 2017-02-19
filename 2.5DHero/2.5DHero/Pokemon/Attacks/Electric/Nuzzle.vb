@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Electric
 
     Public Class Nuzzle
@@ -55,7 +57,7 @@ Namespace BattleSystem.Moves.Electric
             Me.AIField2 = AIField.Paralysis
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             BattleScreen.Battle.InflictParalysis(Not own, own, BattleScreen, "", "move:nuzzle")
         End Sub
 

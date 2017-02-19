@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Ghost
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Ghost
 
     Public Class Lick
 
@@ -57,7 +60,7 @@
             Me.EffectChances.Add(30)
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If Core.Random.Next(0, 100) < GetEffectChance(0, own, BattleScreen) Then
                 BattleScreen.Battle.InflictParalysis(Not own, own, BattleScreen, "", "move:lick")
             End If

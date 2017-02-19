@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Grass
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Grass
 
     Public Class CottonSpore
 
@@ -53,7 +55,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If BattleScreen.Battle.LowerStat(Not own, own, BattleScreen, "Speed", 2, "", "move:cottonspore") = False Then
                 BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
             End If

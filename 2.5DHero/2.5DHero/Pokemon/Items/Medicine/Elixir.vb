@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Medicine
 
     <Item(65, "Elixir")>
@@ -9,7 +14,7 @@ Namespace Items.Medicine
         Public Overrides ReadOnly Property Description As String = "This medicine can restore 10 PP to each of the moves that have been learned by a Pokémon."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(408, 48, 24, 24)
+            TextureRectangle = New Rectangle(408, 48, 24, 24)
         End Sub
 
         Public Overrides Sub Use()

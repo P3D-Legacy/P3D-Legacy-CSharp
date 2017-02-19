@@ -1,3 +1,7 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Standard
 
     <Item(19, "Escape Rope")>
@@ -10,7 +14,7 @@ Namespace Items.Standard
         Public Overrides ReadOnly Property CanBeUsedInBattle As Boolean = False
 
         Public Sub New()
-            _textureRectangle = New Rectangle(408, 0, 24, 24)
+            TextureRectangle = New Rectangle(408, 0, 24, 24)
         End Sub
 
         Public Overrides Sub Use()

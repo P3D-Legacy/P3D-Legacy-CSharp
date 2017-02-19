@@ -1,11 +1,20 @@
-﻿Public Class InventoryScreen
+﻿Imports System.Drawing
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class InventoryScreen
 
     Inherits Screen
 
     Dim index(8) As Integer
     Dim scrollIndex(8) As Integer
     Dim bagIndex As Integer = 0
-    Dim bagIdentifier As Items.ItemTypes
+    Dim bagIdentifier As Item.ItemTypes
 
     Dim Items As New Dictionary(Of Item, Integer)
     Dim cItems As New Dictionary(Of Item, Integer)
@@ -25,7 +34,7 @@
             End If
         Next
         If hasAllMail = True Then
-            GameJolt.Emblem.AchieveEmblem("mailman")
+            Emblem.AchieveEmblem("mailman")
         End If
     End Sub
 
@@ -33,7 +42,7 @@
         Me.Identification = Identifications.InventoryScreen
         Me.PreScreen = currentScreen
         Me.mainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
-        Me.texture = TextureManager.GetTexture(mainTexture, New Rectangle(0, 0, 48, 48))
+        Me.texture = TextureManager.GetTexture(mainTexture, New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48))
 
         Me.ReturnItem = DoStuff
         Me.AllowedPages = AllowedPages
@@ -46,7 +55,7 @@
         Next
 
         For Each c In Core.Player.Inventory
-            Me.Items.Add(Item.GetItemByID(c.ItemID), c.Amount)
+            Me.Items.Add(Item.GetItemById(c.ItemID), c.Amount)
         Next
 
         ChangeBag()
@@ -140,7 +149,7 @@
 
         Me.ChangeBag()
 
-        If KeyBoardHandler.KeyPressed(KeyBindings.SpecialKey) = True Or ControllerHandler.ButtonPressed(Buttons.Y) = True Then
+        If KeyBoardHandler.KeyPressed(Core.KeyBindings.Special) = True Or ControllerHandler.ButtonPressed(Buttons.Y) = True Then
             Me.SortItems()
         End If
 
@@ -160,7 +169,7 @@
         If cItems.Count > 0 Then
             If Not ReturnItem Is Nothing Then
                 Core.SetScreen(Me.PreScreen)
-                ReturnItem(cItems.Keys(index(bagIndex)).ID)
+                ReturnItem(cItems.Keys(index(bagIndex)).Id)
             Else
                 Dim Item As Item = cItems.Keys(index(bagIndex))
 
@@ -172,21 +181,21 @@
     Private Sub ChangeBag()
         Select Case bagIndex
             Case 0
-                bagIdentifier = Game.Items.ItemTypes.Standard
+                bagIdentifier = Item.ItemTypes.Standard
             Case 1
-                bagIdentifier = Game.Items.ItemTypes.Medicine
+                bagIdentifier = Item.ItemTypes.Medicine
             Case 2
-                bagIdentifier = Game.Items.ItemTypes.Machines
+                bagIdentifier = Item.ItemTypes.Machines
             Case 3
-                bagIdentifier = Game.Items.ItemTypes.Pokéballs
+                bagIdentifier = Item.ItemTypes.Pokéballs
             Case 4
-                bagIdentifier = Game.Items.ItemTypes.Plants
+                bagIdentifier = Item.ItemTypes.Plants
             Case 5
-                bagIdentifier = Game.Items.ItemTypes.Mail
+                bagIdentifier = Item.ItemTypes.Mail
             Case 6
-                bagIdentifier = Game.Items.ItemTypes.BattleItems
+                bagIdentifier = Item.ItemTypes.BattleItems
             Case 7
-                bagIdentifier = Game.Items.ItemTypes.KeyItems
+                bagIdentifier = Item.ItemTypes.KeyItems
         End Select
 
         cItems.Clear()
@@ -235,19 +244,19 @@
     Public Overrides Sub Draw()
         Me.PreScreen.Draw()
 
-        Canvas.DrawImageBorder(texture, 2, New Rectangle(60, 100, 800, 480))
-        Canvas.DrawImageBorder(texture, 2, New Rectangle(572, 100, 288, 64))
-        Canvas.DrawImageBorder(texture, 2, New Rectangle(60, 516, 480, 64))
-        Canvas.DrawImageBorder(texture, 2, New Rectangle(572, 196, 288, 384))
-        Canvas.DrawImageBorder(texture, 2, New Rectangle(620, 420, 192, 64))
+        Canvas.DrawImageBorder(texture, 2, New Microsoft.Xna.Framework.Rectangle(60, 100, 800, 480))
+        Canvas.DrawImageBorder(texture, 2, New Microsoft.Xna.Framework.Rectangle(572, 100, 288, 64))
+        Canvas.DrawImageBorder(texture, 2, New Microsoft.Xna.Framework.Rectangle(60, 516, 480, 64))
+        Canvas.DrawImageBorder(texture, 2, New Microsoft.Xna.Framework.Rectangle(572, 196, 288, 384))
+        Canvas.DrawImageBorder(texture, 2, New Microsoft.Xna.Framework.Rectangle(620, 420, 192, 64))
 
-        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\BagPack"), New Rectangle(592, 126, 48, 48), New Rectangle(24 * bagIndex, 150, 24, 24), Color.White)
+        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\BagPack"), New Microsoft.Xna.Framework.Rectangle(592, 126, 48, 48), New Microsoft.Xna.Framework.Rectangle(24 * bagIndex, 150, 24, 24), Microsoft.Xna.Framework.Color.White)
 
-        Core.SpriteBatch.DrawString(FontManager.InGameFont, Localization.GetString("inventory_menu_bag"), New Vector2(646, 134), Color.Black)
-        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("inventory_menu_backadvice"), New Vector2(1200 - FontManager.MiniFont.MeasureString(Localization.GetString("inventory_menu_backadvice")).X - 330, 580), Color.DarkGray)
-        Core.SpriteBatch.DrawString(FontManager.MainFont, Localization.GetString("inventory_menu_items") & ":" & vbNewLine & Localization.GetString("item_category_" & Me.bagIdentifier.ToString()), New Vector2(640, 446), Color.Black)
+        Core.SpriteBatch.DrawString(FontManager.InGameFont, Localization.GetString("inventory_menu_bag"), New Vector2(646, 134), Microsoft.Xna.Framework.Color.Black)
+        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("inventory_menu_backadvice"), New Vector2(1200 - FontManager.MiniFont.MeasureString(Localization.GetString("inventory_menu_backadvice")).X - 330, 580), Microsoft.Xna.Framework.Color.DarkGray)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, Localization.GetString("inventory_menu_items") & ":" & vbNewLine & Localization.GetString("item_category_" & Me.bagIdentifier.ToString()), New Vector2(640, 446), Microsoft.Xna.Framework.Color.Black)
 
-        Canvas.DrawScrollBar(New Vector2(555, 120), cItems.Count, 6, scrollIndex(bagIndex), New Size(4, 390), False, TextureManager.GetTexture(mainTexture, New Rectangle(112, 12, 1, 1)), TextureManager.GetTexture(mainTexture, New Rectangle(113, 12, 1, 1)))
+        Canvas.DrawScrollBar(New Vector2(555, 120), cItems.Count, 6, scrollIndex(bagIndex), New Size(4, 390), False, TextureManager.GetTexture(mainTexture, New Microsoft.Xna.Framework.Rectangle(112, 12, 1, 1)), TextureManager.GetTexture(mainTexture, New Microsoft.Xna.Framework.Rectangle(113, 12, 1, 1)))
 
         For i As Integer = 0 To cItems.Keys.Count - 1
             Dim Item As Item = cItems.Keys(i)
@@ -257,15 +266,15 @@
 
                     Dim BorderTexture As Texture2D
                     If i = index(bagIndex) Then
-                        BorderTexture = TextureManager.GetTexture(mainTexture, New Rectangle(48, 0, 48, 48))
+                        BorderTexture = TextureManager.GetTexture(mainTexture, New Microsoft.Xna.Framework.Rectangle(48, 0, 48, 48))
                     Else
                         BorderTexture = texture
                     End If
 
-                    Canvas.DrawImageBorder(BorderTexture, 1, New Rectangle(CInt(p.X), CInt(p.Y + (i + scrollIndex(bagIndex)) * 70), 320, 32))
+                    Canvas.DrawImageBorder(BorderTexture, 1, New Microsoft.Xna.Framework.Rectangle(CInt(p.X), CInt(p.Y + (i + scrollIndex(bagIndex)) * 70), 320, 32))
 
-                    .Draw(Item.Texture, New Rectangle(CInt(p.X), CInt(p.Y + (i + scrollIndex(bagIndex)) * 70), 64, 64), Color.White)
-                    .DrawString(FontManager.MiniFont, Item.Name, New Vector2(CInt(p.X + 74), CInt(p.Y + (i + scrollIndex(bagIndex)) * 70) + 13), Color.Black)
+                    .Draw(Item.Texture, New Microsoft.Xna.Framework.Rectangle(CInt(p.X), CInt(p.Y + (i + scrollIndex(bagIndex)) * 70), 64, 64), Microsoft.Xna.Framework.Color.White)
+                    .DrawString(FontManager.MiniFont, Item.Name, New Vector2(CInt(p.X + 74), CInt(p.Y + (i + scrollIndex(bagIndex)) * 70) + 13), Microsoft.Xna.Framework.Color.Black)
 
                     If Me.bagIndex <> 7 Then
                         Dim lenght As String = ""
@@ -274,11 +283,11 @@
                                 lenght &= " "
                             Next
                         End If
-                        .DrawString(FontManager.MiniFont, "x" & lenght & cItems.Values(i).ToString(), New Vector2(CInt(p.X + 280), CInt(p.Y + (i + scrollIndex(bagIndex)) * 70) + 13), Color.Black)
+                        .DrawString(FontManager.MiniFont, "x" & lenght & cItems.Values(i).ToString(), New Vector2(CInt(p.X + 280), CInt(p.Y + (i + scrollIndex(bagIndex)) * 70) + 13), Microsoft.Xna.Framework.Color.Black)
                     End If
 
                     If i = index(bagIndex) Then
-                        .DrawString(FontManager.MiniFont, Item.Description.CropStringToWidth(FontManager.MiniFont, 450), New Vector2(80, 534), Color.Black)
+                        .DrawString(FontManager.MiniFont, Item.Description.CropStringToWidth(FontManager.MiniFont, 450), New Vector2(80, 534), Microsoft.Xna.Framework.Color.Black)
                     End If
                 End With
             End If
@@ -291,7 +300,7 @@
             x = (bagIndex - 4) * 58
         End If
 
-        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\BagPack"), New Rectangle(646, 220, 174, 174), New Rectangle(x, y, 58, 58), Color.White)
+        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\BagPack"), New Microsoft.Xna.Framework.Rectangle(646, 220, 174, 174), New Microsoft.Xna.Framework.Rectangle(x, y, 58, 58), Microsoft.Xna.Framework.Color.White)
 
         If sorted = True Then
             Dim displayMode As String = "Name"
@@ -304,10 +313,10 @@
                     displayMode = "ID"
             End Select
 
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Sortmode: """ & displayMode & """", New Vector2(638, 522), Color.Gray)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Sortmode: """ & displayMode & """", New Vector2(638, 522), Microsoft.Xna.Framework.Color.Gray)
         End If
 
-        Canvas.DrawScrollBar(New Vector2(630, 405), 8, 1, bagIndex, New Size(200, 4), True, TextureManager.GetTexture(mainTexture, New Rectangle(112, 12, 1, 1)), TextureManager.GetTexture(mainTexture, New Rectangle(113, 12, 1, 1)))
+        Canvas.DrawScrollBar(New Vector2(630, 405), 8, 1, bagIndex, New Size(200, 4), True, TextureManager.GetTexture(mainTexture, New Microsoft.Xna.Framework.Rectangle(112, 12, 1, 1)), TextureManager.GetTexture(mainTexture, New Microsoft.Xna.Framework.Rectangle(113, 12, 1, 1)))
     End Sub
 
     Public Overrides Sub ChangeTo()

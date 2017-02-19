@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Dark
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Dark
 
     Public Class Flatter
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim fail As Boolean = True
 
             If BattleScreen.Battle.RaiseStat(Not own, own, BattleScreen, "Special Attack", 1, "", "move:flatter") = True Then

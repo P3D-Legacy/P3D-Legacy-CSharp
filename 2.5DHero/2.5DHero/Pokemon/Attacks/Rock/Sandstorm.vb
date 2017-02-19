@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Rock
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Rock
 
     Public Class Sandstorm
 
@@ -16,7 +19,7 @@
             Me.Category = Categories.Status
             Me.ContestCategory = ContestCategories.Tough
             Me.Name = "Sandstorm"
-            Me.Description = "A five-turn sandstorm is summoned to hurt all combatants except the Rock, Ground, and Steel types."
+            Me.Description = "A five-turn sandstorm is summoned to hurt all combatants except the Rock, Ground, and Steel Element.Types."
             Me.CriticalChance = 0
             Me.IsHMMove = False
             Me.Target = Targets.All
@@ -55,7 +58,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim turns As Integer = BattleCalculation.FieldEffectTurns(BattleScreen, own, Me.Name.ToLower())
             BattleScreen.Battle.ChangeWeather(own, own, BattleWeather.WeatherTypes.Sandstorm, turns, BattleScreen, "A sandstorm brewed!", "move:sandstorm")
         End Sub

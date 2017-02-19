@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core
+
 Namespace Items.Medicine
 
     <Item(12, "Awakening")>
@@ -9,7 +12,7 @@ Namespace Items.Medicine
         Public Overrides ReadOnly Property Description As String = "A spray-type medicine used against sleep. It can be used once to rouse a Pokémon from the clutches of sleep."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(240, 0, 24, 24)
+            TextureRectangle = New Rectangle(240, 0, 24, 24)
         End Sub
 
         Public Overrides Sub Use()

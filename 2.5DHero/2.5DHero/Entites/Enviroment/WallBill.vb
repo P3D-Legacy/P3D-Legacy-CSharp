@@ -1,4 +1,7 @@
-﻿Public Class WallBill
+﻿Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Screens
+
+Public Class WallBill
 
     Inherits Entity
 

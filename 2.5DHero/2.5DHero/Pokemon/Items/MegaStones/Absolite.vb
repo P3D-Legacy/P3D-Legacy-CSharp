@@ -1,3 +1,4 @@
+Imports P3D.Legacy.Core.Pokemon
 Namespace Items.MegaStones
 
     ''' <summary>
@@ -10,7 +11,7 @@ Namespace Items.MegaStones
 
         Public Sub New()
             MyBase.New("Absol", 359)
-            _textureRectangle = New Rectangle(24, 0, 24, 24)
+            TextureRectangle = New Rectangle(24, 0, 24, 24)
         End Sub
 
     End Class

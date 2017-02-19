@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.KeyItems
 
     <Item(69, "Mystery Egg")>
@@ -8,7 +10,7 @@ Namespace Items.KeyItems
         Public Overrides ReadOnly Property Description As String = "A mysterious Egg obtained from Mr. Pokémon. What's in the Egg is unknown."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(0, 72, 24, 24)
+            TextureRectangle = New Rectangle(0, 72, 24, 24)
         End Sub
 
     End Class

@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Pokemon.Items
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Berries
 
     <Item(2021, "Kelpsy")>
@@ -30,8 +35,8 @@ Namespace Items.Berries
                 If p.EVAttack < reduce Then
                     reduce = p.EVAttack
                 End If
-                
-                p.ChangeFriendShip(Pokemon.FriendShipCauses.EVBerry)
+
+                p.ChangeFriendShip(BasePokemon.FriendShipCauses.EVBerry)
                 p.EVAttack -= reduce
                 p.CalculateStats()
 

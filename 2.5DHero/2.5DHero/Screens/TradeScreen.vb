@@ -1,3 +1,11 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
 Public Class TradeScreen
 
     Inherits Screen
@@ -14,7 +22,7 @@ Public Class TradeScreen
     End Enum
 
     Private MenuState As MenuStates = MenuStates.MainPage
-    Private CurrentCategory As Items.ItemTypes = Items.ItemTypes.Medicine
+    Private CurrentCategory As Item.ItemTypes = Item.ItemTypes.Medicine
 
     Private MainCursor As Integer = 0
     Private CategoryCursor As Integer = 0
@@ -350,7 +358,7 @@ Public Class TradeScreen
 
 #Region "BuyCategoryScreen"
 
-    Private loadedBuyCategories As New List(Of Items.ItemTypes)
+    Private loadedBuyCategories As New List(Of Item.ItemTypes)
 
     Private Sub LoadBuyCategoriesItems()
         Me.loadedBuyCategories.Clear()
@@ -361,7 +369,7 @@ Public Class TradeScreen
                 loadedBuyCategories.Add(item.ItemType)
             End If
         Next
-        Me.loadedBuyCategories = (From c As Items.ItemTypes In Me.loadedBuyCategories Order By CInt(c)).ToList()
+        Me.loadedBuyCategories = (From c As Item.ItemTypes In Me.loadedBuyCategories Order By CInt(c)).ToList()
     End Sub
 
     Private Sub UpdateBuyCategory()
@@ -452,7 +460,7 @@ Public Class TradeScreen
                 For Each i As TradeItem In Me.TradeItems
                     Dim item As Item = i.GetItem()
                     If item.ItemType = Me.loadedBuyCategories(Me.Cursor + Me.Scroll) Then
-                        SpriteBatch.Draw(item.Texture, New Rectangle(580 + x * 48, 100 + y * 48, 48, 48), Color.White)
+                        Core.SpriteBatch.Draw(item.Texture, New Rectangle(580 + x * 48, 100 + y * 48, 48, 48), Color.White)
 
                         x += 1
                         If x = 5 Then
@@ -570,7 +578,7 @@ Public Class TradeScreen
             End If
         End If
 
-        If ControllerHandler.ButtonPressed(Buttons.Y) = True Or KeyBoardHandler.KeyPressed(KeyBindings.SpecialKey) = True Then
+        If ControllerHandler.ButtonPressed(Buttons.Y) = True Or KeyBoardHandler.KeyPressed(Core.KeyBindings.Special) = True Then
             Me.BuyItemsShowDescription = Not Me.BuyItemsShowDescription
         End If
 
@@ -704,7 +712,7 @@ Public Class TradeScreen
             If BuyItemsShowDescription = True Then
                 Canvas.DrawRectangle(New Rectangle(736 + 28, 160 + 28, 200, 200), New Color(0, 0, 0, 200))
                 Dim t As String = selectedItem.GetItem().Description.CropStringToWidth(FontManager.MiniFont, 180)
-                SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(736 + 30, 160 + 30), Color.White)
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(736 + 30, 160 + 30), Color.White)
             End If
 
             'Amount of item in bag:
@@ -760,7 +768,7 @@ Public Class TradeScreen
 
 #Region "SellCatetoryScreen"
 
-    Private loadedSellCategories As New List(Of Items.ItemTypes)
+    Private loadedSellCategories As New List(Of Item.ItemTypes)
 
     Private Sub LoadSellCategoryItems()
         Me.loadedSellCategories.Clear()
@@ -771,7 +779,7 @@ Public Class TradeScreen
                 loadedSellCategories.Add(i.ItemType)
             End If
         Next
-        Me.loadedSellCategories = (From c As Items.ItemTypes In Me.loadedSellCategories Order By CInt(c)).ToList()
+        Me.loadedSellCategories = (From c As Item.ItemTypes In Me.loadedSellCategories Order By CInt(c)).ToList()
     End Sub
 
     Private Sub UpdateSellCategory()
@@ -939,7 +947,7 @@ Public Class TradeScreen
             End If
         End If
 
-        If ControllerHandler.ButtonPressed(Buttons.Y) = True Or KeyBoardHandler.KeyPressed(KeyBindings.SpecialKey) = True Then
+        If ControllerHandler.ButtonPressed(Buttons.Y) = True Or KeyBoardHandler.KeyPressed(Core.KeyBindings.Special) = True Then
             Me.SellItemsShowDescription = Not Me.SellItemsShowDescription
         End If
 
@@ -1045,7 +1053,7 @@ Public Class TradeScreen
             If Me.SellItemsShowDescription = True Then
                 Canvas.DrawRectangle(New Rectangle(736 + 28, 160 + 28, 200, 200), New Color(0, 0, 0, 200))
                 Dim t As String = selectedItem.GetItem().Description.CropStringToWidth(FontManager.MiniFont, 180)
-                SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(736 + 30, 160 + 30), Color.White)
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(736 + 30, 160 + 30), Color.White)
             End If
 
             'Amount of item in bag:
@@ -1220,24 +1228,24 @@ Public Class TradeScreen
         Core.SpriteBatch.DrawString(Font, Text, New Vector2(Position.X + Height + 10, Position.Y + textY), Color.White)
     End Sub
 
-    Private Function GetItemTypeTexture(ByVal itemType As Items.ItemTypes) As Texture2D
+    Private Function GetItemTypeTexture(ByVal itemType As Item.ItemTypes) As Texture2D
         Dim i As Integer = 0
         Select Case itemType
-            Case Items.ItemTypes.Standard
+            Case Item.ItemTypes.Standard
                 i = 0
-            Case Items.ItemTypes.Medicine
+            Case Item.ItemTypes.Medicine
                 i = 1
-            Case Items.ItemTypes.Machines
+            Case Item.ItemTypes.Machines
                 i = 2
-            Case Items.ItemTypes.Pokéballs
+            Case Item.ItemTypes.Pokéballs
                 i = 3
-            Case Items.ItemTypes.Plants
+            Case Item.ItemTypes.Plants
                 i = 4
-            Case Items.ItemTypes.Mail
+            Case Item.ItemTypes.Mail
                 i = 5
-            Case Items.ItemTypes.BattleItems
+            Case Item.ItemTypes.BattleItems
                 i = 6
-            Case Items.ItemTypes.KeyItems
+            Case Item.ItemTypes.KeyItems
                 i = 7
         End Select
 

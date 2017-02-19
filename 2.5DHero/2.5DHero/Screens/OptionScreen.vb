@@ -1,4 +1,12 @@
-﻿Public Class OptionScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.Settings
+
+Public Class OptionScreen
 
     Inherits Screen
 
@@ -100,7 +108,7 @@
             End If
         Next
 
-        If net.Pokemon3D.Game.Controls.Dismiss(True, True, True) = True Then
+        If Controls.Dismiss(True, True, True) = True Then
             Close()
         End If
     End Sub
@@ -233,7 +241,7 @@
             Core.GameOptions.LoadOffsetMaps = 101 - Me.LoadOffsetMaps
         End If
         Core.GameOptions.ViewBobbing = Me.ViewBobbing
-        Core.GameOptions.SaveOptions()
+        Options.SaveOptions(Core.GameOptions)
 
         SoundManager.PlaySound("save")
 
@@ -383,9 +391,8 @@
         Me.MouseSpeed = c.Value
     End Sub
 
-    Private Sub ResetKeyBindings(ByVal c As CommandButton)
-        KeyBindings.CreateKeySave(True)
-        KeyBindings.LoadKeys()
+    Private Async Sub ResetKeyBindings(ByVal c As CommandButton)
+        Core.KeyBindings = Await Keyboard.LoadKeyboard()
     End Sub
 
 #End Region
@@ -522,7 +529,7 @@
             Dim r As New Rectangle(CInt(_position.X), CInt(_position.Y) + YScroll, 32 * _size, 96)
 
             If r.Contains(MouseHandler.MousePosition) = True Then
-                If net.Pokemon3D.Game.Controls.Accept(True, False, False) = True Then
+                If Controls.Accept(True, False, False) = True Then
                     Me._toggled = Not Me._toggled
                     OnToggleTrigger(Me)
                 End If
@@ -595,7 +602,7 @@
             Dim r As New Rectangle(CInt(_position.X), CInt(_position.Y) + YScroll, 32 * _size + 32, 96)
 
             If r.Contains(MouseHandler.MousePosition) = True Then
-                If net.Pokemon3D.Game.Controls.Accept(True, False, False) = True Then
+                If Controls.Accept(True, False, False) = True Then
                     OnClickTrigger(Me)
                 End If
             End If

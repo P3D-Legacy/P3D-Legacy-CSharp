@@ -1,33 +1,58 @@
-﻿Public Class ChooseBox
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Data
+Imports P3D.Legacy.Core.Dialogues
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
 
-    Public Delegate Sub DoAnswer(ByVal result As Integer)
+Public Class ChooseBox
+    Implements IChooseBox
 
-    Public Options() As String
-    Public index As Integer = 0
+    Public Property Index As Integer Implements IChooseBox.Index
+        Get
+            Return _index
+        End Get
+        Set
+            _index = Value
+        End Set
+    End Property
+
+    Public Property Options As String() Implements IChooseBox.Options
+        Get
+            Return _options
+        End Get
+        Set
+            _options = Value
+        End Set
+    End Property
 
     Dim PositionY As Single = 0
 
-    Public Showing As Boolean = False
-    Public readyForResult As Boolean = False
-    Public result As Integer = 0
+    Public Property ReadyForResult As Boolean Implements IChooseBox.ReadyForResult
+    Public Property Result As Integer Implements IChooseBox.Result
     Public resultID As Integer = 0
     Public ActionScript As Boolean = False
 
     Public Shared CancelIndex As Integer = -1
+    Private _options As String()
+    Private _index As Integer = 0
 
-    Public TextFont As FontContainer
+    Public Property TextFont As FontContainer Implements IChooseBox.TextFont
+    Public Property Showing As Boolean Implements IChooseBox.Showing
 
     Public DoDelegate As Boolean = False
 
-    Dim Subs As DoAnswer
+    Dim Subs As Action(Of Int32)
 
     Public UpdateEntities() As Entity
 
-    Public Sub Show(ByVal Options() As String, ByVal DoSubs As DoAnswer)
+    Public Sub Show(ByVal Options() As String, ByVal DoSubs As Action(Of Int32)) Implements IChooseBox.Show
         Me.resultID = 0
         Me.Options = Options
-        Me.index = 0
-        Me.readyForResult = False
+        Me.Index = 0
+        Me.ReadyForResult = False
         Me.Showing = True
         Me.Subs = DoSubs
         Me.ActionScript = False
@@ -37,11 +62,11 @@
         SetupOptions()
     End Sub
 
-    Public Sub Show(ByVal Options() As String, ByVal ID As Integer, ByVal ActionScript As Boolean)
+    Public Sub Show(ByVal Options() As String, ByVal ID As Integer, ByVal ActionScript As Boolean) Implements IChooseBox.Show
         Me.resultID = ID
         Me.Options = Options
-        Me.index = 0
-        Me.readyForResult = False
+        Me.Index = 0
+        Me.ReadyForResult = False
         Me.Showing = True
         Me.ActionScript = ActionScript
         Me.DoDelegate = False
@@ -50,11 +75,11 @@
         SetupOptions()
     End Sub
 
-    Public Sub Show(ByVal Options() As String, ByVal ID As Integer, ByVal UpdateEntities() As Entity)
+    Public Sub Show(ByVal Options() As String, ByVal ID As Integer, ByVal UpdateEntities() As Entity) Implements IChooseBox.Show
         Me.resultID = ID
         Me.Options = Options
-        Me.index = 0
-        Me.readyForResult = False
+        Me.Index = 0
+        Me.ReadyForResult = False
         Me.Showing = True
         Me.UpdateEntities = UpdateEntities
         Me.ActionScript = False
@@ -70,10 +95,10 @@
         Next
     End Sub
 
-    Public Function getResult(ByVal ID As Integer) As Integer
-        If Me.readyForResult = True Then
+    Public Function GetResult(ByVal ID As Integer) As Integer Implements IChooseBox.GetResult
+        If Me.ReadyForResult = True Then
             If Me.resultID = ID Then
-                Return result
+                Return Result
             Else
                 Return -1
             End If
@@ -82,11 +107,11 @@
         End If
     End Function
 
-    Public Sub Update()
+    Public Sub Update() Implements IChooseBox.Update
         Update(True)
     End Sub
 
-    Public Sub Update(ByVal RaiseClickEvent As Boolean)
+    Public Sub Update(ByVal RaiseClickEvent As Boolean) Implements IChooseBox.Update
         If Me.Showing = True Then
             If Controls.Down(True, True, True) Then
                 Me.index += 1
@@ -142,7 +167,7 @@
         End If
     End Sub
 
-    Public Sub Draw(ByVal Position As Vector2)
+    Public Sub Draw(ByVal Position As Vector2) Implements IChooseBox.Draw
         If Me.Showing = True Then
             With Core.SpriteBatch
                 .Draw(TextureManager.GetTexture("GUI\Overworld\ChooseBox"), New Rectangle(CInt(Position.X), CInt(Position.Y), 288, 48), New Rectangle(0, 0, 96, 16), Color.White)
@@ -164,7 +189,7 @@
         End If
     End Sub
 
-    Public Sub Draw()
+    Public Sub Draw() Implements IChooseBox.Draw
         If Me.Showing = True Then
             Dim Position As Vector2 = New Vector2(CInt(Core.windowSize.Width / 2) - 48, Core.windowSize.Height - 160.0F - 96.0F - (Options.Count - 1) * 48)
             Me.Draw(Position)

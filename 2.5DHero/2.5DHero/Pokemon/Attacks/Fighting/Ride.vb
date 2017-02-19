@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Fighting
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Fighting
 
     Public Class Ride
 
@@ -52,10 +55,11 @@
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim p As Pokemon = BattleScreen.OwnPokemon
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OwnPokemon
             If own = False Then
-                p = BattleScreen.OppPokemon
+                p = screen.OppPokemon
             End If
 
             Dim accLevel As Integer = p.Accuracy

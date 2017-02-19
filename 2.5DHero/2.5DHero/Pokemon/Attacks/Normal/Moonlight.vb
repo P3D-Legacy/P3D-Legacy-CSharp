@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Moonlight
 
@@ -55,7 +58,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             If own = False Then
                 p = BattleScreen.OppPokemon

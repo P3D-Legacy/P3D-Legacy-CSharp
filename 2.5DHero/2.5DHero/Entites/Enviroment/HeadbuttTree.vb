@@ -1,5 +1,11 @@
-﻿Public Class HeadbuttTree
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
 
+Public Class HeadbuttTree
     Inherits Entity
 
     Public Overrides Sub UpdateEntity()
@@ -55,7 +61,7 @@
                 End If
             Next
 
-            Dim spawnedPokemon As Pokemon = Spawner.GetPokemon(Screen.Level.LevelFile, Spawner.EncounterMethods.Headbutt, False)
+            Dim spawnedPokemon As Pokemon = Spawner.GetPokemon(Screen.Level.LevelFile, EncounterMethods.Headbutt, False)
             If spawnedPokemon Is Nothing Then
                 Dim s As String = "version=2" & vbNewLine &
                     "@text.show(" & pName & " used~Headbutt!)" & vbNewLine &

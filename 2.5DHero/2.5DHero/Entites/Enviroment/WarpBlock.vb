@@ -1,4 +1,9 @@
-﻿Public Class WarpBlock
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+
+Public Class WarpBlock
 
     Inherits Entity
 
@@ -71,7 +76,8 @@
                     Dim destination As String = link.GetSplit(0)
                     If destination.EndsWith(".dat") = True Then
                         Dim x As String = link.GetSplit(1)
-                        Dim y As String = link.GetSplit(2).Replace(".", GameController.DecSeparator)
+                        'Dim y As String = link.GetSplit(2).Replace(".", GameController.DecSeparator)
+                        Dim y As String = link.GetSplit(2).Replace(".", ",")
                         Dim z As String = link.GetSplit(3)
                         Dim l As String = link.GetSplit(4)
 

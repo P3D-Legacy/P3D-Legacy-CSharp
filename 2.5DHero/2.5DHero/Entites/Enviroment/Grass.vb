@@ -1,4 +1,9 @@
-﻿Public Class Grass
+﻿Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
+Public Class Grass
 
     Inherits Entity
 
@@ -16,7 +21,7 @@
     End Sub
 
     Public Overrides Function WalkIntoFunction() As Boolean
-        Screen.Level.PokemonEncounter.TryEncounterWildPokemon(Me.Position, Spawner.EncounterMethods.Land, Me.AdditionalValue)
+        Screen.Level.PokemonEncounter.TryEncounterWildPokemon(Me.Position, EncounterMethods.Land, Me.AdditionalValue)
 
         Return False
     End Function

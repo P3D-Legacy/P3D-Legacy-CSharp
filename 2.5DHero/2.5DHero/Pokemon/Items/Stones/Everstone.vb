@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.Stones
 
     <Item(112, "Everstone")>
@@ -11,7 +13,7 @@ Namespace Items.Stones
         Public Overrides ReadOnly Property CanBeUsedInBattle As Boolean = False
 
         Public Sub New()
-            _textureRectangle = New Rectangle(312, 96, 24, 24)
+            TextureRectangle = New Rectangle(312, 96, 24, 24)
         End Sub
 
     End Class

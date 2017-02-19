@@ -1,4 +1,5 @@
 Imports System.Runtime.CompilerServices
+Imports P3D.Legacy.Core
 
 Module Extensions
 
@@ -389,7 +390,7 @@ Module Extensions
 
         Dim v4 As Vector4 = Vector4.Transform(v, mat)
 
-        Return New Vector2(CSng(((v4.X / v4.W + 1) * (windowSize.Width / 2))), CSng(((1 - v4.Y / v4.W) * (windowSize.Height / 2))))
+        Return New Vector2(CSng(((v4.X / v4.W + 1) * (Core.WindowSize.Width / 2))), CSng(((1 - v4.Y / v4.W) * (Core.WindowSize.Height / 2))))
     End Function
 
     <Extension()>

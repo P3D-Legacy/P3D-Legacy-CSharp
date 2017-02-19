@@ -1,4 +1,11 @@
-﻿Namespace ScriptVersion2
+﻿Imports System.Drawing
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
+Namespace ScriptVersion2
 
     Partial Class ScriptComparer
 
@@ -74,7 +81,7 @@
                     If Core.Player.Pokemons(index).Item Is Nothing Then
                         Return 0
                     Else
-                        Return Core.Player.Pokemons(index).Item.ID
+                        Return Core.Player.Pokemons(index).Item.Id
                     End If
                 Case "friendship"
                     Dim index As Integer = int(argument.GetSplit(0))
@@ -89,7 +96,7 @@
                     End If
                 Case "catchball"
                     Dim index As Integer = int(argument.GetSplit(0))
-                    Return Core.Player.Pokemons(index).CatchBall.ID
+                    Return Core.Player.Pokemons(index).CatchBall.Id
                 Case "catchmethod"
                     Dim index As Integer = int(argument.GetSplit(0))
                     Return Core.Player.Pokemons(index).CatchMethod
@@ -103,7 +110,7 @@
                     Dim has As Boolean = False
 
                     For Each a As BattleSystem.Attack In Core.Player.Pokemons(index).Attacks
-                        If a.ID = attackID Then
+                        If a.Id = attackID Then
                             has = True
                             Exit For
                         End If
@@ -148,7 +155,7 @@
                 Case "countbattle"
                     Dim c As Integer = 0
                     For Each p As Pokemon In Core.Player.Pokemons
-                        If p.IsEgg() = False And p.HP > 0 And p.Status <> Pokemon.StatusProblems.Fainted Then
+                        If p.IsEgg() = False And p.HP > 0 And p.Status <> BasePokemon.StatusProblems.Fainted Then
                             c += 1
                         End If
                     Next
@@ -276,7 +283,7 @@
 
                     Return FrontierSpawner.GetPokemon(level, pokemon_class, IDPreset).GetSaveData().Replace(",", "§")
                 Case "spawnwild"
-                    Return Spawner.GetPokemon(Screen.Level.LevelFile, CType(int(argument), Spawner.EncounterMethods)).GetSaveData().Replace(",", "§")
+                    Return Spawner.GetPokemon(Screen.Level.LevelFile, CType(int(argument), EncounterMethods)).GetSaveData().Replace(",", "§")
                 Case "spawn"
                     Dim ID As Integer = int(argument.GetSplit(0))
                     Dim level As Integer = int(argument.GetSplit(1))

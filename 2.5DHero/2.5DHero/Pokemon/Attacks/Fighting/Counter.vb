@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Fighting
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Fighting
 
     Public Class Counter
 
@@ -52,22 +55,23 @@
             '#End
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim damagedLastTurn As Boolean = BattleScreen.FieldEffects.OppPokemonDamagedLastTurn
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim damagedLastTurn As Boolean = screen.FieldEffects.OppPokemonDamagedLastTurn
             If Own = False Then
-                damagedLastTurn = BattleScreen.FieldEffects.OwnPokemonDamagedThisTurn
+                damagedLastTurn = screen.FieldEffects.OwnPokemonDamagedThisTurn
             End If
 
             If damagedLastTurn = True Then
-                Dim damage As Integer = BattleScreen.FieldEffects.OwnLastDamage
+                Dim damage As Integer = screen.FieldEffects.OwnLastDamage
                 If Own = True Then
-                    damage = BattleScreen.FieldEffects.OppLastDamage
+                    damage = screen.FieldEffects.OppLastDamage
                 End If
 
                 If damage > 0 Then
-                    Dim lastMove As Attack = BattleScreen.FieldEffects.OwnLastMove
+                    Dim lastMove As Attack = screen.FieldEffects.OwnLastMove
                     If Own = True Then
-                        lastMove = BattleScreen.FieldEffects.OppLastMove
+                        lastMove = screen.FieldEffects.OppLastMove
                     End If
                     If Not lastMove Is Nothing Then
                         If lastMove.CounterAffected = True Then
@@ -80,10 +84,11 @@
             Return True
         End Function
 
-        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim damage As Integer = BattleScreen.FieldEffects.OwnLastDamage
+        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            Dim damage As Integer = screen.FieldEffects.OwnLastDamage
             If Own = True Then
-                damage = BattleScreen.FieldEffects.OppLastDamage
+                damage = screen.FieldEffects.OppLastDamage
             End If
 
             Return damage * 2

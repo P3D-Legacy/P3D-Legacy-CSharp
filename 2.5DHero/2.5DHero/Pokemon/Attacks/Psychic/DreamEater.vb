@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
 Namespace BattleSystem.Moves.Psychic
 
     Public Class DreamEater
@@ -52,21 +55,22 @@ Namespace BattleSystem.Moves.Psychic
             '#End
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim op As Pokemon = BattleScreen.OppPokemon
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim op As Pokemon = screen.OppPokemon
             If Own = False Then
-                op = BattleScreen.OwnPokemon
+                op = screen.OwnPokemon
             End If
 
-            If op.Status <> Pokemon.StatusProblems.Sleep Then
-                BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
+            If op.Status <> BasePokemon.StatusProblems.Sleep Then
+                screen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
                 Return True
             Else
                 Return False
             End If
         End Function
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then

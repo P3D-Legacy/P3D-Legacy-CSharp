@@ -1,4 +1,7 @@
-﻿Namespace ScriptVersion2
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
+Namespace ScriptVersion2
 
     Partial Class ScriptComparer
 
@@ -26,7 +29,7 @@
 
                     Return Item.GetItemByID(int(ItemID)).Name
                 Case "id"
-                    Dim item As Item = Item.GetItemByName(argument)
+                    Dim item As Item = P3D.Legacy.Core.Pokemon.Item.GetItemByName(argument)
                     If Not item Is Nothing Then
                         Return item.ID
                     End If

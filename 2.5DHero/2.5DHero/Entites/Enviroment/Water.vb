@@ -1,4 +1,13 @@
-﻿Public Class Water
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Objects
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
+Public Class Water
 
     Inherits Entity
 
@@ -94,7 +103,7 @@
             If canSurf = True Then
                 Screen.Camera.Move(1)
 
-                Screen.Level.PokemonEncounter.TryEncounterWildPokemon(Me.Position, Spawner.EncounterMethods.Surfing, "")
+                Screen.Level.PokemonEncounter.TryEncounterWildPokemon(Me.Position, EncounterMethods.Surfing, "")
             End If
         End If
     End Sub

@@ -1,4 +1,9 @@
-﻿Public Class Daycare
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+
+Public Class Daycare
 
     Public Shared Function ProduceEgg(ByVal daycareID As Integer) As Pokemon
         Dim parent1 As Pokemon = Nothing
@@ -19,9 +24,9 @@
         Next
 
         Dim DittoAsParent As Integer = 0
-        If parent1.EggGroup1 = Pokemon.EggGroups.Ditto Or parent1.EggGroup2 = Pokemon.EggGroups.Ditto Then
+        If parent1.EggGroup1 = BasePokemon.EggGroups.Ditto Or parent1.EggGroup2 = BasePokemon.EggGroups.Ditto Then
             DittoAsParent = 1
-        ElseIf parent2.EggGroup1 = Pokemon.EggGroups.Ditto Or parent2.EggGroup2 = Pokemon.EggGroups.Ditto Then
+        ElseIf parent2.EggGroup1 = BasePokemon.EggGroups.Ditto Or parent2.EggGroup2 = BasePokemon.EggGroups.Ditto Then
             DittoAsParent = 2
         End If
 
@@ -29,8 +34,8 @@
             Dim p As Pokemon = Pokemon.GetPokemonByID(EggID)
             p.Generate(1, True)
             p.EggSteps = 1
-            p.SetCatchInfos(Item.GetItemByID(5), "obtained at")
-            p.CatchBall = Item.GetItemByID(GetEggPokeballID({parent1, parent2}.ToList()))
+            p.SetCatchInfos(Item.GetItemById(5), "obtained at")
+            p.CatchBall = Item.GetItemById(GetEggPokeballID({parent1, parent2}.ToList()))
 
             'adding egg moves:
             Dim EggMoves As New List(Of BattleSystem.Attack)
@@ -39,8 +44,8 @@
             If DittoAsParent = 0 Then
                 For Each m1 As BattleSystem.Attack In parent1.Attacks
                     For Each m2 As BattleSystem.Attack In parent2.Attacks
-                        If m1.ID = m2.ID Then
-                            Dim newAttack As BattleSystem.Attack = BattleSystem.Attack.GetAttackByID(m1.ID)
+                        If m1.Id = m2.Id Then
+                            Dim newAttack As BattleSystem.Attack = BattleSystem.Attack.GetAttackByID(m1.Id)
                             EggMoves.Add(newAttack)
                         End If
                     Next
@@ -49,10 +54,10 @@
 
             'TM-HM Moves:
             Dim male As Integer = -1
-            If parent1.Gender = net.Pokemon3D.Game.Pokemon.Genders.Male Then
+            If parent1.Gender = BasePokemon.Genders.Male Then
                 male = 0
             End If
-            If parent2.Gender = net.Pokemon3D.Game.Pokemon.Genders.Male Then
+            If parent2.Gender = BasePokemon.Genders.Male Then
                 male = 1
             End If
             If male > -1 Then
@@ -65,8 +70,8 @@
                 End Select
                 For Each THMMove As BattleSystem.Attack In p.AttackLearns.Values
                     For Each m1 As BattleSystem.Attack In cParent.Attacks
-                        If m1.ID = THMMove.ID Then
-                            Dim newAttack As BattleSystem.Attack = BattleSystem.Attack.GetAttackByID(m1.ID)
+                        If m1.Id = THMMove.Id Then
+                            Dim newAttack As BattleSystem.Attack = BattleSystem.Attack.GetAttackByID(m1.Id)
                             EggMoves.Add(newAttack)
                         End If
                     Next
@@ -75,10 +80,10 @@
 
             'Egg Moves:
             male = -1
-            If parent1.Gender = net.Pokemon3D.Game.Pokemon.Genders.Male Then
+            If parent1.Gender = BasePokemon.Genders.Male Then
                 male = 0
             End If
-            If parent2.Gender = net.Pokemon3D.Game.Pokemon.Genders.Male Then
+            If parent2.Gender = BasePokemon.Genders.Male Then
                 male = 1
             End If
             If male > -1 Then
@@ -91,10 +96,10 @@
                 End Select
                 For Each BreedMove As Integer In p.EggMoves
                     For Each m1 As BattleSystem.Attack In cParent.Attacks
-                        If m1.ID = BreedMove Then
-                            GameJolt.Emblem.AchieveEmblem("eggsplosion")
+                        If m1.Id = BreedMove Then
+                            Emblem.AchieveEmblem("eggsplosion")
 
-                            Dim newAttack As BattleSystem.Attack = BattleSystem.Attack.GetAttackByID(m1.ID)
+                            Dim newAttack As BattleSystem.Attack = BattleSystem.Attack.GetAttackByID(m1.Id)
                             EggMoves.Add(newAttack)
                         End If
                     Next
@@ -117,7 +122,7 @@
             For Each learnMove As BattleSystem.Attack In learnMoves
                 Dim hasAttack As Boolean = False
                 For Each m As BattleSystem.Attack In p.Attacks
-                    If m.ID = learnMove.ID Then
+                    If m.Id = learnMove.Id Then
                         hasAttack = True
                         Exit For
                     End If
@@ -274,7 +279,7 @@
             'Abilities:
             If DittoAsParent = 0 Then
                 Dim female As Pokemon = parent1
-                If parent2.Gender = net.Pokemon3D.Game.Pokemon.Genders.Female Then
+                If parent2.Gender = BasePokemon.Genders.Female Then
                     female = parent2
                 End If
 
@@ -296,7 +301,7 @@
                 End If
             Else
                 Dim female As Pokemon = parent1
-                If parent2.Gender = net.Pokemon3D.Game.Pokemon.Genders.Female Then
+                If parent2.Gender = BasePokemon.Genders.Female Then
                     female = parent2
                 End If
 
@@ -340,47 +345,47 @@
                 Return 0
             End If
 
-            If p1.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Undiscovered Or p1.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Undiscovered Or p2.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Undiscovered Or p2.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Undiscovered Then
+            If p1.EggGroup1 = BasePokemon.EggGroups.Undiscovered Or p1.EggGroup2 = BasePokemon.EggGroups.Undiscovered Or p2.EggGroup1 = BasePokemon.EggGroups.Undiscovered Or p2.EggGroup2 = BasePokemon.EggGroups.Undiscovered Then
                 Return 0
             End If
 
-            If p1.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p1.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
-                If p2.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p2.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
+            If p1.EggGroup1 = BasePokemon.EggGroups.Ditto Or p1.EggGroup2 = BasePokemon.EggGroups.Ditto Then
+                If p2.EggGroup1 = BasePokemon.EggGroups.Ditto Or p2.EggGroup2 = BasePokemon.EggGroups.Ditto Then
                     Return 0
                 End If
             End If
 
-            If p2.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p2.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
-                If p1.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p1.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
+            If p2.EggGroup1 = BasePokemon.EggGroups.Ditto Or p2.EggGroup2 = BasePokemon.EggGroups.Ditto Then
+                If p1.EggGroup1 = BasePokemon.EggGroups.Ditto Or p1.EggGroup2 = BasePokemon.EggGroups.Ditto Then
                     Return 0
                 End If
             End If
 
-            If p1.IsGenderLess = True Then
-                If p2.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p2.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
+            If p1.IsGenderless = True Then
+                If p2.EggGroup1 = BasePokemon.EggGroups.Ditto Or p2.EggGroup2 = BasePokemon.EggGroups.Ditto Then
                     chance = -1
                 Else
-                    If p1.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p1.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
+                    If p1.EggGroup1 = BasePokemon.EggGroups.Ditto Or p1.EggGroup2 = BasePokemon.EggGroups.Ditto Then
                         chance = -1
                     End If
                 End If
-            ElseIf p2.IsGenderLess = True Then
-                If p1.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p1.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
+            ElseIf p2.IsGenderless = True Then
+                If p1.EggGroup1 = BasePokemon.EggGroups.Ditto Or p1.EggGroup2 = BasePokemon.EggGroups.Ditto Then
                     chance = -1
                 Else
-                    If p2.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p2.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
+                    If p2.EggGroup1 = BasePokemon.EggGroups.Ditto Or p2.EggGroup2 = BasePokemon.EggGroups.Ditto Then
                         chance = -1
                     End If
                 End If
-            ElseIf p1.IsGenderLess = False And p2.IsGenderLess = False Then
+            ElseIf p1.IsGenderless = False And p2.IsGenderless = False Then
                 If p1.Gender <> p2.Gender Then
-                    If p1.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p2.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p1.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p2.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
+                    If p1.EggGroup1 = BasePokemon.EggGroups.Ditto Or p2.EggGroup1 = BasePokemon.EggGroups.Ditto Or p1.EggGroup2 = BasePokemon.EggGroups.Ditto Or p2.EggGroup2 = BasePokemon.EggGroups.Ditto Then
                         chance = -1
                     Else
-                        If p1.EggGroup1 = p2.EggGroup1 And p1.EggGroup1 <> net.Pokemon3D.Game.Pokemon.EggGroups.None Or
-                            p1.EggGroup2 = p2.EggGroup1 And p1.EggGroup2 <> net.Pokemon3D.Game.Pokemon.EggGroups.None Or
-                            p1.EggGroup1 = p2.EggGroup2 And p1.EggGroup1 <> net.Pokemon3D.Game.Pokemon.EggGroups.None Or
-                            p1.EggGroup2 = p2.EggGroup2 And p1.EggGroup2 <> net.Pokemon3D.Game.Pokemon.EggGroups.None Then
+                        If p1.EggGroup1 = p2.EggGroup1 And p1.EggGroup1 <> BasePokemon.EggGroups.None Or
+                            p1.EggGroup2 = p2.EggGroup1 And p1.EggGroup2 <> BasePokemon.EggGroups.None Or
+                            p1.EggGroup1 = p2.EggGroup2 And p1.EggGroup1 <> BasePokemon.EggGroups.None Or
+                            p1.EggGroup2 = p2.EggGroup2 And p1.EggGroup2 <> BasePokemon.EggGroups.None Then
                             chance = -1
                         End If
                     End If
@@ -439,17 +444,17 @@
             Dim p1 As Pokemon = Pokemon.Values(0)
             Dim p2 As Pokemon = Pokemon.Values(1)
 
-            If p1.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p1.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
+            If p1.EggGroup1 = BasePokemon.EggGroups.Ditto Or p1.EggGroup2 = BasePokemon.EggGroups.Ditto Then
                 Return p2.Number
             End If
-            If p2.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p2.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
+            If p2.EggGroup1 = BasePokemon.EggGroups.Ditto Or p2.EggGroup2 = BasePokemon.EggGroups.Ditto Then
                 Return p1.Number
             End If
 
-            If p1.Gender = net.Pokemon3D.Game.Pokemon.Genders.Female Then
+            If p1.Gender = BasePokemon.Genders.Female Then
                 Return p1.Number
             End If
-            If p2.Gender = net.Pokemon3D.Game.Pokemon.Genders.Female Then
+            If p2.Gender = BasePokemon.Genders.Female Then
                 Return p2.Number
             End If
         End If
@@ -465,28 +470,28 @@
             Dim p2 As Pokemon = Pokemon(1)
 
             'First Pokémon is Ditto.
-            If p1.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p1.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
+            If p1.EggGroup1 = BasePokemon.EggGroups.Ditto Or p1.EggGroup2 = BasePokemon.EggGroups.Ditto Then
                 'If first Pokémon is  Ditto, then the other Pokémon must be female to inherit the ball.
-                If p2.Gender = net.Pokemon3D.Game.Pokemon.Genders.Female Then
-                    ballID = p2.CatchBall.ID
+                If p2.Gender = BasePokemon.Genders.Female Then
+                    ballID = p2.CatchBall.Id
                 End If
             End If
             'Second Pokémon is Ditto.
-            If p2.EggGroup1 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Or p2.EggGroup2 = net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
+            If p2.EggGroup1 = BasePokemon.EggGroups.Ditto Or p2.EggGroup2 = BasePokemon.EggGroups.Ditto Then
                 'If second Pokémon is  Ditto, then the other Pokémon must be female to inherit the ball.
-                If p1.Gender = net.Pokemon3D.Game.Pokemon.Genders.Female Then
-                    ballID = p1.CatchBall.ID
+                If p1.Gender = BasePokemon.Genders.Female Then
+                    ballID = p1.CatchBall.Id
                 End If
             End If
             'No Pokémon is Ditto:
-            If p1.EggGroup1 <> net.Pokemon3D.Game.Pokemon.EggGroups.Ditto And p1.EggGroup2 <> net.Pokemon3D.Game.Pokemon.EggGroups.Ditto And p2.EggGroup1 <> net.Pokemon3D.Game.Pokemon.EggGroups.Ditto And p2.EggGroup2 <> net.Pokemon3D.Game.Pokemon.EggGroups.Ditto Then
+            If p1.EggGroup1 <> BasePokemon.EggGroups.Ditto And p1.EggGroup2 <> BasePokemon.EggGroups.Ditto And p2.EggGroup1 <> BasePokemon.EggGroups.Ditto And p2.EggGroup2 <> BasePokemon.EggGroups.Ditto Then
                 'First Pokémon is female:
-                If p1.Gender = net.Pokemon3D.Game.Pokemon.Genders.Female Then
-                    ballID = p1.CatchBall.ID
+                If p1.Gender = BasePokemon.Genders.Female Then
+                    ballID = p1.CatchBall.Id
                 End If
                 'Second Pokémon is female:
-                If p2.Gender = net.Pokemon3D.Game.Pokemon.Genders.Female Then
-                    ballID = p2.CatchBall.ID
+                If p2.Gender = BasePokemon.Genders.Female Then
+                    ballID = p2.CatchBall.Id
                 End If
             End If
 

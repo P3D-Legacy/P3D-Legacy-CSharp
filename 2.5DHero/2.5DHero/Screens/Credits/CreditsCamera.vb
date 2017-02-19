@@ -1,5 +1,7 @@
-﻿Public Class CreditsCamera
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.HelperClasses
 
+Public Class CreditsCamera
     Inherits Camera
 
     Dim oldX, oldY As Integer
@@ -120,8 +122,8 @@
     End Sub
 
     Public Function CreateRay() As Ray
-        Dim centerX As Integer = CInt(Core.windowSize.Width / 2)
-        Dim centerY As Integer = CInt(Core.windowSize.Height / 2)
+        Dim centerX As Integer = CInt(Core.WindowSize.Width / 2)
+        Dim centerY As Integer = CInt(Core.WindowSize.Height / 2)
 
         Dim nearSource As Vector3 = New Vector3(centerX, centerY, 0)
         Dim farSource As Vector3 = New Vector3(centerX, centerY, 1)

@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Fire
 
     Public Class VCreate
@@ -52,7 +54,7 @@ Namespace BattleSystem.Moves.Fire
             '#End
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
                     BattleScreen.Battle.LowerStat(own, own, BattleScreen, "Defense", 1, "", "move:v-create")        
                     BattleScreen.Battle.LowerStat(own, own, BattleScreen, "Special Defense", 1, "", "move:v-create")
                     BattleScreen.Battle.LowerStat(own, own, BattleScreen, "Speed", 1, "", "move:v-create")                    

@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Psychic
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Psychic
 
     Public Class TrickRoom
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If BattleScreen.FieldEffects.TrickRoom <= 0 Then
                 BattleScreen.FieldEffects.TrickRoom = 5
                 BattleScreen.BattleQuery.Add(New TextQueryObject("The dimensions have been twisted!"))

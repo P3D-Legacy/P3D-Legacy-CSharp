@@ -1,4 +1,6 @@
-﻿Namespace Servers
+﻿Imports P3D.Legacy.Core
+
+Namespace Servers
 
     Public Class Player
 

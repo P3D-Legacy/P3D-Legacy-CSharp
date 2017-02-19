@@ -1,4 +1,12 @@
-﻿Namespace GameJolt
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Namespace GameJolt
 
     Public Class GTSMainScreen
 

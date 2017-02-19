@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Water
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Water
 
     Public Class Surf
 
@@ -53,10 +56,11 @@
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim dive As Integer = BattleScreen.FieldEffects.OppDiveCounter
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            Dim dive As Integer = screen.FieldEffects.OppDiveCounter
             If own = False Then
-                dive = BattleScreen.FieldEffects.OwnDiveCounter
+                dive = screen.FieldEffects.OwnDiveCounter
             End If
 
             If dive > 0 Then

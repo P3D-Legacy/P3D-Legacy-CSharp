@@ -1,6 +1,16 @@
-﻿Public Class NetworkPlayer
+﻿Imports System.Drawing
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Interfaces
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Models
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
 
-    Inherits Entity
+Public Class NetworkPlayer
+    Inherits BaseNetworkPlayer
 
     Shared ReadOnly FallbackSkins() As String = {"0", "1", "2", "5", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "32", "49", "61", "63", "oldhatman", "PinkShirtGirl", "bugcatcher"}
     Shared FallBack As New Dictionary(Of Integer, String)
@@ -10,7 +20,7 @@
     ''' <summary>
     ''' The Network ID of the player
     ''' </summary>
-    Public NetworkID As Integer = 0
+    Public Property NetworkId As Integer
 
     Public faceRotation As Integer
     Public MapFile As String = ""
@@ -22,7 +32,7 @@
     Public Texture As Texture2D
 
     Public moving As Boolean = False
-    Dim lastRectangle As New Rectangle(0, 0, 0, 0)
+    Dim lastRectangle As New Microsoft.Xna.Framework.Rectangle(0, 0, 0, 0)
     Dim AnimationX As Integer = 1
     Const AnimationDelayLenght As Single = 1.1F
     Dim AnimationDelay As Single = AnimationDelayLenght
@@ -43,7 +53,7 @@
         MyBase.New(X, Y, Z, "NetworkPlayer", Textures, {0, 0}, True, Rotation, Scale, BaseModel.BillModel, 0, "", New Vector3(1.0F))
 
         Me.Name = Name
-        Me.NetworkID = ID
+        Me.NetworkId = ID
         Me.faceRotation = Rotation
         Me.TextureID = TextureID
         Me.Collision = False
@@ -71,8 +81,8 @@
 
         Dim OnlineSprite As Texture2D = Nothing
         If Me.GameJoltID <> "" Then
-            If GameJolt.Emblem.HasDownloadedSprite(Me.GameJoltID) = True Then
-                OnlineSprite = GameJolt.Emblem.GetOnlineSprite(Me.GameJoltID)
+            If Emblem.HasDownloadedSprite(Me.GameJoltID) = True Then
+                OnlineSprite = Emblem.GetOnlineSprite(Me.GameJoltID)
             Else
                 Dim t As New Threading.Thread(AddressOf DownloadOnlineSprite)
                 t.IsBackground = True
@@ -96,13 +106,13 @@
                 Me.Texture = TextureManager.GetTexture(texturePath)
             Else
                 Logger.Debug("Texture fallback!")
-                Me.Texture = TextureManager.GetTexture("Textures\NPC\" & FallBack(Me.NetworkID))
+                Me.Texture = TextureManager.GetTexture("Textures\NPC\" & FallBack(Me.NetworkId))
             End If
         End If
     End Sub
 
     Private Sub DownloadOnlineSprite()
-        Dim t As Texture2D = GameJolt.Emblem.GetOnlineSprite(Me.GameJoltID)
+        Dim t As Texture2D = Emblem.GetOnlineSprite(Me.GameJoltID)
 
         If Not t Is Nothing Then
             Me.Texture = t
@@ -126,7 +136,7 @@
 
     Private Sub ChangeTexture()
         If Not Me.Texture Is Nothing Then
-            Dim r As New Rectangle(0, 0, 0, 0)
+            Dim r As New Microsoft.Xna.Framework.Rectangle(0, 0, 0, 0)
             Dim cameraRotation As Integer = Screen.Camera.GetFacingDirection()
             Dim spriteIndex As Integer = Me.faceRotation - cameraRotation
 
@@ -151,7 +161,7 @@
                 x = GetAnimationX() * spriteSize.Width
             End If
 
-            r = New Rectangle(x, spriteSize.Height * spriteIndex, spriteSize.Width, spriteSize.Height)
+            r = New Microsoft.Xna.Framework.Rectangle(x, spriteSize.Height * spriteIndex, spriteSize.Width, spriteSize.Height)
 
             If r <> lastRectangle Then
                 lastRectangle = r
@@ -200,8 +210,8 @@
         End If
     End Sub
 
-    Protected Overrides Function CalculateCameraDistance(CPosition As Vector3) as Single
-        Return MyBase.CalculateCameraDistance(CPosition) - 0.2f
+    Protected Overrides Function CalculateCameraDistance(CPosition As Vector3) As Single
+        Return MyBase.CalculateCameraDistance(CPosition) - 0.2F
     End Function
 
     Public Overrides Sub UpdateEntity()
@@ -229,7 +239,7 @@
 
         Move()
 
-        If DownloadingSprite AndAlso GameJolt.Emblem.HasDownloadedSprite(GameJoltID) Then
+        If DownloadingSprite AndAlso Emblem.HasDownloadedSprite(GameJoltID) Then
             SetTexture(TextureID)
             ChangeTexture()
             DownloadingSprite = False
@@ -244,10 +254,10 @@
                 Me.Draw(Me.Model, Textures, False)
                 If Core.GameOptions.ShowGUI = True Then
                     If Me.NameTexture IsNot Nothing Then
-                        Dim state = GraphicsDevice.DepthStencilState
-                        GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
+                        Dim state = Core.GraphicsDevice.DepthStencilState
+                        Core.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
                         Draw(BaseModel.BillModel, {Me.NameTexture}, False)
-                        GraphicsDevice.DepthStencilState = state
+                        Core.GraphicsDevice.DepthStencilState = state
                     End If
                     If Me.BusyType <> "0" Then
                         RenderBubble()
@@ -287,9 +297,9 @@
         Return True
     End Function
 
-    Public Sub ApplyPlayerData(ByVal p As Servers.Player)
+    Public Sub ApplyPlayerData(ByVal p As IPlayer)
         Try
-            Me.NetworkID = p.ServersID
+            Me.NetworkId = p.ServersID
 
             Me.Position = p.Position
 
@@ -333,7 +343,7 @@
 
     Public Overrides Sub ClickFunction()
         Dim Data(4) As Object
-        Data(0) = Me.NetworkID
+        Data(0) = Me.NetworkId
         Data(1) = Me.GameJoltID
         Data(2) = Me.Name
         Data(3) = Me.Texture
@@ -360,11 +370,11 @@
                 Dim renderTarget As RenderTarget2D = New RenderTarget2D(Core.GraphicsDevice, CInt(size.X), CInt(size.Y * 3))
                 Core.GraphicsDevice.SetRenderTarget(renderTarget)
 
-                Core.GraphicsDevice.Clear(Color.Transparent)
+                Core.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent)
 
                 Core.SpriteBatch.Begin()
-                Canvas.DrawRectangle(New Rectangle(0, 0, CInt(size.X), CInt(size.Y)), New Color(0, 0, 0, 150))
-                Core.SpriteBatch.DrawString(font, text, Vector2.Zero, Color.White)
+                Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(0, 0, CInt(size.X), CInt(size.Y)), New Microsoft.Xna.Framework.Color(0, 0, 0, 150))
+                Core.SpriteBatch.DrawString(font, text, Vector2.Zero, Microsoft.Xna.Framework.Color.White)
                 Core.SpriteBatch.End()
 
                 Core.GraphicsDevice.SetRenderTarget(Nothing)

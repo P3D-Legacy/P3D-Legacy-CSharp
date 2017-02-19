@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Constrict
 
@@ -54,7 +57,7 @@
             Me.EffectChances.Add(10)
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If Core.Random.Next(0, 100) < Me.GetEffectChance(0, own, BattleScreen) Then
                 BattleScreen.Battle.LowerStat(Not own, own, BattleScreen, "Speed", 1, "", "move:constrict")
             End If

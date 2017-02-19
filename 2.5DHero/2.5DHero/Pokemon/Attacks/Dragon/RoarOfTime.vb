@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Dragon
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Dragon
 
     Public Class RoarOfTime
 
@@ -55,11 +58,12 @@
             Me.AIField2 = AIField.Recharge
         End Sub
 
-        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As Screen)
+            Dim screen As BattleScreen = BattleScreen
             If Own = True Then
-                BattleScreen.FieldEffects.OwnRecharge += 1
+                screen.FieldEffects.OwnRecharge += 1
             Else
-                BattleScreen.FieldEffects.OppRecharge += 1
+                screen.FieldEffects.OppRecharge += 1
             End If
         End Sub
 

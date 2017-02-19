@@ -1,6 +1,13 @@
-﻿Public Class NetworkPokemon
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.Interfaces
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Models
+Imports P3D.Legacy.Core.Screens
 
-    Inherits Entity
+Public Class NetworkPokemon
+    Inherits BaseNetworkPokemon
 
     Public PlayerID As Integer = 0
     Public LevelFile As String = ""
@@ -31,8 +38,8 @@
         Me.DropUpdateUnlessDrawn = False
     End Sub
 
-    Protected Overrides Function CalculateCameraDistance(CPosition As Vector3) as Single
-        Return MyBase.CalculateCameraDistance(CPosition) - 0.2f
+    Protected Overrides Function CalculateCameraDistance(CPosition As Vector3) As Single
+        Return MyBase.CalculateCameraDistance(CPosition) - 0.2F
     End Function
 
     Public Overrides Sub UpdateEntity()
@@ -70,10 +77,10 @@
                     If IsCorrectScreen() = True Then
                         If Me.PokemonTexture <> "" Then
                             If Not Me.Textures Is Nothing Then
-                                Dim state = GraphicsDevice.DepthStencilState
-                                GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
+                                Dim state = Core.GraphicsDevice.DepthStencilState
+                                Core.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
                                 Draw(Me.Model, {Me.Textures(0)}, False)
-                                GraphicsDevice.DepthStencilState = state
+                                Core.GraphicsDevice.DepthStencilState = state
                             End If
                         End If
                     End If
@@ -151,7 +158,7 @@
         Next
     End Sub
 
-    Public Sub ApplyPlayerData(ByVal p As Servers.Player)
+    Public Sub ApplyPlayerData(ByVal p As IPlayer)
         Try
             Me.PlayerID = p.ServersID
 

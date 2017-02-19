@@ -1,4 +1,14 @@
-﻿Public Class SaveScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Objects
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class SaveScreen
 
     Inherits Screen
 
@@ -24,7 +34,7 @@
         Me.PreScreen.Draw()
 
         If Core.Player.IsGameJoltSave = True Then
-            GameJolt.Emblem.Draw(GameJolt.API.username, Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Points, Core.GameJoltSave.Gender, Core.GameJoltSave.Emblem, New Vector2(CSng(Core.windowSize.Width / 2 - 256), 30), 4, Core.GameJoltSave.DownloadedSprite)
+            Emblem.Draw(API.username, Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Points, Core.GameJoltSave.Gender, Core.GameJoltSave.EmblemS, New Vector2(CSng(Core.WindowSize.Width / 2 - 256), 30), 4, Core.GameJoltSave.DownloadedSprite)
         End If
 
         Canvas.DrawImageBorder(TextureManager.GetTexture(mainTexture, New Rectangle(0, 0, 48, 48)), 2, New Rectangle(168, 168, 640, 320))

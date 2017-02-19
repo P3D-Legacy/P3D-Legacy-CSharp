@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Abilities
 
     Public Class HoneyGather

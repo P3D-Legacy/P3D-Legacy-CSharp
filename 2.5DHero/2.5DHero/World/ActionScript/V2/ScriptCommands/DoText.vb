@@ -1,4 +1,9 @@
-﻿Namespace ScriptVersion2
+﻿Imports P3D.Legacy.Core.Data
+Imports P3D.Legacy.Core.Dialogues
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+
+Namespace ScriptVersion2
 
     Partial Class ScriptCommander
 

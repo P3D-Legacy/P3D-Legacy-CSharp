@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Bug
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Bug
 
     Public Class StruggleBug
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.LowerSpAttack
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             BattleScreen.Battle.LowerStat(Not own, own, BattleScreen, "Special Attack", 1, "", "move:strugglebug")
         End Sub
 

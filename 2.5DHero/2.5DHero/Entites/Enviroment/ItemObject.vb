@@ -1,5 +1,11 @@
-﻿Public Class ItemObject
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Dialogues
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
 
+Public Class ItemObject
     Inherits Entity
 
     Dim Item As Item
@@ -59,7 +65,7 @@
         SoundManager.PlaySound("item_found", True)
         Screen.TextBox.TextColor = TextBox.PlayerColor
         Screen.TextBox.Show(Core.Player.Name & " found~" & Me.Item.Name & "!*" & Core.Player.Inventory.GetMessageReceive(Item, 1), {Me})
-        Core.Player.Inventory.AddItem(Me.Item.ID, 1)
+        Core.Player.Inventory.AddItem(Me.Item.Id, 1)
         PlayerStatistics.Track("Items found", 1)
 
         Core.Player.AddPoints(1, "Found an item.")

@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.KeyItems
 
     <Item(175, "SquirtBottle")>
@@ -8,7 +10,7 @@ Namespace Items.KeyItems
         Public Overrides ReadOnly Property Description As String = "A bottle used for watering plants in Loamy Soil."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(360, 144, 24, 24)
+            TextureRectangle = New Rectangle(360, 144, 24, 24)
         End Sub
 
     End Class

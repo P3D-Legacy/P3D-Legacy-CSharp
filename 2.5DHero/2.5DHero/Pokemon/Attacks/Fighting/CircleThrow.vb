@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Fighting
 
     Public Class CircleThrow
@@ -55,14 +58,14 @@ Namespace BattleSystem.Moves.Fighting
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon    'p is the phazed pokemon
             If own = True Then
                 p = BattleScreen.OppPokemon
             End If
 
             'Not fainted:
-            If p.HP > 0 And p.Status <> Pokemon.StatusProblems.Fainted Then
+            If p.HP > 0 And p.Status <> BasePokemon.StatusProblems.Fainted Then
                 Dim substitude As Integer = BattleScreen.FieldEffects.OwnSubstitute
                 If own = True Then
                     substitude = BattleScreen.FieldEffects.OppSubstitute
@@ -82,13 +85,13 @@ Namespace BattleSystem.Moves.Fighting
                         If ingrain <= 0 Then
 
                             If BattleCalculation.CanSwitch(BattleScreen, Not own) = True Then
-                                 BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " got thrown away!"))
+                                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " got thrown away!"))
                                 If BattleScreen.IsPVPBattle = True Or BattleScreen.IsTrainerBattle = True Or BattleScreen.IsRemoteBattle = True Then
                                     'trainer battle
                                     If own = True Then
                                         If BattleScreen.Trainer.CountUseablePokemon > 1 Then
-                                            Dim i As Integer = Core.Random.Next(0, BattleScreen.Trainer.Pokemons.count)
-                                            While BattleScreen.Trainer.Pokemons(i).Status = Pokemon.StatusProblems.Fainted OrElse BattleScreen.OppPokemonIndex = i OrElse BattleScreen.Trainer.Pokemons(i).HP <= 0
+                                            Dim i As Integer = Core.Random.Next(0, BattleScreen.Trainer.Pokemons.Count)
+                                            While BattleScreen.Trainer.Pokemons(i).Status = BasePokemon.StatusProblems.Fainted OrElse BattleScreen.OppPokemonIndex = i OrElse BattleScreen.Trainer.Pokemons(i).HP <= 0
                                                 i = Core.Random.Next(0, BattleScreen.Trainer.Pokemons.Count - 1)
                                             End While
                                             BattleScreen.Battle.SwitchOutOpp(BattleScreen, i, "")
@@ -97,8 +100,8 @@ Namespace BattleSystem.Moves.Fighting
                                         End If
                                     Else
                                         If Core.Player.CountFightablePokemon > 1 Then
-                                             Dim i As Integer = Core.Random.Next(0, Core.Player.Pokemons.Count)
-                                            While Core.Player.Pokemons(i).Status = Pokemon.StatusProblems.Fainted OrElse BattleScreen.OwnPokemonIndex = i OrElse Core.Player.Pokemons(i).HP <= 0
+                                            Dim i As Integer = Core.Random.Next(0, Core.Player.Pokemons.Count)
+                                            While Core.Player.Pokemons(i).Status = BasePokemon.StatusProblems.Fainted OrElse BattleScreen.OwnPokemonIndex = i OrElse Core.Player.Pokemons(i).HP <= 0
                                                 i = Core.Random.Next(0, Core.Player.Pokemons.Count - 1)
                                             End While
                                             BattleScreen.Battle.SwitchOutOwn(BattleScreen, i, -1)

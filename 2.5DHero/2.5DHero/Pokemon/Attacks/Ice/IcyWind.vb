@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Ice
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Ice
 
     Public Class IcyWind
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.LowerSpeed
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             BattleScreen.Battle.LowerStat(Not own, own, BattleScreen, "Speed", 1, "", "move:icywind")
         End Sub
 

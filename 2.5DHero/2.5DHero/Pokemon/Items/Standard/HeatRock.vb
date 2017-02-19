@@ -1,4 +1,5 @@
-﻿Namespace Items.Standard
+Imports P3D.Legacy.Core.Pokemon
+Namespace Items.Standard
 
     <Item(294, "Heat Rock")>
     Public Class HeatRock
@@ -11,7 +12,7 @@
         Public Overrides ReadOnly Property CanBeUsed As Boolean = False
 
         Public Sub New()
-            _textureRectangle = New Rectangle(384, 264, 24, 24)
+            TextureRectangle = New Rectangle(384, 264, 24, 24)
         End Sub
 
     End Class

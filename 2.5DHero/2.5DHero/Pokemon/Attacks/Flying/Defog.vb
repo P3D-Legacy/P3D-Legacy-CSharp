@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Flying
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Flying
 
     Public Class Defog
 
@@ -52,7 +54,7 @@
             '#End
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If BattleScreen.Battle.LowerStat(Not own, own, BattleScreen, "Evasion", 1, "", "move:defog") = False Then
                 BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
             End If

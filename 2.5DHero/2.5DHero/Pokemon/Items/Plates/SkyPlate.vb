@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.Plates
 
     <Item(278, "Sky Plate")>

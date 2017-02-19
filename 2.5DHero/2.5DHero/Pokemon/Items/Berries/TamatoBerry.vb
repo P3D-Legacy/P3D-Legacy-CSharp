@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Pokemon.Items
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Berries
 
     <Item(2025, "Tamato")>
@@ -30,8 +35,8 @@ Namespace Items.Berries
                 If p.EVSpeed < reduce Then
                     reduce = p.EVSpeed
                 End If
-                
-                p.ChangeFriendShip(Pokemon.FriendShipCauses.EVBerry)
+
+                p.ChangeFriendShip(BasePokemon.FriendShipCauses.EVBerry)
                 p.EVSpeed -= reduce
                 p.CalculateStats()
 

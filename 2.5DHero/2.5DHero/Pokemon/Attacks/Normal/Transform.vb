@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Transform
 
@@ -56,7 +58,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             'Changes: Type, stats (except HP), stat modifications, moveset, species, shiny, ability, additionalvalue
             'Set istransformed to true
             'fail if target is transformed
@@ -77,7 +79,7 @@
                 p.OriginalType2 = New Element(p.Type2.Type)
                 p.OriginalStats = {p.Attack, p.Defense, p.SpAttack, p.SpDefense, p.Speed}
                 p.OriginalShiny = CInt(p.IsShiny.ToNumberString())
-                p.OriginalMoves = New List(Of BattleSystem.Attack)
+                p.OriginalMoves = New List(Of BaseAttack)
                 p.OriginalMoves.AddRange(p.Attacks.ToArray())
                 p.OriginalAbility = Ability.GetAbilityByID(p.Ability.ID)
 

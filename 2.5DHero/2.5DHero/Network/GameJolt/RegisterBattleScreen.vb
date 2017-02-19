@@ -1,8 +1,18 @@
-﻿Namespace GameJolt
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Objects
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Namespace GameJolt
 
     Public Class RegisterBattleScreen
-
-        Inherits Screen
+        Inherits BaseRegisterBattleScreen
 
         Public Const REGISTERBATTLEVERSION As String = "1"
 
@@ -87,10 +97,10 @@
         End Sub
 
         Public Overrides Sub Draw()
-            Canvas.DrawGradient(Core.windowSize, New Color(10, 145, 227), New Color(6, 77, 139), False, -1)
-            Canvas.DrawGradient(New Rectangle(0, 0, CInt(Core.windowSize.Width), 65), New Color(0, 24, 114), New Color(13, 138, 228), False, -1)
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "Battle Spot", New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString("Battle Spot").X / 2), 20), New Color(196, 231, 255))
-            Canvas.DrawRectangle(New Rectangle(0, 65, Core.windowSize.Width, 1), New Color(0, 24, 114))
+            Canvas.DrawGradient(Core.WindowSize, New Color(10, 145, 227), New Color(6, 77, 139), False, -1)
+            Canvas.DrawGradient(New Rectangle(0, 0, CInt(Core.WindowSize.Width), 65), New Color(0, 24, 114), New Color(13, 138, 228), False, -1)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "Battle Spot", New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString("Battle Spot").X / 2), 20), New Color(196, 231, 255))
+            Canvas.DrawRectangle(New Rectangle(0, 65, Core.WindowSize.Width, 1), New Color(0, 24, 114))
 
             If TeamDownloaded = True Then
                 Select Case Me.ScreenState
@@ -107,7 +117,7 @@
                 End Select
             Else
                 Dim t As String = "Downloading data, please wait" & LoadingDots.Dots
-                Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), CSng(Core.windowSize.Height / 2 - 10)), Color.White)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), CSng(Core.WindowSize.Height / 2 - 10)), Color.White)
             End If
         End Sub
 
@@ -129,7 +139,7 @@
 #Region "MainMenu"
 
         Private Sub DrawMainMenu()
-            Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width / 2 - 400), 100, 800, 240), New Color(177, 228, 247, 200))
+            Canvas.DrawRectangle(New Rectangle(CInt(Core.WindowSize.Width / 2 - 400), 100, 800, 240), New Color(177, 228, 247, 200))
 
             Dim t As String = "Battle Spot allows you to battle against the registered teams of" & vbNewLine & "other players. These battles will be held against the computer."
             Select Case Me.MainCursor
@@ -141,21 +151,21 @@
                     t &= vbNewLine & vbNewLine & "Quit the Battle Spot."
             End Select
 
-            Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), 220 - FontManager.MainFont.MeasureString(t).Y / 2), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), 220 - FontManager.MainFont.MeasureString(t).Y / 2), Color.Black)
 
             For i = 0 To Me.MainMenuItems.Count - 1
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 5) / 2), 400 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White)
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 5) / 2) + 64, 400 + i * 96, 64 * 3, 64), New Rectangle(32, 16, 16, 16), Color.White)
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 5) / 2) + 64 * 4, 400 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
+                Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 5) / 2), 400 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White)
+                Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 5) / 2) + 64, 400 + i * 96, 64 * 3, 64), New Rectangle(32, 16, 16, 16), Color.White)
+                Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 5) / 2) + 64 * 4, 400 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
 
-                Core.SpriteBatch.DrawString(FontManager.MainFont, Me.MainMenuItems(i), New Vector2(CInt(Core.windowSize.Width / 2 - (64 * 5) / 2) + 20, 416 + i * 96), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, Me.MainMenuItems(i), New Vector2(CInt(Core.WindowSize.Width / 2 - (64 * 5) / 2) + 20, 416 + i * 96), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
             Next
 
             DrawMainCursor()
         End Sub
 
         Private Sub DrawMainCursor()
-            Dim cPosition As Vector2 = New Vector2(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2) + 160, 400 + Me.MainCursor * 96 - 42)
+            Dim cPosition As Vector2 = New Vector2(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2) + 160, 400 + Me.MainCursor * 96 - 42)
 
             Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(0, 0, 16, 16), "")
             Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
@@ -179,7 +189,7 @@
 
             If Controls.Accept(True, False, False) = True Then
                 For i = 0 To Me.MainMenuItems.Count - 1
-                    If New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2), 400 + i * 96, 64 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2), 400 + i * 96, 64 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         If i = MainCursor Then
                             Me.SelectMainMenuEntry()
                         Else
@@ -216,38 +226,38 @@
 #Region "TeamRegistration"
 
         Private Sub DrawTeamRegistration()
-            Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width / 2 - 400), 100, 800, 240), New Color(177, 228, 247, 200))
+            Canvas.DrawRectangle(New Rectangle(CInt(Core.WindowSize.Width / 2 - 400), 100, 800, 240), New Color(177, 228, 247, 200))
 
             Dim t As String = "When you register your team, the game will store a copy of your" & vbNewLine & "Pokémon online so that other players can download that team and" & vbNewLine & "battle against it." & vbNewLine & vbNewLine & "If you register a new team, the old one will be overwritten with" & vbNewLine & "the new one."
 
-            Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), 180 - FontManager.MainFont.MeasureString(t).Y / 2), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), 180 - FontManager.MainFont.MeasureString(t).Y / 2), Color.Black)
 
             If HasTeamUploaded = True Then
-                Core.SpriteBatch.DrawString(FontManager.MainFont, "Registered Team:", New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), 335 - FontManager.MainFont.MeasureString(t).Y / 2), Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, "Registered Team:", New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), 335 - FontManager.MainFont.MeasureString(t).Y / 2), Color.Black)
 
-                Dim startPos As New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), 335 - FontManager.MainFont.MeasureString(t).Y / 2)
+                Dim startPos As New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), 335 - FontManager.MainFont.MeasureString(t).Y / 2)
 
                 For i = 0 To Me.OwnTeam.Count - 1
                     Dim p As Pokemon = Me.OwnTeam(i)
                     Core.SpriteBatch.Draw(p.GetMenuTexture(), New Rectangle(CInt(startPos.X) + 200 + i * 68, CInt(startPos.Y) - 26, 64, 64), Color.White)
                 Next
             Else
-                Core.SpriteBatch.DrawString(FontManager.MainFont, "No Team registered.", New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), 335 - FontManager.MainFont.MeasureString(t).Y / 2), Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, "No Team registered.", New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), 335 - FontManager.MainFont.MeasureString(t).Y / 2), Color.Black)
             End If
 
             For i = 0 To Me.TeamRegisterMenuItems.Count - 1
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 5) / 2), 400 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White)
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 5) / 2) + 64, 400 + i * 96, 64 * 3, 64), New Rectangle(32, 16, 16, 16), Color.White)
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 5) / 2) + 64 * 4, 400 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
+                Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 5) / 2), 400 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White)
+                Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 5) / 2) + 64, 400 + i * 96, 64 * 3, 64), New Rectangle(32, 16, 16, 16), Color.White)
+                Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 5) / 2) + 64 * 4, 400 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
 
-                Core.SpriteBatch.DrawString(FontManager.MainFont, Me.TeamRegisterMenuItems(i), New Vector2(CInt(Core.windowSize.Width / 2 - (64 * 5) / 2) + 20, 416 + i * 96), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, Me.TeamRegisterMenuItems(i), New Vector2(CInt(Core.WindowSize.Width / 2 - (64 * 5) / 2) + 20, 416 + i * 96), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
             Next
 
             DrawTeamRegisterCursor()
         End Sub
 
         Private Sub DrawTeamRegisterCursor()
-            Dim cPosition As Vector2 = New Vector2(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2) + 160, 400 + Me.TeamRegisterCursor * 96 - 42)
+            Dim cPosition As Vector2 = New Vector2(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2) + 160, 400 + Me.TeamRegisterCursor * 96 - 42)
 
             Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(0, 0, 16, 16), "")
             Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
@@ -271,7 +281,7 @@
 
             If Controls.Accept(True, False, False) = True Then
                 For i = 0 To Me.TeamRegisterMenuItems.Count - 1
-                    If New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2), 400 + i * 96, 64 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2), 400 + i * 96, 64 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         If i = TeamRegisterCursor Then
                             Me.SelectTeamRegisterMenuEntry()
                         Else
@@ -357,7 +367,7 @@
 
         Private Sub DrawUploadTeam()
             Dim t As String = "Registering, please wait" & LoadingDots.Dots
-            Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), CSng(Core.windowSize.Height / 2 - 10)), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), CSng(Core.WindowSize.Height / 2 - 10)), Color.White)
         End Sub
 
 #End Region
@@ -366,10 +376,10 @@
 
         Private Sub DrawChooseTeam()
             Dim t As String = "Choose your team:"
-            Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), 100), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), 100), Color.White)
 
-            Dim startPos As New Vector2(CSng(Core.windowSize.Width / 2) - 400, 300)
-            Canvas.DrawGradient(New Rectangle(CInt(Core.windowSize.Width / 2) - 410, 230, 290, 360), New Color(203, 40, 41), New Color(238, 128, 128), False, -1)
+            Dim startPos As New Vector2(CSng(Core.WindowSize.Width / 2) - 400, 300)
+            Canvas.DrawGradient(New Rectangle(CInt(Core.WindowSize.Width / 2) - 410, 230, 290, 360), New Color(203, 40, 41), New Color(238, 128, 128), False, -1)
             For i = 0 To 5
                 Dim x As Integer = i
                 Dim y As Integer = 0
@@ -388,8 +398,8 @@
                 Core.SpriteBatch.DrawString(FontManager.MainFont, "Battle Box", New Vector2(CInt(startPos.X) + 80, CInt(startPos.Y) - 45), Color.White)
             Next
 
-            startPos = New Vector2(CSng(Core.windowSize.Width / 2) + 130, 300)
-            Canvas.DrawGradient(New Rectangle(CInt(Core.windowSize.Width / 2) + 120, 230, 290, 360), New Color(84, 198, 216), New Color(42, 167, 198), False, -1)
+            startPos = New Vector2(CSng(Core.WindowSize.Width / 2) + 130, 300)
+            Canvas.DrawGradient(New Rectangle(CInt(Core.WindowSize.Width / 2) + 120, 230, 290, 360), New Color(84, 198, 216), New Color(42, 167, 198), False, -1)
             For i = 0 To 5
                 Dim x As Integer = i
                 Dim y As Integer = 0
@@ -412,9 +422,9 @@
         End Sub
 
         Private Sub DrawChooseTeamCursor()
-            Dim cPosition As Vector2 = New Vector2(CSng(Core.windowSize.Width / 2) - 280, 190)
+            Dim cPosition As Vector2 = New Vector2(CSng(Core.WindowSize.Width / 2) - 280, 190)
             If ChooseTeamCursor = 1 Then
-                cPosition = New Vector2(CSng(Core.windowSize.Width / 2) + 250, 190)
+                cPosition = New Vector2(CSng(Core.WindowSize.Width / 2) + 250, 190)
             End If
 
             Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(0, 0, 16, 16), "")
@@ -438,7 +448,7 @@
             Next
 
             If Controls.Accept(True, False, False) = True Then
-                If New Rectangle(CInt(Core.windowSize.Width / 2) + 120, 230, 290, 360).Contains(MouseHandler.MousePosition) = True Then
+                If New Rectangle(CInt(Core.WindowSize.Width / 2) + 120, 230, 290, 360).Contains(MouseHandler.MousePosition) = True Then
                     If ChooseTeamCursor = 0 Then
                         ChooseTeamCursor = 1
                     Else
@@ -446,7 +456,7 @@
                         Me.PrepareBattle()
                     End If
                 End If
-                If New Rectangle(CInt(Core.windowSize.Width / 2) - 410, 230, 290, 360).Contains(MouseHandler.MousePosition) = True Then
+                If New Rectangle(CInt(Core.WindowSize.Width / 2) - 410, 230, 290, 360).Contains(MouseHandler.MousePosition) = True Then
                     If ChooseTeamCursor = 1 Then
                         ChooseTeamCursor = 0
                     Else
@@ -581,14 +591,14 @@
             LoadedOppTeam = True
         End Sub
 
-        Dim OppTeam As New List(Of Pokemon)
+        Dim OppTeam As New List(Of BasePokemon)
         Dim OppEmblem As Emblem
         Dim LoadedOppTeam As Boolean = False
-        Dim TempOriginalTeam As New List(Of Pokemon)
+        Dim TempOriginalTeam As New List(Of BasePokemon)
 
         Private Sub DrawPreparingBattle()
             Dim t As String = "Preparing the battle, please wait" & LoadingDots.Dots
-            Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), CSng(Core.windowSize.Height / 2 - 10)), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), CSng(Core.WindowSize.Height / 2 - 10)), Color.White)
         End Sub
 
         Private Sub UpdatePreparingBattle()
@@ -621,7 +631,7 @@
 
                 If UseBattleBox = True Then
                     Core.Player.Pokemons.Clear()
-                    Core.Player.Pokemons.AddRange(Me.BattleBoxPokemon.ToArray())
+                    Core.Player.Pokemons.AddRange(BattleBoxPokemon.ToArray())
                 End If
 
                 For Each p As Pokemon In Core.Player.Pokemons
@@ -654,7 +664,7 @@
             End If
         End Sub
 
-        Public Shared Function GetBattleStrength(ByVal team As List(Of Pokemon)) As Integer
+        Public Shared Function GetBattleStrength(ByVal team As List(Of BasePokemon)) As Integer
             Dim pCount As Integer = team.Count
 
             '(BaseStats + EVs * (780 / 186) + IVs * (780 / 186)) / (3 * 780) * 100 = x

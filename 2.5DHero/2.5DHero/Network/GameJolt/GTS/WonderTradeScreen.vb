@@ -1,4 +1,15 @@
-﻿Namespace GameJolt
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Objects
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Namespace GameJolt
 
     Public Class WonderTradeScreen
 
@@ -132,9 +143,9 @@
                         Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width / 2 - 300), 350, 600, 40), New Color(135, 168, 20, 100))
                         Core.SpriteBatch.DrawString(FontManager.MainFont, p.GetDisplayName(), New Vector2(CInt(Core.windowSize.Width / 2 - 298), 355), Color.White)
 
-                        If p.Gender = Pokemon.Genders.Female Then
-                            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Menu"), New Rectangle(CInt(Core.windowSize.Width / 2 - 100), 358, 12, 20), New Rectangle(102, 0, 6, 10), Color.White)
-                        ElseIf p.Gender = Pokemon.Genders.Male Then
+                        If p.Gender = BasePokemon.Genders.Female Then
+                            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Menu"), New Rectangle(CInt(Core.WindowSize.Width / 2 - 100), 358, 12, 20), New Rectangle(102, 0, 6, 10), Color.White)
+                        ElseIf p.Gender = BasePokemon.Genders.Male Then
                             Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Menu"), New Rectangle(CInt(Core.windowSize.Width / 2 - 100), 358, 12, 20), New Rectangle(96, 0, 6, 10), Color.White)
                         End If
 
@@ -404,7 +415,7 @@
 
             MusicManager.PlayMusic("gts", True)
 
-            If Core.Player.Pokemons(Core.Player.Pokemons.Count - 1).CanEvolve(EvolutionCondition.EvolutionTrigger.Trading, "") = True Then
+            If Core.Player.Pokemons(Core.Player.Pokemons.Count - 1).CanEVolve(EvolutionCondition.EvolutionTrigger.Trading, "") = True Then
                 Core.SetScreen(New EvolutionScreen(Me, {Core.Player.Pokemons.Count - 1}.ToList(), Me.SelectedPokemon.Number.ToString(), EvolutionCondition.EvolutionTrigger.Trading))
             End If
 

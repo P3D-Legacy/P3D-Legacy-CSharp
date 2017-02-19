@@ -1,4 +1,6 @@
-﻿Namespace ScriptVersion2
+﻿Imports P3D.Legacy.Core.Screens
+
+Namespace ScriptVersion2
 
     Partial Class ScriptComparer
 
@@ -32,9 +34,9 @@
                 Case "year"
                     Return My.Computer.Clock.LocalTime.Year.ToString()
                 Case "weather", "mapweather", "currentmapweather"
-                    Return Screen.Level.World.CurrentMapWeather.ToString()
+                    Return Screen.Level.World.CurrentWeather.ToString()
                 Case "weatherid", "mapweatherid", "currentmapweatherid"
-                    Return int(CInt(Screen.Level.World.CurrentMapWeather)).ToString()
+                    Return int(CInt(Screen.Level.World.CurrentWeather)).ToString()
                 Case "regionweather"
                     Return World.GetCurrentRegionWeather().ToString()
                 Case "regionweatherid"

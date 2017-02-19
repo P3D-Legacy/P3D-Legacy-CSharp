@@ -1,4 +1,6 @@
-﻿Namespace ScriptVersion2
+﻿Imports P3D.Legacy.Core
+
+Namespace ScriptVersion2
 
     Partial Class ScriptCommander
 

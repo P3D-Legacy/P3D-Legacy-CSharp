@@ -1,4 +1,7 @@
-﻿Public Class testWindowScreen
+﻿Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+
+Public Class testWindowScreen
 
     Inherits WindowScreen
 

@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Dragon
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Dragon
 
     Public Class DragonRage
 
@@ -52,7 +55,7 @@
             '#End
         End Sub
 
-        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As Screen) As Integer
             Return 40
         End Function
 

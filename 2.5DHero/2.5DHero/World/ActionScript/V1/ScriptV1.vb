@@ -1,4 +1,16 @@
-﻿Public Class ScriptV1
+﻿Imports net.Pokemon3D.Game.BattleSystem
+Imports OpenTK.Graphics.OpenGL
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.GameJolt
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
+Public Class ScriptV1
 
     Public Enum ScriptTypes As Integer
         Move = 0
@@ -551,7 +563,7 @@
                     T = False
                 End If
             Case "weather"
-                If CInt(condition) = Screen.Level.World.CurrentMapWeather Then
+                If CInt(condition) = Screen.Level.World.CurrentWeather Then
                     T = True
                 Else
                     T = False
@@ -821,7 +833,8 @@
 
                     Logger.Debug(TextureID)
 
-                    .Texture = net.Pokemon3D.Game.TextureManager.GetTexture("Textures\NPC\" & TextureID)
+                    .Texture = TextureManager.GetTexture("Textures\NPC\" & TextureID)
+
                     .SkinName = TextureID
 
                     .UpdateEntity()
@@ -829,7 +842,7 @@
             Case Me.Value.ToLower() = "toggledarkness"
                 Screen.Level.IsDark = Not Screen.Level.IsDark
             Case Me.Value.ToLower().StartsWith("globalhub"), Me.Value.ToLower().StartsWith("friendhub")
-                If GameJolt.API.LoggedIn = True And Core.Player.IsGamejoltSave = True Or GameController.IS_DEBUG_ACTIVE = True Then
+                If API.LoggedIn = True And Core.Player.IsGamejoltSave = True Or GameController.IS_DEBUG_ACTIVE = True Then
                     If GameJolt.LogInScreen.UserBanned(Core.GameJoltSave.GameJoltID) = False Then
                         Core.SetScreen(New TransitionScreen(Core.CurrentScreen, New GameJolt.GTSMainScreen(Core.CurrentScreen), Color.Black, False))
                     Else
@@ -881,7 +894,7 @@
                 Me.Value = Me.Value.Remove(0, Me.Value.IndexOf("(") + 1)
                 Me.Value = Me.Value.Remove(Me.Value.Length - 1, 1)
 
-                GameJolt.Emblem.AchieveEmblem(Me.Value)
+                Emblem.AchieveEmblem(Me.Value)
         End Select
 
         Me.IsReady = True
@@ -1232,7 +1245,7 @@
                 End If
             Case "setnature"
                 Dim Index As Integer = CInt(argument.GetSplit(0, ","))
-                Dim Nature As Pokemon.Natures = Pokemon.ConvertIDToNature(CInt(argument.GetSplit(1, ",")))
+                Dim Nature As BasePokemon.Natures = Pokemon.ConvertIDToNature(CInt(argument.GetSplit(1, ",")))
 
                 If Core.Player.Pokemons.Count - 1 >= Index Then
                     Core.Player.Pokemons(Index).Nature = Nature

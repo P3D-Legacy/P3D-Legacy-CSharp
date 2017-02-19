@@ -1,4 +1,8 @@
-﻿Namespace BattleSystem
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Battle.BattleSystemV2
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem
 
     Public Class CameraQueryObject
 

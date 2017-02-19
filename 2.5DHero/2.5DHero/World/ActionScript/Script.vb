@@ -1,4 +1,9 @@
-﻿Public Class Script
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
+Public Class Script
 
     Public Enum ScriptTypes As Integer
         'V1:
@@ -221,7 +226,7 @@
 
         oppPokemon.Generate(Level, True)
 
-        Dim Gender As Pokemon.Genders = ownPokemon.Gender
+        Dim Gender As BasePokemon.Genders = ownPokemon.Gender
 
         If IsNumeric(Script.SaveNPCTrade(3)) = True Then
             Dim genderID As Integer = ScriptConversion.ToInteger(Script.SaveNPCTrade(3))
@@ -231,13 +236,13 @@
 
             Select Case genderID
                 Case 0
-                    Gender = Pokemon.Genders.Male
+                    Gender = BasePokemon.Genders.Male
                 Case 1
-                    Gender = Pokemon.Genders.Female
+                    Gender = BasePokemon.Genders.Female
                 Case 2
-                    Gender = Pokemon.Genders.Genderless
+                    Gender = BasePokemon.Genders.Genderless
                 Case Else
-                    Gender = Pokemon.Genders.Male
+                    Gender = BasePokemon.Genders.Male
             End Select
         End If
 

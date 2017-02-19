@@ -1,10 +1,18 @@
-﻿Public Class EvolutionScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class EvolutionScreen
 
     Inherits Screen
 
     'Private FromBattle As Boolean = False
     'Private EvolutionArgument As String = ""
-    'Private EvolutionTrigger As EvolutionCondition.EvolutionTrigger
+    'Private EvolutionTrigger As EvolutionTrigger
 
     'Private PokemonList As New List(Of Integer)
 
@@ -14,7 +22,7 @@
     'Dim PokemonModel As ModelEntity
     'Dim C As Camera
 
-    'Public Sub New(ByVal currentScreen As Screen, ByVal EvolvePokemonIndices As List(Of Integer), ByVal EvolutionArgument As String, ByVal EvolutionTrigger As EvolutionCondition.EvolutionTrigger, Optional ByVal FromBattle As Boolean = False)
+    'Public Sub New(ByVal currentScreen As Screen, ByVal EvolvePokemonIndices As List(Of Integer), ByVal EvolutionArgument As String, ByVal EvolutionTrigger As EvolutionTrigger, Optional ByVal FromBattle As Boolean = False)
     '    Me.Identification = Identifications.EvolutionScreen
     '    Me.PreScreen = currentScreen
     '    Me.CanBePaused = True
@@ -65,7 +73,7 @@
     '    End If
     'End Sub
 
-    'Public Shared Function EvolvePokemon(ByVal currentPokemon As Pokemon, ByVal EvolutionArgument As String, ByVal EvolutionTrigger As EvolutionCondition.EvolutionTrigger) As Pokemon
+    'Public Shared Function EvolvePokemon(ByVal currentPokemon As Pokemon, ByVal EvolutionArgument As String, ByVal EvolutionTrigger As EvolutionTrigger) As Pokemon
     '    Dim HPpercentage As Integer = CInt((currentPokemon.HP / currentPokemon.MaxHP) * 100)
 
     '    Dim evolvedPokemon As Pokemon = PokeGetter.GetPokemonByID(currentPokemon.GetEvolutionID(EvolutionTrigger, EvolutionArgument))

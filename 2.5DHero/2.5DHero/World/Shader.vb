@@ -1,10 +1,15 @@
-﻿Public Class Shader
+﻿Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
+Public Class Shader
+    Implements IShader
 
     Public Position As Vector3
     Public Size As Vector3
     Public Shader As Vector3
     Public StopOnContact As Boolean
-    Public HasBeenApplied As Boolean = False
+    Public Property HasBeenApplied As Boolean Implements IShader.HasBeenApplied
 
     Public Sub New(ByVal Position As Vector3, ByVal Size As Vector3, ByVal Shader As Vector3, ByVal StopOnContact As Boolean)
         Me.Position = Position
@@ -12,14 +17,14 @@
         Me.Shader = Shader
         Me.StopOnContact = StopOnContact
 
-        If Screen.Level.World.EnvironmentType = World.EnvironmentTypes.Outside And World.GetTime() = 0 Then
+        If Screen.Level.World.EnvironmentType = EnvironmentTypeEnum.Outside And World.GetTime() = 0 Then
             Me.Shader.X += 0.2F
             Me.Shader.Y += 0.2F
             Me.Shader.Z += 0.5F
         End If
     End Sub
 
-    Public Sub ApplyShader(ByVal Entities() As Entity)
+    Public Sub ApplyShader(ByVal Entities() As Entity) Implements IShader.ApplyShader
         For x = 0 To Size.X - 1
             For z = 0 To Size.Z - 1
                 For Each e As Entity In Entities
@@ -38,5 +43,4 @@
 
         Me.HasBeenApplied = True
     End Sub
-
 End Class

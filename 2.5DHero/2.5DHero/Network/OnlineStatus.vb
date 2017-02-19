@@ -1,8 +1,13 @@
-﻿Public Class OnlineStatus
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class OnlineStatus
 
     Public Shared Sub Draw()
         If JoinServerScreen.Online = True And ConnectScreen.Connected = True Then
-            If KeyBoardHandler.KeyDown(KeyBindings.OnlineStatusKey) = True Then
+            If KeyBoardHandler.KeyDown(Core.KeyBindings.OnlineStatus) = True Then
                 Dim playerList = Core.ServersManager.PlayerCollection
 
                 Dim width As Integer = 1
@@ -13,7 +18,7 @@
                 End If
                 height = 10
 
-                Dim startX As Integer = CInt(Core.windowSize.Width / 2 - ((width * 256) / 2))
+                Dim startX As Integer = CInt(Core.WindowSize.Width / 2 - ((width * 256) / 2))
                 Dim startY As Integer = 120
 
                 For x = 1 To width
@@ -54,9 +59,9 @@
                     plateLength = 26 + CInt(FontManager.MainFont.MeasureString(serverName).X)
                 End If
 
-                Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width / 2 - plateLength / 2), 80, plateLength, 40), New Color(0, 0, 0, 150))
-                Core.SpriteBatch.DrawString(FontManager.MainFont, serverName, New Vector2(CInt(Core.windowSize.Width / 2 - plateLength / 2) + 4, 80 + 6), Chat.ServerColor)
-                Canvas.DrawBorder(3, New Rectangle(CInt(Core.windowSize.Width / 2 - plateLength / 2), 80, plateLength, 40), New Color(220, 220, 220))
+                Canvas.DrawRectangle(New Rectangle(CInt(Core.WindowSize.Width / 2 - plateLength / 2), 80, plateLength, 40), New Color(0, 0, 0, 150))
+                Core.SpriteBatch.DrawString(FontManager.MainFont, serverName, New Vector2(CInt(Core.WindowSize.Width / 2 - plateLength / 2) + 4, 80 + 6), Chat.ServerColor)
+                Canvas.DrawBorder(3, New Rectangle(CInt(Core.WindowSize.Width / 2 - plateLength / 2), 80, plateLength, 40), New Color(220, 220, 220))
             End If
         End If
     End Sub

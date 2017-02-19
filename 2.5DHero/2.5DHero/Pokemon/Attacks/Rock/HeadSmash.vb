@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
 Namespace BattleSystem.Moves.Rock
 
     Public Class HeadSmash
@@ -55,17 +58,18 @@ Namespace BattleSystem.Moves.Rock
             Me.AIField2 = AIField.Recoil
         End Sub
 
-        Public Overrides Sub MoveRecoil(own As Boolean, BattleScreen As BattleScreen)
-            Dim lastDamage As Integer = BattleScreen.FieldEffects.OwnLastDamage
+        Public Overrides Sub MoveRecoil(own As Boolean, BattleScreen As Screen)
+            Dim screen As BattleScreen = BattleScreen
+            Dim lastDamage As Integer = screen.FieldEffects.OwnLastDamage
             If own = False Then
-                lastDamage = BattleScreen.FieldEffects.OppLastDamage
+                lastDamage = screen.FieldEffects.OppLastDamage
             End If
             Dim recoilDamage As Integer = CInt(Math.Floor(lastDamage / 2))
             If recoilDamage <= 0 Then
                 recoilDamage = 1
             End If
 
-            BattleScreen.Battle.InflictRecoil(own, own, BattleScreen, Me, recoilDamage, "", "move:headsmash")
+            screen.Battle.InflictRecoil(own, own, BattleScreen, Me, recoilDamage, "", "move:headsmash")
         End Sub
 
     End Class

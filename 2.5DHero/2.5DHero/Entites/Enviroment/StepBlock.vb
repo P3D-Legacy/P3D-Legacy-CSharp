@@ -1,4 +1,8 @@
-﻿Public Class StepBlock
+﻿Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
+Public Class StepBlock
 
     Inherits Entity
 

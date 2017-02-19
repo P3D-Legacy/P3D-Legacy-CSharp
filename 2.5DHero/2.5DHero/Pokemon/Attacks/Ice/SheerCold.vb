@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Ice
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Ice
 
     Public Class SheerCold
 
@@ -56,28 +59,30 @@
             Me.AIField2 = AIField.OHKO
         End Sub
 
-        Public Overrides Function GetAccuracy(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim p As Pokemon = BattleScreen.OwnPokemon
-            Dim op As Pokemon = BattleScreen.OppPokemon
+        Public Overrides Function GetAccuracy(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OwnPokemon
+            Dim op As Pokemon = screen.OppPokemon
             If own = False Then
-                p = BattleScreen.OppPokemon
-                op = BattleScreen.OwnPokemon
+                p = screen.OppPokemon
+                op = screen.OwnPokemon
             End If
 
             Dim acc As Integer = ((p.Level - op.Level) + 30)
             Return acc
         End Function
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim p As Pokemon = BattleScreen.OwnPokemon
-            Dim op As Pokemon = BattleScreen.OppPokemon
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OwnPokemon
+            Dim op As Pokemon = screen.OppPokemon
             If Own = False Then
-                p = BattleScreen.OppPokemon
-                op = BattleScreen.OwnPokemon
+                p = screen.OppPokemon
+                op = screen.OwnPokemon
             End If
 
             If op.Level > p.Level Then
-                BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
+                screen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
                 Return True
             Else
                 Return False

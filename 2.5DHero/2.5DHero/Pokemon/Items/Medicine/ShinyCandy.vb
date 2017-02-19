@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Medicine
 
     <Item(501, "Shiny Candy")>
@@ -9,7 +14,7 @@ Namespace Items.Medicine
         Public Overrides ReadOnly Property PokeDollarPrice As Integer = 4800
 
         Public Sub New()
-            _textureRectangle = New Rectangle(96, 240, 24, 24)
+            TextureRectangle = New Rectangle(96, 240, 24, 24)
         End Sub
 
         Public Overrides Sub Use()

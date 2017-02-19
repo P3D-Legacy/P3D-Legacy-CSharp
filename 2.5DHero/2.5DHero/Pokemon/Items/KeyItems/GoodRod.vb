@@ -1,3 +1,9 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
 Namespace Items.KeyItems
 
     <Item(59, "Good Rod")>
@@ -9,7 +15,7 @@ Namespace Items.KeyItems
         Public Overrides ReadOnly Property CanBeUsed As Boolean = True
 
         Public Sub New()
-            _textureRectangle = New Rectangle(264, 48, 24, 24)
+            TextureRectangle = New Rectangle(264, 48, 24, 24)
         End Sub
 
         Public Overrides Sub Use()
@@ -24,7 +30,7 @@ Namespace Items.KeyItems
 
                 Dim pokeFile As String = "poke\" & Screen.Level.LevelFile.Remove(Screen.Level.LevelFile.Length - 4, 4) & ".poke"
                 If GameModeManager.MapFileExists(pokeFile) = True Then
-                    p = Spawner.GetPokemon(Screen.Level.LevelFile, Spawner.EncounterMethods.GoodRod, False)
+                    p = Spawner.GetPokemon(Screen.Level.LevelFile, EncounterMethods.GoodRod, False)
                 End If
 
                 If p Is Nothing Then

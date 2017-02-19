@@ -1,4 +1,15 @@
-﻿Namespace GameJolt
+﻿Imports System.Drawing
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Objects
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Namespace GameJolt
 
     Public Class GTSSearchScreen
 
@@ -34,26 +45,26 @@
         End Sub
 
         Public Overrides Sub Draw()
-            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), Core.windowSize, New Rectangle(320, 176, 192, 160), Color.White)
+            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), Core.windowSize, New Microsoft.Xna.Framework.Rectangle(320, 176, 192, 160), Microsoft.Xna.Framework.Color.White)
 
             For Each F As Furr In GTSMainScreen.Furrs
                 F.Draw()
             Next
 
-            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Rectangle(32, CInt(32), 208, 96), New Rectangle(304, 0, 208, 96), Color.White)
+            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Microsoft.Xna.Framework.Rectangle(32, CInt(32), 208, 96), New Microsoft.Xna.Framework.Rectangle(304, 0, 208, 96), Microsoft.Xna.Framework.Color.White)
 
             DrawFilters()
             DrawButton(New Vector2(1000, 64), "Search", 3)
 
             DrawMain()
 
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Version " & GTSMainScreen.GTSVersion, New Vector2(4, Core.windowSize.Height - 1 - FontManager.MiniFont.MeasureString("Version " & GTSMainScreen.GTSVersion).Y), Color.DarkGray)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Version " & GTSMainScreen.GTSVersion, New Vector2(4, Core.windowSize.Height - 1 - FontManager.MiniFont.MeasureString("Version " & GTSMainScreen.GTSVersion).Y), Microsoft.Xna.Framework.Color.DarkGray)
         End Sub
 
         Private Sub DrawFilters()
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Area: " & Me.AreaFilter, New Vector2(280, 4), Color.White)
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Offer:", New Vector2(280, 26), Color.White)
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Request:", New Vector2(792, 26), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Area: " & Me.AreaFilter, New Vector2(280, 4), Microsoft.Xna.Framework.Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Offer:", New Vector2(280, 26), Microsoft.Xna.Framework.Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Request:", New Vector2(792, 26), Microsoft.Xna.Framework.Color.White)
 
             DrawFilter(New Vector2(280, 48), 4, "Pokémon:", OfferFilter)
             DrawFilter(New Vector2(472, 48), 3, "Level:", LevelFilter)
@@ -63,46 +74,46 @@
 
         Private Sub DrawFilter(ByVal Position As Vector2, ByVal Size As Integer, ByVal Label As String, ByVal Text As String)
             Dim TexX As Integer = 368
-            If New Rectangle(CInt(Position.X), CInt(Position.Y), (Size + 1) * 32, 64).Contains(MouseHandler.MousePosition) = True And Me.IsCurrentScreen() = True Then
+            If New Microsoft.Xna.Framework.Rectangle(CInt(Position.X), CInt(Position.Y), (Size + 1) * 32, 64).Contains(MouseHandler.MousePosition) = True And Me.IsCurrentScreen() = True Then
                 TexX = 400
             End If
 
             For i = 0 To Size - 1
-                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Rectangle(CInt(Position.X + i * 32), CInt(Position.Y), 32, 64), New Rectangle(TexX, 112, 16, 32), Color.White)
+                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Microsoft.Xna.Framework.Rectangle(CInt(Position.X + i * 32), CInt(Position.Y), 32, 64), New Microsoft.Xna.Framework.Rectangle(TexX, 112, 16, 32), Microsoft.Xna.Framework.Color.White)
             Next
-            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Rectangle(CInt(Position.X + Size * 32), CInt(Position.Y), 32, 64), New Rectangle(TexX + 16, 112, 16, 32), Color.White)
+            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Microsoft.Xna.Framework.Rectangle(CInt(Position.X + Size * 32), CInt(Position.Y), 32, 64), New Microsoft.Xna.Framework.Rectangle(TexX + 16, 112, 16, 32), Microsoft.Xna.Framework.Color.White)
 
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, Label, New Vector2(Position.X + 4, Position.Y + 4), New Color(100, 100, 100))
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, Label, New Vector2(Position.X + 4, Position.Y + 4), New Microsoft.Xna.Framework.Color(100, 100, 100))
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Microsoft.Xna.Framework.Color.Black)
         End Sub
 
         Private Sub DrawButton(ByVal Position As Vector2, ByVal Text As String, ByVal Size As Integer)
             Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\GTS")
 
-            Dim touching As Boolean = New Rectangle(CInt(Position.X), CInt(Position.Y), 64 + Size * 32, 32).Contains(MouseHandler.MousePosition)
+            Dim touching As Boolean = New Microsoft.Xna.Framework.Rectangle(CInt(Position.X), CInt(Position.Y), 64 + Size * 32, 32).Contains(MouseHandler.MousePosition)
 
             Dim Y As Integer = 0
             If touching = True Then
                 Y = 16
             End If
 
-            Core.SpriteBatch.Draw(t, New Rectangle(CInt(Position.X), CInt(Position.Y), 32, 32), New Rectangle(0, Y, 16, 16), Color.White)
+            Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(Position.X), CInt(Position.Y), 32, 32), New Microsoft.Xna.Framework.Rectangle(0, Y, 16, 16), Microsoft.Xna.Framework.Color.White)
 
             For i = 1 To Size
-                Core.SpriteBatch.Draw(t, New Rectangle(CInt(Position.X + i * 32), CInt(Position.Y), 32, 32), New Rectangle(16, Y, 16, 16), Color.White)
+                Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(Position.X + i * 32), CInt(Position.Y), 32, 32), New Microsoft.Xna.Framework.Rectangle(16, Y, 16, 16), Microsoft.Xna.Framework.Color.White)
             Next
 
-            Core.SpriteBatch.Draw(t, New Rectangle(CInt(Position.X + Size * 32 + 32), CInt(Position.Y), 32, 32), New Rectangle(32, Y, 16, 16), Color.White)
+            Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(Position.X + Size * 32 + 32), CInt(Position.Y), 32, 32), New Microsoft.Xna.Framework.Rectangle(32, Y, 16, 16), Microsoft.Xna.Framework.Color.White)
 
             Dim sizeX As Integer = Size * 32 + 64
             Dim TextSizeX As Integer = CInt(FontManager.MiniFont.MeasureString(Text).X)
 
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(CSng(Position.X + sizeX / 2 - TextSizeX / 2 - 2), Position.Y + 4), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(CSng(Position.X + sizeX / 2 - TextSizeX / 2 - 2), Position.Y + 4), Microsoft.Xna.Framework.Color.Black)
         End Sub
 
         Private Sub DrawStringC(ByVal t As String, ByVal p As Vector2)
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(p.X + 2, p.Y + 2), Color.Black)
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, t, p, Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(p.X + 2, p.Y + 2), Microsoft.Xna.Framework.Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, t, p, Microsoft.Xna.Framework.Color.White)
         End Sub
 
         Dim TempPokemon As Pokemon = Nothing
@@ -124,56 +135,56 @@
                             If i < SearchResults.Count Then
                                 Dim Y As Integer = 132 + i * 64
                                 Dim D As GTSDataItem = SearchResults(i)
-                                Dim Touching As Boolean = New Rectangle(116, Y + 16, 64, 64).Contains(MouseHandler.MousePosition)
-                                Dim C As Color = New Color(255, 255, 255, 150)
+                                Dim Touching As Boolean = New Microsoft.Xna.Framework.Rectangle(116, Y + 16, 64, 64).Contains(MouseHandler.MousePosition)
+                                Dim C As Microsoft.Xna.Framework.Color = New Microsoft.Xna.Framework.Color(255, 255, 255, 150)
                                 If i = Me.Selected Then
-                                    C = New Color(0, 217, 237)
+                                    C = New Microsoft.Xna.Framework.Color(0, 217, 237)
                                 End If
                                 If Touching = True Then
-                                    C = Color.White
+                                    C = Microsoft.Xna.Framework.Color.White
                                 End If
                                 If i = Me.Selected Then
-                                    Canvas.DrawRectangle(New Rectangle(142, Y + 32, 358, 32), C)
+                                    Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(142, Y + 32, 358, 32), C)
                                 Else
-                                    Canvas.DrawRectangle(New Rectangle(142, Y + 32, 320, 32), C)
+                                    Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(142, Y + 32, 320, 32), C)
                                 End If
-                                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Rectangle(100, Y, 96, 96), New Rectangle(320, 96, 48, 48), Color.White)
-                                Core.SpriteBatch.Draw(D.Pokemon.GetMenuTexture(), New Rectangle(116, Y + 16, 64, 64), C)
+                                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Microsoft.Xna.Framework.Rectangle(100, Y, 96, 96), New Microsoft.Xna.Framework.Rectangle(320, 96, 48, 48), Microsoft.Xna.Framework.Color.White)
+                                Core.SpriteBatch.Draw(D.Pokemon.GetMenuTexture(), New Microsoft.Xna.Framework.Rectangle(116, Y + 16, 64, 64), C)
 
-                                Core.SpriteBatch.DrawString(FontManager.MiniFont, D.Pokemon.GetDisplayName(), New Vector2(198, Y + 37), Color.Black)
-                                Core.SpriteBatch.DrawString(FontManager.MiniFont, "Lv. " & D.Pokemon.Level, New Vector2(360, Y + 37), Color.Black)
+                                Core.SpriteBatch.DrawString(FontManager.MiniFont, D.Pokemon.GetDisplayName(), New Vector2(198, Y + 37), Microsoft.Xna.Framework.Color.Black)
+                                Core.SpriteBatch.DrawString(FontManager.MiniFont, "Lv. " & D.Pokemon.Level, New Vector2(360, Y + 37), Microsoft.Xna.Framework.Color.Black)
                             End If
                         Next
                     End If
 
                     If Selected > -1 Then
                         Dim D As GTSDataItem = Me.SearchResults(Selected)
-                        Canvas.DrawRectangle(New Rectangle(500, 164, 600, 500), New Color(255, 255, 255, 150))
+                        Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(500, 164, 600, 500), New Microsoft.Xna.Framework.Color(255, 255, 255, 150))
 
                         If D.TradeID <> "" Then
-                            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Transaction ID: " & D.TradeID, New Vector2(510, 166), Color.Black)
+                            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Transaction ID: " & D.TradeID, New Vector2(510, 166), Microsoft.Xna.Framework.Color.Black)
                         End If
 
                         'Pokemon image/data:
-                        Core.SpriteBatch.Draw(D.Pokemon.GetTexture(True), New Rectangle(500, 164, 128, 128), Color.White)
+                        Core.SpriteBatch.Draw(D.Pokemon.GetTexture(True), New Microsoft.Xna.Framework.Rectangle(500, 164, 128, 128), Microsoft.Xna.Framework.Color.White)
 
                         If D.Pokemon.GetDisplayName() <> D.Pokemon.OriginalName Then
-                            Core.SpriteBatch.DrawString(FontManager.MainFont, D.Pokemon.GetDisplayName(), New Vector2(630, 190), Color.Black)
-                            Core.SpriteBatch.DrawString(FontManager.MainFont, "/" & D.Pokemon.OriginalName, New Vector2(640, 220), Color.Black)
+                            Core.SpriteBatch.DrawString(FontManager.MainFont, D.Pokemon.GetDisplayName(), New Vector2(630, 190), Microsoft.Xna.Framework.Color.Black)
+                            Core.SpriteBatch.DrawString(FontManager.MainFont, "/" & D.Pokemon.OriginalName, New Vector2(640, 220), Microsoft.Xna.Framework.Color.Black)
                         Else
-                            Core.SpriteBatch.DrawString(FontManager.MainFont, D.Pokemon.GetDisplayName(), New Vector2(630, 205), Color.Black)
+                            Core.SpriteBatch.DrawString(FontManager.MainFont, D.Pokemon.GetDisplayName(), New Vector2(630, 205), Microsoft.Xna.Framework.Color.Black)
                         End If
 
                         Dim ItemString As String = "None"
                         If Not D.Pokemon.Item Is Nothing Then
                             ItemString = "   " & D.Pokemon.Item.Name
-                            Core.SpriteBatch.Draw(D.Pokemon.Item.Texture, New Rectangle(575, 478, 24, 24), Color.White)
+                            Core.SpriteBatch.Draw(D.Pokemon.Item.Texture, New Microsoft.Xna.Framework.Rectangle(575, 478, 24, 24), Microsoft.Xna.Framework.Color.White)
                         End If
 
                         Core.SpriteBatch.DrawString(FontManager.MiniFont, "Level: " & D.Pokemon.Level & vbNewLine & vbNewLine &
                                                      "Gender: " & D.Pokemon.Gender.ToString() & vbNewLine & vbNewLine &
                                                      "OT: " & D.Pokemon.CatchTrainerName & "/" & D.Pokemon.OT & vbNewLine & vbNewLine &
-                                                     "Item: " & ItemString, New Vector2(524, 360), Color.Black)
+                                                     "Item: " & ItemString, New Vector2(524, 360), Microsoft.Xna.Framework.Color.Black)
 
                         'Stars:
                         GTSMainScreen.DrawStars(D.Pokemon.TradeValue, New Vector2(630, 256))
@@ -181,47 +192,47 @@
                         'RequestPokemon:
                         Dim p As Pokemon = TempPokemon
 
-                        Core.SpriteBatch.Draw(p.GetTexture(True), New Rectangle(800, 164, 128, 128), Color.White)
+                        Core.SpriteBatch.Draw(p.GetTexture(True), New Microsoft.Xna.Framework.Rectangle(800, 164, 128, 128), Microsoft.Xna.Framework.Color.White)
 
                         If D.Pokemon.GetDisplayName() <> p.OriginalName Then
-                            Core.SpriteBatch.DrawString(FontManager.MainFont, p.GetDisplayName(), New Vector2(930, 190), Color.Black)
-                            Core.SpriteBatch.DrawString(FontManager.MainFont, "/" & p.OriginalName, New Vector2(940, 220), Color.Black)
+                            Core.SpriteBatch.DrawString(FontManager.MainFont, p.GetDisplayName(), New Vector2(930, 190), Microsoft.Xna.Framework.Color.Black)
+                            Core.SpriteBatch.DrawString(FontManager.MainFont, "/" & p.OriginalName, New Vector2(940, 220), Microsoft.Xna.Framework.Color.Black)
                         Else
-                            Core.SpriteBatch.DrawString(FontManager.MainFont, p.GetDisplayName(), New Vector2(930, 205), Color.Black)
+                            Core.SpriteBatch.DrawString(FontManager.MainFont, p.GetDisplayName(), New Vector2(930, 205), Microsoft.Xna.Framework.Color.Black)
                         End If
 
                         Core.SpriteBatch.DrawString(FontManager.MiniFont, "Request:" & vbNewLine & vbNewLine &
                                                      "Number: " & D.RequestID & vbNewLine & vbNewLine &
                                                      "Level: " & D.RequestLevel & vbNewLine & vbNewLine &
-                                                     "Gender: " & D.RequestGender, New Vector2(824, 360), Color.Black)
+                                                     "Gender: " & D.RequestGender, New Vector2(824, 360), Microsoft.Xna.Framework.Color.Black)
 
                         'Stars:
                         GTSMainScreen.DrawStars(p.TradeValue, New Vector2(930, 256))
 
                         'From:
-                        Core.SpriteBatch.DrawString(FontManager.MiniFont, "From:", New Vector2(516, 320), Color.Black)
+                        Core.SpriteBatch.DrawString(FontManager.MiniFont, "From:", New Vector2(516, 320), Microsoft.Xna.Framework.Color.Black)
                         If Not Emblem Is Nothing Then
                             If Emblem.DoneLoading = True Then
                                 Dim SpriteSize As New Size(CInt(Emblem.SpriteTexture.Width / 3), CInt(Emblem.SpriteTexture.Height / 4))
-                                Core.SpriteBatch.Draw(Emblem.SpriteTexture, New Rectangle(564, 310, 32, 32), New Rectangle(0, SpriteSize.Height * 2, SpriteSize.Width, SpriteSize.Height), Color.White)
-                                Core.SpriteBatch.DrawString(FontManager.MiniFont, Emblem.Username & " (" & Emblem.GameJoltID & ")", New Vector2(600, 320), Color.Black)
+                                Core.SpriteBatch.Draw(Emblem.SpriteTexture, New Microsoft.Xna.Framework.Rectangle(564, 310, 32, 32), New Microsoft.Xna.Framework.Rectangle(0, SpriteSize.Height * 2, SpriteSize.Width, SpriteSize.Height), Microsoft.Xna.Framework.Color.White)
+                                Core.SpriteBatch.DrawString(FontManager.MiniFont, Emblem.Username & " (" & Emblem.GameJoltID & ")", New Vector2(600, 320), Microsoft.Xna.Framework.Color.Black)
                             Else
-                                Core.SpriteBatch.DrawString(FontManager.MiniFont, "Loading" & LoadingDots.Dots, New Vector2(564, 320), Color.Black)
+                                Core.SpriteBatch.DrawString(FontManager.MiniFont, "Loading" & LoadingDots.Dots, New Vector2(564, 320), Microsoft.Xna.Framework.Color.Black)
                             End If
                         Else
-                            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Loading" & LoadingDots.Dots, New Vector2(564, 320), Color.Black)
+                            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Loading" & LoadingDots.Dots, New Vector2(564, 320), Microsoft.Xna.Framework.Color.Black)
                         End If
 
                         'To:
-                        Core.SpriteBatch.DrawString(FontManager.MiniFont, "To:", New Vector2(816, 320), Color.Black)
+                        Core.SpriteBatch.DrawString(FontManager.MiniFont, "To:", New Vector2(816, 320), Microsoft.Xna.Framework.Color.Black)
                         If SearchResults(Selected).SecurityArea = GTSDataItem.SecurityCode.Private Then
-                            Dim ownEmblem As Emblem = New Emblem(API.username, Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Points, Core.GameJoltSave.Gender, Core.GameJoltSave.Emblem)
+                            Dim ownEmblem As Emblem = New Emblem(API.username, Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Points, Core.GameJoltSave.Gender, Core.GameJoltSave.EmblemS)
 
                             Dim SpriteSize As New Size(CInt(ownEmblem.SpriteTexture.Width / 3), CInt(ownEmblem.SpriteTexture.Height / 4))
-                            Core.SpriteBatch.Draw(ownEmblem.SpriteTexture, New Rectangle(864, 310, 32, 32), New Rectangle(0, SpriteSize.Height * 2, SpriteSize.Width, SpriteSize.Height), Color.White)
-                            Core.SpriteBatch.DrawString(FontManager.MiniFont, ownEmblem.Username & " (" & ownEmblem.GameJoltID & ")", New Vector2(900, 320), Color.Black)
+                            Core.SpriteBatch.Draw(ownEmblem.SpriteTexture, New Microsoft.Xna.Framework.Rectangle(864, 310, 32, 32), New Microsoft.Xna.Framework.Rectangle(0, SpriteSize.Height * 2, SpriteSize.Width, SpriteSize.Height), Microsoft.Xna.Framework.Color.White)
+                            Core.SpriteBatch.DrawString(FontManager.MiniFont, ownEmblem.Username & " (" & ownEmblem.GameJoltID & ")", New Vector2(900, 320), Microsoft.Xna.Framework.Color.Black)
                         Else
-                            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Global", New Vector2(864, 320), Color.Black)
+                            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Global", New Vector2(864, 320), Microsoft.Xna.Framework.Color.Black)
                         End If
 
                         'Buttons:
@@ -273,7 +284,7 @@
             If SearchResults.Count > 0 Then
                 For i = 0 To 5
                     If i < Me.SearchResults.Count Then
-                        If New Rectangle(116, 148 + i * 64, 64, 64).Contains(MouseHandler.MousePosition) = True Then
+                        If New Microsoft.Xna.Framework.Rectangle(116, 148 + i * 64, 64, 64).Contains(MouseHandler.MousePosition) = True Then
                             If Controls.Accept(True, True) = True Then
                                 If Selected = i + ScrollIndex Then
                                     Selected = -1
@@ -289,19 +300,19 @@
             End If
 
             If Controls.Accept(True, False) = True Then
-                If New Rectangle(280, 48, 5 * 32, 64).Contains(MouseHandler.MousePosition) = True Then
+                If New Microsoft.Xna.Framework.Rectangle(280, 48, 5 * 32, 64).Contains(MouseHandler.MousePosition) = True Then
                     Core.SetScreen(New SelectPokemonScreen(Me, "Offer"))
                 End If
-                If New Rectangle(472, 48, 4 * 32, 64).Contains(MouseHandler.MousePosition) = True Then
+                If New Microsoft.Xna.Framework.Rectangle(472, 48, 4 * 32, 64).Contains(MouseHandler.MousePosition) = True Then
                     Core.SetScreen(New SelectLevelScreen(Me))
                 End If
-                If New Rectangle(632, 48, 4 * 32, 64).Contains(MouseHandler.MousePosition) = True Then
+                If New Microsoft.Xna.Framework.Rectangle(632, 48, 4 * 32, 64).Contains(MouseHandler.MousePosition) = True Then
                     Core.SetScreen(New SelectGenderScreen(Me))
                 End If
-                If New Rectangle(792, 48, 5 * 32, 64).Contains(MouseHandler.MousePosition) = True Then
+                If New Microsoft.Xna.Framework.Rectangle(792, 48, 5 * 32, 64).Contains(MouseHandler.MousePosition) = True Then
                     Core.SetScreen(New SelectPokemonScreen(Me, "Request"))
                 End If
-                If New Rectangle(1000, 64, 32 * 3 + 64, 32).Contains(MouseHandler.MousePosition) = True Then
+                If New Microsoft.Xna.Framework.Rectangle(1000, 64, 32 * 3 + 64, 32).Contains(MouseHandler.MousePosition) = True Then
                     'If (OfferFilter <> "" And LevelFilter <> "") = True Or AreaFilter = "Private" Then
                     Dim APICall As New APICall(AddressOf GotKeys)
 
@@ -329,7 +340,7 @@
                     ScrollIndex = 0
                     'End If
                 End If
-                If New Rectangle(600, 610, 32 * 3 + 64, 32).Contains(MouseHandler.MousePosition) = True Then
+                If New Microsoft.Xna.Framework.Rectangle(600, 610, 32 * 3 + 64, 32).Contains(MouseHandler.MousePosition) = True Then
                     If Selected > -1 Then
                         Core.SetScreen(New GTSTradeScreen(Me, SearchResults(Selected)))
                     End If
@@ -417,15 +428,15 @@
                 Dim hasGender As Boolean = False
                 Select Case Me.GenderFilter
                     Case "Male"
-                        If D.Pokemon.Gender = Pokemon.Genders.Male Then
+                        If D.Pokemon.Gender = BasePokemon.Genders.Male Then
                             hasGender = True
                         End If
                     Case "Female"
-                        If D.Pokemon.Gender = Pokemon.Genders.Female Then
+                        If D.Pokemon.Gender = BasePokemon.Genders.Female Then
                             hasGender = True
                         End If
                     Case "Genderless"
-                        If D.Pokemon.Gender = Pokemon.Genders.Genderless Then
+                        If D.Pokemon.Gender = BasePokemon.Genders.Genderless Then
                             hasGender = True
                         End If
                     Case ""
@@ -460,7 +471,7 @@
 
             Public Overrides Sub Draw()
                 Me.GTSSearchScreen.Draw()
-                Canvas.DrawRectangle(Core.windowSize, New Color(255, 255, 255, 150))
+                Canvas.DrawRectangle(Core.windowSize, New Microsoft.Xna.Framework.Color(255, 255, 255, 150))
 
                 DrawButton(New Vector2(100, 200), 4, "Level", "9 and under")
                 DrawButton(New Vector2(260, 200), 4, "Level", "10 - 19")
@@ -478,16 +489,16 @@
 
             Private Sub DrawButton(ByVal Position As Vector2, ByVal Size As Integer, ByVal Label As String, ByVal Text As String)
                 Dim TexX As Integer = 368
-                If New Rectangle(CInt(Position.X), CInt(Position.Y), Size * 32, 64).Contains(MouseHandler.MousePosition) = True And Me.IsCurrentScreen() = True Then
+                If New Microsoft.Xna.Framework.Rectangle(CInt(Position.X), CInt(Position.Y), Size * 32, 64).Contains(MouseHandler.MousePosition) = True And Me.IsCurrentScreen() = True Then
                     TexX = 400
                 End If
 
                 For i = 0 To Size - 1
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Rectangle(CInt(Position.X + i * 32), CInt(Position.Y), 32, 64), New Rectangle(TexX, 112, 16, 32), Color.White)
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Microsoft.Xna.Framework.Rectangle(CInt(Position.X + i * 32), CInt(Position.Y), 32, 64), New Microsoft.Xna.Framework.Rectangle(TexX, 112, 16, 32), Microsoft.Xna.Framework.Color.White)
                 Next
 
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, Label, New Vector2(Position.X + 4, Position.Y + 4), New Color(100, 100, 100))
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, Label, New Vector2(Position.X + 4, Position.Y + 4), New Microsoft.Xna.Framework.Color(100, 100, 100))
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Microsoft.Xna.Framework.Color.Black)
             End Sub
 
             Public Overrides Sub Update()
@@ -515,7 +526,7 @@
                             x -= 5
                             y += 1
                         End If
-                        If New Rectangle(100 + x * 160, 200 + y * 100, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                        If New Microsoft.Xna.Framework.Rectangle(100 + x * 160, 200 + y * 100, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                             Dim newSetting As String = "9 and under"
                             Select Case i
                                 Case 0
@@ -544,7 +555,7 @@
                         End If
                     Next
 
-                    If New Rectangle(900, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(900, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         Core.SetScreen(Me.GTSSearchScreen)
                     End If
                 End If
@@ -626,7 +637,7 @@
 
             Public Overrides Sub Draw()
                 Me.GTSSearchScreen.Draw()
-                Canvas.DrawRectangle(Core.windowSize, New Color(255, 255, 255, 150))
+                Canvas.DrawRectangle(Core.windowSize, New Microsoft.Xna.Framework.Color(255, 255, 255, 150))
 
                 For i = 0 To 19
                     If i < CurrentPokemon.Count Then
@@ -654,21 +665,21 @@
 
             Private Sub DrawButton(ByVal Position As Vector2, ByVal Size As Integer, ByVal Label As String, ByVal Text As String, ByVal Texture As Texture2D)
                 Dim TexX As Integer = 368
-                If New Rectangle(CInt(Position.X), CInt(Position.Y), Size * 32, 64).Contains(MouseHandler.MousePosition) = True And Me.IsCurrentScreen() = True Then
+                If New Microsoft.Xna.Framework.Rectangle(CInt(Position.X), CInt(Position.Y), Size * 32, 64).Contains(MouseHandler.MousePosition) = True And Me.IsCurrentScreen() = True Then
                     TexX = 400
                 End If
 
                 For i = 0 To Size - 1
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Rectangle(CInt(Position.X + i * 32), CInt(Position.Y), 32, 64), New Rectangle(TexX, 112, 16, 32), Color.White)
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Microsoft.Xna.Framework.Rectangle(CInt(Position.X + i * 32), CInt(Position.Y), 32, 64), New Microsoft.Xna.Framework.Rectangle(TexX, 112, 16, 32), Microsoft.Xna.Framework.Color.White)
                 Next
 
                 If Not Texture Is Nothing Then
                     Dim s As New Size(Size * 32, 64)
-                    Core.SpriteBatch.Draw(Texture, New Rectangle(CInt(s.Width / 2 - Texture.Width + Position.X), CInt(s.Height / 2 - Texture.Height + Position.Y), Texture.Width * 2, Texture.Height * 2), New Color(255, 255, 255, 100))
+                    Core.SpriteBatch.Draw(Texture, New Microsoft.Xna.Framework.Rectangle(CInt(s.Width / 2 - Texture.Width + Position.X), CInt(s.Height / 2 - Texture.Height + Position.Y), Texture.Width * 2, Texture.Height * 2), New Microsoft.Xna.Framework.Color(255, 255, 255, 100))
                 End If
 
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, Label, New Vector2(Position.X + 4, Position.Y + 4), New Color(100, 100, 100))
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, Label, New Vector2(Position.X + 4, Position.Y + 4), New Microsoft.Xna.Framework.Color(100, 100, 100))
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Microsoft.Xna.Framework.Color.Black)
             End Sub
 
             Public Overrides Sub Update()
@@ -698,7 +709,7 @@
                                 y += 1
                             End While
 
-                            If New Rectangle(100 + x * 160, 200 + y * 100, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                            If New Microsoft.Xna.Framework.Rectangle(100 + x * 160, 200 + y * 100, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                                 Dim newSetting As String = CurrentPokemon.Values(i) & " (" & CurrentPokemon.Keys(i).ToString() & ")"
 
                                 If Mode = "Request" Then
@@ -712,7 +723,7 @@
                         End If
                     Next
 
-                    If New Rectangle(900, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(900, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         If Me.Page > 0 Then
                             Me.Page -= 1
                             GetPokemon()
@@ -723,7 +734,7 @@
                             End If
                         End If
                     End If
-                    If New Rectangle(900, 300, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(900, 300, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         If CurrentPokemon.Count = 20 Then
                             Me.Page += 1
                             GetPokemon()
@@ -734,7 +745,7 @@
                             End If
                         End If
                     End If
-                    If New Rectangle(900, 400, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(900, 400, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         If Mode = "Request" Then
                             Me.GTSSearchScreen.RequestFilter = ""
                         ElseIf Mode = "Offer" Then
@@ -743,7 +754,7 @@
 
                         Close()
                     End If
-                    If New Rectangle(900, 500, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(900, 500, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         Close()
                     End If
                 End If
@@ -784,7 +795,7 @@
 
             Public Overrides Sub Draw()
                 Me.GTSSearchScreen.Draw()
-                Canvas.DrawRectangle(Core.windowSize, New Color(255, 255, 255, 150))
+                Canvas.DrawRectangle(Core.windowSize, New Microsoft.Xna.Framework.Color(255, 255, 255, 150))
 
                 DrawButton(New Vector2(100, 200), 4, "Gender", "Male")
                 DrawButton(New Vector2(260, 200), 4, "Gender", "Female")
@@ -796,16 +807,16 @@
 
             Private Sub DrawButton(ByVal Position As Vector2, ByVal Size As Integer, ByVal Label As String, ByVal Text As String)
                 Dim TexX As Integer = 368
-                If New Rectangle(CInt(Position.X), CInt(Position.Y), Size * 32, 64).Contains(MouseHandler.MousePosition) = True And Me.IsCurrentScreen() = True Then
+                If New Microsoft.Xna.Framework.Rectangle(CInt(Position.X), CInt(Position.Y), Size * 32, 64).Contains(MouseHandler.MousePosition) = True And Me.IsCurrentScreen() = True Then
                     TexX = 400
                 End If
 
                 For i = 0 To Size - 1
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Rectangle(CInt(Position.X + i * 32), CInt(Position.Y), 32, 64), New Rectangle(TexX, 112, 16, 32), Color.White)
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Microsoft.Xna.Framework.Rectangle(CInt(Position.X + i * 32), CInt(Position.Y), 32, 64), New Microsoft.Xna.Framework.Rectangle(TexX, 112, 16, 32), Microsoft.Xna.Framework.Color.White)
                 Next
 
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, Label, New Vector2(Position.X + 4, Position.Y + 4), New Color(100, 100, 100))
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, Label, New Vector2(Position.X + 4, Position.Y + 4), New Microsoft.Xna.Framework.Color(100, 100, 100))
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Microsoft.Xna.Framework.Color.Black)
             End Sub
 
             Public Overrides Sub Update()
@@ -826,27 +837,27 @@
                 End If
 
                 If Controls.Accept(True, False) = True Then
-                    If New Rectangle(100, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(100, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         Me.GTSSearchScreen.GenderFilter = "Male"
                         Core.SetScreen(Me.GTSSearchScreen)
                     End If
 
-                    If New Rectangle(260, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(260, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         Me.GTSSearchScreen.GenderFilter = "Female"
                         Core.SetScreen(Me.GTSSearchScreen)
                     End If
 
-                    If New Rectangle(420, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(420, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         Me.GTSSearchScreen.GenderFilter = "Genderless"
                         Core.SetScreen(Me.GTSSearchScreen)
                     End If
 
-                    If New Rectangle(580, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(580, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         Me.GTSSearchScreen.GenderFilter = ""
                         Core.SetScreen(Me.GTSSearchScreen)
                     End If
 
-                    If New Rectangle(900, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(900, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         Core.SetScreen(Me.GTSSearchScreen)
                     End If
                 End If
@@ -878,7 +889,7 @@
 
             Public Overrides Sub Draw()
                 Me.GTSSearchScreen.Draw()
-                Canvas.DrawRectangle(Core.windowSize, New Color(255, 255, 255, 150))
+                Canvas.DrawRectangle(Core.windowSize, New Microsoft.Xna.Framework.Color(255, 255, 255, 150))
 
                 DrawButton(New Vector2(100, 200), 4, "Area", "Global")
                 DrawButton(New Vector2(260, 200), 4, "Area", "Private")
@@ -888,16 +899,16 @@
 
             Private Sub DrawButton(ByVal Position As Vector2, ByVal Size As Integer, ByVal Label As String, ByVal Text As String)
                 Dim TexX As Integer = 368
-                If New Rectangle(CInt(Position.X), CInt(Position.Y), Size * 32, 64).Contains(MouseHandler.MousePosition) = True And Me.IsCurrentScreen() = True Then
+                If New Microsoft.Xna.Framework.Rectangle(CInt(Position.X), CInt(Position.Y), Size * 32, 64).Contains(MouseHandler.MousePosition) = True And Me.IsCurrentScreen() = True Then
                     TexX = 400
                 End If
 
                 For i = 0 To Size - 1
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Rectangle(CInt(Position.X + i * 32), CInt(Position.Y), 32, 64), New Rectangle(TexX, 112, 16, 32), Color.White)
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Microsoft.Xna.Framework.Rectangle(CInt(Position.X + i * 32), CInt(Position.Y), 32, 64), New Microsoft.Xna.Framework.Rectangle(TexX, 112, 16, 32), Microsoft.Xna.Framework.Color.White)
                 Next
 
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, Label, New Vector2(Position.X + 4, Position.Y + 4), New Color(100, 100, 100))
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, Label, New Vector2(Position.X + 4, Position.Y + 4), New Microsoft.Xna.Framework.Color(100, 100, 100))
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Microsoft.Xna.Framework.Color.Black)
             End Sub
 
             Public Overrides Sub Update()
@@ -918,17 +929,17 @@
                 End If
 
                 If Controls.Accept(True, False) = True Then
-                    If New Rectangle(100, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(100, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         Me.GTSSearchScreen.AreaFilter = "Global"
                         Core.SetScreen(Me.GTSSearchScreen)
                     End If
 
-                    If New Rectangle(260, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(260, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         Me.GTSSearchScreen.AreaFilter = "Private"
                         Core.SetScreen(Me.GTSSearchScreen)
                     End If
 
-                    If New Rectangle(900, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(900, 200, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                         Core.SetScreen(Me.GTSSearchScreen.PreScreen)
                     End If
                 End If

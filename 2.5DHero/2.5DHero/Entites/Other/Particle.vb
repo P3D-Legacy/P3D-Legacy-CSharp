@@ -1,6 +1,10 @@
-﻿Public Class Particle
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.Resources.Models
+Imports P3D.Legacy.Core.Screens
 
-    Inherits Entity
+Public Class Particle
+    Inherits BaseParticle
 
     Public Enum Behaviors
         Floating
@@ -87,8 +91,8 @@
         End Select
     End Sub
 
-    Protected Overrides Function CalculateCameraDistance(CPosition As Vector3) as Single
-        Return MyBase.CalculateCameraDistance(CPosition) - 1000000f
+    Protected Overrides Function CalculateCameraDistance(CPosition As Vector3) As Single
+        Return MyBase.CalculateCameraDistance(CPosition) - 1000000.0F
     End Function
 
     Public Overrides Sub UpdateEntity()

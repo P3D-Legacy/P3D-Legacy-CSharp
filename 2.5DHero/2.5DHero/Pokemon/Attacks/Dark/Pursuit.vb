@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Dark
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Dark
 
     Public Class Pursuit
 
@@ -52,13 +55,14 @@
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
             If own = True Then
-                If BattleScreen.FieldEffects.OwnPursuit = True Then
+                If screen.FieldEffects.OwnPursuit = True Then
                     Return 80
                 End If
             Else
-                If BattleScreen.FieldEffects.OppPursuit = True Then
+                If screen.FieldEffects.OppPursuit = True Then
                     Return 80
                 End If
             End If

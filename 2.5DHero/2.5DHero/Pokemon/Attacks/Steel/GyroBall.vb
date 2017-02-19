@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Steel
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Steel
 
     Public Class GyroBall
 
@@ -53,12 +56,13 @@
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim p As Pokemon = BattleScreen.OwnPokemon
-            Dim op As Pokemon = BattleScreen.OppPokemon
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OwnPokemon
+            Dim op As Pokemon = screen.OppPokemon
             If own = False Then
-                p = BattleScreen.OppPokemon
-                op = BattleScreen.OwnPokemon
+                p = screen.OppPokemon
+                op = screen.OwnPokemon
             End If
 
             Dim basepower As Integer = CInt(Math.Ceiling(25 * (op.Speed / p.Speed)))

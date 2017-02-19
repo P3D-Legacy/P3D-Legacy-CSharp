@@ -1,3 +1,4 @@
+Imports P3D.Legacy.Core.Pokemon
 Namespace Items.Standard
 
     <Item(146, "Leftovers")>
@@ -13,7 +14,7 @@ Namespace Items.Standard
         Public Overrides ReadOnly Property CanBeUsed As Boolean = False
 
         Public Sub New()
-            _textureRectangle = New Rectangle(456, 120, 24, 24)
+            TextureRectangle = New Rectangle(456, 120, 24, 24)
         End Sub
 
     End Class

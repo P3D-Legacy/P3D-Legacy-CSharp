@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Medicine
 
     <Item(21, "Max Elixir")>
@@ -9,7 +14,7 @@ Namespace Items.Medicine
         Public Overrides ReadOnly Property PokeDollarPrice As Integer = 4500
 
         Public Sub New()
-            _textureRectangle = New Rectangle(456, 0, 24, 24)
+            TextureRectangle = New Rectangle(456, 0, 24, 24)
         End Sub
 
         Public Overrides Sub Use()

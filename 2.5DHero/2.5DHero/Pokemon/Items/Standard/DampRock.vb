@@ -1,4 +1,5 @@
-﻿Namespace Items.Standard
+Imports P3D.Legacy.Core.Pokemon
+Namespace Items.Standard
 
     <Item(293, "Damp Rock")>
     Public Class DampRock
@@ -11,7 +12,7 @@
         Public Overrides ReadOnly Property CanBeUsed As Boolean = False
 
         Public Sub New()
-            _textureRectangle = New Rectangle(360, 264, 24, 24)
+            TextureRectangle = New Rectangle(360, 264, 24, 24)
         End Sub
 
     End Class

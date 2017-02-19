@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Wings
 
     <Item(257, "Genius Wing")>
@@ -8,7 +13,7 @@ Namespace Items.Wings
         Public Overrides ReadOnly Property Description As String = "An item for use on a Pokémon. It slightly increases the base Sp. Atk. stat of a single Pokémon."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(360, 240, 24, 24)
+            TextureRectangle = New Rectangle(360, 240, 24, 24)
         End Sub
 
         Public Overrides Function UseOnPokemon(PokeIndex As Integer) As Boolean

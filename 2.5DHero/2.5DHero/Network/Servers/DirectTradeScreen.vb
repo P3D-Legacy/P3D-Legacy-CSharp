@@ -1,4 +1,16 @@
-﻿Public Class DirectTradeScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Objects
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.Server
+
+Public Class DirectTradeScreen
 
     Inherits Screen
 
@@ -48,9 +60,9 @@
         ScreenState = ScreenStates.Idle
 
         If isHost = False Then
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(Servers.Package.PackageTypes.TradeJoin, Core.ServersManager.ID, Servers.Package.ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeJoin, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
         Else
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(Servers.Package.PackageTypes.TradeRequest, Core.ServersManager.ID, Servers.Package.ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeRequest, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
         End If
 
         Me.menuItems = {"Trade", "Choose Pokémon", "Cancel Trade"}.ToList()
@@ -60,8 +72,8 @@
     Private Sub DownloadOnlineSprite()
         Dim p As Servers.Player = Core.ServersManager.PlayerCollection.GetPlayer(PartnerNetworkID)
         If Not p Is Nothing Then
-            If p.GamejoltID <> "" Then
-                GameJolt.Emblem.GetOnlineSprite(p.GamejoltID)
+            If p.GameJoltId <> "" Then
+                Emblem.GetOnlineSprite(p.GameJoltId)
             End If
         End If
     End Sub
@@ -143,8 +155,8 @@
                 tempPlayer = p
 
                 If p.GameJoltId <> "" Then
-                    If GameJolt.Emblem.HasDownloadedSprite(p.GameJoltId) = True Then
-                        Dim newT As Texture2D = GameJolt.Emblem.GetOnlineSprite(p.GameJoltId)
+                    If Emblem.HasDownloadedSprite(p.GameJoltId) = True Then
+                        Dim newT As Texture2D = Emblem.GetOnlineSprite(p.GameJoltId)
                         If Not newT Is Nothing Then
                             t = newT
                         End If
@@ -296,7 +308,7 @@
     End Sub
 
     Private Sub QuitTrade()
-        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(Servers.Package.PackageTypes.TradeQuit, Core.ServersManager.ID, Servers.Package.ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeQuit, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
         Core.SetScreen(Me.PreScreen)
     End Sub
 
@@ -305,7 +317,7 @@
     Private Sub StartTrade()
         If Not Me.OfferPokemon Is Nothing And Not TradePokemon Is Nothing Then
             Me.CanChat = False
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(Servers.Package.PackageTypes.TradeStart, Core.ServersManager.ID, Servers.Package.ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeStart, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
             If ReceivedTradeOffer = True Then
                 InitializeTrade()
             Else
@@ -321,7 +333,7 @@
             SentTradeOffer = False
             ReceivedTradeOffer = False
             Me.CanChat = True
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(Servers.Package.PackageTypes.TradeOffer, Core.ServersManager.ID, Servers.Package.ProtocolTypes.TCP, {PartnerNetworkID.ToString(), Me.OfferPokemon.GetSaveData()}.ToList()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeOffer, Core.ServersManager.ID, ProtocolTypes.TCP, {PartnerNetworkID.ToString(), Me.OfferPokemon.GetSaveData()}.ToList()))
         End If
     End Sub
 
@@ -509,7 +521,7 @@
 
         MusicManager.PlayMusic("gts", True)
 
-        If Core.Player.Pokemons(Core.Player.Pokemons.Count - 1).CanEvolve(EvolutionCondition.EvolutionTrigger.Trading, "") = True Then
+        If Core.Player.Pokemons(Core.Player.Pokemons.Count - 1).CanEVolve(EvolutionCondition.EvolutionTrigger.Trading, "") = True Then
             Core.SetScreen(New EvolutionScreen(Me, {Core.Player.Pokemons.Count - 1}.ToList(), offeredPokemonID.ToString(), EvolutionCondition.EvolutionTrigger.Trading))
         End If
         Me.CanChat = True

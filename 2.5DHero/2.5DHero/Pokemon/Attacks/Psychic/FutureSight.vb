@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Psychic
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Psychic
 
     Public Class FutureSight
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.MultiTurn
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             If own = False Then
                 p = BattleScreen.OppPokemon

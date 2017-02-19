@@ -1,4 +1,8 @@
-﻿Namespace BattleSystem
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem
 
     Public Class TrainerAI
 
@@ -13,18 +17,18 @@
         'Team Rocket Grunts: 5
         'Team Rocket Admins: 20
 
-        Public Shared Function GetAIMove(ByVal BattleScreen As BattleScreen, ByVal OwnStep As Battle.RoundConst) As Battle.RoundConst
+        Public Shared Function GetAIMove(ByVal BattleScreen As BattleScreen, ByVal OwnStep As RoundConst) As RoundConst
             Dim p As Pokemon = BattleScreen.OppPokemon
             Dim op As Pokemon = BattleScreen.OwnPokemon
 
-            Dim m As List(Of Attack) = p.Attacks.ToList()
+            Dim m As List(Of BaseAttack) = p.Attacks.ToList()
             For i = m.Count - 1 To 0 Step -1
-                If m(i).CurrentPP <= 0 Then
+                If m(i).CurrentPp <= 0 Then
                     m.RemoveAt(i)
                 End If
             Next
             If m.Count = 0 Then
-                Return New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Move, .Argument = Attack.GetAttackByID(165)}
+                Return New RoundConst With {.StepType = RoundConst.StepTypes.Move, .Argument = Attack.GetAttackByID(165)}
             End If
 
             'Switching:
@@ -127,7 +131,7 @@
                     If BattleScreen.Trainer.Pokemons.Count > 0 Then
                         Dim living As Integer = 0
                         For Each cP As Pokemon In BattleScreen.Trainer.Pokemons
-                            If cP.HP > 0 And cP.Status <> Pokemon.StatusProblems.Fainted Then
+                            If cP.HP > 0 And cP.Status <> BasePokemon.StatusProblems.Fainted Then
                                 living += 1
                             End If
                         Next
@@ -135,7 +139,7 @@
                             'check for opponent moves: if super effective: 1.5x: 25%, 2x: 50%, 4x: 75%: check for pokemon in party that reacts to every move with less the detected effectiveness
                             Dim maxOpponentEff As Single = 0.0F
                             For Each Attack As BattleSystem.Attack In op.Attacks
-                                Dim effectiveness As Single = BattleCalculation.CalculateEffectiveness(Attack.GetAttackByID(Attack.ID), BattleScreen, op, p, True)
+                                Dim effectiveness As Single = BattleCalculation.CalculateEffectiveness(Attack.GetAttackByID(Attack.Id), BattleScreen, op, p, True)
                                 If effectiveness > maxOpponentEff Then
                                     maxOpponentEff = effectiveness
                                 End If
@@ -160,10 +164,10 @@
                                     For i = 0 To BattleScreen.Trainer.Pokemons.Count - 1
                                         If i <> BattleScreen.OppPokemonIndex Then
                                             Dim TeamP As Pokemon = BattleScreen.Trainer.Pokemons(i)
-                                            If TeamP.HP > 0 And TeamP.Status <> Pokemon.StatusProblems.Fainted Then
+                                            If TeamP.HP > 0 And TeamP.Status <> BasePokemon.StatusProblems.Fainted Then
                                                 Dim alwaysLess As Boolean = True
                                                 For Each Attack As BattleSystem.Attack In op.Attacks
-                                                    Dim effectiveness As Single = BattleCalculation.CalculateEffectiveness(Attack.GetAttackByID(Attack.ID), BattleScreen, op, TeamP, True)
+                                                    Dim effectiveness As Single = BattleCalculation.CalculateEffectiveness(Attack.GetAttackByID(Attack.Id), BattleScreen, op, TeamP, True)
 
                                                     If effectiveness >= maxOpponentEff Then
                                                         alwaysLess = False
@@ -186,7 +190,7 @@
                             'check for own moves: if only 0x: check for other pokemon in party (best fitting) and switch in
                             Dim only0 As Boolean = True
                             For Each Attack As BattleSystem.Attack In p.Attacks
-                                Dim effectiveness As Single = BattleCalculation.CalculateEffectiveness(Attack.GetAttackByID(Attack.ID), BattleScreen, p, op, False)
+                                Dim effectiveness As Single = BattleCalculation.CalculateEffectiveness(Attack.GetAttackByID(Attack.Id), BattleScreen, p, op, False)
                                 If effectiveness <> 0.0F Then
                                     only0 = False
                                     Exit For
@@ -197,7 +201,7 @@
                                 For i = 0 To BattleScreen.Trainer.Pokemons.Count - 1
                                     If i <> BattleScreen.OppPokemonIndex Then
                                         Dim TeamP As Pokemon = BattleScreen.Trainer.Pokemons(i)
-                                        If TeamP.HP > 0 And TeamP.Status <> Pokemon.StatusProblems.Fainted Then
+                                        If TeamP.HP > 0 And TeamP.Status <> BasePokemon.StatusProblems.Fainted Then
                                             switchList.Add(i)
                                         End If
                                     End If
@@ -214,7 +218,7 @@
                                     Dim canSwitchTo As New List(Of Integer)
                                     For i = 0 To BattleScreen.Trainer.Pokemons.Count - 1
                                         Dim TeamP As Pokemon = BattleScreen.Trainer.Pokemons(i)
-                                        If TeamP.HP > 0 And TeamP.Status <> Pokemon.StatusProblems.Fainted And i <> BattleScreen.OppPokemonIndex Then
+                                        If TeamP.HP > 0 And TeamP.Status <> BasePokemon.StatusProblems.Fainted And i <> BattleScreen.OppPokemonIndex Then
                                             canSwitchTo.Add(i)
                                         End If
                                     Next
@@ -228,13 +232,13 @@
                             End If
 
                             'own pokemon got confused: 50%
-                            If p.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) = True Then
+                            If p.HasVolatileStatus(BasePokemon.VolatileStatus.Confusion) = True Then
                                 If RPercent(50) = True Then
                                     Dim newSwitchIndex As Integer = 0
                                     Dim canSwitchTo As New List(Of Integer)
                                     For i = 0 To BattleScreen.Trainer.Pokemons.Count - 1
                                         Dim TeamP As Pokemon = BattleScreen.Trainer.Pokemons(i)
-                                        If TeamP.HP > 0 And TeamP.Status <> Pokemon.StatusProblems.Fainted And i <> BattleScreen.OppPokemonIndex Then
+                                        If TeamP.HP > 0 And TeamP.Status <> BasePokemon.StatusProblems.Fainted And i <> BattleScreen.OppPokemonIndex Then
                                             canSwitchTo.Add(i)
                                         End If
                                     Next
@@ -254,7 +258,7 @@
             '-------------------------------------Items---------------------------------------------------------------------------------------'
 
             'same with Full Restore but without HP check, use above everything
-            If p.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) = True Or p.Status <> Pokemon.StatusProblems.None And p.Status <> Pokemon.StatusProblems.Fainted Then
+            If p.HasVolatileStatus(BasePokemon.VolatileStatus.Confusion) = True Or p.Status <> BasePokemon.StatusProblems.None And p.Status <> BasePokemon.StatusProblems.Fainted Then
                 If TrainerHasItem(14, BattleScreen) = True Then
                     If Not (TrainerHasItem(38, BattleScreen) = True And p.HP = p.MaxHP) = True Then
                         Return ProduceOppStep(14, -1)
@@ -279,7 +283,7 @@
             End If
 
             'Use Full Heal when: Confused, Burned, Frozen, Asleep, Paralyzed, Poisoned and HP is above 25% (100%), use above status restore items.
-            If p.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) = True Or p.Status <> Pokemon.StatusProblems.None And p.Status <> Pokemon.StatusProblems.Fainted Then
+            If p.HasVolatileStatus(BasePokemon.VolatileStatus.Confusion) = True Or p.Status <> BasePokemon.StatusProblems.None And p.Status <> BasePokemon.StatusProblems.Fainted Then
                 If p.HP >= CInt((p.MaxHP / 100) * 25) Then
                     If TrainerHasItem(38, BattleScreen) = True Then
                         Return ProduceOppStep(38, -1)
@@ -289,26 +293,26 @@
 
             'Use Status restore items if own HP is above 25%, chance: 60%
             If p.HP >= CInt((p.MaxHP / 100) * 25) Then
-                If p.Status <> Pokemon.StatusProblems.None And p.Status <> Pokemon.StatusProblems.Fainted Then
+                If p.Status <> BasePokemon.StatusProblems.None And p.Status <> BasePokemon.StatusProblems.Fainted Then
                     If RPercent(60) = True Then
                         Select Case p.Status
-                            Case Pokemon.StatusProblems.Poison, Pokemon.StatusProblems.BadPoison
+                            Case BasePokemon.StatusProblems.Poison, BasePokemon.StatusProblems.BadPoison
                                 If TrainerHasItem(9, BattleScreen) = True Then
                                     Return ProduceOppStep(9, -1)
                                 End If
-                            Case Pokemon.StatusProblems.Burn
+                            Case BasePokemon.StatusProblems.Burn
                                 If TrainerHasItem(10, BattleScreen) = True Then
                                     Return ProduceOppStep(10, -1)
                                 End If
-                            Case Pokemon.StatusProblems.Freeze
+                            Case BasePokemon.StatusProblems.Freeze
                                 If TrainerHasItem(11, BattleScreen) = True Then
                                     Return ProduceOppStep(11, -1)
                                 End If
-                            Case Pokemon.StatusProblems.Sleep
+                            Case BasePokemon.StatusProblems.Sleep
                                 If TrainerHasItem(12, BattleScreen) = True Then
                                     Return ProduceOppStep(12, -1)
                                 End If
-                            Case Pokemon.StatusProblems.Paralyzed
+                            Case BasePokemon.StatusProblems.Paralyzed
                                 If TrainerHasItem(13, BattleScreen) = True Then
                                     Return ProduceOppStep(13, -1)
                                 End If
@@ -321,7 +325,7 @@
             If RPercent(50) = True And (TrainerHasItem(39, BattleScreen) = True Or TrainerHasItem(40, BattleScreen) = True) = True Then
                 Dim beaten As Integer = 0
                 For Each TeamP As Pokemon In BattleScreen.Trainer.Pokemons
-                    If TeamP.HP <= 0 Or TeamP.Status = Pokemon.StatusProblems.Fainted Or TeamP.IsEgg() = True Then
+                    If TeamP.HP <= 0 Or TeamP.Status = BasePokemon.StatusProblems.Fainted Or TeamP.IsEgg() = True Then
                         beaten += 1
                     End If
                 Next
@@ -330,7 +334,7 @@
                     For i = 0 To BattleScreen.Trainer.Pokemons.Count - 1
                         Dim TeamP As Pokemon = BattleScreen.Trainer.Pokemons(i)
                         If TeamP.IsEgg() = False Then
-                            If TeamP.HP <= 0 Or TeamP.Status = Pokemon.StatusProblems.Fainted Then
+                            If TeamP.HP <= 0 Or TeamP.Status = BasePokemon.StatusProblems.Fainted Then
                                 If highestLevel = -1 OrElse BattleScreen.Trainer.Pokemons(highestLevel).Level < TeamP.Level Then
                                     highestLevel = i
                                 End If
@@ -347,18 +351,18 @@
             '-------------------------------------Moves---------------------------------------------------------------------------------------'
 
             'If own pokemon is asleep, try to use Sleep Talk (100%)
-            If p.Status = Pokemon.StatusProblems.Sleep And BattleScreen.FieldEffects.OppSleepTurns > 1 And HasMove(m, 214) = True Then
+            If p.Status = BasePokemon.StatusProblems.Sleep And BattleScreen.FieldEffects.OppSleepTurns > 1 And HasMove(m, 214) = True Then
                 Return ProduceOppStep(m, IDtoMoveIndex(m, 214))
             End If
 
             'If own pokemon is asleep, try to use Snore (100%)
-            If p.Status = Pokemon.StatusProblems.Sleep And BattleScreen.FieldEffects.OppSleepTurns > 1 And HasMove(m, 173) = True Then
+            If p.Status = BasePokemon.StatusProblems.Sleep And BattleScreen.FieldEffects.OppSleepTurns > 1 And HasMove(m, 173) = True Then
                 Return ProduceOppStep(m, IDtoMoveIndex(m, 173))
             End If
 
             'If own pokemon is frozen and has a move to thraw out -> use that move
-            If p.Status = Pokemon.StatusProblems.Freeze Then
-                Dim chosenMove As Integer = MoveAI(m, Attack.AIField.ThrawOut)
+            If p.Status = BasePokemon.StatusProblems.Freeze Then
+                Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.ThrawOut)
                 If chosenMove > -1 Then
                     Return ProduceOppStep(m, chosenMove)
                 End If
@@ -376,7 +380,7 @@
 
             'use high priority move if opponent is nearly defeated (<= 15%) (100%)
             If op.HP <= CInt((op.MaxHP / 100) * 15) Then
-                Dim chosenMove As Integer = MoveAI(m, Attack.AIField.HighPriority)
+                Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.HighPriority)
                 If chosenMove > -1 Then
                     If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                         Return ProduceOppStep(m, chosenMove)
@@ -398,15 +402,15 @@
             If p.HP <= CInt(p.MaxHP / 2) Then
                 Dim chance As Integer = 50
                 'make chance higher when opp has a status condition:
-                If op.Status = Pokemon.StatusProblems.Freeze Or op.Status = Pokemon.StatusProblems.Paralyzed Or op.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) = True Then
+                If op.Status = BasePokemon.StatusProblems.Freeze Or op.Status = BasePokemon.StatusProblems.Paralyzed Or op.HasVolatileStatus(BasePokemon.VolatileStatus.Confusion) = True Then
                     chance = 75
                 End If
-                If op.Status = Pokemon.StatusProblems.Sleep Then
+                If op.Status = BasePokemon.StatusProblems.Sleep Then
                     chance = 100
                 End If
 
                 If RPercent(chance) = True Then
-                    Dim chosenMove As Integer = MoveAI(m, Attack.AIField.Healing)
+                    Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.Healing)
                     If chosenMove > -1 Then
                         If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                             Return ProduceOppStep(m, chosenMove)
@@ -419,7 +423,7 @@
             If op.IsType(Element.Types.Ghost) = False Then
                 If BattleScreen.FieldEffects.OwnReflect > 0 Or BattleScreen.FieldEffects.OwnLightScreen > 0 Then
                     If RPercent(80) = True Then
-                        Dim chosenMove As Integer = MoveAI(m, Attack.AIField.RemoveReflectLightscreen)
+                        Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.RemoveReflectLightscreen)
                         If chosenMove > -1 Then
                             Return ProduceOppStep(m, chosenMove)
                         End If
@@ -431,14 +435,14 @@
             'check if substitute is up:
             If BattleScreen.FieldEffects.OwnSubstitute = 0 Then
                 'check no status already applies:
-                If op.Status = Pokemon.StatusProblems.None Then
+                If op.Status = BasePokemon.StatusProblems.None Then
 
                     'try to paralyse (75%)
-                    If op.Status <> Pokemon.StatusProblems.Paralyzed Then
+                    If op.Status <> BasePokemon.StatusProblems.Paralyzed Then
                         If op.Type1.Type <> Element.Types.Electric And op.Type2.Type <> Element.Types.Electric Then
                             If op.Ability.Name.ToLower() <> "limber" Then
                                 If RPercent(75) = True Then
-                                    Dim chosenMove As Integer = MoveAI(m, Attack.AIField.Paralysis)
+                                    Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.Paralysis)
                                     If chosenMove > -1 Then
                                         If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                                             Return ProduceOppStep(m, chosenMove)
@@ -450,11 +454,11 @@
                     End If
 
                     'try to burn (75%)
-                    If op.Status <> Pokemon.StatusProblems.Burn Then
+                    If op.Status <> BasePokemon.StatusProblems.Burn Then
                         If op.Type1.Type <> Element.Types.Fire And op.Type2.Type <> Element.Types.Fire Then
                             If op.Ability.Name.ToLower() <> "water veil" Then
                                 If RPercent(75) = True Then
-                                    Dim chosenMove As Integer = MoveAI(m, Attack.AIField.Burn)
+                                    Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.Burn)
                                     If chosenMove > -1 Then
                                         If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                                             Return ProduceOppStep(m, chosenMove)
@@ -466,11 +470,11 @@
                     End If
 
                     'try to sleep (75%)
-                    If op.Status <> Pokemon.StatusProblems.Sleep Then
+                    If op.Status <> BasePokemon.StatusProblems.Sleep Then
                         If op.Ability.Name.ToLower() <> "vital spirit" Then
                             If op.Ability.Name.ToLower() <> "insomnia" Then
                                 If RPercent(75) = True Then
-                                    Dim chosenMove As Integer = MoveAI(m, Attack.AIField.Sleep)
+                                    Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.Sleep)
                                     If chosenMove > -1 Then
                                         If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                                             Return ProduceOppStep(m, chosenMove)
@@ -482,11 +486,11 @@
                     End If
 
                     'try to poison (50%)
-                    If op.Status <> Pokemon.StatusProblems.BadPoison And op.Status <> Pokemon.StatusProblems.Poison Then
+                    If op.Status <> BasePokemon.StatusProblems.BadPoison And op.Status <> BasePokemon.StatusProblems.Poison Then
                         If op.Type1.Type <> Element.Types.Steel And op.Type1.Type <> Element.Types.Poison And op.Type2.Type <> Element.Types.Steel And op.Type2.Type <> Element.Types.Poison Then
                             If op.Ability.Name.ToLower() <> "immunity" Then
                                 If RPercent(50) = True Then
-                                    Dim chosenMove As Integer = MoveAI(m, Attack.AIField.Poison)
+                                    Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.Poison)
                                     If chosenMove > -1 Then
                                         If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                                             Return ProduceOppStep(m, chosenMove)
@@ -502,10 +506,10 @@
 
             'try to confuse (75%)
             'check if opp isnt confused already:
-            If op.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) = False Then
+            If op.HasVolatileStatus(BasePokemon.VolatileStatus.Confusion) = False Then
                 If op.Ability.Name.ToLower() <> "own tempo" Then
                     If RPercent(75) = True Then
-                        Dim chosenMove As Integer = MoveAI(m, Attack.AIField.Confusion)
+                        Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.Confusion)
                         If chosenMove > -1 Then
                             If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                                 Return ProduceOppStep(m, chosenMove)
@@ -538,7 +542,7 @@
             'higher sp atk than atk, not boosted stat, higher spatk than spdef: use sp atk boost (50%)
             If p.SpAttack > p.Attack And p.StatSpAttack <= 0 And p.SpAttack > p.SpDefense Then
                 If RPercent(50) = True Then
-                    Dim chosenMove As Integer = MoveAI(m, Attack.AIField.RaiseSpAttack)
+                    Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.RaiseSpAttack)
                     If chosenMove > -1 Then
                         If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                             Return ProduceOppStep(m, chosenMove)
@@ -550,7 +554,7 @@
             'higher atk than sp atk, not boosted stat, higher atk than def: use atk boost (50%)
             If p.Attack > p.SpAttack And p.StatAttack <= 0 And p.Attack > p.Defense Then
                 If RPercent(50) = True Then
-                    Dim chosenMove As Integer = MoveAI(m, Attack.AIField.RaiseAttack)
+                    Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.RaiseAttack)
                     If chosenMove > -1 Then
                         If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                             Return ProduceOppStep(m, chosenMove)
@@ -562,7 +566,7 @@
             'not lowered opp def stat, higher atk than spatk, higher def than atk: use def lowering move  (50%)
             If p.Attack > p.SpAttack And p.Defense > p.Attack And op.StatDefense >= 0 Then
                 If RPercent(50) = True Then
-                    Dim chosenMove As Integer = MoveAI(m, Attack.AIField.LowerDefense)
+                    Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.LowerDefense)
                     If chosenMove > -1 Then
                         If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                             Return ProduceOppStep(m, chosenMove)
@@ -574,7 +578,7 @@
             'not lowered opp spdef stat, higher spatk than atk, higher spdef than spatk: use spdef lowering move (50%)
             If p.SpAttack > p.Attack And p.SpDefense > p.SpAttack And op.StatSpDefense >= 0 Then
                 If RPercent(50) = True Then
-                    Dim chosenMove As Integer = MoveAI(m, Attack.AIField.LowerSpDefense)
+                    Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.LowerSpDefense)
                     If chosenMove > -1 Then
                         If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                             Return ProduceOppStep(m, chosenMove)
@@ -586,8 +590,8 @@
 
             'when opp has lower atk than def/lower spatk than spdef and can heal stat: use stat healing move (50%)
             If op.SpAttack > op.Attack And op.SpAttack < op.SpDefense Or op.Attack > op.SpAttack And op.Attack < op.Defense Then
-                If p.Status = Pokemon.StatusProblems.BadPoison Or p.Status = Pokemon.StatusProblems.Burn Or p.Status = Pokemon.StatusProblems.Freeze Or p.Status = Pokemon.StatusProblems.Paralyzed Or p.Status = Pokemon.StatusProblems.Poison Or p.Status = Pokemon.StatusProblems.Sleep Then
-                    Dim chosenMove As Integer = MoveAI(m, Attack.AIField.CureStatus)
+                If p.Status = BasePokemon.StatusProblems.BadPoison Or p.Status = BasePokemon.StatusProblems.Burn Or p.Status = BasePokemon.StatusProblems.Freeze Or p.Status = BasePokemon.StatusProblems.Paralyzed Or p.Status = BasePokemon.StatusProblems.Poison Or p.Status = BasePokemon.StatusProblems.Sleep Then
+                    Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.CureStatus)
                     If chosenMove > -1 Then
                         If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                             Return ProduceOppStep(m, chosenMove)
@@ -599,7 +603,7 @@
             'if not done before, boost own evasion (50%) 
             If p.Evasion <= 0 Then
                 If RPercent(50) = True Then
-                    Dim chosenMove As Integer = MoveAI(m, Attack.AIField.RaiseEvasion)
+                    Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.RaiseEvasion)
                     If chosenMove > -1 Then
                         If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                             Return ProduceOppStep(m, chosenMove)
@@ -611,7 +615,7 @@
             'if not done before, boost own accuracy (75%) 
             If p.Evasion <= 0 Then
                 If RPercent(75) = True Then
-                    Dim chosenMove As Integer = MoveAI(m, Attack.AIField.RaiseEvasion)
+                    Dim chosenMove As Integer = MoveAI(m, BaseAttack.AIField.RaiseEvasion)
                     If chosenMove > -1 Then
                         If CheckForTypeIneffectiveness(BattleScreen, m, chosenMove) = True Then
                             Return ProduceOppStep(m, chosenMove)
@@ -644,7 +648,7 @@
 
             Dim attackDic As New Dictionary(Of Integer, Integer)
             For i = 0 To m.Count - 1
-                If MoveHasAIField(m(i), Attack.AIField.Damage) = True Then
+                If MoveHasAIField(m(i), BaseAttack.AIField.Damage) = True Then
                     attackDic.Add(i, 0)
                 End If
             Next
@@ -702,7 +706,7 @@
                     End If
 
                     'If the pokemon has other options, dont use selfdestruct or explosion too often:
-                    If cMove.ID = 120 Or cMove.ID = 153 Then
+                    If cMove.Id = 120 Or cMove.Id = 153 Then
                         If Core.Random.Next(0, 8) <> 0 Then
                             value = Core.Random.Next(50, 100)
                         End If
@@ -741,16 +745,16 @@
                     End If
 
                     'Special moves to not use:
-                    If cMove.ID = 150 Then 'Never use splash
+                    If cMove.Id = 150 Then 'Never use splash
                         value = 0
                     End If
-                    If cMove.ID = 214 And p.Status <> Pokemon.StatusProblems.Sleep Then 'Never use Sleep Talk when user is not sleeping.
+                    If cMove.Id = 214 And p.Status <> BasePokemon.StatusProblems.Sleep Then 'Never use Sleep Talk when user is not sleeping.
                         value = 0
                     End If
-                    If cMove.ID = 171 And op.Status <> Pokemon.StatusProblems.Sleep Then 'Never use nightmare when opponent is not sleeping.
+                    If cMove.Id = 171 And op.Status <> BasePokemon.StatusProblems.Sleep Then 'Never use nightmare when opponent is not sleeping.
                         value = 0
                     End If
-                    If cMove.ID = 138 And op.Status <> Pokemon.StatusProblems.Sleep Then 'Never use Dream eater when opponent is not sleeping
+                    If cMove.Id = 138 And op.Status <> BasePokemon.StatusProblems.Sleep Then 'Never use Dream eater when opponent is not sleeping
                         value = 0
                     End If
 
@@ -787,7 +791,7 @@
             End If
 
             'once everything else failed, choose one of the attacking moves:
-            Dim chosenAttackMove As Integer = MoveAI(m, Attack.AIField.Damage)
+            Dim chosenAttackMove As Integer = MoveAI(m, BaseAttack.AIField.Damage)
             If chosenAttackMove > -1 Then
                 Return ProduceOppStep(m, chosenAttackMove)
             End If
@@ -796,10 +800,10 @@
             Return ProduceOppStep(m, Core.Random.Next(0, m.Count))
         End Function
 
-        Private Shared Function HasOtherAttackingMoveThanExplosion(ByVal m As List(Of Attack), ByVal leaveOutIndex As Integer) As Boolean
+        Private Shared Function HasOtherAttackingMoveThanExplosion(ByVal m As List(Of BaseAttack), ByVal leaveOutIndex As Integer) As Boolean
             For i = 0 To m.Count - 1
                 If i <> leaveOutIndex Then
-                    If m(i).ID <> 121 And m(i).ID <> 153 Then
+                    If m(i).Id <> 121 And m(i).Id <> 153 Then
                         Return True
                     End If
                 End If
@@ -807,11 +811,11 @@
             Return False
         End Function
 
-        Private Shared Function GetAttackingMove(ByVal BattleScreen As BattleScreen, ByVal m As List(Of Attack)) As Integer
+        Private Shared Function GetAttackingMove(ByVal BattleScreen As BattleScreen, ByVal m As List(Of BaseAttack)) As Integer
             Return 0
         End Function
 
-        Private Shared Function CheckForTypeIneffectiveness(ByVal BattleScreen As BattleScreen, ByVal m As List(Of Attack), ByVal i As Integer) As Boolean
+        Private Shared Function CheckForTypeIneffectiveness(ByVal BattleScreen As BattleScreen, ByVal m As List(Of BaseAttack), ByVal i As Integer) As Boolean
             Dim move As Attack = m(i)
 
             If move.ImmunityAffected = True Then
@@ -833,10 +837,10 @@
             Return False
         End Function
 
-        Private Shared Function MoveAI(ByVal m As List(Of Attack), ByVal AIType As Attack.AIField) As Integer
+        Private Shared Function MoveAI(ByVal m As List(Of BaseAttack), ByVal AIType As BaseAttack.AIField) As Integer
             Dim validMoves As New List(Of Integer)
             For i = 0 To m.Count - 1
-                If m(i).AIField1 = AIType Or m(i).AIField2 = AIType Or m(i).AIField3 = AIType Then
+                If m(i).AiField1 = AIType Or m(i).AiField2 = AIType Or m(i).AiField3 = AIType Then
                     validMoves.Add(i)
                 End If
             Next
@@ -848,22 +852,22 @@
             Return -1
         End Function
 
-        Private Shared Function MoveHasAIField(ByVal m As Attack, ByVal AIType As Attack.AIField) As Boolean
-            Return m.AIField1 = AIType Or m.AIField2 = AIType Or m.AIField3 = AIType
+        Private Shared Function MoveHasAIField(ByVal m As Attack, ByVal AIType As BaseAttack.AIField) As Boolean
+            Return m.AiField1 = AIType Or m.AiField2 = AIType Or m.AiField3 = AIType
         End Function
 
-        Private Shared Function HasMove(ByVal m As List(Of Attack), ByVal ID As Integer) As Boolean
+        Private Shared Function HasMove(ByVal m As List(Of BaseAttack), ByVal ID As Integer) As Boolean
             For Each move As Attack In m
-                If move.ID = ID Then
+                If move.Id = ID Then
                     Return True
                 End If
             Next
             Return False
         End Function
 
-        Private Shared Function IDtoMoveIndex(ByVal m As List(Of Attack), ByVal ID As Integer) As Integer
+        Private Shared Function IDtoMoveIndex(ByVal m As List(Of BaseAttack), ByVal ID As Integer) As Integer
             For i = 0 To m.Count - 1
-                If m(i).ID = ID Then
+                If m(i).Id = ID Then
                     Return i
                 End If
             Next
@@ -872,7 +876,7 @@
 
 #Region "ProduceSteps"
 
-        Private Shared Function ProduceOppStep(ByVal m As List(Of Attack), ByVal i As Integer) As Battle.RoundConst
+        Private Shared Function ProduceOppStep(ByVal m As List(Of BaseAttack), ByVal i As Integer) As RoundConst
             While i > m.Count - 1
                 i -= 1
             End While
@@ -881,15 +885,15 @@
                 Throw New Exception("An empty move array got passed in!")
             End If
 
-            Return New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Move, .Argument = m(i)}
+            Return New RoundConst With {.StepType = RoundConst.StepTypes.Move, .Argument = m(i)}
         End Function
 
-        Private Shared Function ProduceOppStep(ByVal ItemID As Integer, ByVal target As Integer) As Battle.RoundConst
-            Return New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Item, .Argument = ItemID.ToString() & "," & target.ToString()}
+        Private Shared Function ProduceOppStep(ByVal ItemID As Integer, ByVal target As Integer) As RoundConst
+            Return New RoundConst With {.StepType = RoundConst.StepTypes.Item, .Argument = ItemID.ToString() & "," & target.ToString()}
         End Function
 
-        Private Shared Function ProduceOppStep(ByVal SwitchID As Integer) As Battle.RoundConst
-            Return New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Switch, .Argument = SwitchID.ToString()}
+        Private Shared Function ProduceOppStep(ByVal SwitchID As Integer) As RoundConst
+            Return New RoundConst With {.StepType = RoundConst.StepTypes.Switch, .Argument = SwitchID.ToString()}
         End Function
 
 #End Region
@@ -898,7 +902,7 @@
 
         Private Shared Function TrainerHasItem(ByVal ItemID As Integer, ByVal BattleScreen As BattleScreen) As Boolean
             For Each Item As Item In BattleScreen.Trainer.Items
-                If Item.ID = ItemID Then
+                If Item.Id = ItemID Then
                     Return True
                 End If
             Next
@@ -909,9 +913,9 @@
             Dim potionRange As List(Of Integer) = {18, 17, 16, 15, 14}.ToList()
             Dim bestPotion As Integer = -1
             For Each I As Item In BattleScreen.Trainer.Items
-                If potionRange.Contains(I.ID) = True Then
-                    If potionRange.IndexOf(I.ID) > bestPotion Then
-                        bestPotion = potionRange.IndexOf(I.ID)
+                If potionRange.Contains(I.Id) = True Then
+                    If potionRange.IndexOf(I.Id) > bestPotion Then
+                        bestPotion = potionRange.IndexOf(I.Id)
                     End If
                 End If
             Next
@@ -925,7 +929,7 @@
 
         Private Shared Function GetBestRevive(ByVal BattleScreen As BattleScreen) As Integer
             For Each Item As Item In BattleScreen.Trainer.Items
-                If Item.ID = 40 Then
+                If Item.Id = 40 Then
                     Return 40
                 End If
             Next

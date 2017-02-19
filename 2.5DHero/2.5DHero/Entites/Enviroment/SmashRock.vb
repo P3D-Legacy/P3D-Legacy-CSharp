@@ -1,4 +1,13 @@
-﻿Public Class SmashRock
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Security
+Imports P3D.Legacy.Core.World
+
+Public Class SmashRock
 
     Inherits Entity
 
@@ -53,7 +62,7 @@
 
             Dim spawnedPokemon As Pokemon = Nothing
             If Core.Random.Next(0, 100) < 20 Then
-                spawnedPokemon = Spawner.GetPokemon(Screen.Level.LevelFile, Spawner.EncounterMethods.RockSmash, False)
+                spawnedPokemon = Spawner.GetPokemon(Screen.Level.LevelFile, EncounterMethods.RockSmash, False)
                 If spawnedPokemon Is Nothing Then
                     Dim s As String = "version=2" & vbNewLine &
                         "@text.show(" & pName & " used~Rock Smash!)" & vbNewLine &
@@ -134,7 +143,7 @@
         ItemContainerlist.Clear()
         Dim File As String = GameModeManager.GetContentFilePath("Data\smashrockitems.dat")
         If System.IO.File.Exists(File) = True Then
-            Security.FileValidation.CheckFileValid(File, False, "SmashRock.vb")
+            FileValidation.CheckFileValid(File, False, "SmashRock.vb")
             Dim data() As String = System.IO.File.ReadAllLines(File)
             For Each line As String In data
                 Dim Linedata() As String = line.Split(CChar("|"))

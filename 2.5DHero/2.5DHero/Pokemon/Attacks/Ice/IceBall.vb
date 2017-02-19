@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Ice
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Ice
 
     Public Class IceBall
 
@@ -55,10 +58,11 @@
             Me.AIField2 = AIField.MultiTurn
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim iceball As Integer = BattleScreen.FieldEffects.OwnIceBallCounter
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            Dim iceball As Integer = screen.FieldEffects.OwnIceBallCounter
             If own = False Then
-                iceball = BattleScreen.FieldEffects.OppIceBallCounter
+                iceball = screen.FieldEffects.OppIceBallCounter
             End If
 
             Dim p As Integer = Me.Power
@@ -69,9 +73,9 @@
                 Next
             End If
 
-            Dim defensecurl As Integer = BattleScreen.FieldEffects.OwnDefenseCurl
+            Dim defensecurl As Integer = screen.FieldEffects.OwnDefenseCurl
             If own = False Then
-                defensecurl = BattleScreen.FieldEffects.OppDefenseCurl
+                defensecurl = screen.FieldEffects.OppDefenseCurl
             End If
 
             If defensecurl > 0 Then
@@ -81,7 +85,7 @@
             Return p
         End Function
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim iceball As Integer = BattleScreen.FieldEffects.OwnIceBallCounter
             If own = False Then
                 iceball = BattleScreen.FieldEffects.OppIceBallCounter
@@ -110,15 +114,15 @@
             End If
         End Sub
 
-        Public Overrides Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 

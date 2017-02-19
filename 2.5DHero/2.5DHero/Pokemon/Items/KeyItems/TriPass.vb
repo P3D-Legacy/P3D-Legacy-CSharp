@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.KeyItems
 
     <Item(265, "Tri-Pass")>
@@ -8,7 +10,7 @@ Namespace Items.KeyItems
         Public Overrides ReadOnly Property Description As String = "A pass for ferries between One, Two, and Three Island. It has a drawing of three islands."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(480, 48, 24, 24)
+            TextureRectangle = New Rectangle(480, 48, 24, 24)
         End Sub
 
     End Class

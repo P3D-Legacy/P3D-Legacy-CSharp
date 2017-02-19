@@ -1,3 +1,9 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Medicine
 
     <Item(14, "Full Restore")>
@@ -10,7 +16,7 @@ Namespace Items.Medicine
         Public Overrides ReadOnly Property PokeDollarPrice As Integer = 3000
 
         Public Sub New()
-            _textureRectangle = New Rectangle(288, 0, 24, 24)
+            TextureRectangle = New Rectangle(288, 0, 24, 24)
         End Sub
 
         Public Overrides Sub Use()
@@ -27,12 +33,12 @@ Namespace Items.Medicine
             Dim v1 As Boolean = HealPokemon(PokeIndex, p.MaxHP)
             Dim v2 As Boolean = False
 
-            If p.Status <> Pokemon.StatusProblems.Fainted And p.Status <> Pokemon.StatusProblems.None Or p.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) = True Then
-                If p.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) = True Then
-                    p.RemoveVolatileStatus(Pokemon.VolatileStatus.Confusion)
+            If p.Status <> BasePokemon.StatusProblems.Fainted And p.Status <> BasePokemon.StatusProblems.None Or p.HasVolatileStatus(BasePokemon.VolatileStatus.Confusion) = True Then
+                If p.HasVolatileStatus(BasePokemon.VolatileStatus.Confusion) = True Then
+                    p.RemoveVolatileStatus(BasePokemon.VolatileStatus.Confusion)
                 End If
 
-                p.Status = Pokemon.StatusProblems.None
+                p.Status = BasePokemon.StatusProblems.None
                 v2 = True
                 If v1 = False Then
                     Dim t As String = "Healed " & p.GetDisplayName() & "!"

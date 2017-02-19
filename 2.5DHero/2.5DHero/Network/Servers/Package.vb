@@ -1,10 +1,14 @@
-﻿Namespace Servers
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Server
+
+Namespace Servers
 
     ''' <summary>
     ''' A class to handle the network package protocol.
     ''' </summary>
     ''' <remarks>Call PackageHandler to handle incoming packages.</remarks>
     Public Class Package
+        Implements IPackage
 
         'Package data:
         'ProtcolVersion|PackageType|Origin|DataItemsCount|Offset1|Offset2|Offset3...|Data1Data2Data3
@@ -17,53 +21,6 @@
         '    - A list of data items, that aren't separated.
 
 #Region "Fields and Enums"
-
-        Public Enum PackageTypes As Integer
-            GameData = 0
-
-            ''' <summary>
-            ''' Not used anymore, use GameData instead.
-            ''' </summary>
-            PlayData = 1
-
-            PrivateMessage = 2
-            ChatMessage = 3
-            Kicked = 4
-            ID = 7
-            CreatePlayer = 8
-            DestroyPlayer = 9
-            ServerClose = 10
-            ServerMessage = 11
-            WorldData = 12
-            Ping = 13
-            GamestateMessage = 14
-
-            TradeRequest = 30
-            TradeJoin = 31
-            TradeQuit = 32
-
-            TradeOffer = 33
-            TradeStart = 34
-
-            BattleRequest = 50
-            BattleJoin = 51
-            BattleQuit = 52
-
-            BattleOffer = 53
-            BattleStart = 54
-
-            BattleClientData = 55
-            BattleHostData = 56
-            BattlePokemonData = 57
-
-            ServerInfoData = 98
-            ServerDataRequest = 99
-        End Enum
-
-        Public Enum ProtocolTypes As Integer
-            TCP = 0
-            UDP = 1
-        End Enum
 
         Private _packageType As Integer = 0
         Private _origin As Integer = 0
@@ -80,7 +37,7 @@
         ''' <summary>
         ''' The PackageType of this Package.
         ''' </summary>
-        Public ReadOnly Property PackageType() As PackageTypes
+        Public ReadOnly Property PackageType() As PackageTypes Implements IPackage.PackageType
             Get
                 Return CType(Me._packageType, PackageTypes)
             End Get
@@ -89,7 +46,7 @@
         ''' <summary>
         ''' The Origin ID of this Package.
         ''' </summary>
-        Public ReadOnly Property Origin() As Integer
+        Public ReadOnly Property Origin() As Integer Implements IPackage.Origin
             Get
                 Return Me._origin
             End Get
@@ -98,7 +55,7 @@
         ''' <summary>
         ''' The DataItems of this Package.
         ''' </summary>
-        Public ReadOnly Property DataItems() As List(Of String)
+        Public ReadOnly Property DataItems() As List(Of String) Implements IPackage.DataItems
             Get
                 Return Me._dataItems
             End Get
@@ -107,7 +64,7 @@
         ''' <summary>
         ''' Returns if the data used to create this Package was valid.
         ''' </summary>
-        Public ReadOnly Property IsValid() As Boolean
+        Public ReadOnly Property IsValid() As Boolean Implements IPackage.IsValid
             Get
                 Return Me._isValid
             End Get
@@ -116,7 +73,7 @@
         ''' <summary>
         ''' The protocol version of this package.
         ''' </summary>
-        Public ReadOnly Property ProtocolVersion() As String
+        Public ReadOnly Property ProtocolVersion() As String Implements IPackage.ProtocolVersion
             Get
                 Return Me._protocolVersion
             End Get
@@ -125,7 +82,7 @@
         ''' <summary>
         ''' The protocol type (TCP or UDP) this package is using when sending data.
         ''' </summary>
-        Public Property ProtocolType() As ProtocolTypes
+        Public Property ProtocolType() As ProtocolTypes Implements IPackage.ProtocolType
             Get
                 Return Me._protocolType
             End Get
@@ -284,7 +241,7 @@
         ''' <summary>
         ''' Returns the raw Package data from the members of this instance.
         ''' </summary>
-        Public Overrides Function ToString() As String
+        Public Overrides Function ToString() As String Implements IPackage.ToString
             Dim outputStr As String = Me._protocolVersion & "|" & CInt(Me._packageType).ToString() & "|" & Me._origin.ToString() & "|" & Me._dataItems.Count
 
             Dim currentIndex As Integer = 0
@@ -303,14 +260,14 @@
         ''' <summary>
         ''' Gives this package to the PackageHandler.
         ''' </summary>
-        Public Sub Handle()
+        Public Sub Handle() Implements IPackage.Handle
             PackageHandler.HandlePackage(Me)
         End Sub
 
         ''' <summary>
         ''' Returns a byte array of the data of this package.
         ''' </summary>
-        Public Function GetByteArray() As Byte()
+        Public Function GetByteArray() As Byte() Implements IPackage.GetByteArray
             Return System.Text.Encoding.ASCII.GetBytes(Me.ToString())
         End Function
 

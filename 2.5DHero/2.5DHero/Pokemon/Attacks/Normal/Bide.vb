@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Bide
 
@@ -61,17 +64,18 @@
             Me.AIField2 = AIField.MultiTurn
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen as BattleScreen = BattleScreen
             If Own = True Then
-                If BattleScreen.FieldEffects.OwnBideCounter < 3 Then
-                    BattleScreen.FieldEffects.OwnBideCounter += 1
+                If screen.FieldEffects.OwnBideCounter < 3 Then
+                    screen.FieldEffects.OwnBideCounter += 1
                     Return True
                 Else
                     Return False
                 End If
             Else
-                If BattleScreen.FieldEffects.OppBideCounter < 3 Then
-                    BattleScreen.FieldEffects.OppBideCounter += 1
+                If screen.FieldEffects.OppBideCounter < 3 Then
+                    screen.FieldEffects.OppBideCounter += 1
                     Return True
                 Else
                     Return False
@@ -79,16 +83,17 @@
             End If
         End Function
 
-        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As Screen) As Integer
+            Dim screen as BattleScreen = BattleScreen
             If Own = True Then
-                Dim damage As Integer = BattleScreen.FieldEffects.OwnBideDamage * 2
-                BattleScreen.FieldEffects.OwnBideDamage = 0
-                BattleScreen.FieldEffects.OwnBideCounter = 0
+                Dim damage As Integer = screen.FieldEffects.OwnBideDamage * 2
+                screen.FieldEffects.OwnBideDamage = 0
+                screen.FieldEffects.OwnBideCounter = 0
                 Return damage
             Else
-                Dim damage As Integer = BattleScreen.FieldEffects.OppBideDamage * 2
-                BattleScreen.FieldEffects.OppBideDamage = 0
-                BattleScreen.FieldEffects.OppBideCounter = 0
+                Dim damage As Integer = screen.FieldEffects.OppBideDamage * 2
+                screen.FieldEffects.OppBideDamage = 0
+                screen.FieldEffects.OppBideCounter = 0
                 Return damage
             End If
         End Function

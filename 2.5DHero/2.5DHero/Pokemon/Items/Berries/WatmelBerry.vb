@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Pokemon.Items
+
 Namespace Items.Berries
 
     <Item(2032, "Watmel")>

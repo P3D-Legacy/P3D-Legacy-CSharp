@@ -1,4 +1,8 @@
-﻿Public Class SlideBlock
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Screens
+
+Public Class SlideBlock
 
     Inherits Entity
 

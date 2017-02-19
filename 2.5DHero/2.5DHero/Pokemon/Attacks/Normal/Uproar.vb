@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Uproar
 
@@ -52,7 +55,7 @@
             '#End
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If own = True Then
                 If BattleScreen.FieldEffects.OwnUproar = 0 Then
                     BattleScreen.FieldEffects.OwnUproar = 3
@@ -78,11 +81,11 @@
             BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & "'s uproar stopped."))
         End Sub
 
-        Public Overrides Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
             Me.StopMove(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub MoveFailsSoundproof(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveFailsSoundproof(own As Boolean, BattleScreen As Screen)
             Me.StopMove(own, BattleScreen)
         End Sub
 

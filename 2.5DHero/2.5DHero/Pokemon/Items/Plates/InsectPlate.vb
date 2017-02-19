@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.Plates
 
     <Item(273, "Insect Plate")>

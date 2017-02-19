@@ -1,9 +1,18 @@
-﻿Public Class LevelLoader
+﻿Imports System.Drawing
+Imports System.Globalization
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Models
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Security
+Imports P3D.Legacy.Core.World
+
+Public Class LevelLoader
+    Inherits BaseLevelLoader
 
     Const MULTITHREAD As Boolean = False
-
-    Public Shared LoadedOffsetMapOffsets As New List(Of Vector3)
-    Public Shared LoadedOffsetMapNames As New List(Of String)
 
     Private Enum TagTypes
         Entity
@@ -28,15 +37,6 @@
     'Store these so other classes can get them.
     Private Entities As New List(Of Entity)
     Private Floors As New List(Of Entity)
-
-    'A counter across all LevelLoader instances to count how many instances across the program are active.
-    Shared Busy As Integer = 0
-
-    Public Shared ReadOnly Property IsBusy() As Boolean
-        Get
-            Return Busy > 0
-        End Get
-    End Property
 
 #Region "File Loading"
 
@@ -100,14 +100,14 @@
 
         levelPath = GameModeManager.GetMapPath(levelPath)
         Logger.Debug("Loading map: " & levelPath.Remove(0, GameController.GamePath.Length))
-        Security.FileValidation.CheckFileValid(levelPath, False, "LevelLoader.vb")
+        FileValidation.CheckFileValid(levelPath, False, "LevelLoader.vb")
 
         If IO.File.Exists(levelPath) = False Then
             Logger.Log(Logger.LogTypes.ErrorMessage, "LevelLoader.vb: Error accessing map file """ & levelPath & """. File not found.")
             Busy -= 1
 
-            If CurrentScreen.Identification = Screen.Identifications.OverworldScreen And loadOffsetMap = False Then
-                CType(CurrentScreen, OverworldScreen).Titles.Add(New OverworldScreen.Title("Couldn't find map file!", 20.0F, Color.White, 6.0F, Vector2.Zero, True))
+            If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen And loadOffsetMap = False Then
+                CType(Core.CurrentScreen, OverworldScreen).Titles.Add(New OverworldScreen.Title("Couldn't find map file!", 20.0F, Microsoft.Xna.Framework.Color.White, 6.0F, Vector2.Zero, True))
             End If
 
             Exit Sub
@@ -172,8 +172,8 @@
             countLines += 1
 
             If line.Contains("{") = True And line.Contains("}") = True Then
-                Try
-                    Dim TagType As TagTypes = TagTypes.None
+                'Try
+                Dim TagType As TagTypes = TagTypes.None
                     line = line.Remove(0, line.IndexOf("{") + 2)
 
                     Select Case True
@@ -234,9 +234,9 @@
                                 End If
                         End Select
                     End If
-                Catch ex As Exception
-                    Logger.Log(Logger.LogTypes.Warning, "LevelLoader.vb: Failed to load map object! (Index: " & countLines & ") (Line: " & orgLine & ") from mapfile: " & levelPath & "; Error message: " & ex.Message)
-                End Try
+                'Catch ex As Exception
+                'Logger.Log(Logger.LogTypes.Warning, "LevelLoader.vb: Failed to load map object! (Index: " & countLines & ") (Line: " & orgLine & ") from mapfile: " & levelPath & "; Error message: " & ex.Message)
+                'End Try
             End If
         Next
 
@@ -257,7 +257,7 @@
         Logger.Debug("Map loading time: " & timer.ElapsedTicks & " Ticks; " & timer.ElapsedMilliseconds & " Milliseconds.")
 
         'Dim xmlLevelLoader As New XmlLevelLoader
-        'xmlLevelLoader.Load(My.Computer.FileSystem.SpecialDirectories.Desktop & "\t.xml", _5DHero.XmlLevelLoader.LevelTypes.Default, Vector3.Zero)
+        'xmlLevelLoader.Load(My.Computer.FileSystem.SpecialDirectories.Desktop & "\t.xml", _5DHero.XmlLevelLoader.LevelElement.Types.Default, Vector3.Zero)
 
         Busy -= 1
 
@@ -317,21 +317,21 @@
                         Dim values() As String = subTagValue.Split(CChar(","))
                         Dim arr As New List(Of Integer)
                         For Each value As String In values
-                            arr.Add(CInt(value))
+                            arr.Add(CInt(Single.Parse(value, CultureInfo.InvariantCulture)))
                         Next
                         Dictionary.Add(TagName, arr)
                     Case "rec"
                         Dim content() As String = subTagValue.Split(CChar(","))
-                        Dictionary.Add(TagName, New Rectangle(CInt(content(0)), CInt(content(1)), CInt(content(2)), CInt(content(3))))
+                        Dictionary.Add(TagName, New Microsoft.Xna.Framework.Rectangle(CInt(content(0)), CInt(content(1)), CInt(content(2)), CInt(content(3))))
                     Case "recarr"
                         Dim values() As String = subTagValue.Split(CChar("]"))
-                        Dim arr As New List(Of Rectangle)
+                        Dim arr As New List(Of Microsoft.Xna.Framework.Rectangle)
                         For Each value As String In values
                             If value.Length > 0 Then
                                 value = value.Remove(0, 1)
 
                                 Dim content() As String = value.Split(CChar(","))
-                                arr.Add(New Rectangle(CInt(content(0)), CInt(content(1)), CInt(content(2)), CInt(content(3))))
+                                arr.Add(New Microsoft.Xna.Framework.Rectangle(CInt(content(0)), CInt(content(1)), CInt(content(2)), CInt(content(3))))
                             End If
                         Next
                         Dictionary.Add(TagName, arr)
@@ -339,8 +339,7 @@
                         Dim values() As String = subTagValue.Split(CChar(","))
                         Dim arr As New List(Of Single)
                         For Each value As String In values
-                            value = value.Replace(".", GameController.DecSeparator)
-                            arr.Add(CSng(value))
+                            arr.Add(Single.Parse(value, CultureInfo.InvariantCulture))
                         Next
                         Dictionary.Add(TagName, arr)
                 End Select
@@ -398,8 +397,8 @@
             LoadedOffsetMapNames.Add(MapName)
             LoadedOffsetMapOffsets.Add(MapOffset)
 
-            Dim listName As String = Screen.Level.LevelFile & "|" & MapName & "|" & Screen.Level.World.CurrentMapWeather & "|" & World.GetCurrentRegionWeather() & "|" & World.GetTime() & "|" & World.CurrentSeason()
-            If OffsetMaps.ContainsKey(listName) = False Then
+            Dim listName As String = Screen.Level.LevelFile & "|" & MapName & "|" & Screen.Level.World.CurrentWeather & "|" & World.GetCurrentRegionWeather() & "|" & World.GetTime() & "|" & World.CurrentSeason()
+            If Core.OffsetMaps.ContainsKey(listName) = False Then
                 Dim mapList As New List(Of List(Of Entity))
 
                 Dim params As New List(Of Object)
@@ -421,24 +420,24 @@
                 Next
                 mapList.AddRange({entList, floorList})
 
-                OffsetMaps.Add(listName, mapList)
+                Core.OffsetMaps.Add(listName, mapList)
             Else
                 Logger.Debug("Loaded Offsetmap from store: " & MapName)
 
-                For Each e As Entity In OffsetMaps(listName)(0)
+                For Each e As Entity In Core.OffsetMaps(listName)(0)
                     If e.MapOrigin = MapName Then
                         e.IsOffsetMapContent = True
                         Screen.Level.OffsetmapEntities.Add(e)
                     End If
                 Next
-                For Each e As Entity In OffsetMaps(listName)(1)
+                For Each e As Entity In Core.OffsetMaps(listName)(1)
                     If e.MapOrigin = MapName Then
                         e.IsOffsetMapContent = True
                         Screen.Level.OffsetmapFloors.Add(e)
                     End If
                 Next
             End If
-            Logger.Debug("Offset maps in store: " & OffsetMaps.Count)
+            Logger.Debug("Offset maps in store: " & Core.OffsetMaps.Count)
 
             Screen.Level.OffsetmapEntities = (From e In Screen.Level.OffsetmapEntities Order By e.CameraDistance Descending).ToList()
 
@@ -452,12 +451,6 @@
     End Sub
 
 #Region "AddElements"
-
-    Shared tempStructureList As New Dictionary(Of String, List(Of String))
-
-    Public Shared Sub ClearTempStructures()
-        tempStructureList.Clear()
-    End Sub
 
     Private Function AddStructure(ByVal Tags As Dictionary(Of String, Object)) As String()
         Dim OffsetList As List(Of Single) = CType(GetTag(Tags, "Offset"), List(Of Single))
@@ -485,7 +478,7 @@
 
         If tempStructureList.ContainsKey(structureKey) = False Then
             Dim filepath As String = GameModeManager.GetMapPath(MapName)
-            Security.FileValidation.CheckFileValid(filepath, False, "LevelLoader.vb/StructureSpawner")
+            FileValidation.CheckFileValid(filepath, False, "LevelLoader.vb/StructureSpawner")
 
             If IO.File.Exists(filepath) = False Then
                 Logger.Log(Logger.LogTypes.ErrorMessage, "LevelLoader.vb: Error loading structure from """ & filepath & """. File not found.")
@@ -628,7 +621,7 @@
         Dim ID As Integer = CInt(GetTag(Tags, "ID"))
 
         Dim Movement As String = CStr(GetTag(Tags, "Movement"))
-        Dim MoveRectangles As List(Of Rectangle) = CType(GetTag(Tags, "MoveRectangles"), List(Of Rectangle))
+        Dim MoveRectangles As List(Of Microsoft.Xna.Framework.Rectangle) = CType(GetTag(Tags, "MoveRectangles"), List(Of Microsoft.Xna.Framework.Rectangle))
 
         Dim Shader As New Vector3(1.0F)
         If TagExists(Tags, "Shader") = True Then
@@ -658,7 +651,7 @@
         Dim Position As Vector3 = New Vector3(PosList(0) + Offset.X, PosList(1) + Offset.Y, PosList(2) + Offset.Z)
 
         Dim TexturePath As String = CStr(GetTag(Tags, "TexturePath"))
-        Dim TextureRectangle As Rectangle = CType(GetTag(Tags, "Texture"), Rectangle)
+        Dim TextureRectangle As Microsoft.Xna.Framework.Rectangle = CType(GetTag(Tags, "Texture"), Microsoft.Xna.Framework.Rectangle)
         Dim Texture As Texture2D = TextureManager.GetTexture(TexturePath, TextureRectangle)
 
         Dim Visible As Boolean = True
@@ -777,10 +770,10 @@
         Dim PosList As List(Of Single) = CType(GetTag(Tags, "Position"), List(Of Single))
         Dim Position As Vector3 = New Vector3(PosList(0) + Offset.X, PosList(1) + Offset.Y, PosList(2) + Offset.Z)
 
-        Dim TexList As List(Of Rectangle) = CType(GetTag(Tags, "Textures"), List(Of Rectangle))
+        Dim TexList As List(Of Microsoft.Xna.Framework.Rectangle) = CType(GetTag(Tags, "Textures"), List(Of Microsoft.Xna.Framework.Rectangle))
         Dim TextureList As New List(Of Texture2D)
         Dim TexturePath As String = CStr(GetTag(Tags, "TexturePath"))
-        For Each TextureRectangle As Rectangle In TexList
+        For Each TextureRectangle As Microsoft.Xna.Framework.Rectangle In TexList
             TextureList.Add(TextureManager.GetTexture(TexturePath, TextureRectangle))
         Next
         Dim TextureArray() As Texture2D = TextureList.ToArray()
@@ -930,8 +923,6 @@
         Screen.Level.MusicLoop = MusicLoop
     End Sub
 
-    Public Shared MapScript As String = ""
-
     Private Sub SetupActions(ByVal Tags As Dictionary(Of String, Object))
         If TagExists(Tags, "CanTeleport") = True Then
             Screen.Level.CanTeleport = CBool(GetTag(Tags, "CanTeleport"))
@@ -992,7 +983,7 @@
         If TagExists(Tags, "Terrain") = True Then
             Screen.Level.Terrain.TerrainType = Terrain.FromString(CStr(GetTag(Tags, "Terrain")))
         Else
-            Screen.Level.Terrain.TerrainType = Terrain.TerrainTypes.Plain
+            Screen.Level.Terrain.TerrainType = TerrainTypeEnums.Plain
         End If
 
         If TagExists(Tags, "IsSafariZone") = True Then
@@ -1011,10 +1002,10 @@
 
         If TagExists(Tags, "MapScript") = True Then
             Dim scriptName As String = CStr(GetTag(Tags, "MapScript"))
-            If CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
-                If CType(CurrentScreen, OverworldScreen).ActionScript.IsReady = True Then
-                    CType(CurrentScreen, OverworldScreen).ActionScript.reDelay = 0.0F
-                    CType(CurrentScreen, OverworldScreen).ActionScript.StartScript(scriptName, 0)
+            If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
+                If CType(Core.CurrentScreen, OverworldScreen).ActionScript.IsReady = True Then
+                    CType(Core.CurrentScreen, OverworldScreen).ActionScript.reDelay = 0.0F
+                    CType(Core.CurrentScreen, OverworldScreen).ActionScript.StartScript(scriptName, 0)
                 Else 'A script intro is playing (fly)
                     MapScript = scriptName
                 End If
@@ -1095,7 +1086,7 @@
         Dim BackdropType As String = CStr(GetTag(Tags, "Type"))
 
         Dim TexturePath As String = CStr(GetTag(Tags, "TexturePath"))
-        Dim TextureRectangle As Rectangle = CType(GetTag(Tags, "Texture"), Rectangle)
+        Dim TextureRectangle As Microsoft.Xna.Framework.Rectangle = CType(GetTag(Tags, "Texture"), Microsoft.Xna.Framework.Rectangle)
         Dim Texture As Texture2D = TextureManager.GetTexture(TexturePath, TextureRectangle)
 
         Dim trigger As String = ""

@@ -1,4 +1,9 @@
-﻿Namespace Items.Repels
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
+Namespace Items.Repels
 
     Public MustInherit Class RepelItem
 

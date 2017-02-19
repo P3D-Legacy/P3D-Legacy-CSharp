@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Headbutt
 
@@ -57,7 +60,7 @@
             Me.EffectChances.Add(30)
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim substitute As Integer = BattleScreen.FieldEffects.OppSubstitute
             If own = False Then
                 substitute = BattleScreen.FieldEffects.OwnSubstitute

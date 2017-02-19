@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.KeyItems
 
     <Item(115, "GS Ball")>
@@ -8,7 +10,7 @@ Namespace Items.KeyItems
         Public Overrides ReadOnly Property Description As String = "A mysterious Pokéball. Its purpose is unknown."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(384, 96, 24, 24)
+            TextureRectangle = New Rectangle(384, 96, 24, 24)
         End Sub
 
     End Class

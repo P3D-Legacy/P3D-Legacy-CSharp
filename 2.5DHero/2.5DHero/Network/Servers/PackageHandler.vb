@@ -1,56 +1,62 @@
-﻿Namespace Servers
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Server
+Imports P3D.Legacy.Core.World
+
+Namespace Servers
 
     Public Class PackageHandler
 
         Public Shared Sub HandlePackage(ByVal p As Package)
             Select Case p.PackageType
-                Case Package.PackageTypes.ChatMessage
+                Case PackageTypes.ChatMessage
                     HandleChatMessage(p)
-                Case Package.PackageTypes.PrivateMessage
+                Case PackageTypes.PrivateMessage
                     HandlePrivateMessage(p)
-                Case Package.PackageTypes.ID
+                Case PackageTypes.ID
                     HandleID(p)
-                Case Package.PackageTypes.Kicked
+                Case PackageTypes.Kicked
                     HandleKicked(p)
-                Case Package.PackageTypes.GameData, Package.PackageTypes.PlayData 'Note: Only use GameData.
+                Case PackageTypes.GameData, PackageTypes.PlayData 'Note: Only use GameData.
                     HandleGameData(p)
-                Case Package.PackageTypes.CreatePlayer
+                Case PackageTypes.CreatePlayer
                     HandleCreatePlayer(p)
-                Case Package.PackageTypes.DestroyPlayer
+                Case PackageTypes.DestroyPlayer
                     HandleDestroyPlayer(p)
-                Case Package.PackageTypes.ServerClose
+                Case PackageTypes.ServerClose
                     HandleServerClose(p)
-                Case Package.PackageTypes.ServerMessage
+                Case PackageTypes.ServerMessage
                     HandleServerMessage(p)
-                Case Package.PackageTypes.WorldData
+                Case PackageTypes.WorldData
                     HandleWorldData(p)
 
-                Case Package.PackageTypes.TradeJoin
+                Case PackageTypes.TradeJoin
                     HandleTradeJoin(p)
-                Case Package.PackageTypes.TradeQuit
+                Case PackageTypes.TradeQuit
                     HandleTradeQuit(p)
-                Case Package.PackageTypes.TradeOffer
+                Case PackageTypes.TradeOffer
                     HandleTradeOffer(p)
-                Case Package.PackageTypes.TradeStart
+                Case PackageTypes.TradeStart
                     HandleTradeStart(p)
-                Case Package.PackageTypes.TradeRequest
+                Case PackageTypes.TradeRequest
                     HandleTradeRequest(p)
 
-                Case Package.PackageTypes.BattleJoin
+                Case PackageTypes.BattleJoin
                     HandleBattleJoin(p)
-                Case Package.PackageTypes.BattleOffer
+                Case PackageTypes.BattleOffer
                     HandleBattleOffer(p)
-                Case Package.PackageTypes.BattleQuit
+                Case PackageTypes.BattleQuit
                     HandleBattleQuit(p)
-                Case Package.PackageTypes.BattleRequest
+                Case PackageTypes.BattleRequest
                     HandleBattleRequest(p)
-                Case Package.PackageTypes.BattleStart
+                Case PackageTypes.BattleStart
                     HandleBattleStart(p)
-                Case Package.PackageTypes.BattleHostData
+                Case PackageTypes.BattleHostData
                     HandleBattleHostData(p)
-                Case Package.PackageTypes.BattleClientData
+                Case PackageTypes.BattleClientData
                     HandleBattleClientData(p)
-                Case Package.PackageTypes.BattlePokemonData
+                Case PackageTypes.BattlePokemonData
                     HandleBattlePokemonData(p)
             End Select
         End Sub
@@ -148,8 +154,8 @@
         End Sub
 
         Private Shared Sub HandleWorldData(ByVal p As Package)
-            World.ServerSeason = CType(p.DataItems(0), World.Seasons)
-            World.ServerWeather = CType(p.DataItems(1), World.Weathers)
+            World.ServerSeason = CType(p.DataItems(0), SeasonEnum)
+            World.ServerWeather = CType(p.DataItems(1), WeatherEnum)
             World.ServerTimeData = p.DataItems(2)
             World.LastServerDataReceived = Date.Now
 

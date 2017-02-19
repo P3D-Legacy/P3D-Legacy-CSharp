@@ -1,5 +1,7 @@
-﻿Public Class MainMenuCamera
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.HelperClasses
 
+Public Class MainMenuCamera
     Inherits Camera
 
     Public Sub New()
@@ -29,8 +31,8 @@
     End Sub
 
     Public Function createRay() As Ray
-        Dim centerX As Integer = CInt(Core.windowSize.Width / 2)
-        Dim centerY As Integer = CInt(Core.windowSize.Height / 2)
+        Dim centerX As Integer = CInt(Core.WindowSize.Width / 2)
+        Dim centerY As Integer = CInt(Core.WindowSize.Height / 2)
 
         Dim nearSource As Vector3 = New Vector3(centerX, centerY, 0)
         Dim farSource As Vector3 = New Vector3(centerX, centerY, 1)
@@ -63,5 +65,4 @@
 
         View = Matrix.CreateLookAt(Position, lookAt, Vector3.Up)
     End Sub
-
 End Class

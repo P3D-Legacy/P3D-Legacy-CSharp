@@ -1,4 +1,15 @@
-﻿Public Class PokemonScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Battle
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class PokemonScreen
 
     Inherits Screen
 
@@ -25,7 +36,7 @@
                 End If
             Next
             If has100 = True Then
-                GameJolt.Emblem.AchieveEmblem("overkill")
+                Emblem.AchieveEmblem("overkill")
             End If
         End If
 
@@ -67,7 +78,7 @@
     End Sub
 
     Public Overrides Sub Update()
-        TextBox.reDelay = 0.0F
+        TextBox.ReDelay = 0.0F
         yOffset += 0.45F
 
         If TextBox.Showing = True Then
@@ -101,7 +112,7 @@
         If ChooseBox.Showing = True Then
             Select Case MenuID
                 Case 0
-                    Select Case ChooseBox.Options(ChooseBox.index)
+                    Select Case ChooseBox.Options(ChooseBox.Index)
                         Case Localization.GetString("pokemon_screen_summary")
                             ChooseBox.Showing = False
                             Core.SetScreen(New PokemonStatusScreen(Me, index, {}, Core.Player.Pokemons(index), True))
@@ -127,7 +138,7 @@
                             Me.UseTeleport()
                     End Select
                 Case 1
-                    Select Case ChooseBox.index
+                    Select Case ChooseBox.Index
                         Case 0
                             Core.SetScreen(New InventoryScreen(Me, {}, AddressOf GiveItem))
                         Case 1
@@ -166,14 +177,14 @@
                     Dim i As Item = Core.Player.Pokemons(index).Item
                     Core.Player.Pokemons(index).Item = Nothing
 
-                    Core.Player.Mails.Add(Items.MailItem.GetMailDataFromString(i.AdditionalData))
+                    Core.Player.Mails.Add(MailItem.GetMailDataFromString(i.AdditionalData))
 
                     Me.MenuID = 0
                     ChooseBox.Showing = False
                 Else
                     Dim i As Item = Core.Player.Pokemons(index).Item
 
-                    Core.Player.Inventory.AddItem(i.ID, 1)
+                    Core.Player.Inventory.AddItem(i.Id, 1)
                     Core.Player.Pokemons(index).Item = Nothing
 
                     TextBox.TextColor = TextBox.PlayerColor
@@ -194,21 +205,21 @@
 
         If Pokemon.IsEgg() = False Then
             If Item.CanBeHold = True Then
-                Core.Player.Inventory.RemoveItem(Item.ID, 1)
+                Core.Player.Inventory.RemoveItem(Item.Id, 1)
 
                 Dim reItem As Item = Nothing
                 If Not Pokemon.Item Is Nothing Then
                     reItem = Pokemon.Item
                     If reItem.AdditionalData = "" Then
-                        Core.Player.Inventory.AddItem(reItem.ID, 1)
+                        Core.Player.Inventory.AddItem(reItem.Id, 1)
                     Else
-                        Core.Player.Mails.Add(Items.MailItem.GetMailDataFromString(reItem.AdditionalData))
+                        Core.Player.Mails.Add(MailItem.GetMailDataFromString(reItem.AdditionalData))
                     End If
                 End If
 
                 Pokemon.Item = Item
 
-                TextBox.reDelay = 0.0F
+                TextBox.ReDelay = 0.0F
 
                 Dim t As String = Localization.GetString("pokemon_screen_give_item_1") & Item.Name & Localization.GetString("pokemon_screen_give_item_2") & Pokemon.GetDisplayName() & Localization.GetString("pokemon_screen_give_item_3")
                 If Not reItem Is Nothing Then
@@ -343,7 +354,7 @@
     Private Sub DrawPokemonTile(ByVal i As Integer, ByVal Pokemon As Pokemon)
         Dim BorderTexture As Texture2D
         If i = index Then
-            If Pokemon.Status = net.Pokemon3D.Game.Pokemon.StatusProblems.Fainted Then
+            If Pokemon.Status = BasePokemon.StatusProblems.Fainted Then
                 BorderTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 128, 48, 48), "")
             Else
                 BorderTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(48, 0, 48, 48), "")
@@ -352,7 +363,7 @@
             If switchIndex <> -1 And i = switchIndex Then
                 BorderTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
             Else
-                If Pokemon.Status = net.Pokemon3D.Game.Pokemon.StatusProblems.Fainted Then
+                If Pokemon.Status = BasePokemon.StatusProblems.Fainted Then
                     BorderTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(48, 48, 48, 48), "")
                 Else
                     BorderTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
@@ -406,7 +417,7 @@
             If i = index Then
                 offset *= 3
             End If
-            If Pokemon.Status = net.Pokemon3D.Game.Pokemon.StatusProblems.Fainted Then
+            If Pokemon.Status = BasePokemon.StatusProblems.Fainted Then
                 offset = 0
             End If
 
@@ -416,9 +427,9 @@
             If Pokemon.IsEgg() = False Then
                 .Draw(MainTexture, New Rectangle(CInt(p.X + 72), CInt(p.Y + 46), 26, 12), New Rectangle(96, 10, 13, 6), Color.White)
 
-                If Pokemon.Gender = net.Pokemon3D.Game.Pokemon.Genders.Male Then
+                If Pokemon.Gender = BasePokemon.Genders.Male Then
                     .Draw(MainTexture, New Rectangle(CInt(p.X + FontManager.MiniFont.MeasureString(Pokemon.GetDisplayName()).X + 80), CInt(p.Y + 18), 12, 20), New Rectangle(96, 0, 6, 10), Color.White)
-                ElseIf Pokemon.Gender = net.Pokemon3D.Game.Pokemon.Genders.Female Then
+                ElseIf Pokemon.Gender = BasePokemon.Genders.Female Then
                     .Draw(MainTexture, New Rectangle(CInt(p.X + FontManager.MiniFont.MeasureString(Pokemon.GetDisplayName()).X + 80), CInt(p.Y + 18), 12, 20), New Rectangle(102, 0, 6, 10), Color.White)
                 End If
             End If
@@ -683,7 +694,7 @@
         Next
 
         If hasSuicune = True And hasLugia = True And hasHoOh = True Then
-            GameJolt.Emblem.AchieveEmblem("legendary")
+            Emblem.AchieveEmblem("legendary")
         End If
     End Sub
 

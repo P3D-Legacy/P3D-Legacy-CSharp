@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Flying
 
     Public Class Pluck
@@ -55,7 +57,7 @@ Namespace BattleSystem.Moves.Flying
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim op As Pokemon = BattleScreen.OppPokemon
             Dim p As Pokemon = BattleScreen.OwnPokemon
             If own = False Then

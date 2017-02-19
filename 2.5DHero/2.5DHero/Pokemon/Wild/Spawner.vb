@@ -1,19 +1,11 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Security
+Imports P3D.Legacy.Core.World
+
 Public Class Spawner
-
-    ''' <summary>
-    ''' Methods to encounter a wild Pokémon.
-    ''' </summary>
-    Public Enum EncounterMethods As Integer
-        Land = 0
-        Headbutt = 1
-        Surfing = 2
-        OldRod = 3
-        GoodRod = 31
-        SuperRod = 32
-        [Event] = 4
-        RockSmash = 5
-    End Enum
-
     ''' <summary>
     ''' Spawns a Pokémon
     ''' </summary>
@@ -44,7 +36,7 @@ Public Class Spawner
         Dim pokeFilePath As String = GameModeManager.GetPokeFilePath(pokeFile)
 
         If System.IO.File.Exists(pokeFilePath) = True Then
-            Security.FileValidation.CheckFileValid(pokeFilePath, False, "Spawner.vb")
+            FileValidation.CheckFileValid(pokeFilePath, False, "Spawner.vb")
             Dim Data() As String = System.IO.File.ReadAllLines(pokeFilePath)
 
             Dim i As Integer = 0

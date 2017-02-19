@@ -1,4 +1,8 @@
-﻿Public Class ScriptV2
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+
+Public Class ScriptV2
 
     Public Enum ScriptTypes As Integer
         Command = 100

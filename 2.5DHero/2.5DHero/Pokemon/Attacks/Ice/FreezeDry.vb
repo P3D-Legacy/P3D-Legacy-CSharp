@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Ice
 
     Public Class FreezeDry
@@ -16,7 +19,7 @@ Namespace BattleSystem.Moves.Ice
             Me.Category = Categories.Special
             Me.ContestCategory = ContestCategories.Beauty
             Me.Name = "Freeze Dry"
-            Me.Description = "The user rapidly cools the target. This may also leave the target frozen. This move is super effective on Water types."
+            Me.Description = "The user rapidly cools the target. This may also leave the target frozen. This move is super effective on Water Element.Types."
             Me.CriticalChance = 1
             Me.IsHMMove = False
             Me.Target = Targets.OneAdjacentTarget
@@ -57,7 +60,7 @@ Namespace BattleSystem.Moves.Ice
             EffectChances.Add(10)
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then

@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Screens
+
 ''' <summary>
 ''' A class to handle entity lighting.
 ''' </summary>

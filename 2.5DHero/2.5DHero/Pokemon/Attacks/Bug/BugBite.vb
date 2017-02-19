@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Bug
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Bug
 
     Public Class BugBite
 
@@ -52,16 +55,16 @@
             '#End
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
-            Dim p As Pokemon = BattleScreen.OwnPokemon
-            Dim op As Pokemon = BattleScreen.OppPokemon
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+            Dim p As BasePokemon = BattleScreen.OwnPokemon
+            Dim op As BasePokemon = BattleScreen.OppPokemon
             If own = False Then
                 p = BattleScreen.OppPokemon
                 op = BattleScreen.OwnPokemon
             End If
 
             If Not op.Item Is Nothing Then
-                If op.Item.isBerry = True Then
+                If op.Item.IsBerry = True Then
                     Dim ItemID As Integer = op.Item.ID
 
                     BattleScreen.Battle.RemoveHeldItem(Not own, own, BattleScreen, p.GetDisplayName() & " ate the " & op.Item.Name & " berry!", "move:bugbite")

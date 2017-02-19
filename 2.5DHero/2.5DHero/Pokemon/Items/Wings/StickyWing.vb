@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.Wings
 
     <Item(261, "Sticky Wing")>
@@ -12,7 +14,7 @@ Namespace Items.Wings
         Public Overrides ReadOnly Property FlingDamage As Integer = 20
 
         Public Sub New()
-            _textureRectangle = New Rectangle(456, 240, 24, 24)
+            TextureRectangle = New Rectangle(456, 240, 24, 24)
         End Sub
 
     End Class

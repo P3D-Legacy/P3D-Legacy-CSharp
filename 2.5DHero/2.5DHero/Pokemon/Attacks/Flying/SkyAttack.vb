@@ -1,4 +1,8 @@
-﻿Namespace BattleSystem.Moves.Flying
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Flying
 
     Public Class SkyAttack
 
@@ -57,10 +61,11 @@
             Me.EffectChances.Add(30)
         End Sub
 
-        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim SkyAttack As Integer = BattleScreen.FieldEffects.OwnSkyAttackCounter
+        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim SkyAttack As Integer = screen.FieldEffects.OwnSkyAttackCounter
             If own = False Then
-                SkyAttack = BattleScreen.FieldEffects.OppSkyAttackCounter
+                SkyAttack = screen.FieldEffects.OppSkyAttackCounter
             End If
 
             If SkyAttack = 0 Then
@@ -70,10 +75,11 @@
             End If
         End Function
 
-        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As BattleScreen)
-            Dim SkyAttack As Integer = BattleScreen.FieldEffects.OwnSkyAttackCounter
+        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As Screen)
+            Dim screen As BattleScreen = BattleScreen
+            Dim SkyAttack As Integer = screen.FieldEffects.OwnSkyAttackCounter
             If Own = False Then
-                SkyAttack = BattleScreen.FieldEffects.OppSkyAttackCounter
+                SkyAttack = screen.FieldEffects.OppSkyAttackCounter
             End If
 
             If SkyAttack = 0 Then
@@ -83,49 +89,51 @@
             End If
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim p As Pokemon = BattleScreen.OwnPokemon
-            Dim op As Pokemon = BattleScreen.OppPokemon
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OwnPokemon
+            Dim op As Pokemon = screen.OppPokemon
             If Own = False Then
-                p = BattleScreen.OppPokemon
-                op = BattleScreen.OwnPokemon
+                p = screen.OppPokemon
+                op = screen.OwnPokemon
             End If
 
-            Dim skyattack As Integer = BattleScreen.FieldEffects.OwnSkyAttackCounter
+            Dim skyattack As Integer = screen.FieldEffects.OwnSkyAttackCounter
             If Own = False Then
-                skyattack = BattleScreen.FieldEffects.OppSkyAttackCounter
+                skyattack = screen.FieldEffects.OppSkyAttackCounter
             End If
 
             If Not p.Item Is Nothing Then
-                If p.Item.Name.ToLower() = "power herb" And BattleScreen.FieldEffects.CanUseItem(Own) = True And BattleScreen.FieldEffects.CanUseOwnItem(Own, BattleScreen) = True Then
-                    If BattleScreen.Battle.RemoveHeldItem(Own, Own, BattleScreen, "Power Herb pushed the use of Sky Attack!", "move:skyattack") = True Then
+                If p.Item.Name.ToLower() = "power herb" And screen.FieldEffects.CanUseItem(Own) = True And screen.FieldEffects.CanUseOwnItem(Own, screen) = True Then
+                    If screen.Battle.RemoveHeldItem(Own, Own, screen, "Power Herb pushed the use of Sky Attack!", "move:skyattack") = True Then
                         skyattack = 1
                     End If
                 End If
             End If
 
             If skyattack = 0 Then
-                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " became cloaked in a harsh light!"))
+                screen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " became cloaked in a harsh light!"))
                 If Own = True Then
-                    BattleScreen.FieldEffects.OwnSkyAttackCounter = 1
+                    screen.FieldEffects.OwnSkyAttackCounter = 1
                 Else
-                    BattleScreen.FieldEffects.OppSkyAttackCounter = 1
+                    screen.FieldEffects.OppSkyAttackCounter = 1
                 End If
                 Return True
             Else
                 If Own = True Then
-                    BattleScreen.FieldEffects.OwnSkyAttackCounter = 0
+                    screen.FieldEffects.OwnSkyAttackCounter = 0
                 Else
-                    BattleScreen.FieldEffects.OppSkyAttackCounter = 0
+                    screen.FieldEffects.OppSkyAttackCounter = 0
                 End If
                 Return False
             End If
         End Function
 
-        Public Overrides Function DeductPP(own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim skyattack As Integer = BattleScreen.FieldEffects.OwnSkyAttackCounter
+        Public Overrides Function DeductPp(own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim skyattack As Integer = screen.FieldEffects.OwnSkyAttackCounter
             If own = False Then
-                skyattack = BattleScreen.FieldEffects.OppSkyAttackCounter
+                skyattack = screen.FieldEffects.OppSkyAttackCounter
             End If
 
             If skyattack = 0 Then
@@ -135,7 +143,7 @@
             End If
         End Function
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If Core.Random.Next(0, 100) < Me.GetEffectChance(0, own, BattleScreen) Then
                 BattleScreen.Battle.InflictFlinch(Not own, own, BattleScreen, "", "move:skyattack")
             End If

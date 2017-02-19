@@ -1,4 +1,8 @@
-﻿Namespace ScriptVersion2
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
+Namespace ScriptVersion2
 
     Partial Class ScriptCommander
 
@@ -14,7 +18,7 @@
                 Case "setweather"
                     Screen.Level.WeatherType = int(argument)
                 Case "setregionweather"
-                    World.RegionWeather = CType(int(argument), World.Weathers)
+                    World.RegionWeather = CType(int(argument), WeatherEnum)
                 Case "setcanfly"
                     Screen.Level.CanFly = CBool(argument)
                 Case "setcandig"

@@ -1,8 +1,15 @@
-﻿Public Class SkyDome
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
+Public Class SkyDome
+    Implements ISkyDome
+
+    Public Property TextureUp As Texture2D Implements ISkyDome.TextureUp
+    Public Property TextureDown As Texture2D Implements ISkyDome.TextureDown
 
     Private SkydomeModel As Model
-    Public TextureUp As Texture2D
-    Public TextureDown As Texture2D
     Dim TextureSun As Texture2D
     Dim TextureMoon As Texture2D
 
@@ -21,7 +28,7 @@
         SetLastColor()
     End Sub
 
-    Public Sub Update()
+    Public Sub Update() Implements ISkyDome.Update
         Yaw += 0.0002F
         While Yaw > MathHelper.TwoPi
             Yaw -= MathHelper.TwoPi
@@ -58,10 +65,10 @@
         End If
     End Function
 
-    Public Sub Draw(ByVal FOV As Single)
+    Public Sub Draw(ByVal FOV As Single) Implements ISkyDome.Draw
         If Core.GameOptions.GraphicStyle = 1 Then
-            If Screen.Level.World.EnvironmentType = World.EnvironmentTypes.Outside Then
-                If World.GetWeatherFromWeatherType(Screen.Level.WeatherType) <> World.Weathers.Fog Then 'Don't render the sky if weather is set to Fog
+            If Screen.Level.World.EnvironmentType = EnvironmentTypeEnum.Outside Then
+                If World.GetWeatherFromWeatherType(Screen.Level.WeatherType) <> WeatherEnum.Fog Then 'Don't render the sky if weather is set to Fog
                     RenderHalf(FOV, MathHelper.PiOver2, CSng(GetUniversePitch() + Math.PI), True, TextureSun, 100, Me.GetSunAlpha()) 'Draw sun
                     RenderHalf(FOV, MathHelper.PiOver2, CSng(GetUniversePitch()), True, TextureMoon, 100, GetStarsAlpha()) 'Draw moon
                     RenderHalf(FOV, MathHelper.PiOver2, CSng(GetUniversePitch()), True, TextureDown, 50, GetStarsAlpha()) 'Draw stars half 1
@@ -98,22 +105,22 @@
                 BasicEffect.Texture = texture
                 BasicEffect.Alpha = alpha
 
-                Select Case Screen.Level.World.CurrentMapWeather
-                    Case World.Weathers.Clear, World.Weathers.Sunny
+                Select Case Screen.Level.World.CurrentWeather
+                    Case WeatherEnum.Clear, WeatherEnum.Sunny
                         BasicEffect.DiffuseColor = New Vector3(1)
-                    Case World.Weathers.Rain
+                    Case WeatherEnum.Rain
                         BasicEffect.DiffuseColor = New Vector3(0.4, 0.4, 0.7)
-                    Case World.Weathers.Snow
+                    Case WeatherEnum.Snow
                         BasicEffect.DiffuseColor = New Vector3(0.8)
-                    Case World.Weathers.Underwater
+                    Case WeatherEnum.Underwater
                         BasicEffect.DiffuseColor = New Vector3(0.1, 0.3, 0.9)
-                    Case World.Weathers.Fog
+                    Case WeatherEnum.Fog
                         BasicEffect.DiffuseColor = New Vector3(0.7, 0.7, 0.8)
-                    Case World.Weathers.Sandstorm
+                    Case WeatherEnum.Sandstorm
                         BasicEffect.DiffuseColor = New Vector3(0.8, 0.5, 0.2)
-                    Case World.Weathers.Ash
+                    Case WeatherEnum.Ash
                         BasicEffect.DiffuseColor = New Vector3(0.5, 0.5, 0.5)
-                    Case World.Weathers.Blizzard
+                    Case WeatherEnum.Blizzard
                         BasicEffect.DiffuseColor = New Vector3(0.6, 0.6, 0.6)
                 End Select
 
@@ -157,12 +164,12 @@
     End Sub
 
     Private Function GetCloudAlpha() As Single
-        Select Case Screen.Level.World.CurrentMapWeather
-            Case World.Weathers.Rain, World.Weathers.Blizzard, World.Weathers.Thunderstorm
+        Select Case Screen.Level.World.CurrentWeather
+            Case WeatherEnum.Rain, WeatherEnum.Blizzard, WeatherEnum.Thunderstorm
                 Return 0.6F
-            Case World.Weathers.Snow, World.Weathers.Ash
+            Case WeatherEnum.Snow, WeatherEnum.Ash
                 Return 0.4F
-            Case World.Weathers.Clear
+            Case WeatherEnum.Clear
                 Return 0.1F
         End Select
         Return 0.0F
@@ -211,14 +218,14 @@
     End Function
 
     Private Function GetCloudsTexture() As Texture2D
-        Select Case Screen.Level.World.CurrentMapWeather
-            Case World.Weathers.Rain, World.Weathers.Blizzard, World.Weathers.Thunderstorm, World.Weathers.Snow
+        Select Case Screen.Level.World.CurrentWeather
+            Case WeatherEnum.Rain, WeatherEnum.Blizzard, WeatherEnum.Thunderstorm, WeatherEnum.Snow
                 Return TextureManager.GetTexture("SkyDomeResource\CloudsWeather")
         End Select
         Return TextureUp
     End Function
 
-    Public Function GetWeatherColorMultiplier(ByVal v As Vector3) As Vector3
+    Public Function GetWeatherColorMultiplier(ByVal v As Vector3) As Vector3 Implements ISkyDome.GetWeatherColorMultiplier
         Dim progress As Integer = GetTimeValue()
 
         Dim p As Single = 0.0F
@@ -241,5 +248,4 @@
             Return World.MinutesOfDay
         End If
     End Function
-
 End Class

@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Medicine
 
     <Item(7, "Lava Cookie")>
@@ -9,7 +14,7 @@ Namespace Items.Medicine
         Public Overrides ReadOnly Property PokeDollarPrice As Integer = 200
 
         Public Sub New()
-            _textureRectangle = New Rectangle(192, 192, 24, 24)
+            TextureRectangle = New Rectangle(192, 192, 24, 24)
         End Sub
 
         Public Overrides Sub Use()
@@ -19,17 +24,17 @@ Namespace Items.Medicine
         Public Overrides Function UseOnPokemon(ByVal PokeIndex As Integer) As Boolean
             Dim Pokemon As Pokemon = Core.Player.Pokemons(PokeIndex)
 
-            If Pokemon.Status = net.Pokemon3D.Game.Pokemon.StatusProblems.Fainted Then
-                Screen.TextBox.reDelay = 0.0F
+            If Pokemon.Status = BasePokemon.StatusProblems.Fainted Then
+                Screen.TextBox.ReDelay = 0.0F
                 Screen.TextBox.Show(Pokemon.GetDisplayName() & "~is fainted!", {})
 
                 Return False
             Else
-                If Pokemon.Status <> net.Pokemon3D.Game.Pokemon.StatusProblems.None Or Pokemon.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) = True Then
-                    Pokemon.Status = net.Pokemon3D.Game.Pokemon.StatusProblems.None
+                If Pokemon.Status <> BasePokemon.StatusProblems.None Or Pokemon.HasVolatileStatus(BasePokemon.VolatileStatus.Confusion) = True Then
+                    Pokemon.Status = BasePokemon.StatusProblems.None
 
-                    If Pokemon.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) = True Then
-                        Pokemon.RemoveVolatileStatus(Pokemon.VolatileStatus.Confusion)
+                    If Pokemon.HasVolatileStatus(BasePokemon.VolatileStatus.Confusion) = True Then
+                        Pokemon.RemoveVolatileStatus(BasePokemon.VolatileStatus.Confusion)
                     End If
 
                     Core.Player.Inventory.RemoveItem(Me.ID, 1)

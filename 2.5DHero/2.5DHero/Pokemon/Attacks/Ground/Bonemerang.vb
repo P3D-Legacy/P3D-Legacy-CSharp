@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Ground
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Ground
 
     Public Class Bonemerang
 

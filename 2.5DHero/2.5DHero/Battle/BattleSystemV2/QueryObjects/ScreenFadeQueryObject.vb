@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Screens.GUI
+
+Namespace BattleSystem
 
     Public Class ScreenFadeQueryObject
 
@@ -37,35 +40,35 @@
             Select Case _fadeType
                 Case FadeTypes.Horizontal
                     If appear = True Then
-                        Me.goal = CInt(Core.windowSize.Width / 2)
+                        Me.goal = CInt(Core.WindowSize.Width / 2)
                         Me.current = 0
                     Else
                         Me.goal = 0
-                        Me.current = CInt(Core.windowSize.Width / 2)
+                        Me.current = CInt(Core.WindowSize.Width / 2)
                     End If
                 Case FadeTypes.Vertical
                     If appear = True Then
-                        Me.goal = CInt(Core.windowSize.Height / 2)
+                        Me.goal = CInt(Core.WindowSize.Height / 2)
                         Me.current = 0
                     Else
                         Me.goal = 0
-                        Me.current = CInt(Core.windowSize.Height / 2)
+                        Me.current = CInt(Core.WindowSize.Height / 2)
                     End If
                 Case FadeTypes.CloseLeft
                     If appear = True Then
-                        Me.goal = Core.windowSize.Width
+                        Me.goal = Core.WindowSize.Width
                         Me.current = 0
                     Else
                         Me.goal = 0
-                        Me.current = Core.windowSize.Width
+                        Me.current = Core.WindowSize.Width
                     End If
                 Case FadeTypes.CloseRight
                     If appear = True Then
-                        Me.goal = Core.windowSize.Width
+                        Me.goal = Core.WindowSize.Width
                         Me.current = 0
                     Else
                         Me.goal = 0
-                        Me.current = Core.windowSize.Width
+                        Me.current = Core.WindowSize.Width
                     End If
             End Select
         End Sub
@@ -77,15 +80,15 @@
 
             Select Case Me._fadeType
                 Case FadeTypes.Vertical
-                    Canvas.DrawRectangle(New Rectangle(0, 0, Core.windowSize.Width, current), Me._color)
-                    Canvas.DrawRectangle(New Rectangle(0, Core.windowSize.Height - current, Core.windowSize.Width, current), Me._color)
+                    Canvas.DrawRectangle(New Rectangle(0, 0, Core.WindowSize.Width, current), Me._color)
+                    Canvas.DrawRectangle(New Rectangle(0, Core.WindowSize.Height - current, Core.WindowSize.Width, current), Me._color)
                 Case FadeTypes.Horizontal
-                    Canvas.DrawRectangle(New Rectangle(0, 0, current, Core.windowSize.Height), Me._color)
-                    Canvas.DrawRectangle(New Rectangle(Core.windowSize.Width - current, 0, current, Core.windowSize.Height), Me._color)
+                    Canvas.DrawRectangle(New Rectangle(0, 0, current, Core.WindowSize.Height), Me._color)
+                    Canvas.DrawRectangle(New Rectangle(Core.WindowSize.Width - current, 0, current, Core.WindowSize.Height), Me._color)
                 Case FadeTypes.CloseLeft
-                    Canvas.DrawRectangle(New Rectangle(Core.windowSize.Width - Me.current, 0, Me.current, Core.windowSize.Height), Me._color)
+                    Canvas.DrawRectangle(New Rectangle(Core.WindowSize.Width - Me.current, 0, Me.current, Core.WindowSize.Height), Me._color)
                 Case FadeTypes.CloseRight
-                    Canvas.DrawRectangle(New Rectangle(0, 0, Me.current, Core.windowSize.Height), Me._color)
+                    Canvas.DrawRectangle(New Rectangle(0, 0, Me.current, Core.WindowSize.Height), Me._color)
             End Select
         End Sub
 
@@ -123,7 +126,7 @@
 
             Select Case Me._fadeType
                 Case FadeTypes.CloseLeft, FadeTypes.CloseRight, FadeTypes.Horizontal
-                    multiplier = Core.windowSize.Width / 1200.0F
+                    multiplier = Core.WindowSize.Width / 1200.0F
                 Case FadeTypes.Vertical
                     multiplier = Core.windowSize.Height / 680.0F
             End Select

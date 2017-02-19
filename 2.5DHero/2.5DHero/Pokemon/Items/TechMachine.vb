@@ -1,4 +1,9 @@
-﻿Namespace Items
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
+Namespace Items
 
     Public MustInherit Class TechMachine
 
@@ -87,13 +92,13 @@
                     r = New Rectangle(192, 168, 24, 24)
             End Select
 
-            _textureRectangle = r
+            TextureRectangle = r
         End Sub
 
         Public Overrides Sub Use()
             SoundManager.PlaySound("PC\pc_logon", False)
-            SetScreen(New ChoosePokemonScreen(CurrentScreen, Me, AddressOf UseOnPokemon, "Teach " & Attack.Name, True))
-            CType(CurrentScreen, ChoosePokemonScreen).SetupLearnAttack(Attack, 1, Me)
+            Core.SetScreen(New ChoosePokemonScreen(Core.CurrentScreen, Me, AddressOf UseOnPokemon, "Teach " & Attack.Name, True))
+            CType(Core.CurrentScreen, ChoosePokemonScreen).SetupLearnAttack(Attack, 1, Me)
         End Sub
 
         Public Overrides Function UseOnPokemon(ByVal PokeIndex As Integer) As Boolean
@@ -103,7 +108,7 @@
 
             If t = "" Then
                 If p.Attacks.Count = 4 Then
-                    SetScreen(New LearnAttackScreen(CurrentScreen, p, a, ID))
+                    Core.SetScreen(New LearnAttackScreen(Core.CurrentScreen, p, a, ID))
 
                     Return True
                 Else
@@ -159,7 +164,7 @@
             End If
 
             If CanTeachWhenGender = True Then
-                If p.Gender <> Pokemon.Genders.Genderless And p.Machines.Count > 0 Then
+                If p.Gender <> BasePokemon.Genders.Genderless And p.Machines.Count > 0 Then
                     Return ""
                 End If
             End If

@@ -1,3 +1,4 @@
+Imports P3D.Legacy.Core.Pokemon
 Namespace Items.Mail
 
     <Item(336, "Kolben Mail")>
@@ -13,7 +14,7 @@ Namespace Items.Mail
         Public Overrides ReadOnly Property CanBeTossed As Boolean = False
 
         Public Sub New()
-            _textureRectangle = New Rectangle(360, 480, 24, 24)
+            TextureRectangle = New Rectangle(360, 480, 24, 24)
         End Sub
 
     End Class

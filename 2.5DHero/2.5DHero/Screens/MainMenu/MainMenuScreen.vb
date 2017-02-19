@@ -1,4 +1,19 @@
-﻿Public Class MainMenuScreen
+﻿Imports System.Drawing
+Imports System.Globalization
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Data
+Imports P3D.Legacy.Core.GameJolt
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Objects
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.Security
+Imports P3D.Legacy.Core.Settings
+
+Public Class MainMenuScreen
 
     Inherits Screen
 
@@ -20,9 +35,9 @@
     Dim Saves As New List(Of String)
     Dim SaveNames As New List(Of String)
 
-    Dim Languages As New List(Of String)
+    Dim Languages As New List(Of CultureInfo)
     Dim LanguageNames As New List(Of String)
-    Dim currentLanguage As String = "en"
+    Dim currentLanguage As CultureInfo = New CultureInfo("en")
 
     Dim PackNames As New List(Of String)
     Dim EnabledPackNames As New List(Of String)
@@ -46,7 +61,7 @@
         Me.CanBePaused = False
         Me.MouseVisible = True
         Me.CanChat = False
-        Me.currentLanguage = Localization.LanguageSuffix
+        Me.currentLanguage = Localization.Language
 
         Screen.TextBox.Showing = False
         Screen.PokemonImageView.Showing = False
@@ -68,15 +83,16 @@
 
         Screen.Level.World.Initialize(Screen.Level.EnvironmentType, Screen.Level.WeatherType)
 
-        If System.IO.Directory.Exists(GameController.GamePath & "\Save\") = False Then
-            System.IO.Directory.CreateDirectory(GameController.GamePath & "\Save\")
+        Dim savePath = Path.Combine(GameController.GamePath, "Save")
+        If System.IO.Directory.Exists(savePath) = False Then
+            System.IO.Directory.CreateDirectory(savePath)
         End If
 
         GetSaves()
         GetLanguages()
         GetPacks()
 
-        GameJolt.Emblem.ClearOnlineSpriteCache()
+        Emblem.ClearOnlineSpriteCache()
         Screen.Level.World.Initialize(Screen.Level.EnvironmentType, Screen.Level.WeatherType)
     End Sub
 
@@ -90,9 +106,10 @@
 
         PackNames.AddRange(EnabledPackNames)
 
-        If System.IO.Directory.Exists(GameController.GamePath & "\ContentPacks\") = True Then
-            For Each ContentPackFolder As String In System.IO.Directory.GetDirectories(GameController.GamePath & "\ContentPacks\")
-                Dim newContentPack As String = ContentPackFolder.Remove(0, (GameController.GamePath & "\ContentPacks\").Length)
+        Dim contentPackPath = Path.Combine(GameController.GamePath, "ContentPacks")
+        If System.IO.Directory.Exists(contentPackPath) = True Then
+            For Each ContentPackFolder As String In System.IO.Directory.GetDirectories(contentPackPath)
+                Dim newContentPack As String = ContentPackFolder.Remove(0, (contentPackPath).Length)
                 If PackNames.Contains(newContentPack) = False Then
                     PackNames.Add(newContentPack)
                 End If
@@ -117,7 +134,7 @@
                         If line.StartsWith("language_name,") = True Then
                             LanguageName = content(0).GetSplit(1)
 
-                            Languages.Add(TokenName)
+                            Languages.Add(New CultureInfo(TokenName))
                             LanguageNames.Add(LanguageName)
                             Exit For
                         End If
@@ -272,7 +289,7 @@
 
         SkyDome.Draw(45.0F)
         Level.Draw()
-        World.DrawWeather(Screen.Level.World.CurrentMapWeather)
+        World.DrawWeather(Screen.Level.World.CurrentWeather)
 
         'Core.GraphicsDevice.SetRenderTarget(Nothing)
 
@@ -306,14 +323,14 @@
             Case 7
                 DrawLoadGameJoltSaveMenu()
         End Select
-        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, GameController.DEVELOPER_NAME, New Vector2(7, Core.ScreenSize.Height - FontManager.InGameFont.MeasureString(GameController.DEVELOPER_NAME).Y - 1), Color.Black)
-        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, GameController.DEVELOPER_NAME, New Vector2(4, Core.ScreenSize.Height - FontManager.InGameFont.MeasureString(GameController.DEVELOPER_NAME).Y - 4), Color.White)
-        Core.SpriteBatch.DrawInterface(TextureManager.GetTexture("GUI\Logos\P3D"), New Rectangle(CInt(Core.ScreenSize.Width / 2) - 260, 40, 500, 110), Color.White)
+        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, GameController.DEVELOPER_NAME, New Vector2(7, Core.ScreenSize.Height - FontManager.InGameFont.MeasureString(GameController.DEVELOPER_NAME).Y - 1), Microsoft.Xna.Framework.Color.Black)
+        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, GameController.DEVELOPER_NAME, New Vector2(4, Core.ScreenSize.Height - FontManager.InGameFont.MeasureString(GameController.DEVELOPER_NAME).Y - 4), Microsoft.Xna.Framework.Color.White)
+        Core.SpriteBatch.DrawInterface(TextureManager.GetTexture("GUI\Logos\P3D"), New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 260, 40, 500, 110), Microsoft.Xna.Framework.Color.White)
 
         If Core.GameOptions.ShowDebug = 0 Then
             Dim s As String = GameController.GAMENAME & " " & GameController.GAMEDEVELOPMENTSTAGE & " " & GameController.GAMEVERSION
-            Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, s, New Vector2(7, 7), Color.Black)
-            Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, s, New Vector2(5, 5), Color.White)
+            Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, s, New Vector2(7, 7), Microsoft.Xna.Framework.Color.Black)
+            Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, s, New Vector2(5, 5), Microsoft.Xna.Framework.Color.White)
         End If
     End Sub
 
@@ -336,64 +353,64 @@
             End Select
 
             If i = mainmenuIndex Then
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), "")
             Else
                 If i < 2 And Saves.Count = 0 Or i = 0 And System.IO.Directory.Exists(GameController.GamePath & "\Save\autosave") = False Then
-                    CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(48, 0, 48, 48), "")
+                    CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(48, 0, 48, 48), "")
                 Else
-                    CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+                    CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
                 End If
             End If
 
             If i = 4 Then
                 If i = mainmenuIndex Then
-                    Core.SpriteBatch.DrawInterface(mainTexture, New Rectangle(Core.ScreenSize.Width - 64, 0, 64, 64), New Rectangle(96, 80, 16, 16), Color.White)
+                    Core.SpriteBatch.DrawInterface(mainTexture, New Microsoft.Xna.Framework.Rectangle(Core.ScreenSize.Width - 64, 0, 64, 64), New Microsoft.Xna.Framework.Rectangle(96, 80, 16, 16), Microsoft.Xna.Framework.Color.White)
                 Else
-                    Core.SpriteBatch.DrawInterface(mainTexture, New Rectangle(Core.ScreenSize.Width - 64, 0, 64, 64), New Rectangle(96, 64, 16, 16), Color.White)
+                    Core.SpriteBatch.DrawInterface(mainTexture, New Microsoft.Xna.Framework.Rectangle(Core.ScreenSize.Width - 64, 0, 64, 64), New Microsoft.Xna.Framework.Rectangle(96, 64, 16, 16), Microsoft.Xna.Framework.Color.White)
                 End If
             ElseIf i = 5 Then
                 If i = mainmenuIndex Then
-                    Core.SpriteBatch.DrawInterface(mainTexture, New Rectangle(Core.ScreenSize.Width - 64, 64, 64, 64), New Rectangle(112, 80, 16, 16), Color.White)
+                    Core.SpriteBatch.DrawInterface(mainTexture, New Microsoft.Xna.Framework.Rectangle(Core.ScreenSize.Width - 64, 64, 64, 64), New Microsoft.Xna.Framework.Rectangle(112, 80, 16, 16), Microsoft.Xna.Framework.Color.White)
                 Else
-                    Core.SpriteBatch.DrawInterface(mainTexture, New Rectangle(Core.ScreenSize.Width - 64, 64, 64, 64), New Rectangle(112, 64, 16, 16), Color.White)
+                    Core.SpriteBatch.DrawInterface(mainTexture, New Microsoft.Xna.Framework.Rectangle(Core.ScreenSize.Width - 64, 64, 64, 64), New Microsoft.Xna.Framework.Rectangle(112, 64, 16, 16), Microsoft.Xna.Framework.Color.White)
                 End If
             ElseIf i = 6 Then
-                If Security.FileValidation.IsValid(False) = True And GameController.Hacker = False Then
-                    If GameJolt.API.LoggedIn = True Then
+                If FileValidation.IsValid(False) = True And GameController.Hacker = False Then
+                    If API.LoggedIn = True Then
                         If i = mainmenuIndex Then
-                            Core.SpriteBatch.DrawInterface(mainTexture, New Rectangle(Core.ScreenSize.Width - 196, Core.ScreenSize.Height - 60, 192, 56), New Rectangle(160, 96, 96, 28), Color.White)
+                            Core.SpriteBatch.DrawInterface(mainTexture, New Microsoft.Xna.Framework.Rectangle(Core.ScreenSize.Width - 196, Core.ScreenSize.Height - 60, 192, 56), New Microsoft.Xna.Framework.Rectangle(160, 96, 96, 28), Microsoft.Xna.Framework.Color.White)
                         Else
-                            Core.SpriteBatch.DrawInterface(mainTexture, New Rectangle(Core.ScreenSize.Width - 196, Core.ScreenSize.Height - 60, 192, 56), New Rectangle(160, 65, 96, 28), Color.White)
+                            Core.SpriteBatch.DrawInterface(mainTexture, New Microsoft.Xna.Framework.Rectangle(Core.ScreenSize.Width - 196, Core.ScreenSize.Height - 60, 192, 56), New Microsoft.Xna.Framework.Rectangle(160, 65, 96, 28), Microsoft.Xna.Framework.Color.White)
                         End If
-                        Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Logged in as", New Vector2(Core.ScreenSize.Width - 148, Core.ScreenSize.Height - 54), Color.White)
-                        Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, GameJolt.API.username, New Vector2(Core.ScreenSize.Width - 148, Core.ScreenSize.Height - 34), New Color(204, 255, 0))
+                        Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Logged in as", New Vector2(Core.ScreenSize.Width - 148, Core.ScreenSize.Height - 54), Microsoft.Xna.Framework.Color.White)
+                        Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, API.username, New Vector2(Core.ScreenSize.Width - 148, Core.ScreenSize.Height - 34), New Microsoft.Xna.Framework.Color(204, 255, 0))
                     Else
                         If i = mainmenuIndex Then
-                            Core.SpriteBatch.DrawInterface(mainTexture, New Rectangle(Core.ScreenSize.Width - 60, Core.ScreenSize.Height - 60, 56, 56), New Rectangle(129, 96, 28, 28), Color.White)
+                            Core.SpriteBatch.DrawInterface(mainTexture, New Microsoft.Xna.Framework.Rectangle(Core.ScreenSize.Width - 60, Core.ScreenSize.Height - 60, 56, 56), New Microsoft.Xna.Framework.Rectangle(129, 96, 28, 28), Microsoft.Xna.Framework.Color.White)
                         Else
-                            Core.SpriteBatch.DrawInterface(mainTexture, New Rectangle(Core.ScreenSize.Width - 60, Core.ScreenSize.Height - 60, 56, 56), New Rectangle(129, 65, 28, 28), Color.White)
+                            Core.SpriteBatch.DrawInterface(mainTexture, New Microsoft.Xna.Framework.Rectangle(Core.ScreenSize.Width - 60, Core.ScreenSize.Height - 60, 56, 56), New Microsoft.Xna.Framework.Rectangle(129, 65, 28, 28), Microsoft.Xna.Framework.Color.White)
                         End If
                     End If
                 Else
-                    Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "File Validation failed. Download a new copy of the game to fix this.", New Vector2(220, Core.ScreenSize.Height - 30), Color.White)
+                    Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "File Validation failed. Download a new copy of the game to fix this.", New Vector2(220, Core.ScreenSize.Height - 30), Microsoft.Xna.Framework.Color.White)
                 End If
             ElseIf i = 7 Then
-                If GameJolt.API.LoggedIn = True And Security.FileValidation.IsValid(False) = True And GameController.Hacker = False Then
-                    Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2), 160 + 128, 320, 64), True)
-                    Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - (FontManager.InGameFont.MeasureString(Text).X / 2) + 160 + 20, 196 + 128), Color.Black)
+                If API.LoggedIn = True And FileValidation.IsValid(False) = True And GameController.Hacker = False Then
+                    Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2), 160 + 128, 320, 64), True)
+                    Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - (FontManager.InGameFont.MeasureString(Text).X / 2) + 160 + 20, 196 + 128), Microsoft.Xna.Framework.Color.Black)
                 End If
-            ElseIf i = 1 And GameJolt.API.LoggedIn = True Then
-                Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 - 160 - 20, 160 + i * 128, 320, 64), True)
-                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - (FontManager.InGameFont.MeasureString(Text).X / 2) - 10 - 160 - 20, 196 + i * 128), Color.Black)
+            ElseIf i = 1 And API.LoggedIn = True Then
+                Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 - 160 - 20, 160 + i * 128, 320, 64), True)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - (FontManager.InGameFont.MeasureString(Text).X / 2) - 10 - 160 - 20, 196 + i * 128), Microsoft.Xna.Framework.Color.Black)
             Else
-                Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2) - 180, 160 + i * 128, 320, 64), True)
-                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - (FontManager.InGameFont.MeasureString(Text).X / 2) - 10, 196 + i * 128), Color.Black)
+                Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 180, 160 + i * 128, 320, 64), True)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - (FontManager.InGameFont.MeasureString(Text).X / 2) - 10, 196 + i * 128), Microsoft.Xna.Framework.Color.Black)
             End If
         Next
 
         Dim d As New Dictionary(Of Buttons, String)
         d.Add(Buttons.A, "Accept")
-        If GameJolt.API.LoggedIn = True Then
+        If API.LoggedIn = True Then
             DrawGamePadControls(d, New Vector2(Core.ScreenSize.Width - 170, Core.ScreenSize.Height - 100))
         Else
             DrawGamePadControls(d, New Vector2(Core.ScreenSize.Width - 234, Core.ScreenSize.Height - 40))
@@ -411,7 +428,7 @@
         If Core.GameInstance.IsMouseVisible = True Then
             For i = 0 To 7
                 If i = 4 Then
-                    If Core.ScaleScreenRec(New Rectangle(Core.ScreenSize.Width - 64, 0, 64, 64)).Contains(MouseHandler.MousePosition) = True Then
+                    If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(Core.ScreenSize.Width - 64, 0, 64, 64)).Contains(MouseHandler.MousePosition) = True Then
                         Me.mainmenuIndex = 4
 
                         If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
@@ -419,7 +436,7 @@
                         End If
                     End If
                 ElseIf i = 5 Then
-                    If Core.ScaleScreenRec(New Rectangle(Core.ScreenSize.Width - 64, 64, 64, 64)).Contains(MouseHandler.MousePosition) = True Then
+                    If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(Core.ScreenSize.Width - 64, 64, 64, 64)).Contains(MouseHandler.MousePosition) = True Then
                         Me.mainmenuIndex = 5
 
                         If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
@@ -427,9 +444,9 @@
                         End If
                     End If
                 ElseIf i = 6 Then
-                    Dim r As Rectangle = Core.ScaleScreenRec(New Rectangle(Core.ScreenSize.Width - 196, Core.ScreenSize.Height - 60, 192, 56))
-                    If GameJolt.API.LoggedIn = False Then
-                        r = Core.ScaleScreenRec(New Rectangle(Core.ScreenSize.Width - 64, Core.ScreenSize.Height - 64, 64, 64))
+                    Dim r As Microsoft.Xna.Framework.Rectangle = Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(Core.ScreenSize.Width - 196, Core.ScreenSize.Height - 60, 192, 56))
+                    If API.LoggedIn = False Then
+                        r = Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(Core.ScreenSize.Width - 64, Core.ScreenSize.Height - 64, 64, 64))
                     End If
 
                     If r.Contains(MouseHandler.MousePosition) = True Then
@@ -439,22 +456,22 @@
                             GameJoltButton()
                         End If
                     End If
-                ElseIf i = 1 And GameJolt.API.LoggedIn = True Then
-                    If Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 - 160 - 20, 160 + i * 128, 320 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
+                ElseIf i = 1 And API.LoggedIn = True Then
+                    If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 - 160 - 20, 160 + i * 128, 320 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
                         Me.mainmenuIndex = i
                         If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
                             LoadGameButton()
                         End If
                     End If
-                ElseIf i = 7 And GameJolt.API.LoggedIn = True Then
-                    If Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2), 160 + 128, 320 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
+                ElseIf i = 7 And API.LoggedIn = True Then
+                    If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2), 160 + 128, 320 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
                         Me.mainmenuIndex = i
                         If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
                             LoadGameJoltButton()
                         End If
                     End If
                 Else
-                    If Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 180, 160 + i * 128, 320 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
+                    If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 180, 160 + i * 128, 320 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
                         Me.mainmenuIndex = i
 
                         If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
@@ -474,8 +491,8 @@
             Next
         End If
 
-        If Security.FileValidation.IsValid(False) = True And GameController.Hacker = False Then
-            If GameJolt.API.LoggedIn = True Then
+        If FileValidation.IsValid(False) = True And GameController.Hacker = False Then
+            If API.LoggedIn = True Then
                 mainmenuIndex = CInt(MathHelper.Clamp(mainmenuIndex, 0, 7))
             Else
                 mainmenuIndex = CInt(MathHelper.Clamp(mainmenuIndex, 0, 6))
@@ -525,7 +542,7 @@
 
     Private Sub ContinueButton()
         If Saves.Count > 0 And Player.IsSaveGameFolder(GameController.GamePath & "\Save\autosave") = True Then
-            Core.Player.IsGameJoltSave = False
+            Core.Player.IsGamejoltSave = False
             Core.Player.LoadGame("autosave")
 
             Core.SetScreen(New JoinServerScreen(Me))
@@ -541,8 +558,8 @@
     End Sub
 
     Private Sub LoadGameJoltButton()
-        If Security.FileValidation.IsValid(False) = True And GameController.Hacker = False Then
-            If GameJolt.API.LoggedIn = True Then
+        If FileValidation.IsValid(False) = True And GameController.Hacker = False Then
+            If API.LoggedIn = True Then
                 Core.GameJoltSave.DownloadSave(GameJolt.LogInScreen.LoadedGameJoltID, True)
             End If
 
@@ -551,12 +568,12 @@
     End Sub
 
     Private Sub CloseGameButton()
-        Core.GameOptions.SaveOptions()
+        Options.SaveOptions(Core.GameOptions)
         Core.GameInstance.Exit()
     End Sub
 
     Private Sub GameJoltButton()
-        If Security.FileValidation.IsValid(False) = True And GameController.Hacker = False Then
+        If FileValidation.IsValid(False) = True And GameController.Hacker = False Then
             Core.SetScreen(New GameJolt.LogInScreen(Me))
         End If
     End Sub
@@ -567,18 +584,18 @@
 
     Private Sub DrawLoadMenu()
         Dim CanvasTexture As Texture2D
-        CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
 
         For i = 0 To 3
-            Dim c As Color = Color.White
+            Dim c As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.White
             If i + loadMenuIndex(2) = loadMenuIndex(0) Then
-                c = New Color(101, 142, 255)
+                c = New Microsoft.Xna.Framework.Color(101, 142, 255)
             End If
 
-            Canvas.DrawRectangle(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48), c, True)
+            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48), c, True)
         Next
 
-        Canvas.DrawScrollBar(New Vector2(CInt(Core.ScreenSize.Width / 2) + 250, 180), Saves.Count, 4, loadMenuIndex(2), New Size(4, 200), False, New Color(190, 190, 190), New Color(63, 63, 63), True)
+        Canvas.DrawScrollBar(New Vector2(CInt(Core.ScreenSize.Width / 2) + 250, 180), Saves.Count, 4, loadMenuIndex(2), New Size(4, 200), False, New Microsoft.Xna.Framework.Color(190, 190, 190), New Microsoft.Xna.Framework.Color(63, 63, 63), True)
 
         Dim x As Integer = Saves.Count - 1
         x = CInt(MathHelper.Clamp(x, 0, 3))
@@ -587,14 +604,14 @@
             Dim Name As String = SaveNames(i + loadMenuIndex(2))
 
             If i + loadMenuIndex(2) = loadMenuIndex(0) Then
-                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 245, 191 + i * 50), Color.Black)
-                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Color.White)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 245, 191 + i * 50), Microsoft.Xna.Framework.Color.Black)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Microsoft.Xna.Framework.Color.White)
             Else
-                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Color.Black)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Microsoft.Xna.Framework.Color.Black)
             End If
         Next
 
-        Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2) - 272, 388, 512, 128), True)
+        Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 272, 388, 512, 128), True)
 
         If tempLoadDisplay = "" Then
             Dim dispName As String = "(Unknown)"
@@ -650,7 +667,7 @@
                 Localization.GetString("load_menu_time") & ": " & dispPlayTime
         End If
 
-        Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, tempLoadDisplay, New Vector2(CInt(Core.ScreenSize.Width / 2) - 252, 416), Color.Black)
+        Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, tempLoadDisplay, New Vector2(CInt(Core.ScreenSize.Width / 2) - 252, 416), Microsoft.Xna.Framework.Color.Black)
 
         For i = 0 To 2
             Dim Text As String = ""
@@ -664,13 +681,13 @@
             End Select
 
             If i = loadMenuIndex(1) Then
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), "")
             Else
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
             End If
 
-            Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2) - 272 + i * 192, 550, 128, 64), True)
-            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - 254 + i * 192, 582), Color.Black)
+            Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 272 + i * 192, 550, 128, 64), True)
+            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - 254 + i * 192, 582), Microsoft.Xna.Framework.Color.Black)
         Next
 
         Dim d As New Dictionary(Of Buttons, String)
@@ -697,14 +714,14 @@
 
         If Core.GameInstance.IsMouseVisible = True Then
             For i = 0 To 2
-                If Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 272 + i * 192, 550, 128 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
+                If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 272 + i * 192, 550, 128 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
                     Me.loadMenuIndex(1) = i
 
                     If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
                         Select Case loadMenuIndex(1)
                             Case 0
                                 Core.Player.IsGamejoltSave = False
-                                Core.Player.LoadGame(System.IO.Path.GetFileName(Saves(loadMenuIndex(0))))
+                                Core.Player.LoadGame(Path.GetFileName(Saves(loadMenuIndex(0))))
 
                                 Core.SetScreen(New JoinServerScreen(Me))
                             Case 1
@@ -720,7 +737,7 @@
         End If
 
         For i = 0 To 3
-            If Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48)).Contains(MouseHandler.MousePosition) = True Then
+            If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48)).Contains(MouseHandler.MousePosition) = True Then
                 If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
                     Me.loadMenuIndex(0) = i + loadMenuIndex(2)
                     tempLoadDisplay = ""
@@ -770,63 +787,63 @@
             Dim downloaded As Boolean = Core.GameJoltSave.DownloadFinished
 
             If downloaded = True Then
-                Dim r As New Rectangle(CInt(Core.ScreenSize.Width / 2) - 256, 300, 512, 128)
+                Dim r As New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 256, 300, 512, 128)
                 If Core.ScaleScreenRec(r).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Or Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 0 Then
-                    Canvas.DrawRectangle(Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 264, 292, 528, 144)), New Color(255, 255, 255, 150))
+                    Canvas.DrawRectangle(Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 264, 292, 528, 144)), New Microsoft.Xna.Framework.Color(255, 255, 255, 150))
                 End If
 
                 If GameJolt.LogInScreen.UserBanned(Core.GameJoltSave.GameJoltID) = True Then
                     Dim reason As String = GameJolt.LogInScreen.GetBanReasonByID(GameJolt.LogInScreen.BanReasonIDForUser(Core.GameJoltSave.GameJoltID))
-                    Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, reason, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(reason).X / 2) + 2, 260 + 2), Color.Black)
-                    Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, reason, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(reason).X / 2), 260), Color.Red)
+                    Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, reason, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(reason).X / 2) + 2, 260 + 2), Microsoft.Xna.Framework.Color.Black)
+                    Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, reason, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(reason).X / 2), 260), Microsoft.Xna.Framework.Color.Red)
                 End If
 
-                GameJolt.Emblem.Draw(GameJolt.API.username, Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Points, Core.GameJoltSave.Gender, Core.GameJoltSave.Emblem, Core.ScaleScreenVec(New Vector2(CSng(Core.ScreenSize.Width / 2) - 256, 300)), CSng(4 * Core.SpriteBatch.InterfaceScale), Core.GameJoltSave.DownloadedSprite)
+                Emblem.Draw(API.username, Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Points, Core.GameJoltSave.Gender, Core.GameJoltSave.EmblemS, Core.ScaleScreenVec(New Vector2(CSng(Core.ScreenSize.Width / 2) - 256, 300)), CSng(4 * Core.SpriteBatch.InterfaceScale), Core.GameJoltSave.DownloadedSprite)
 
                 Dim y As Integer = 0
-                If Core.ScaleScreenRec(New Rectangle(r.X + 32 + r.Width, r.Y, 32, 32)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Or Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 1 Then
+                If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(r.X + 32 + r.Width, r.Y, 32, 32)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Or Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 1 Then
                     y = 16
 
-                    Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Change to male.", New Vector2(r.X + 64 + 4 + r.Width, r.Y + 4), Color.White)
+                    Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Change to male.", New Vector2(r.X + 64 + 4 + r.Width, r.Y + 4), Microsoft.Xna.Framework.Color.White)
                 End If
-                Core.SpriteBatch.DrawInterface(mainTexture, New Rectangle(r.X + 32 + r.Width, r.Y, 32, 32), New Rectangle(144, 32 + y, 16, 16), Color.White)
+                Core.SpriteBatch.DrawInterface(mainTexture, New Microsoft.Xna.Framework.Rectangle(r.X + 32 + r.Width, r.Y, 32, 32), New Microsoft.Xna.Framework.Rectangle(144, 32 + y, 16, 16), Microsoft.Xna.Framework.Color.White)
 
                 y = 0
-                If Core.ScaleScreenRec(New Rectangle(r.X + 32 + r.Width, r.Y + 48, 32, 32)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Or Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 2 Then
+                If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(r.X + 32 + r.Width, r.Y + 48, 32, 32)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Or Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 2 Then
                     y = 16
 
-                    Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Change to female.", New Vector2(r.X + 64 + 4 + r.Width, r.Y + 4 + 48), Color.White)
+                    Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Change to female.", New Vector2(r.X + 64 + 4 + r.Width, r.Y + 4 + 48), Microsoft.Xna.Framework.Color.White)
                 End If
-                Core.SpriteBatch.DrawInterface(mainTexture, New Rectangle(r.X + 32 + r.Width, r.Y + 48, 32, 32), New Rectangle(160, 32 + y, 16, 16), Color.White)
+                Core.SpriteBatch.DrawInterface(mainTexture, New Microsoft.Xna.Framework.Rectangle(r.X + 32 + r.Width, r.Y + 48, 32, 32), New Microsoft.Xna.Framework.Rectangle(160, 32 + y, 16, 16), Microsoft.Xna.Framework.Color.White)
 
                 y = 0
-                If Core.ScaleScreenRec(New Rectangle(r.X + 32 + r.Width, r.Y + 48 + 48, 32, 32)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Or Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 3 Then
+                If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(r.X + 32 + r.Width, r.Y + 48 + 48, 32, 32)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Or Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 3 Then
                     y = 16
 
-                    Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Reset save.", New Vector2(r.X + 64 + 4 + r.Width, r.Y + 4 + 48 + 48), Color.White)
+                    Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Reset save.", New Vector2(r.X + 64 + 4 + r.Width, r.Y + 4 + 48 + 48), Microsoft.Xna.Framework.Color.White)
                 End If
-                Core.SpriteBatch.DrawInterface(mainTexture, New Rectangle(r.X + 32 + r.Width, r.Y + 48 + 48, 32, 32), New Rectangle(176, 32 + y, 16, 16), Color.White)
+                Core.SpriteBatch.DrawInterface(mainTexture, New Microsoft.Xna.Framework.Rectangle(r.X + 32 + r.Width, r.Y + 48 + 48, 32, 32), New Microsoft.Xna.Framework.Rectangle(176, 32 + y, 16, 16), Microsoft.Xna.Framework.Color.White)
             Else
                 Dim downloadProgress As Integer = Core.GameJoltSave.DownloadProgress
                 Dim total As Integer = Core.GameJoltSave.TotalDownloadItems
 
                 Dim downloadtext As String = "Downloading profile"
-                Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, downloadtext & LoadingDots.Dots, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(downloadtext).X / 2) + 2, 322), Color.Black)
-                Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, downloadtext & LoadingDots.Dots, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(downloadtext).X / 2), 320), Color.White)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, downloadtext & LoadingDots.Dots, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(downloadtext).X / 2) + 2, 322), Microsoft.Xna.Framework.Color.Black)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, downloadtext & LoadingDots.Dots, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(downloadtext).X / 2), 320), Microsoft.Xna.Framework.Color.White)
 
-                Canvas.DrawScrollBar(New Vector2(CInt(Core.ScreenSize.Width / 2) - 256, 400), total, downloadProgress, 0, New Size(512, 8), True, Color.Black, Color.White, True)
+                Canvas.DrawScrollBar(New Vector2(CInt(Core.ScreenSize.Width / 2) - 256, 400), total, downloadProgress, 0, New Size(512, 8), True, Microsoft.Xna.Framework.Color.Black, Microsoft.Xna.Framework.Color.White, True)
             End If
         Else
             Dim failText As String = "The download failed! Please try again."
 
-            Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, failText, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(failText).X / 2) + 2, 322), Color.Black)
-            Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, failText, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(failText).X / 2), 320), Color.DarkRed)
+            Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, failText, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(failText).X / 2) + 2, 322), Microsoft.Xna.Framework.Color.Black)
+            Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, failText, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(failText).X / 2), 320), Microsoft.Xna.Framework.Color.DarkRed)
         End If
 
         If ControllerHandler.IsConnected() = False Then
             Dim text As String = "Right-Click to quit to the main menu"
-            Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, text, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(text).X / 2) + 2, 502), Color.Black)
-            Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, text, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(text).X / 2), 500), Color.White)
+            Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, text, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(text).X / 2) + 2, 502), Microsoft.Xna.Framework.Color.Black)
+            Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, text, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(text).X / 2), 500), Microsoft.Xna.Framework.Color.White)
         End If
 
         Dim d As New Dictionary(Of Buttons, String)
@@ -849,21 +866,21 @@
             loadGameJoltIndex = loadGameJoltIndex.Clamp(0, 3)
 
             If Controls.Accept(True, True) = True Then
-                If Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 0 Or Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 256, 300, 512, 128)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Then
-                    Core.Player.IsGameJoltSave = True
+                If Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 0 Or Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 256, 300, 512, 128)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Then
+                    Core.Player.IsGamejoltSave = True
                     Core.Player.LoadGame("GAMEJOLTSAVE")
 
                     Core.SetScreen(New JoinServerScreen(Me))
                 End If
 
-                Dim r As Rectangle = Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 256, 300, 512, 128))
-                If Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 1 Or Core.ScaleScreenRec(New Rectangle(r.X + 32 + r.Width, r.Y, 32, 32)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Then
+                Dim r As Microsoft.Xna.Framework.Rectangle = Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 256, 300, 512, 128))
+                If Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 1 Or Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(r.X + 32 + r.Width, r.Y, 32, 32)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Then
                     ButtonChangeMale()
                 End If
-                If Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 2 Or Core.ScaleScreenRec(New Rectangle(r.X + 32 + r.Width, r.Y + 48, 32, 32)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Then
+                If Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 2 Or Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(r.X + 32 + r.Width, r.Y + 48, 32, 32)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Then
                     ButtonChangeFemale()
                 End If
-                If Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 3 Or Core.ScaleScreenRec(New Rectangle(r.X + 32 + r.Width, r.Y + 48 + 48, 32, 32)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Then
+                If Core.GameInstance.IsMouseVisible = False And loadGameJoltIndex = 3 Or Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(r.X + 32 + r.Width, r.Y + 48 + 48, 32, 32)).Contains(MouseHandler.MousePosition) = True And Core.GameInstance.IsMouseVisible = True Then
                     ButtonResetSave()
                 End If
             End If
@@ -877,7 +894,7 @@
     Private Sub ButtonChangeMale()
         Core.GameJoltSave.Gender = "0"
 
-        Core.Player.Skin = GameJolt.Emblem.GetPlayerSpriteFile(GameJolt.Emblem.GetPlayerLevel(Core.GameJoltSave.Points), Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Gender)
+        Core.Player.Skin = Emblem.GetPlayerSpriteFile(Emblem.GetPlayerLevel(Core.GameJoltSave.Points), Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Gender)
         Select Case Core.GameJoltSave.Gender
             Case "0"
                 Core.Player.Male = True
@@ -891,7 +908,7 @@
     Private Sub ButtonChangeFemale()
         Core.GameJoltSave.Gender = "1"
 
-        Core.Player.Skin = GameJolt.Emblem.GetPlayerSpriteFile(GameJolt.Emblem.GetPlayerLevel(Core.GameJoltSave.Points), Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Gender)
+        Core.Player.Skin = Emblem.GetPlayerSpriteFile(Emblem.GetPlayerLevel(Core.GameJoltSave.Points), Core.GameJoltSave.GameJoltID, Core.GameJoltSave.Gender)
         Select Case Core.GameJoltSave.Gender
             Case "0"
                 Core.Player.Male = True
@@ -914,15 +931,15 @@
         Dim CanvasTexture As Texture2D
 
         For i = 0 To 3
-            Dim c As Color = Color.White
+            Dim c As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.White
             If i + languageMenuIndex(2) = languageMenuIndex(0) Then
-                c = New Color(101, 142, 255)
+                c = New Microsoft.Xna.Framework.Color(101, 142, 255)
             End If
 
-            Canvas.DrawRectangle(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48), c, True)
+            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48), c, True)
         Next
 
-        Canvas.DrawScrollBar(New Vector2(CInt(Core.ScreenSize.Width / 2) + 250, 180), Languages.Count, 4, languageMenuIndex(2), New Size(4, 200), False, New Color(190, 190, 190), New Color(63, 63, 63), True)
+        Canvas.DrawScrollBar(New Vector2(CInt(Core.ScreenSize.Width / 2) + 250, 180), Languages.Count, 4, languageMenuIndex(2), New Size(4, 200), False, New Microsoft.Xna.Framework.Color(190, 190, 190), New Microsoft.Xna.Framework.Color(63, 63, 63), True)
 
         Dim x As Integer = Languages.Count - 1
         x = CInt(MathHelper.Clamp(x, 0, 3))
@@ -931,14 +948,14 @@
             Dim Name As String = LanguageNames(i + languageMenuIndex(2))
 
             If i + languageMenuIndex(2) = languageMenuIndex(0) Then
-                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 245, 191 + i * 50), Color.Black)
-                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Color.White)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 245, 191 + i * 50), Microsoft.Xna.Framework.Color.Black)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Microsoft.Xna.Framework.Color.White)
             Else
-                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Color.Black)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Microsoft.Xna.Framework.Color.Black)
             End If
         Next
 
-        CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
 
         For i = 0 To 1
             Dim Text As String = ""
@@ -950,13 +967,13 @@
             End Select
 
             If i = languageMenuIndex(1) Then
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), "")
             Else
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
             End If
 
-            Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2) - 208 + i * 192, 550, 128, 64), True)
-            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - 190 + i * 192, 582), Color.Black)
+            Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 208 + i * 192, 550, 128, 64), True)
+            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - 190 + i * 192, 582), Microsoft.Xna.Framework.Color.Black)
         Next
     End Sub
 
@@ -978,14 +995,14 @@
 
         If Core.GameInstance.IsMouseVisible = True Then
             For i = 0 To 1
-                If Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 208 + i * 192, 550, 128 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
+                If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 208 + i * 192, 550, 128 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
                     Me.languageMenuIndex(1) = i
 
                     If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
                         Select Case languageMenuIndex(1)
                             Case 0
                                 currentLanguage = Languages(languageMenuIndex(0))
-                                Core.GameOptions.SaveOptions()
+                                Options.SaveOptions(Core.GameOptions)
                                 Me.menuIndex = 0
                             Case 1
                                 Localization.Load(currentLanguage)
@@ -996,7 +1013,7 @@
             Next
 
             For i = 0 To 3
-                If Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48)).Contains(MouseHandler.MousePosition) = True Then
+                If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48)).Contains(MouseHandler.MousePosition) = True Then
                     If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
                         Me.languageMenuIndex(0) = i + languageMenuIndex(2)
                     End If
@@ -1024,7 +1041,7 @@
             Select Case languageMenuIndex(1)
                 Case 0
                     currentLanguage = Languages(languageMenuIndex(0))
-                    Core.GameOptions.SaveOptions()
+                    Options.SaveOptions(Core.GameOptions)
                     Me.menuIndex = 0
                 Case 1
                     Localization.Load(currentLanguage)
@@ -1046,9 +1063,9 @@
         Dim isSelectedEnabled As Boolean = False
 
         For i = 0 To 3
-            Dim c As Color = Color.White
+            Dim c As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.White
             If i + packsMenuIndex(2) = packsMenuIndex(0) Then
-                c = New Color(101, 142, 255)
+                c = New Microsoft.Xna.Framework.Color(101, 142, 255)
 
                 If EnabledPackNames.Count > 0 Then
                     If EnabledPackNames.Contains(PackNames(i + packsMenuIndex(2))) = True Then
@@ -1057,10 +1074,10 @@
                 End If
             End If
 
-            Canvas.DrawRectangle(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48), c, True)
+            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48), c, True)
         Next
 
-        Canvas.DrawScrollBar(New Vector2(CInt(Core.ScreenSize.Width / 2) + 250, 180), PackNames.Count, 4, packsMenuIndex(2), New Size(4, 200), False, New Color(190, 190, 190), New Color(63, 63, 63), True)
+        Canvas.DrawScrollBar(New Vector2(CInt(Core.ScreenSize.Width / 2) + 250, 180), PackNames.Count, 4, packsMenuIndex(2), New Size(4, 200), False, New Microsoft.Xna.Framework.Color(190, 190, 190), New Microsoft.Xna.Framework.Color(63, 63, 63), True)
 
         Dim x As Integer = PackNames.Count - 1
         x = CInt(MathHelper.Clamp(x, 0, 3))
@@ -1068,23 +1085,23 @@
         If PackNames.Count > 0 Then
             For i = 0 To x
                 Dim Name As String = PackNames(i + packsMenuIndex(2))
-                Dim textColor As Color = Color.Gray
+                Dim textColor As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.Gray
 
                 If EnabledPackNames.Contains(Name) = True Then
                     Name &= " (" & Localization.GetString("pack_menu_enabled") & ")"
-                    textColor = Color.Black
+                    textColor = Microsoft.Xna.Framework.Color.Black
                 End If
 
                 If i + packsMenuIndex(2) = packsMenuIndex(0) Then
                     Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 245, 191 + i * 50), textColor)
-                    Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Color.White)
+                    Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Microsoft.Xna.Framework.Color.White)
                 Else
                     Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), textColor)
                 End If
             Next
         End If
 
-        CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
 
         For i = 0 To 1
             Dim Text As String = ""
@@ -1096,13 +1113,13 @@
             End Select
 
             If i = packsMenuIndex(1) Then
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), "")
             Else
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
             End If
 
-            Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2) - 208 + i * 192, 550, 128, 64), True)
-            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - 190 + i * 192, 582), Color.Black)
+            Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 208 + i * 192, 550, 128, 64), True)
+            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - 190 + i * 192, 582), Microsoft.Xna.Framework.Color.Black)
         Next
         For i = 2 To 5
             Dim Text As String = ""
@@ -1124,19 +1141,19 @@
             If i = packsMenuIndex(1) Then
                 If i = 2 Or i = 3 Or PackNames.Count = 0 Then
                     If isSelectedEnabled = True Then
-                        CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
+                        CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), "")
                     Else
-                        CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(48, 0, 48, 48), "")
+                        CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(48, 0, 48, 48), "")
                     End If
                 Else
-                    CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
+                    CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), "")
                 End If
             Else
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
             End If
 
-            Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt((Core.ScreenSize.Width / 2) + 280), ((i - 2) * 64) + 180, 160, 32), True)
-            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt((Core.ScreenSize.Width / 2) + 280) + 15, ((i - 2) * 64) + 16 + 180), Color.Black)
+            Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt((Core.ScreenSize.Width / 2) + 280), ((i - 2) * 64) + 180, 160, 32), True)
+            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt((Core.ScreenSize.Width / 2) + 280) + 15, ((i - 2) * 64) + 16 + 180), Microsoft.Xna.Framework.Color.Black)
         Next
     End Sub
 
@@ -1158,7 +1175,7 @@
 
         If Core.GameInstance.IsMouseVisible = True Then
             For i = 0 To 1
-                If Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 208 + i * 192, 550, 128 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
+                If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 208 + i * 192, 550, 128 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
                     Me.packsMenuIndex(1) = i
 
                     If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
@@ -1173,7 +1190,7 @@
             Next
 
             For i = 2 To 5
-                If Core.ScaleScreenRec(New Rectangle(CInt((Core.ScreenSize.Width / 2) + 280), ((i - 2) * 64) + 180, 160 + 32, 32 + 32)).Contains(MouseHandler.MousePosition) = True Then
+                If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt((Core.ScreenSize.Width / 2) + 280), ((i - 2) * 64) + 180, 160 + 32, 32 + 32)).Contains(MouseHandler.MousePosition) = True Then
                     Me.packsMenuIndex(1) = i
 
                     If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
@@ -1195,7 +1212,7 @@
         End If
 
         For i = 0 To 3
-            If Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48)).Contains(MouseHandler.MousePosition) = True Then
+            If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48)).Contains(MouseHandler.MousePosition) = True Then
                 If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
                     Me.packsMenuIndex(0) = i + packsMenuIndex(2)
                 End If
@@ -1359,22 +1376,22 @@
         End If
 
         If Not PInfoSlpash Is Nothing Then
-            Core.SpriteBatch.DrawInterface(PInfoSlpash, Core.ScreenSize, Color.White)
+            Core.SpriteBatch.DrawInterface(PInfoSlpash, Core.ScreenSize, Microsoft.Xna.Framework.Color.White)
         End If
 
-        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
 
-        Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2) - 256, 160, 480, 64), True)
-        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Localization.GetString("pack_menu_name") & ": " & PInfoName, New Vector2(CInt(Core.ScreenSize.Width / 2) - CInt(FontManager.InGameFont.MeasureString(Localization.GetString("pack_menu_name") & ": " & PInfoName).X / 2), 195), Color.Black)
+        Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 256, 160, 480, 64), True)
+        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Localization.GetString("pack_menu_name") & ": " & PInfoName, New Vector2(CInt(Core.ScreenSize.Width / 2) - CInt(FontManager.InGameFont.MeasureString(Localization.GetString("pack_menu_name") & ": " & PInfoName).X / 2), 195), Microsoft.Xna.Framework.Color.Black)
 
-        Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2) - 256, 288, 480, 224), True)
-        Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, Localization.GetString("pack_menu_version") & ": " & PInfoVersion & vbNewLine & Localization.GetString("pack_menu_by") & ": " & PInfoAuthor & vbNewLine & Localization.GetString("pack_menu_content") & ": " & PInfoContent & vbNewLine & Localization.GetString("pack_menu_description") & ": " & PInfoDescription.Replace("<br>", vbNewLine), New Vector2(CInt(Core.ScreenSize.Width / 2) - 220, 323), Color.Black)
+        Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 256, 288, 480, 224), True)
+        Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, Localization.GetString("pack_menu_version") & ": " & PInfoVersion & vbNewLine & Localization.GetString("pack_menu_by") & ": " & PInfoAuthor & vbNewLine & Localization.GetString("pack_menu_content") & ": " & PInfoContent & vbNewLine & Localization.GetString("pack_menu_description") & ": " & PInfoDescription.Replace("<br>", vbNewLine), New Vector2(CInt(Core.ScreenSize.Width / 2) - 220, 323), Microsoft.Xna.Framework.Color.Black)
 
         For i = 0 To 1
             If i = packInfoIndex Then
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), "")
             Else
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
             End If
 
             Dim Text As String = Localization.GetString("pack_menu_back")
@@ -1390,8 +1407,8 @@
                     Text = Localization.GetString("pack_menu_back")
             End Select
 
-            Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 + (200 * i), 550, 128, 64), True)
-            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - 160 + (200 * i), 582), Color.Black)
+            Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 + (200 * i), 550, 128, 64), True)
+            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - 160 + (200 * i), 582), Microsoft.Xna.Framework.Color.Black)
         Next
     End Sub
 
@@ -1400,7 +1417,7 @@
 
         If Core.GameInstance.IsMouseVisible = True Then
             For i = 0 To 1
-                If Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 + (200 * i), 550, 160, 96)).Contains(MouseHandler.MousePosition) = True Then
+                If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 + (200 * i), 550, 160, 96)).Contains(MouseHandler.MousePosition) = True Then
                     packInfoIndex = i
 
                     If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
@@ -1483,7 +1500,7 @@
     Private Sub ButtonApplyPacks()
         If PackNames.Count > 0 Then
             Core.GameOptions.ContentPackNames = EnabledPackNames.ToArray()
-            Core.GameOptions.SaveOptions()
+            Options.SaveOptions(Core.GameOptions)
             MediaPlayer.Stop()
             ContentPackManager.Clear()
             For Each s As String In Core.GameOptions.ContentPackNames
@@ -1501,13 +1518,13 @@
 #Region "DeleteMenu"
 
     Private Sub DrawDeleteMenu()
-        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
 
-        Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2 - 352), 172, 704, 96), Color.White, True)
+        Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2 - 352), 172, 704, 96), Microsoft.Xna.Framework.Color.White, True)
 
-        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Localization.GetString("delete_menu_delete_confirm"), New Vector2(CInt(Core.ScreenSize.Width / 2) - CInt(FontManager.InGameFont.MeasureString(Localization.GetString("delete_menu_delete_confirm")).X / 2), 200), Color.Black)
+        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Localization.GetString("delete_menu_delete_confirm"), New Vector2(CInt(Core.ScreenSize.Width / 2) - CInt(FontManager.InGameFont.MeasureString(Localization.GetString("delete_menu_delete_confirm")).X / 2), 200), Microsoft.Xna.Framework.Color.Black)
 
-        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, """" & SaveNames(loadMenuIndex(0)) & """ ?", New Vector2(CInt(Core.ScreenSize.Width / 2) - CInt(FontManager.InGameFont.MeasureString("""" & SaveNames(loadMenuIndex(0)) & """ ?").X / 2), 240), Color.Black)
+        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, """" & SaveNames(loadMenuIndex(0)) & """ ?", New Vector2(CInt(Core.ScreenSize.Width / 2) - CInt(FontManager.InGameFont.MeasureString("""" & SaveNames(loadMenuIndex(0)) & """ ?").X / 2), 240), Microsoft.Xna.Framework.Color.Black)
 
         For i = 0 To 1
             Dim Text As String = Localization.GetString("delete_menu_delete")
@@ -1517,13 +1534,13 @@
             End If
 
             If i = deleteIndex Then
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), "")
             Else
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
             End If
 
-            Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2) - 182 + i * 192, 370, 128, 64), True)
-            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - 164 + i * 192, 402), Color.Black)
+            Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 182 + i * 192, 370, 128, 64), True)
+            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - 164 + i * 192, 402), Microsoft.Xna.Framework.Color.Black)
         Next
     End Sub
 
@@ -1537,7 +1554,7 @@
 
         If Core.GameInstance.IsMouseVisible = True Then
             For i = 0 To 1
-                If Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 182 + i * 192, 370, 128 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
+                If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 182 + i * 192, 370, 128 + 32, 64 + 32)).Contains(MouseHandler.MousePosition) = True Then
                     deleteIndex = i
 
                     If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
@@ -1605,7 +1622,7 @@
         If Core.GameOptions.StartedOfflineGame = True Then
             If GameModeManager.GameModeCount < 2 Then
                 GameModeManager.SetGameModePointer("Kolben")
-                Core.SetScreen(New TransitionScreen(Me, New NewGameScreen(), Color.Black, False))
+                Core.SetScreen(New TransitionScreen(Me, New NewGameScreen(), Microsoft.Xna.Framework.Color.Black, False))
             Else
                 GetGameModes()
                 GameModeSplash = Nothing
@@ -1613,7 +1630,7 @@
             End If
         Else
             Core.GameOptions.StartedOfflineGame = True
-            Core.GameOptions.SaveOptions()
+            Options.SaveOptions(Core.GameOptions)
             Core.SetScreen(New OfflineGameWarningScreen(Me))
         End If
     End Sub
@@ -1623,21 +1640,21 @@
 
     Private Sub DrawNewGameMenu()
         If Not GameModeSplash Is Nothing Then
-            Core.SpriteBatch.DrawInterface(GameModeSplash, Core.ScreenSize, Color.White)
+            Core.SpriteBatch.DrawInterface(GameModeSplash, Core.ScreenSize, Microsoft.Xna.Framework.Color.White)
         End If
 
         Dim CanvasTexture As Texture2D
 
         For i = 0 To 3
-            Dim c As Color = Color.White
+            Dim c As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.White
             If i + gameModeMenuIndex(2) = gameModeMenuIndex(0) Then
-                c = New Color(101, 142, 255)
+                c = New Microsoft.Xna.Framework.Color(101, 142, 255)
             End If
 
-            Canvas.DrawRectangle(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48), c, True)
+            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48), c, True)
         Next
 
-        Canvas.DrawScrollBar(New Vector2(CInt(Core.ScreenSize.Width / 2) + 250, 180), ModeNames.Count, 4, gameModeMenuIndex(2), New Size(4, 200), False, New Color(190, 190, 190), New Color(63, 63, 63), True)
+        Canvas.DrawScrollBar(New Vector2(CInt(Core.ScreenSize.Width / 2) + 250, 180), ModeNames.Count, 4, gameModeMenuIndex(2), New Size(4, 200), False, New Microsoft.Xna.Framework.Color(190, 190, 190), New Microsoft.Xna.Framework.Color(63, 63, 63), True)
 
         Dim x As Integer = ModeNames.Count - 1
         x = CInt(MathHelper.Clamp(x, 0, 3))
@@ -1646,15 +1663,15 @@
             Dim Name As String = ModeNames(i + gameModeMenuIndex(2))
 
             If i + gameModeMenuIndex(2) = gameModeMenuIndex(0) Then
-                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 245, 191 + i * 50), Color.Black)
-                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Color.White)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 245, 191 + i * 50), Microsoft.Xna.Framework.Color.Black)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Microsoft.Xna.Framework.Color.White)
             Else
-                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Color.Black)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Name, New Vector2(CInt(Core.ScreenSize.Width / 2) - 248, 188 + i * 50), Microsoft.Xna.Framework.Color.Black)
             End If
         Next
 
-        CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
-        Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2) - 272, 388, 512, 128), True)
+        CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
+        Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 272, 388, 512, 128), True)
 
         If tempGameModesDisplay = "" Then
             Dim GameMode As GameMode = GameModeManager.GetGameMode(ModeNames(gameModeMenuIndex(0)))
@@ -1672,13 +1689,13 @@
                 Localization.GetString("gamemode_menu_description") & ": " & dispDescription
         End If
 
-        Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, tempGameModesDisplay, New Vector2(CInt(Core.ScreenSize.Width / 2) - 252, 416), Color.Black)
+        Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, tempGameModesDisplay, New Vector2(CInt(Core.ScreenSize.Width / 2) - 252, 416), Microsoft.Xna.Framework.Color.Black)
 
         For i = 0 To 1
             If i = gameModeMenuIndex(1) Then
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), "")
             Else
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
             End If
 
             Dim Text As String = Localization.GetString("gamemode_menu_back")
@@ -1690,8 +1707,8 @@
                     Text = Localization.GetString("gamemode_menu_back")
             End Select
 
-            Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 + (200 * i), 550, 128, 64), True)
-            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - 160 + (200 * i), 582), Color.Black)
+            Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 + (200 * i), 550, 128, 64), True)
+            Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - 160 + (200 * i), 582), Microsoft.Xna.Framework.Color.Black)
         Next
     End Sub
 
@@ -1715,7 +1732,7 @@
 
         If Core.GameInstance.IsMouseVisible = True Then
             For i = 0 To 1
-                If Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 + (200 * i), 550, 160, 96)).Contains(MouseHandler.MousePosition) = True Then
+                If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 + (200 * i), 550, 160, 96)).Contains(MouseHandler.MousePosition) = True Then
                     Me.gameModeMenuIndex(1) = i
 
                     If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
@@ -1733,7 +1750,7 @@
         End If
 
         For i = 0 To 3
-            If Core.ScaleScreenRec(New Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48)).Contains(MouseHandler.MousePosition) = True Then
+            If Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 258, 180 + i * 50, 480, 48)).Contains(MouseHandler.MousePosition) = True Then
                 If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
                     Me.gameModeMenuIndex(0) = i + gameModeMenuIndex(2)
                     tempGameModesDisplay = ""
@@ -1785,7 +1802,7 @@
 
     Private Sub AcceptGameMode()
         GameModeManager.SetGameModePointer(ModeNames(gameModeMenuIndex(0)))
-        Core.SetScreen(New TransitionScreen(Me, New NewGameScreen(), Color.Black, False))
+        Core.SetScreen(New TransitionScreen(Me, New NewGameScreen(), Microsoft.Xna.Framework.Color.Black, False))
     End Sub
 
 #End Region

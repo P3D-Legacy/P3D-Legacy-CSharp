@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
 Namespace BattleSystem.Moves.Normal
 
     Public Class RapidSpin
@@ -52,7 +55,7 @@ Namespace BattleSystem.Moves.Normal
             '#End
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             With BattleScreen.FieldEffects
                 If own = True Then
                     .OwnBind = 0

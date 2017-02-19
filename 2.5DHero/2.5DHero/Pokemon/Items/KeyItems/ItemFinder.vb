@@ -1,3 +1,9 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.KeyItems
 
     <Item(55, "Itemfinder")>
@@ -9,7 +15,7 @@ Namespace Items.KeyItems
         Public Overrides ReadOnly Property CanBeUsed As Boolean = True
 
         Public Sub New()
-            _textureRectangle = New Rectangle(192, 48, 24, 24)
+            TextureRectangle = New Rectangle(192, 48, 24, 24)
         End Sub
 
         Public Overrides Sub Use()

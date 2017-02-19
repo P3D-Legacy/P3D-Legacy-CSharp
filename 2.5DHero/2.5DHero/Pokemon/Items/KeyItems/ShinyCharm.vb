@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.KeyItems
 
     <Item(242, "Shiny Charm")>
@@ -8,7 +10,7 @@ Namespace Items.KeyItems
         Public Overrides ReadOnly Property Description As String = "A shiny charm said to increase the chance of finding a Shiny Pokémon in the wild."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(120, 264, 24, 24)
+            TextureRectangle = New Rectangle(120, 264, 24, 24)
         End Sub
 
     End Class

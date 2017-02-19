@@ -1,4 +1,9 @@
-﻿Namespace BattleSystem
+﻿Imports System.Drawing
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Screens.GUI
+
+Namespace BattleSystem
 
     Public Class MathHPQueryObject
 
@@ -70,12 +75,12 @@
         Private Shake As Vector2 = New Vector2(0, 0)
 
         Public Overrides Sub Draw(BV2Screen As BattleScreen)
-            Canvas.DrawRectangle(New Rectangle(CInt(_position.X + Shake.X), CInt(_position.Y + Shake.Y), 300, 30), Color.White)
+            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(_position.X + Shake.X), CInt(_position.Y + Shake.Y), 300, 30), Microsoft.Xna.Framework.Color.White)
             If _amount >= _target Then
-                Canvas.DrawScrollBar(New Vector2(_position.X + Shake.X, _position.Y + Shake.Y), 1000, _startamount, 0, New Size(300, 30), True, New Color(0, 0, 0, 0), Color.DarkGray)
+                Canvas.DrawScrollBar(New Vector2(_position.X + Shake.X, _position.Y + Shake.Y), 1000, _startamount, 0, New Size(300, 30), True, New Microsoft.Xna.Framework.Color(0, 0, 0, 0), Microsoft.Xna.Framework.Color.DarkGray)
             End If
-            Canvas.DrawScrollBar(New Vector2(_position.X + Shake.X, _position.Y + Shake.Y), 1000, _amount, 0, New Size(300, 30), True, New Color(0, 0, 0, 0), GetColor())
-            Canvas.DrawBorder(4, New Rectangle(CInt(_position.X - 2 + Shake.X), CInt(_position.Y - 2 + Shake.Y), 304, 34), Color.Gray)
+            Canvas.DrawScrollBar(New Vector2(_position.X + Shake.X, _position.Y + Shake.Y), 1000, _amount, 0, New Size(300, 30), True, New Microsoft.Xna.Framework.Color(0, 0, 0, 0), GetColor())
+            Canvas.DrawBorder(4, New Microsoft.Xna.Framework.Rectangle(CInt(_position.X - 2 + Shake.X), CInt(_position.Y - 2 + Shake.Y), 304, 34), Microsoft.Xna.Framework.Color.Gray)
 
             For i = 0 To Particles.Count - 1
                 If i <= Particles.Count - 1 Then
@@ -89,17 +94,17 @@
             Next
         End Sub
 
-        Private Function GetColor() As Color
+        Private Function GetColor() As Microsoft.Xna.Framework.Color
             Dim percent As Integer = CInt((_amount / 1000) * 100)
 
             If percent > 75 Then
-                Return New Color(64, 191, 0)
+                Return New Microsoft.Xna.Framework.Color(64, 191, 0)
             ElseIf percent <= 75 And percent > 50 Then
-                Return New Color(157, 191, 0)
+                Return New Microsoft.Xna.Framework.Color(157, 191, 0)
             ElseIf percent <= 50 And percent > 25 Then
-                Return New Color(222, 191, 0)
+                Return New Microsoft.Xna.Framework.Color(222, 191, 0)
             Else
-                Return New Color(192, 63, 0)
+                Return New Microsoft.Xna.Framework.Color(192, 63, 0)
             End If
 
         End Function
@@ -119,11 +124,11 @@
 
             Public Delay As Single = 0.0F
             Public Position As Vector2
-            Public Color As Color
+            Public Color As Microsoft.Xna.Framework.Color
 
             Public CanBeRemoved As Boolean = False
 
-            Public Sub New(ByVal position As Vector2, ByVal Color As Color)
+            Public Sub New(ByVal position As Vector2, ByVal Color As Microsoft.Xna.Framework.Color)
                 Me.Position = position
                 Me.Color = Color
                 Me.Delay = 0.15F
@@ -135,7 +140,7 @@
                     Me.Delay = 0.0F
                     Me.CanBeRemoved = True
                 End If
-                Canvas.DrawRectangle(New Rectangle(CInt(Position.X + offset.X), CInt(Position.Y + offset.Y), 4, 4), Color)
+                Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Position.X + offset.X), CInt(Position.Y + offset.Y), 4, 4), Color)
             End Sub
 
         End Class

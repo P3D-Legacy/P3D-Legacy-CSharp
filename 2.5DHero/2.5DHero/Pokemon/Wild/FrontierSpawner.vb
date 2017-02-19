@@ -1,4 +1,8 @@
-﻿Public Class FrontierSpawner
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Security
+
+Public Class FrontierSpawner
 
     Public Shared Function GetPokemon(ByVal level As Integer, ByVal pokemon_class As Integer, ByVal IDPreset As List(Of Integer)) As Pokemon
         Dim validIDs As New List(Of Integer)
@@ -28,7 +32,7 @@
 
     Private Shared Function GetPredeterminedPokemon(ByVal ID As Integer, ByVal level As Integer, ByVal pokemon_class As Integer) As Pokemon
         Dim path As String = GameController.GamePath & "\Content\Pokemon\Data\frontier\" & pokemon_class.ToString() & ".dat"
-        Security.FileValidation.CheckFileValid(path, False, "FrontierSpawner.vb")
+        FileValidation.CheckFileValid(path, False, "FrontierSpawner.vb")
 
         Dim data As List(Of String) = System.IO.File.ReadAllLines(path).ToList()
 
@@ -164,33 +168,33 @@
                     p.Nature = Pokemon.ConvertIDToNature(Core.Random.Next(0, 26))
                 Case "atk"
                     If stat2.ToLower() <> "def" Then
-                        p.Nature = Pokemon.Natures.Lonely
+                        p.Nature = BasePokemon.Natures.Lonely
                     Else
-                        p.Nature = Pokemon.Natures.Relaxed
+                        p.Nature = BasePokemon.Natures.Relaxed
                     End If
                 Case "def"
                     If stat2.ToLower() <> "spatk" Then
-                        p.Nature = Pokemon.Natures.Impish
+                        p.Nature = BasePokemon.Natures.Impish
                     Else
-                        p.Nature = Pokemon.Natures.Lax
+                        p.Nature = BasePokemon.Natures.Lax
                     End If
                 Case "spatk"
                     If stat2.ToLower() <> "spdef" Then
-                        p.Nature = Pokemon.Natures.Rash
+                        p.Nature = BasePokemon.Natures.Rash
                     Else
-                        p.Nature = Pokemon.Natures.Modest
+                        p.Nature = BasePokemon.Natures.Modest
                     End If
                 Case "spdef"
                     If stat2.ToLower() <> "speed" Then
-                        p.Nature = Pokemon.Natures.Sassy
+                        p.Nature = BasePokemon.Natures.Sassy
                     Else
-                        p.Nature = Pokemon.Natures.Gentle
+                        p.Nature = BasePokemon.Natures.Gentle
                     End If
                 Case "speed"
                     If stat2.ToLower() <> "atk" Then
-                        p.Nature = Pokemon.Natures.Timid
+                        p.Nature = BasePokemon.Natures.Timid
                     Else
-                        p.Nature = Pokemon.Natures.Jolly
+                        p.Nature = BasePokemon.Natures.Jolly
                     End If
             End Select
         End If

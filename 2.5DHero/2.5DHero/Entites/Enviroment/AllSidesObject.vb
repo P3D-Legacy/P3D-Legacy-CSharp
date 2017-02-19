@@ -1,4 +1,6 @@
-﻿Public Class AllSidesObject
+﻿Imports P3D.Legacy.Core.Entities
+
+Public Class AllSidesObject
 
     Inherits Entity
 

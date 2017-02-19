@@ -1,4 +1,11 @@
-﻿Public Class PauseScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class PauseScreen
 
     Inherits Screen
 
@@ -143,11 +150,11 @@
             End Select
         End If
 
-        If Controls.Dismiss() = True Or KeyBoardHandler.KeyPressed(KeyBindings.EscapeKey) = True And leftEscapeKey = True Or ControllerHandler.ButtonPressed(Buttons.Start) = True Then
+        If Controls.Dismiss() = True Or KeyBoardHandler.KeyPressed(Core.KeyBindings.Escape) = True And leftEscapeKey = True Or ControllerHandler.ButtonPressed(Buttons.Start) = True Then
             ClickContinue()
         End If
 
-        If KeyBoardHandler.KeyDown(KeyBindings.EscapeKey) = False And ControllerHandler.ButtonDown(Buttons.Start) = False Then
+        If KeyBoardHandler.KeyDown(Core.KeyBindings.Escape) = False And ControllerHandler.ButtonDown(Buttons.Start) = False Then
             Me.leftEscapeKey = True
         End If
     End Sub

@@ -1,4 +1,15 @@
-﻿Public Class HallOfFameScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Battle.BattleSystemV2
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Models
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class HallOfFameScreen
 
     Inherits Screen
 
@@ -137,7 +148,7 @@
             Effect = New BasicEffect(Core.GraphicsDevice)
             Effect.FogEnabled = True
             SkyDome = New SkyDome()
-            Camera = New BattleSystem.BattleCamera()
+            Camera = New BattleCamera()
 
             Level = New Level()
             Level.Load("indigo\halloffame_interface.dat")
@@ -148,7 +159,7 @@
     End Sub
 
     Private Sub ResetCamera()
-        Dim bCamera As BattleSystem.BattleCamera = CType(Camera, BattleSystem.BattleCamera)
+        Dim bCamera As BattleCamera = CType(Camera, BattleCamera)
         bCamera.Position = New Vector3(10, 1, 14)
         bCamera.Yaw = 0.0F
         bCamera.Pitch = -0.04F
@@ -201,7 +212,7 @@
 
         If Me.menuState = 2 Then
             If Camera.Name = "BattleV2" Then
-                If CType(Camera, BattleSystem.BattleCamera).IsReady = True Then
+                If CType(Camera, BattleCamera).IsReady = True Then
                     DrawInformation()
                 End If
             End If
@@ -289,7 +300,7 @@
     End Sub
 
     Private Sub UpdateMenu()
-        If KeyBoardHandler.KeyPressed(KeyBindings.SpecialKey) = True Or ControllerHandler.ButtonPressed(Buttons.Y) = True Then
+        If KeyBoardHandler.KeyPressed(Core.KeyBindings.Special) = True Or ControllerHandler.ButtonPressed(Buttons.Y) = True Then
             Me.Entries.Reverse()
         End If
 
@@ -400,7 +411,7 @@
     End Sub
 
     Private Sub UpdateCamera()
-        Dim bCamera As BattleSystem.BattleCamera = CType(Screen.Camera, BattleSystem.BattleCamera)
+        Dim bCamera As BattleCamera = CType(Screen.Camera, BattleCamera)
         If bCamera.IsReady = True Then
             Dim d As Integer = 1
             Dim e As Integer = 0

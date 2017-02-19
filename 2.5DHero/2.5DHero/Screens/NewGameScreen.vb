@@ -1,10 +1,19 @@
-﻿Public Class NewGameScreen
+﻿Imports System.Drawing
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Data
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
 
-    Inherits Screen
+Public Class NewGameScreen
+    Inherits BaseNewGameScreen
 
     Dim startSkins() As String = {"Ethan", "Lyra", "Nate", "Rosa", "Hilbert", "Hilda"}
     Dim skinNames() As String = {"Ethan", "Lyra", "Nate", "Rosa", "Hilbert", "Hilda"}
-    Dim backColors() As Color = {New Color(248, 176, 32), New Color(248, 216, 88), New Color(56, 88, 200), New Color(216, 96, 112), New Color(56, 88, 152), New Color(239, 90, 156)}
+    Dim backColors() As Microsoft.Xna.Framework.Color = {New Microsoft.Xna.Framework.Color(248, 176, 32), New Microsoft.Xna.Framework.Color(248, 216, 88), New Microsoft.Xna.Framework.Color(56, 88, 200), New Microsoft.Xna.Framework.Color(216, 96, 112), New Microsoft.Xna.Framework.Color(56, 88, 152), New Microsoft.Xna.Framework.Color(239, 90, 156)}
 
     Public Index As Integer = 0
     Dim pokeIndex As Integer = 0
@@ -30,8 +39,8 @@
 
     Dim CurrentText As String = ""
 
-    Dim currentBackColor As Color = New Color(59, 123, 165)
-    Dim normalColor As Color = New Color(59, 123, 165)
+    Dim currentBackColor As Microsoft.Xna.Framework.Color = New Microsoft.Xna.Framework.Color(59, 123, 165)
+    Dim normalColor As Microsoft.Xna.Framework.Color = New Microsoft.Xna.Framework.Color(59, 123, 165)
 
     Dim pokemonRange() As Integer = {1, 252}
     Dim introMusic As String = "welcome"
@@ -47,7 +56,7 @@
             ContentPackManager.Load(GameController.GamePath & "\ContentPacks\" & s & "\exceptions.dat")
         Next
 
-        BattleSystem.GameModeAttackLoader.Load()
+        GameModeAttackLoader.Load()
 
         Localization.ReloadGameModeTokens()
 
@@ -78,7 +87,7 @@
         TextBox.Showing = False
         Me.Index = 0
         TextBox.reDelay = 0
-        skinTexture = TextureManager.GetTexture(TextureManager.GetTexture("Textures\NPC\" & startSkins(SkinIndex)), New Rectangle(0, 64, 32, 32))
+        skinTexture = TextureManager.GetTexture(TextureManager.GetTexture("Textures\NPC\" & startSkins(SkinIndex)), New Microsoft.Xna.Framework.Rectangle(0, 64, 32, 32))
 
         MusicManager.PlayMusic("nomusic")
     End Sub
@@ -151,7 +160,7 @@
             End If
         End If
 
-        Dim AimColor As Color = normalColor
+        Dim AimColor As Microsoft.Xna.Framework.Color = normalColor
 
         If Me.Index = 4 Then
             AimColor = backColors(SkinIndex)
@@ -208,50 +217,50 @@
 
 
     Public Overrides Sub Draw()
-        Canvas.DrawRectangle(New Rectangle(0, 0, Core.windowSize.Width, Core.windowSize.Height), currentBackColor)
+        Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(0, 0, Core.WindowSize.Width, Core.WindowSize.Height), currentBackColor)
 
         TextBox.Draw()
 
-        Core.SpriteBatch.Draw(mainTexture, New Rectangle(CInt(Core.windowSize.Width / 2) - 62, CInt(Core.windowSize.Height / 2) - 218, 130, 256), New Rectangle(0, 0, 62, 128), New Color(255, 255, 255, ProfAlpha))
-        Core.SpriteBatch.Draw(skinTexture, New Rectangle(CInt(Core.windowSize.Width / 2) - 128, CInt(Core.windowSize.Height / 2) - 218, 256, 256), New Color(255, 255, 255, OtherAlpha))
+        Core.SpriteBatch.Draw(mainTexture, New Microsoft.Xna.Framework.Rectangle(CInt(Core.WindowSize.Width / 2) - 62, CInt(Core.WindowSize.Height / 2) - 218, 130, 256), New Microsoft.Xna.Framework.Rectangle(0, 0, 62, 128), New Microsoft.Xna.Framework.Color(255, 255, 255, ProfAlpha))
+        Core.SpriteBatch.Draw(skinTexture, New Microsoft.Xna.Framework.Rectangle(CInt(Core.WindowSize.Width / 2) - 128, CInt(Core.WindowSize.Height / 2) - 218, 256, 256), New Microsoft.Xna.Framework.Color(255, 255, 255, OtherAlpha))
 
         Select Case pokeIndex
             Case 1
-                Core.SpriteBatch.Draw(mainTexture, New Rectangle(CInt(ballPosition.X), CInt(ballPosition.Y), 22, 22), New Rectangle(62 + CInt(ballIndex.X * 22), 48 + CInt(ballIndex.Y * 22), 22, 22), Color.White)
+                Core.SpriteBatch.Draw(mainTexture, New Microsoft.Xna.Framework.Rectangle(CInt(ballPosition.X), CInt(ballPosition.Y), 22, 22), New Microsoft.Xna.Framework.Rectangle(62 + CInt(ballIndex.X * 22), 48 + CInt(ballIndex.Y * 22), 22, 22), Microsoft.Xna.Framework.Color.White)
             Case 2
-                Core.SpriteBatch.Draw(pokeTexture, New Rectangle(CInt(pokePosition.X) - 100, CInt(pokePosition.Y) - 160, 256, 256), Color.White)
+                Core.SpriteBatch.Draw(pokeTexture, New Microsoft.Xna.Framework.Rectangle(CInt(pokePosition.X) - 100, CInt(pokePosition.Y) - 160, 256, 256), Microsoft.Xna.Framework.Color.White)
             Case 3
                 If Index < 6 Then
-                    Core.SpriteBatch.Draw(pokeTexture, New Rectangle(CInt(Core.windowSize.Width / 2) - 300, CInt(Core.windowSize.Height / 2) - 130, 256, 256), New Color(255, 255, 255, ProfAlpha))
+                    Core.SpriteBatch.Draw(pokeTexture, New Microsoft.Xna.Framework.Rectangle(CInt(Core.WindowSize.Width / 2) - 300, CInt(Core.WindowSize.Height / 2) - 130, 256, 256), New Microsoft.Xna.Framework.Color(255, 255, 255, ProfAlpha))
                 End If
         End Select
 
         Select Case Index
             Case 5
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("new_game_your_name") & ":", New Vector2(TextboxPosition.X, TextboxPosition.Y - 24), Color.White)
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("new_game_your_name") & ":", New Vector2(TextboxPosition.X, TextboxPosition.Y - 24), Microsoft.Xna.Framework.Color.White)
                 DrawTextBox()
 
                 If enterCorrectName = True Then
-                    Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("new_game_name_too_short"), New Vector2(TextboxPosition.X, TextboxPosition.Y + 30), Color.DarkRed)
+                    Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("new_game_name_too_short"), New Vector2(TextboxPosition.X, TextboxPosition.Y + 30), Microsoft.Xna.Framework.Color.DarkRed)
                 End If
             Case 4
-                Canvas.DrawRectangle(New Rectangle(CInt(TextboxPosition.X - 5), CInt(TextboxPosition.Y - 24), 138, 42), New Color(0, 0, 0, 80))
+                Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(TextboxPosition.X - 5), CInt(TextboxPosition.Y - 24), 138, 42), New Microsoft.Xna.Framework.Color(0, 0, 0, 80))
 
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("new_game_choose_skin") & ":" & vbNewLine & skinNames(SkinIndex), New Vector2(TextboxPosition.X, TextboxPosition.Y - 24), Color.White)
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("new_game_choose_skin") & ":" & vbNewLine & skinNames(SkinIndex), New Vector2(TextboxPosition.X, TextboxPosition.Y - 24), Microsoft.Xna.Framework.Color.White)
 
-                Canvas.DrawScrollBar(New Vector2(TextboxPosition.X, TextboxPosition.Y + 48), startSkins.Count, 1, SkinIndex, New Size(128, 4), True, TextureManager.GetTexture(TextureManager.GetTexture("GUI\Menus\Menu"), New Rectangle(112, 12, 1, 1)), TextureManager.GetTexture(TextureManager.GetTexture("GUI\Menus\Menu"), New Rectangle(113, 12, 1, 1)))
+                Canvas.DrawScrollBar(New Vector2(TextboxPosition.X, TextboxPosition.Y + 48), startSkins.Count, 1, SkinIndex, New Size(128, 4), True, TextureManager.GetTexture(TextureManager.GetTexture("GUI\Menus\Menu"), New Microsoft.Xna.Framework.Rectangle(112, 12, 1, 1)), TextureManager.GetTexture(TextureManager.GetTexture("GUI\Menus\Menu"), New Microsoft.Xna.Framework.Rectangle(113, 12, 1, 1)))
         End Select
     End Sub
 
     Private Sub DrawTextBox()
-        Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width / 2) - 74, CInt(Core.windowSize.Height / 2) + 124, 148, 32), New Color(101, 142, 255))
-        Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width / 2) - 70, CInt(Core.windowSize.Height / 2) + 128, 140, 24), Color.White)
+        Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Core.WindowSize.Width / 2) - 74, CInt(Core.WindowSize.Height / 2) + 124, 148, 32), New Microsoft.Xna.Framework.Color(101, 142, 255))
+        Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Core.WindowSize.Width / 2) - 70, CInt(Core.WindowSize.Height / 2) + 128, 140, 24), Microsoft.Xna.Framework.Color.White)
 
         Dim t As String = Me.CurrentText
         If t.Length < 14 Then
             t &= "_"
         End If
-        Core.SpriteBatch.DrawString(FontManager.MiniFont, t, TextboxPosition(), Color.Black)
+        Core.SpriteBatch.DrawString(FontManager.MiniFont, t, TextboxPosition(), Microsoft.Xna.Framework.Color.Black)
 
         Dim l As New Dictionary(Of Buttons, String)
         l.Add(Buttons.A, "Accept")
@@ -260,18 +269,18 @@
     End Sub
 
     Private Function TextboxPosition() As Vector2
-        Return New Vector2(CInt(Core.windowSize.Width / 2) - 70, CInt(Core.windowSize.Height / 2) + 128)
+        Return New Vector2(CInt(Core.WindowSize.Width / 2) - 70, CInt(Core.WindowSize.Height / 2) + 128)
     End Function
 
     Private Sub UpdatePokemon()
         Select Case pokeIndex
             Case 0
-                ballPosition = New Vector2(CInt(Core.windowSize.Width / 2) - 40, CInt(Core.windowSize.Height / 2) - 110)
-                pokePosition = New Vector2(CInt(Core.windowSize.Width / 2) - 200, CInt(Core.windowSize.Height / 2) - 110)
+                ballPosition = New Vector2(CInt(Core.WindowSize.Width / 2) - 40, CInt(Core.WindowSize.Height / 2) - 110)
+                pokePosition = New Vector2(CInt(Core.WindowSize.Width / 2) - 200, CInt(Core.WindowSize.Height / 2) - 110)
                 pokeIndex = 1
                 AnimateBall()
             Case 1
-                If ballPosition.X > CInt(Core.windowSize.Width / 2) - 200 Then
+                If ballPosition.X > CInt(Core.WindowSize.Width / 2) - 200 Then
                     ballPosition.X -= 3
                     ballPosition.Y += ballVelocity
                     ballVelocity += 0.2F
@@ -280,7 +289,7 @@
                 End If
                 AnimateBall()
             Case 2
-                If pokePosition.Y < CInt(Core.windowSize.Height / 2) + 38 Then
+                If pokePosition.Y < CInt(Core.WindowSize.Height / 2) + 38 Then
                     pokePosition.Y += 5
                 Else
                     Dim p As Pokemon = Pokemon.GetPokemonByID(pokeID)
@@ -349,7 +358,7 @@
         SkinIndex = CInt(MathHelper.Clamp(SkinIndex, 0, startSkins.Count - 1))
 
         If sIndex <> SkinIndex Then
-            skinTexture = TextureManager.GetTexture(TextureManager.GetTexture("Textures\NPC\" & startSkins(SkinIndex)), New Rectangle(0, 64, 32, 32))
+            skinTexture = TextureManager.GetTexture(TextureManager.GetTexture("Textures\NPC\" & startSkins(SkinIndex)), New Microsoft.Xna.Framework.Rectangle(0, 64, 32, 32))
         End If
 
         If Controls.Accept() = True Then
@@ -361,7 +370,7 @@
         CanMuteMusic = False
 
         If ControllerHandler.ButtonPressed(Buttons.X) = True Then
-            Core.SetScreen(New InputScreen(Core.CurrentScreen, "Player", InputScreen.InputModes.Name, Me.CurrentText, 14, {TextureManager.GetTexture(TextureManager.GetTexture("Textures\NPC\" & startSkins(SkinIndex)),New Rectangle(0, 64, 32, 32))}.ToList(), AddressOf Me.ConfirmInput))
+            Core.SetScreen(New InputScreen(Core.CurrentScreen, "Player", InputScreen.InputModes.Name, Me.CurrentText, 14, {TextureManager.GetTexture(TextureManager.GetTexture("Textures\NPC\" & startSkins(SkinIndex)), New Microsoft.Xna.Framework.Rectangle(0, 64, 32, 32))}.ToList(), AddressOf Me.ConfirmInput))
         Else
             KeyBindings.GetNameInput(Me.CurrentText, 14)
 
@@ -440,7 +449,7 @@
 
         Core.Player.IsGamejoltSave = False
         Core.Player.LoadGame(folderPath)
-        Core.SetScreen(New TransitionScreen(Me, New OverworldScreen(), Color.Black, False, 5))
+        Core.SetScreen(New TransitionScreen(Me, New OverworldScreen(), Microsoft.Xna.Framework.Color.Black, False, 5))
     End Sub
 
     Private Function GetPlayerData() As String
@@ -449,36 +458,36 @@
             ot = "0" & ot
         End While
 
-        Dim s As String = "Name|" & Name & vbNewLine & _
-            "Position|" & Me.startPosition.X.ToString().Replace(GameController.DecSeparator, ".") & "," & Me.startPosition.Y.ToString().Replace(GameController.DecSeparator, ".") & "," & Me.startPosition.Z.ToString().Replace(GameController.DecSeparator, ".") & vbNewLine & _
-            "MapFile|" & Me.startMap & vbNewLine & _
-            "Rotation|" & Me.startYaw.ToString() & vbNewLine & _
-            "RivalName|???" & vbNewLine & _
-            "Money|3000" & vbNewLine & _
-            "Badges|0" & vbNewLine & _
-            "Gender|Male" & vbNewLine & _
-            "PlayTime|0,0,0" & vbNewLine & _
-            "OT|" & ot & vbNewLine & _
-            "Points|0" & vbNewLine & _
-            "hasPokedex|0" & vbNewLine & _
-            "hasPokegear|0" & vbNewLine & _
-            "freeCamera|1" & vbNewLine & _
-            "thirdPerson|0" & vbNewLine & _
-            "skin|" & startSkins(SkinIndex) & vbNewLine & _
-            "location|" & Me.startLocation & vbNewLine & _
-            "battleAnimations|2" & vbNewLine & _
-            "BoxAmount|5" & vbNewLine & _
-            "LastRestPlace|yourroom.dat" & vbNewLine & _
-            "LastRestPlacePosition|1,0.1,3" & vbNewLine & _
-            "DiagonalMovement|0" & vbNewLine & _
-            "RepelSteps|0" & vbNewLine & _
-            "LastSavePlace|yourroom.dat" & vbNewLine & _
-            "LastSavePlacePosition|1,0.1,3" & vbNewLine & _
-            "Difficulty|" & GameModeManager.GetGameRuleValue("Difficulty", "0") & vbNewLine & _
-            "BattleStyle|0" & vbNewLine & _
-            "saveCreated|" & GameController.GAMEDEVELOPMENTSTAGE & " " & GameController.GAMEVERSION & vbNewLine & _
-            "LastPokemonPosition|999,999,999" & vbNewLine & _
-            "DaycareSteps|0" & vbNewLine & _
+        Dim s As String = "Name|" & Name & vbNewLine &
+            "Position|" & Me.startPosition.X.ToString().Replace(GameController.DecSeparator, ".") & "," & Me.startPosition.Y.ToString().Replace(GameController.DecSeparator, ".") & "," & Me.startPosition.Z.ToString().Replace(GameController.DecSeparator, ".") & vbNewLine &
+            "MapFile|" & Me.startMap & vbNewLine &
+            "Rotation|" & Me.startYaw.ToString() & vbNewLine &
+            "RivalName|???" & vbNewLine &
+            "Money|3000" & vbNewLine &
+            "Badges|0" & vbNewLine &
+            "Gender|Male" & vbNewLine &
+            "PlayTime|0,0,0" & vbNewLine &
+            "OT|" & ot & vbNewLine &
+            "Points|0" & vbNewLine &
+            "hasPokedex|0" & vbNewLine &
+            "hasPokegear|0" & vbNewLine &
+            "freeCamera|1" & vbNewLine &
+            "thirdPerson|0" & vbNewLine &
+            "skin|" & startSkins(SkinIndex) & vbNewLine &
+            "location|" & Me.startLocation & vbNewLine &
+            "battleAnimations|2" & vbNewLine &
+            "BoxAmount|5" & vbNewLine &
+            "LastRestPlace|yourroom.dat" & vbNewLine &
+            "LastRestPlacePosition|1,0.1,3" & vbNewLine &
+            "DiagonalMovement|0" & vbNewLine &
+            "RepelSteps|0" & vbNewLine &
+            "LastSavePlace|yourroom.dat" & vbNewLine &
+            "LastSavePlacePosition|1,0.1,3" & vbNewLine &
+            "Difficulty|" & GameModeManager.GetGameRuleValue("Difficulty", "0") & vbNewLine &
+            "BattleStyle|0" & vbNewLine &
+            "saveCreated|" & GameController.GAMEDEVELOPMENTSTAGE & " " & GameController.GAMEVERSION & vbNewLine &
+            "LastPokemonPosition|999,999,999" & vbNewLine &
+            "DaycareSteps|0" & vbNewLine &
             "GameMode|" & GameModeManager.ActiveGameMode.DirectoryName & vbNewLine &
             "PokeFiles|" & vbNewLine &
             "VisitedMaps|yourroom.dat" & vbNewLine &
@@ -492,8 +501,8 @@
     End Function
 
     Public Shared Function GetOptionsData() As String
-        Dim s As String = "FOV|50" & vbNewLine & _
-            "TextSpeed|2" & vbNewLine & _
+        Dim s As String = "FOV|50" & vbNewLine &
+            "TextSpeed|2" & vbNewLine &
             "MouseSpeed|12"
 
         Return s

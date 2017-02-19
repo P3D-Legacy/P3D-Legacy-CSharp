@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.Repels
 
     <Item(43, "Max Repel")>
@@ -10,7 +12,7 @@ Namespace Items.Repels
         Public Overrides ReadOnly Property RepelSteps As Integer = 250
 
         Public Sub New()
-            _textureRectangle = New Rectangle(456, 24, 24, 24)
+            TextureRectangle = New Rectangle(456, 24, 24, 24)
         End Sub
 
     End Class

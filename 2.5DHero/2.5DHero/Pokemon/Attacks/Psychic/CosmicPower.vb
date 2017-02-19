@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Psychic
 
     Public Class CosmicPower
@@ -55,7 +57,7 @@ Namespace BattleSystem.Moves.Psychic
             Me.AIField2 = AIField.RaiseSpDefense
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             BattleScreen.Battle.RaiseStat(own, own, BattleScreen, "Defense", 1, "", "move:cosmicpower")
             BattleScreen.Battle.RaiseStat(own, own, BattleScreen, "Special Defense", 1, "", "move:cosmicpower")
         End Sub

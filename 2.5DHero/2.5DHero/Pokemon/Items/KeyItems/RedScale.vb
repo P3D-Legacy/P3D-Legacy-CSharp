@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.KeyItems
 
     <Item(66, "Red Scale")>
@@ -8,7 +10,7 @@ Namespace Items.KeyItems
         Public Overrides ReadOnly Property Description As String = "A scale from the red Gyarados. It glows red like a flame."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(432, 48, 24, 24)
+            TextureRectangle = New Rectangle(432, 48, 24, 24)
         End Sub
 
     End Class

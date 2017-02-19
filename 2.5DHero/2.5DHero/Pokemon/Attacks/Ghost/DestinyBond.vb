@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Ghost
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Ghost
 
     Public Class DestinyBond
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If own = True Then
                 If BattleScreen.FieldEffects.OwnDestinyBond = False Then
                     BattleScreen.FieldEffects.OwnDestinyBond = True

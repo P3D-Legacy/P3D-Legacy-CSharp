@@ -1,39 +1,46 @@
-﻿Public Class BackdropRenderer
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
+Public Class BackdropRenderer
+    Implements IBackdropRenderer
 
     Private _backdrops As New List(Of Backdrop)
 
-    Public Sub Initialize()
+    Public Sub Initialize() Implements IBackdropRenderer.Initialize
     End Sub
 
-    Public Sub Clear()
+    Public Sub Clear() Implements IBackdropRenderer.Clear
         Me._backdrops.Clear()
     End Sub
 
-    Public Sub AddBackdrop(ByVal Backdrop As Backdrop)
+    Public Sub AddBackdrop(ByVal Backdrop As IBackdrop) Implements IBackdropRenderer.AddBackdrop
         Me._backdrops.Add(Backdrop)
     End Sub
 
-    Public Sub Update()
+    Public Sub Update() Implements IBackdropRenderer.Update
         For Each b As Backdrop In Me._backdrops
             b.Update()
         Next
     End Sub
 
-    Public Sub Draw()
-        Dim tempRasterizer = GraphicsDevice.RasterizerState
+    Public Sub Draw() Implements IBackdropRenderer.Draw
+        Dim tempRasterizer = Core.GraphicsDevice.RasterizerState
 
-        GraphicsDevice.RasterizerState = RasterizerState.CullNone
-        GraphicsDevice.SamplerStates(0) = New SamplerState() With {.AddressU = TextureAddressMode.Wrap, .AddressV = TextureAddressMode.Wrap}
+        Core.GraphicsDevice.RasterizerState = RasterizerState.CullNone
+        Core.GraphicsDevice.SamplerStates(0) = New SamplerState() With {.AddressU = TextureAddressMode.Wrap, .AddressV = TextureAddressMode.Wrap}
 
         For Each b As Backdrop In Me._backdrops
             b.Draw({0, 1, 3, 2, 3, 0})
         Next
 
-        GraphicsDevice.RasterizerState = tempRasterizer
-        GraphicsDevice.SamplerStates(0) = Core.sampler
+        Core.GraphicsDevice.RasterizerState = tempRasterizer
+        Core.GraphicsDevice.SamplerStates(0) = Core.Sampler
     End Sub
 
     Public Class Backdrop
+        Implements IBackdrop
 
         Structure VertexPositionNormalTangentTexture
 
@@ -89,7 +96,7 @@
         End Sub
 
         Public Sub New(ByVal BackdropType As String, ByVal Position As Vector3, ByVal Rotation As Vector3, ByVal Width As Integer, ByVal Height As Integer, ByVal BackdropTexture As Texture2D)
-            _shader = Content.Load(Of Effect)("Effects\BackdropShader")
+            _shader = Core.Content.Load(Of Effect)("Effects\BackdropShader")
 
             _vertices.Add(New VertexPositionNormalTangentTexture(New Vector3(0, 0, 0), New Vector3(-1, 0, 0), New Vector3(0, 1, 0), New Vector2(0, 0)))
             _vertices.Add(New VertexPositionNormalTangentTexture(New Vector3(Width, 0, 0), New Vector3(-1, 0, 0), New Vector3(0, 1, 0), New Vector2(0, 1)))
@@ -116,7 +123,7 @@
             Me.Update()
         End Sub
 
-        Public Sub Update()
+        Public Sub Update() Implements IBackdrop.Update
             _worldMatrix = Matrix.CreateFromYawPitchRoll(Me._rotation.Y, Me._rotation.X, Me._rotation.Z) * Matrix.CreateTranslation(Me._position)
 
             Select Case Me._backdropType
@@ -137,13 +144,13 @@
                         Dim x As Integer = 0
 
                         Select Case World.CurrentSeason
-                            Case World.Seasons.Winter
+                            Case SeasonEnum.Winter
                                 x = 0
-                            Case World.Seasons.Spring
+                            Case SeasonEnum.Spring
                                 x = 16
-                            Case World.Seasons.Summer
+                            Case SeasonEnum.Summer
                                 x = 32
-                            Case World.Seasons.Fall
+                            Case SeasonEnum.Fall
                                 x = 48
                         End Select
 
@@ -153,7 +160,7 @@
             End Select
         End Sub
 
-        Public Sub Draw(ByVal Indicies As Short())
+        Public Sub Draw(ByVal Indicies As Short()) Implements IBackdrop.Draw
             Dim vBuffer As New VertexBuffer(Core.GraphicsDevice, VertexPositionNormalTangentTexture.VertexDeclaration, _vertices.Count, BufferUsage.None)
             Dim iBuffer As New IndexBuffer(Core.GraphicsDevice, GetType(Short), Indicies.Count, BufferUsage.None)
 
@@ -170,10 +177,10 @@
 
             For Each pass As EffectPass In _shader.CurrentTechnique.Passes
                 pass.Apply()
-                GraphicsDevice.SetVertexBuffer(vBuffer)
-                GraphicsDevice.Indices = iBuffer
-                'GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Count, 0, Indicies.Count)
-                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Count)
+                Core.GraphicsDevice.SetVertexBuffer(vBuffer)
+                Core.GraphicsDevice.Indices = iBuffer
+                'Core.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Count, 0, Indicies.Count)
+                Core.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Count)
             Next
 
             vBuffer.Dispose()
@@ -186,9 +193,9 @@
 
             If Not Screen.Level.World Is Nothing Then
                 Select Case Screen.Level.World.EnvironmentType
-                    Case net.Pokemon3D.Game.World.EnvironmentTypes.Outside
+                    Case EnvironmentTypeEnum.Outside
                         dayColor = SkyDome.GetDaytimeColor(True).ToVector3()
-                    Case net.Pokemon3D.Game.World.EnvironmentTypes.Dark
+                    Case EnvironmentTypeEnum.Dark
                         dayColor = New Vector3(0.5F, 0.5F, 0.6F)
                 End Select
             End If

@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Ice
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Ice
 
     Public Class Hail
 
@@ -55,7 +58,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim turns As Integer = BattleCalculation.FieldEffectTurns(BattleScreen, own, Me.Name.ToLower())
             BattleScreen.Battle.ChangeWeather(own, own, BattleWeather.WeatherTypes.Hailstorm, turns, BattleScreen, "It started to hail!", "move:hail")
         End Sub

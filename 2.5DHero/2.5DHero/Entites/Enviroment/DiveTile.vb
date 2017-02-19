@@ -1,4 +1,10 @@
-﻿Public Class DiveTile
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
+Public Class DiveTile
 
     Inherits Entity
 

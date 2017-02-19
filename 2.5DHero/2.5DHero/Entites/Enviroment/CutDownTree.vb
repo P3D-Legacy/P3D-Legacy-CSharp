@@ -1,4 +1,9 @@
-﻿Public Class CutDownTree
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
+Public Class CutDownTree
 
     Inherits Entity
 

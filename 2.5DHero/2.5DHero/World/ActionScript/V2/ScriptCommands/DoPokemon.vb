@@ -1,4 +1,11 @@
-﻿Namespace ScriptVersion2
+﻿Imports net.Pokemon3D.Game.BattleSystem
+Imports OpenTK.Graphics.OpenGL
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+
+Namespace ScriptVersion2
 
     Partial Class ScriptCommander
 
@@ -201,7 +208,7 @@
                     End If
                 Case "setnature"
                     Dim Index As Integer = int(argument.GetSplit(0, ","))
-                    Dim Nature As Pokemon.Natures = Pokemon.ConvertIDToNature(int(argument.GetSplit(1, ",")))
+                    Dim Nature As BasePokemon.Natures = Pokemon.ConvertIDToNature(int(argument.GetSplit(1, ",")))
 
                     If Core.Player.Pokemons.Count - 1 >= Index Then
                         Core.Player.Pokemons(Index).Nature = Nature
@@ -210,7 +217,7 @@
                     Dim splits() As String = argument.Split(CChar("|"))
                     Script.SaveNPCTrade = splits
 
-                    Core.SetScreen(New ChoosePokemonScreen(Core.CurrentScreen, Item.GetItemByID(5), AddressOf Script.DoNPCTrade, "Choose trade Pokémon", True))
+                    Core.SetScreen(New ChoosePokemonScreen(Core.CurrentScreen, Item.GetItemById(5), AddressOf Script.DoNPCTrade, "Choose trade Pokémon", True))
                     CType(Core.CurrentScreen, ChoosePokemonScreen).ExitedSub = AddressOf Script.ExitedNPCTrade
 
                     CanContinue = False
@@ -376,7 +383,7 @@
                     Dim Gender As Integer = int(argument.GetSplit(1, ","))
 
                     If Core.Player.Pokemons.Count - 1 >= Index And Gender >= 0 And Gender <= 2 Then
-                        Core.Player.Pokemons(Index).Gender = CType(Gender, Pokemon.Genders)
+                        Core.Player.Pokemons(Index).Gender = CType(Gender, BasePokemon.Genders)
                     End If
                 Case "setability"
                     Dim Index As Integer = int(argument.GetSplit(0, ","))
@@ -452,7 +459,7 @@
                     Dim newData As String
 
                     If Core.Player.IsGameJoltSave Then
-                        newData = count & ",(" & Core.Player.Name & "|" & time & "|" & GameJoltSave.Points & "|" & Core.Player.OT & "|" & Core.Player.Skin & ")"
+                        newData = count & ",(" & Core.Player.Name & "|" & time & "|" & Core.GameJoltSave.Points & "|" & Core.Player.OT & "|" & Core.Player.Skin & ")"
                     Else
                         newData = count & ",(" & Core.Player.Name & "|" & time & "|" & Core.Player.Points & "|" & Core.Player.OT & "|" & Core.Player.Skin & ")"
                     End If

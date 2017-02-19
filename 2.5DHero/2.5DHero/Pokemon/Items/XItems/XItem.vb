@@ -1,4 +1,6 @@
-﻿Namespace Items.XItems
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace Items.XItems
     Public MustInherit Class XItem
 
         Inherits Item

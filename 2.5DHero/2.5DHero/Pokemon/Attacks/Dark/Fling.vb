@@ -1,4 +1,8 @@
-﻿Namespace BattleSystem.Moves.Dark
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Dark
 
     Public Class Fling
 
@@ -55,10 +59,11 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim p As Pokemon = BattleScreen.OwnPokemon
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OwnPokemon
             If Own = False Then
-                p = BattleScreen.OppPokemon
+                p = screen.OppPokemon
             End If
 
             If p.Item Is Nothing Then
@@ -68,10 +73,11 @@
             End If
         End Function
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim p As Pokemon = BattleScreen.OwnPokemon
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OwnPokemon
             If own = False Then
-                p = BattleScreen.OppPokemon
+                p = screen.OppPokemon
             End If
 
             If p.Item Is Nothing Then
@@ -81,7 +87,7 @@
             End If
         End Function
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             If own = False Then
                 p = BattleScreen.OppPokemon
@@ -110,10 +116,10 @@
                             BattleScreen.Battle.InflictParalysis(Not own, own, BattleScreen, "", "move:fling")
                         End If
                     Case "mental herb" 'cures infatuation
-                        If p.HasVolatileStatus(Pokemon.VolatileStatus.Infatuation) = True Then
+                        If p.HasVolatileStatus(BasePokemon.VolatileStatus.Infatuation) = True Then
                             Me.EffectChances.Add(10)
                             If Core.Random.Next(0, 100) < Me.GetEffectChance(0, own, BattleScreen) Then
-                                p.RemoveVolatileStatus(Pokemon.VolatileStatus.Infatuation)
+                                p.RemoveVolatileStatus(BasePokemon.VolatileStatus.Infatuation)
                                 BattleScreen.BattleQuery.Add(New TextQueryObject("Cured the infatuation of " & p.GetDisplayName() & "."))
                             End If
                         End If

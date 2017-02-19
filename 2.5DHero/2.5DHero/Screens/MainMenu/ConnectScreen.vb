@@ -1,19 +1,16 @@
-﻿Public Class ConnectScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
 
-    Inherits Screen
-
-    Public Enum Modes
-        Connect
-        Disconnect
-    End Enum
+Public Class ConnectScreen
+    Inherits BaseConnectScreen
 
     Public MyMode As Modes = Modes.Connect
 
     Dim message As String = ""
     Dim header As String = ""
     Dim quitToMenu As Boolean = True
-
-    Public Shared Connected As Boolean = False
 
     Public Sub New(ByVal MyMode As Modes, ByVal header As String, ByVal message As String, ByVal currentScreen As Screen)
         Me.PreScreen = Core.CurrentScreen
@@ -52,8 +49,8 @@
         End If
 
         Dim pattern As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(160 + Tx * 16, Ty * 16, 16, 16), "")
-        For Dx = 0 To Core.windowSize.Width Step 128
-            For Dy = 0 To Core.windowSize.Height Step 128
+        For Dx = 0 To Core.WindowSize.Width Step 128
+            For Dy = 0 To Core.WindowSize.Height Step 128
                 Dim c As Color = Color.White
                 If Dy = 128 Then
                     c = Color.Gray
@@ -65,8 +62,8 @@
 
         Dim t As String = Me.message.CropStringToWidth(FontManager.MainFont, 500)
 
-        Core.SpriteBatch.DrawString(FontManager.MainFont, Me.header, New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString(Me.header).X), 168), Color.White, 0.0F, New Vector2(0), 2.0F, SpriteEffects.None, 0.0F)
-        Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.windowSize.Width / 2 - (FontManager.MainFont.MeasureString(t).X * 1.4F) / 2), 320), Color.White, 0.0F, New Vector2(0), 1.4F, SpriteEffects.None, 0.0F)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, Me.header, New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString(Me.header).X), 168), Color.White, 0.0F, New Vector2(0), 2.0F, SpriteEffects.None, 0.0F)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.WindowSize.Width / 2 - (FontManager.MainFont.MeasureString(t).X * 1.4F) / 2), 320), Color.White, 0.0F, New Vector2(0), 1.4F, SpriteEffects.None, 0.0F)
     End Sub
 
     Public Overrides Sub Update()
@@ -96,21 +93,6 @@
             Dim t As New Threading.Thread(AddressOf Core.ServersManager.Connect)
             t.IsBackground = True
             t.Start(JoinServerScreen.SelectedServer)
-        End If
-    End Sub
-
-    Shared TempConnectScreen As ConnectScreen
-    Shared NeedToSwitch As Boolean = False
-
-    Public Shared Sub Setup(ByVal ConnectScreen As ConnectScreen)
-        TempConnectScreen = ConnectScreen
-        NeedToSwitch = True
-    End Sub
-
-    Public Shared Sub UpdateConnectSet()
-        If NeedToSwitch = True Then
-            NeedToSwitch = False
-            Core.SetScreen(TempConnectScreen)
         End If
     End Sub
 

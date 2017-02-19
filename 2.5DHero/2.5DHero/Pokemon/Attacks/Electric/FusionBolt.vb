@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Electric
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Electric
 
     Public Class FusionBolt
 
@@ -52,10 +55,11 @@
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim lastMove As Attack = BattleScreen.FieldEffects.OwnLastMove
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            Dim lastMove As Attack = screen.FieldEffects.OwnLastMove
             If own = False Then
-                lastMove = BattleScreen.FieldEffects.OppLastMove
+                lastMove = screen.FieldEffects.OppLastMove
             End If
 
             If Not lastMove Is Nothing Then

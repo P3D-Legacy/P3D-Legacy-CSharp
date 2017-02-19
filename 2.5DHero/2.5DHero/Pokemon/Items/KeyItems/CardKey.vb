@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.KeyItems
 
     <Item(127, "Card Key")>
@@ -8,7 +10,7 @@ Namespace Items.KeyItems
         Public Overrides ReadOnly Property Description As String = "A card key that opens a shutter in the Radio Tower."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(144, 120, 24, 24)
+            TextureRectangle = New Rectangle(144, 120, 24, 24)
         End Sub
 
     End Class

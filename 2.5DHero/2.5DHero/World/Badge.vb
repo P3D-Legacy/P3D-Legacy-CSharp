@@ -1,3 +1,7 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Security
+
 ''' <summary>
 ''' This class handles all actions regarding badge loading and displaying.
 ''' </summary>
@@ -92,7 +96,7 @@ Public Class Badge
         Badges.Clear()
 
         Dim file As String = GameModeManager.GetContentFilePath("Data\badges.dat")
-        Security.FileValidation.CheckFileValid(file, False, "Badge.vb")
+        FileValidation.CheckFileValid(file, False, "Badge.vb")
         Dim data() As String = System.IO.File.ReadAllLines(file)
         For Each line As String In data
             If line.Contains("|") = True Then

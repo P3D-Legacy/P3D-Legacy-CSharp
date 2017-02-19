@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Ground
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Ground
 
     Public Class Dig
 
@@ -56,10 +59,11 @@
             Me.AIField2 = AIField.MultiTurn
         End Sub
 
-        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim dig As Integer = BattleScreen.FieldEffects.OwnDigCounter
+        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim dig As Integer = screen.FieldEffects.OwnDigCounter
             If own = False Then
-                dig = BattleScreen.FieldEffects.OppDigCounter
+                dig = screen.FieldEffects.OppDigCounter
             End If
 
             If dig = 0 Then
@@ -69,10 +73,11 @@
             End If
         End Function
 
-        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As BattleScreen)
-            Dim dig As Integer = BattleScreen.FieldEffects.OwnDigCounter
+        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As Screen)
+            Dim screen As BattleScreen = BattleScreen
+            Dim dig As Integer = screen.FieldEffects.OwnDigCounter
             If Own = False Then
-                dig = BattleScreen.FieldEffects.OppDigCounter
+                dig = screen.FieldEffects.OppDigCounter
             End If
 
             If dig = 0 Then
@@ -82,22 +87,23 @@
             End If
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim digCounter As Integer = BattleScreen.FieldEffects.OwnDigCounter
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim digCounter As Integer = screen.FieldEffects.OwnDigCounter
 
             If Own = False Then
-                digCounter = BattleScreen.FieldEffects.OppDigCounter
+                digCounter = screen.FieldEffects.OppDigCounter
             End If
 
-            Dim p As Pokemon = BattleScreen.OwnPokemon
+            Dim p As Pokemon = screen.OwnPokemon
             If Own = False Then
-                p = BattleScreen.OppPokemon
+                p = screen.OppPokemon
             End If
 
             Dim hasToCharge As Boolean = True
             If Not p.Item Is Nothing Then
-                If p.Item.Name.ToLower() = "power herb" And BattleScreen.FieldEffects.CanUseItem(Own) = True And BattleScreen.FieldEffects.CanUseOwnItem(Own, BattleScreen) = True Then
-                    If BattleScreen.Battle.RemoveHeldItem(Own, Own, BattleScreen, "Power Herb pushed the use of Dig!", "move:dig") = True Then
+                If p.Item.Name.ToLower() = "power herb" And screen.FieldEffects.CanUseItem(Own) = True And screen.FieldEffects.CanUseOwnItem(Own, screen) = True Then
+                    If screen.Battle.RemoveHeldItem(Own, Own, screen, "Power Herb pushed the use of Dig!", "move:dig") = True Then
                         hasToCharge = False
                     End If
                 End If
@@ -105,30 +111,31 @@
 
             If digCounter = 0 And hasToCharge = True Then
                 If Own = True Then
-                    BattleScreen.FieldEffects.OwnDigCounter = 1
+                    screen.FieldEffects.OwnDigCounter = 1
                 Else
-                    BattleScreen.FieldEffects.OppDigCounter = 1
+                    screen.FieldEffects.OppDigCounter = 1
                 End If
 
-                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " burrowed its way underground!"))
+                screen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " burrowed its way underground!"))
 
                 Return True
             Else
                 If Own = True Then
-                    BattleScreen.FieldEffects.OwnDigCounter = 0
+                    screen.FieldEffects.OwnDigCounter = 0
                 Else
-                    BattleScreen.FieldEffects.OppDigCounter = 0
+                    screen.FieldEffects.OppDigCounter = 0
                 End If
 
                 Return False
             End If
         End Function
 
-        Public Overrides Sub MoveSelected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveSelected(own As Boolean, BattleScreen As Screen)
+            Dim screen As BattleScreen = BattleScreen
             If own = True Then
-                BattleScreen.FieldEffects.OwnDigCounter = 0
+                screen.FieldEffects.OwnDigCounter = 0
             Else
-                BattleScreen.FieldEffects.OppDigCounter = 0
+                screen.FieldEffects.OppDigCounter = 0
             End If
         End Sub
 

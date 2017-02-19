@@ -1,3 +1,7 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
 Namespace BattleSystem.Moves.Electric
 
     Public Class VoltTackle
@@ -58,7 +62,7 @@ Namespace BattleSystem.Moves.Electric
             Me.EffectChances.Add(10)
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim chance As Integer = GetEffectChance(0, own, BattleScreen)
 
             If Core.Random.Next(0, 100) < chance Then
@@ -66,17 +70,18 @@ Namespace BattleSystem.Moves.Electric
             End If
         End Sub
         
-         Public Overrides Sub MoveRecoil(own As Boolean, BattleScreen As BattleScreen)
-            Dim lastDamage As Integer = BattleScreen.FieldEffects.OwnLastDamage
+         Public Overrides Sub MoveRecoil(own As Boolean, BattleScreen As Screen)
+            Dim screen As BattleScreen = BattleScreen
+            Dim lastDamage As Integer = screen.FieldEffects.OwnLastDamage
             If own = False Then
-                lastDamage = BattleScreen.FieldEffects.OppLastDamage
+                lastDamage = screen.FieldEffects.OppLastDamage
             End If
             Dim recoilDamage As Integer = CInt(Math.Floor(lastDamage / 2))
             If recoilDamage <= 0 Then
                 recoilDamage = 1
             End If
 
-            BattleScreen.Battle.InflictRecoil(own, own, BattleScreen, Me, recoilDamage, "", "move:volttackle")
+            screen.Battle.InflictRecoil(own, own, BattleScreen, Me, recoilDamage, "", "move:volttackle")
         End Sub
 
     End Class

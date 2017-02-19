@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.XItems
 
     <Item(52, "X Speed")>
@@ -9,7 +14,7 @@ Namespace Items.XItems
         Public Overrides ReadOnly Property Description As String = "An item that boosts the Speed stat of a Pokémon during a battle. It wears off once the Pokémon is withdrawn."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(120, 48, 24, 24)
+            TextureRectangle = New Rectangle(120, 48, 24, 24)
         End Sub
 
         Public Overrides Function UseOnPokemon(PokeIndex As Integer) As Boolean

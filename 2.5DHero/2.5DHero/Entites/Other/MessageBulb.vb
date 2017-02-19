@@ -1,31 +1,17 @@
-﻿Public Class MessageBulb
+﻿Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Models
+Imports P3D.Legacy.Core.Screens
 
-    Inherits Entity
+Public Class MessageBulb
+    Inherits BaseMessageBulb
 
-    Public Enum NotifcationTypes
-        Waiting = 0
-        Exclamation = 1
-        Shouting = 2
-        Question = 3
-        Note = 4
-        Heart = 5
-        Unhappy = 6
-        Happy = 7
-        Friendly = 8
-        Poisoned = 9
-        Battle = 10
-        Wink = 11
-        AFK = 12
-        Angry = 13
-        CatFace = 14
-        Unsure = 15
-    End Enum
-
-    Public NotificationType As NotifcationTypes = NotifcationTypes.Exclamation
+    Public NotificationType As BaseMessageBulb.NotifcationTypes = BaseMessageBulb.NotifcationTypes.Exclamation
     Dim setTexture As Boolean = False
     Dim delay As Single = 0.0F
 
-    Public Sub New(ByVal Position As Vector3, ByVal NotificationType As NotifcationTypes)
+    Public Sub New(ByVal Position As Vector3, ByVal NotificationType As BaseMessageBulb.NotifcationTypes)
         MyBase.New(Position.X, Position.Y, Position.Z, "MessageBulb", {}, {0, 0}, False, 0, New Vector3(0.8F), BaseModel.BillModel, 0, "", New Vector3(1.0F))
 
         Me.NotificationType = NotificationType
@@ -52,41 +38,41 @@
 
             Dim r As New Rectangle(0, 0, 16, 16)
             Select Case Me.NotificationType
-                Case NotifcationTypes.Waiting
+                Case BaseMessageBulb.NotifcationTypes.Waiting
                     r = New Rectangle(0, 0, 16, 16)
-                Case NotifcationTypes.Exclamation
+                Case BaseMessageBulb.NotifcationTypes.Exclamation
                     r = New Rectangle(16, 0, 16, 16)
-                Case NotifcationTypes.Shouting
+                Case BaseMessageBulb.NotifcationTypes.Shouting
                     r = New Rectangle(32, 0, 16, 16)
-                Case NotifcationTypes.Question
+                Case BaseMessageBulb.NotifcationTypes.Question
                     r = New Rectangle(48, 0, 16, 16)
-                Case NotifcationTypes.Note
+                Case BaseMessageBulb.NotifcationTypes.Note
                     r = New Rectangle(0, 16, 16, 16)
-                Case NotifcationTypes.Heart
+                Case BaseMessageBulb.NotifcationTypes.Heart
                     r = New Rectangle(16, 16, 16, 16)
-                Case NotifcationTypes.Unhappy
+                Case BaseMessageBulb.NotifcationTypes.Unhappy
                     r = New Rectangle(32, 16, 16, 16)
-                Case NotifcationTypes.Happy
+                Case BaseMessageBulb.NotifcationTypes.Happy
                     r = New Rectangle(0, 32, 16, 16)
-                Case NotifcationTypes.Friendly
+                Case BaseMessageBulb.NotifcationTypes.Friendly
                     r = New Rectangle(16, 32, 16, 16)
-                Case NotifcationTypes.Poisoned
+                Case BaseMessageBulb.NotifcationTypes.Poisoned
                     r = New Rectangle(32, 32, 16, 16)
-                Case NotifcationTypes.Battle
+                Case BaseMessageBulb.NotifcationTypes.Battle
                     r = New Rectangle(48, 16, 16, 16)
-                Case NotifcationTypes.Wink
+                Case BaseMessageBulb.NotifcationTypes.Wink
                     r = New Rectangle(48, 32, 16, 16)
-                Case NotifcationTypes.AFK
+                Case BaseMessageBulb.NotifcationTypes.AFK
                     r = New Rectangle(0, 48, 16, 16)
-                Case NotifcationTypes.Angry
+                Case BaseMessageBulb.NotifcationTypes.Angry
                     r = New Rectangle(16, 48, 16, 16)
-                Case NotifcationTypes.CatFace
+                Case BaseMessageBulb.NotifcationTypes.CatFace
                     r = New Rectangle(32, 48, 16, 16)
-                Case NotifcationTypes.Unsure
+                Case BaseMessageBulb.NotifcationTypes.Unsure
                     r = New Rectangle(48, 48, 16, 16)
             End Select
 
-            Me.Textures = {net.Pokemon3D.Game.TextureManager.GetTexture("emoticons", r)}
+            Me.Textures = {TextureManager.GetTexture("emoticons", r)}
         End If
     End Sub
 

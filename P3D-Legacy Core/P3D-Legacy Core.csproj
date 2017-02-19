@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DE8CA995-ECC0-45B4-AD84-75EF6FC05B8B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>P3D.Legacy.Core</RootNamespace>
+    <AssemblyName>P3D-Legacy Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NVorbis, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\NVorbis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\OpenTK.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLExt.FileStorage, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\P3D-Legacy\packages\PCLExt.FileStorage.1.0.5\lib\net45\PCLExt.FileStorage.dll</HintPath>
+    </Reference>
+    <Reference Include="PCLExt.FileStorage.Abstractions, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\P3D-Legacy\packages\PCLExt.FileStorage.1.0.5\lib\net45\PCLExt.FileStorage.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="YamlDotNet, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\P3D-Legacy\packages\YamlDotNet.4.1.0\lib\net35\YamlDotNet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Battle\BaseTrainer.cs" />
+    <Compile Include="Battle\BattleAnimations\BAOpacity.cs" />
+    <Compile Include="Battle\BattleAnimations\BAMove.cs" />
+    <Compile Include="Battle\BattleStats.cs" />
+    <Compile Include="Battle\BattleSystemV2\BattleCameraV2.cs" />
+    <Compile Include="Battle\BattleSystemV2\BattleAnimationScreenV2.cs" />
+    <Compile Include="Battle\BattleAnimations\BattleAnimation3D.cs" />
+    <Compile Include="Battle\BattleAnimations\BASize.cs" />
+    <Compile Include="Battle\BattleAnimations\BARotation.cs" />
+    <Compile Include="Battle\BattleSystemV2\PokemonTarget.cs" />
+    <Compile Include="Battle\BattleSystemV2\PokemonProfile.cs" />
+    <Compile Include="Entities\Other\BaseMessageBulb.cs" />
+    <Compile Include="Entities\Other\BaseNetworkPokemon.cs" />
+    <Compile Include="Entities\Other\BaseNetworkPlayer.cs" />
+    <Compile Include="Entities\Other\BaseNPC.cs" />
+    <Compile Include="Entities\Other\BaseOverworldPokemon.cs" />
+    <Compile Include="Entities\Other\BaseOwnPlayer.cs" />
+    <Compile Include="Entities\Other\BaseParticle.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="GameJolt\API.cs" />
+    <Compile Include="GameJolt\APICall.cs" />
+    <Compile Include="GameJolt\BaseLogInScreen.cs" />
+    <Compile Include="GameJolt\BaseRegisterBattleScreen.cs" />
+    <Compile Include="GameJolt\GameJoltStatistics.cs" />
+    <Compile Include="GameJolt\Profiles\StaffProfile.cs" />
+    <Compile Include="GameJolt\Profiles\Emblem.cs" />
+    <Compile Include="GameJolt\Profiles\GamejoltSave.cs" />
+    <Compile Include="Network\DownloadTexture2D.cs" />
+    <Compile Include="Screens\BaseGTSSetupScreen.cs" />
+    <Compile Include="Screens\BaseNewGameScreen.cs" />
+    <Compile Include="Network\StreamWriterLock.cs" />
+    <Compile Include="Pokemon\PokemonInteractions.cs" />
+    <Compile Include="TimeHelpers.cs" />
+    <Compile Include="Objects\Animation.cs" />
+    <Compile Include="Objects\LoadingDots.cs" />
+    <Compile Include="PlayerStatistics.cs" />
+    <Compile Include="CommandLineArgHandler.cs" />
+    <Compile Include="Data\Vector3C.cs" />
+    <Compile Include="Debug\BoundingBoxRenderer.cs" />
+    <Compile Include="Debug\ForcedCrash.cs" />
+    <Compile Include="Debug\DotNetVersion.cs" />
+    <Compile Include="Dialogues\TextBox.cs" />
+    <Compile Include="Dialogues\_ChooseBox.cs" />
+    <Compile Include="Dialogues\PokemonImageView.cs" />
+    <Compile Include="Camera.cs" />
+    <Compile Include="Interfaces\ItemContainer.cs" />
+    <Compile Include="Interfaces\IPlayerInventory.cs" />
+    <Compile Include="Interfaces\PlayerTemp.cs" />
+    <Compile Include="Pokemon\BasePokedex.cs" />
+    <Compile Include="Pokemon\BaseAbility.cs" />
+    <Compile Include="Pokemon\BaseAttack.cs" />
+    <Compile Include="Pokemon\BasePokemon.cs" />
+    <Compile Include="Pokemon\Items\Berry.cs" />
+    <Compile Include="Pokemon\Items\BallItem.cs" />
+    <Compile Include="Pokemon\Items\PlateItem.cs" />
+    <Compile Include="Pokemon\Items\MegaStone.cs" />
+    <Compile Include="Pokemon\Items\MailItem.cs" />
+    <Compile Include="Pokemon\Items\MedicineItem.cs" />
+    <Compile Include="Pokemon\GameModeAttackLoader.cs" />
+    <Compile Include="Pokemon\Data\EvolutionCondition.cs" />
+    <Compile Include="Pokemon\RoamingPokemon.cs" />
+    <Compile Include="Pokemon\FrontierSpawner.cs" />
+    <Compile Include="Security\Encryption.cs" />
+    <Compile Include="Security\FileValidation.cs" />
+    <Compile Include="Security\HackerAlerts.cs" />
+    <Compile Include="Security\HashSecureBase.cs" />
+    <Compile Include="Security\StringObfuscation.cs" />
+    <Compile Include="World\Enums\EncounterMethods.cs" />
+    <Compile Include="Pokemon\Data\PokemonEcounterDataStruct.cs" />
+    <Compile Include="Pokemon\Data\WarpDataStruct.cs" />
+    <Compile Include="Pokemon\Data\Nature.cs" />
+    <Compile Include="Pokemon\Data\Element.cs" />
+    <Compile Include="Pokemon\Items\Item.cs" />
+    <Compile Include="World\Interfaces\IPokemonEncounter.cs" />
+    <Compile Include="Pokemon\Data\PokedexEntry.cs" />
+    <Compile Include="Pokemon\Resource\BasePokemonForms.cs" />
+    <Compile Include="Pokemon\Resource\EggCreator.cs" />
+    <Compile Include="Screens\BaseBattleScreen.cs" />
+    <Compile Include="Screens\BaseConnectScreen.cs" />
+    <Compile Include="Screens\BaseJoinServerScreen.cs" />
+    <Compile Include="Screens\BaseOverworldCamera.cs" />
+    <Compile Include="Screens\BaseOverworldScreen.cs" />
+    <Compile Include="Server\Enums\PackageTypes.cs" />
+    <Compile Include="Server\Interfaces\IPackage.cs" />
+    <Compile Include="Server\Enums\ProtocolTypes.cs" />
+    <Compile Include="Server\Interfaces\IServerConnection.cs" />
+    <Compile Include="Server\Interfaces\IPlayerManager.cs" />
+    <Compile Include="Server\Interfaces\IPlayerCollection.cs" />
+    <Compile Include="Server\Interfaces\IServersManager.cs" />
+    <Compile Include="MainGameFunctions.cs" />
+    <Compile Include="CoreSpriteBatch.cs" />
+    <Compile Include="Debug\DebugDisplay.cs" />
+    <Compile Include="Input\Controls.cs" />
+    <Compile Include="Input\MouseHandler.cs" />
+    <Compile Include="Input\ControllerHandler.cs" />
+    <Compile Include="Input\KeyBoardHandler.cs" />
+    <Compile Include="Debug\FPSMonitor.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\Texture2DExtensions.cs" />
+    <Compile Include="GameJolt\SessionManager.cs" />
+    <Compile Include="Input\KeyBindings.cs" />
+    <Compile Include="Interfaces\IPlayer.cs" />
+    <Compile Include="Objects\BasicObject.cs" />
+    <Compile Include="Objects\GameMessage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Logger.cs" />
+    <Compile Include="Data\FontContainer.cs" />
+    <Compile Include="GameController.cs" />
+    <Compile Include="Data\GameMode.cs" />
+    <Compile Include="Resources\GameModeManager.cs" />
+    <Compile Include="Resources\ModelManager.cs" />
+    <Compile Include="Resources\ContentPackManager.cs" />
+    <Compile Include="Core.cs" />
+    <Compile Include="Resources\FontManager.cs" />
+    <Compile Include="Localization.cs" />
+    <Compile Include="Resources\Models\BaseModel.cs" />
+    <Compile Include="Resources\Sound\MusicManager.cs" />
+    <Compile Include="Resources\Sound\SoundManager.cs" />
+    <Compile Include="Data\TextureSource.cs" />
+    <Compile Include="Screens\_SplashScreen.cs" />
+    <Compile Include="Screens\GUI\Canvas.cs" />
+    <Compile Include="Dialogues\IChooseBox.cs" />
+    <Compile Include="Server\Server.cs" />
+    <Compile Include="Settings\Converters\Vector2Converter.cs" />
+    <Compile Include="Settings\Converters\CultureInfoConverter.cs" />
+    <Compile Include="Settings\Keyboard.cs" />
+    <Compile Include="Settings\Options.cs" />
+    <Compile Include="Storage\ILocalizationFile.cs" />
+    <Compile Include="Storage\ILocalizationFolder.cs" />
+    <Compile Include="Storage\StorageInfo.cs" />
+    <Compile Include="Storage\LocalizationFile.cs" />
+    <Compile Include="Storage\LocalizationFolder.cs" />
+    <Compile Include="World\BaseLevelLoader.cs" />
+    <Compile Include="World\BaseWorld.cs" />
+    <Compile Include="World\Enums\DayTime.cs" />
+    <Compile Include="World\_LevelLoader.cs" />
+    <Compile Include="World\_PokemonEncounter.cs" />
+    <Compile Include="World\RouteSign.cs" />
+    <Compile Include="World\Interfaces\IBackdrop.cs" />
+    <Compile Include="World\Interfaces\IBackdropRenderer.cs" />
+    <Compile Include="World\Enums\EnvironmentTypeEnum.cs" />
+    <Compile Include="World\Interfaces\IRadioStation.cs" />
+    <Compile Include="World\Interfaces\IShader.cs" />
+    <Compile Include="World\Interfaces\ITerrain.cs" />
+    <Compile Include="World\Interfaces\ISkyDome.cs" />
+    <Compile Include="Screens\Screen.cs" />
+    <Compile Include="Resources\TextureManager.cs" />
+    <Compile Include="Data\Token.cs" />
+    <Compile Include="World\Interfaces\ILevel.cs" />
+    <Compile Include="World\Enums\SeasonEnum.cs" />
+    <Compile Include="World\Enums\TerrainTypeEnums.cs" />
+    <Compile Include="World\Enums\WeatherEnum.cs" />
+    <Compile Include="World\_World.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\2D\BillModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\2D\CrossModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\2D\DoubleFloorModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\2D\FloorModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\Blocks\BlockModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\Blocks\CornerModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\Blocks\CubeModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\Blocks\InsideCornerModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\Blocks\PyramidModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\Blocks\SlideModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\Blocks\StairsModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\Cliffs\CliffCornerModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\Cliffs\CliffInsideModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\Cliffs\CliffModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\Other\SignModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\Steps\InsideStepModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Models\Steps\StepModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Player\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

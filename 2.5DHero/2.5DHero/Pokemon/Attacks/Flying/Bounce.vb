@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Flying
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Flying
 
     Public Class Bounce
 
@@ -55,10 +58,11 @@
             Me.AIField2 = AIField.MultiTurn
         End Sub
 
-        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim bounce As Integer = BattleScreen.FieldEffects.OwnBounceCounter
+        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim bounce As Integer = screen.FieldEffects.OwnBounceCounter
             If own = False Then
-                bounce = BattleScreen.FieldEffects.OppBounceCounter
+                bounce = screen.FieldEffects.OppBounceCounter
             End If
 
             If bounce = 0 Then
@@ -68,10 +72,11 @@
             End If
         End Function
 
-        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As BattleScreen)
-            Dim bounce As Integer = BattleScreen.FieldEffects.OwnBounceCounter
+        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As Screen)
+            Dim screen As BattleScreen = BattleScreen
+            Dim bounce As Integer = screen.FieldEffects.OwnBounceCounter
             If Own = False Then
-                bounce = BattleScreen.FieldEffects.OppBounceCounter
+                bounce = screen.FieldEffects.OppBounceCounter
             End If
 
             If bounce = 0 Then
@@ -81,49 +86,51 @@
             End If
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim p As Pokemon = BattleScreen.OwnPokemon
-            Dim op As Pokemon = BattleScreen.OppPokemon
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OwnPokemon
+            Dim op As Pokemon = screen.OppPokemon
             If Own = False Then
-                p = BattleScreen.OppPokemon
-                op = BattleScreen.OwnPokemon
+                p = screen.OppPokemon
+                op = screen.OwnPokemon
             End If
 
-            Dim bounce As Integer = BattleScreen.FieldEffects.OwnBounceCounter
+            Dim bounce As Integer = screen.FieldEffects.OwnBounceCounter
             If Own = False Then
-                bounce = BattleScreen.FieldEffects.OppBounceCounter
+                bounce = screen.FieldEffects.OppBounceCounter
             End If
 
             If Not p.Item Is Nothing Then
-                If p.Item.Name.ToLower() = "power herb" And BattleScreen.FieldEffects.CanUseItem(Own) = True And BattleScreen.FieldEffects.CanUseOwnItem(Own, BattleScreen) = True Then
-                    If BattleScreen.Battle.RemoveHeldItem(Own, Own, BattleScreen, "Power Herb pushed the use of Bounce!", "move:bounce") = True Then
+                If p.Item.Name.ToLower() = "power herb" And screen.FieldEffects.CanUseItem(Own) = True And screen.FieldEffects.CanUseOwnItem(Own, screen) = True Then
+                    If screen.Battle.RemoveHeldItem(Own, Own, screen, "Power Herb pushed the use of Bounce!", "move:bounce") = True Then
                         bounce = 1
                     End If
                 End If
             End If
 
             If bounce = 0 Then
-                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " sprang up!"))
+                screen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " sprang up!"))
                 If Own = True Then
-                    BattleScreen.FieldEffects.OwnBounceCounter = 1
+                    screen.FieldEffects.OwnBounceCounter = 1
                 Else
-                    BattleScreen.FieldEffects.OppBounceCounter = 1
+                    screen.FieldEffects.OppBounceCounter = 1
                 End If
                 Return True
             Else
                 If Own = True Then
-                    BattleScreen.FieldEffects.OwnBounceCounter = 0
+                    screen.FieldEffects.OwnBounceCounter = 0
                 Else
-                    BattleScreen.FieldEffects.OppBounceCounter = 0
+                    screen.FieldEffects.OppBounceCounter = 0
                 End If
                 Return False
             End If
         End Function
 
-        Public Overrides Function DeductPP(own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim bounce As Integer = BattleScreen.FieldEffects.OwnBounceCounter
+        Public Overrides Function DeductPp(own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Dim bounce As Integer = screen.FieldEffects.OwnBounceCounter
             If own = False Then
-                bounce = BattleScreen.FieldEffects.OppBounceCounter
+                bounce = screen.FieldEffects.OppBounceCounter
             End If
 
             If bounce = 0 Then
@@ -141,15 +148,15 @@
             End If
         End Sub
 
-        Public Overrides Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
             MoveFails(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub AbsorbedBySubstitute(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub AbsorbedBySubstitute(own As Boolean, BattleScreen As Screen)
             MoveFails(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
             MoveFails(own, BattleScreen)
         End Sub
 

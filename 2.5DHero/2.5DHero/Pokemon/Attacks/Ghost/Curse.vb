@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Ghost
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Ghost
 
     Public Class Curse
 
@@ -16,7 +18,7 @@
             Me.Category = Categories.Status
             Me.ContestCategory = ContestCategories.Tough
             Me.Name = "Curse"
-            Me.Description = "A move that works differently for the Ghost type than for all other types."
+            Me.Description = "A move that works differently for the Ghost type than for all other Element.Types."
             Me.CriticalChance = 0
             Me.IsHMMove = False
             Me.Target = Targets.Self
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.RaiseDefense
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then

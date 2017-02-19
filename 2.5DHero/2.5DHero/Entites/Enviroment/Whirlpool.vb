@@ -1,5 +1,10 @@
-﻿Public Class Whirlpool
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Objects
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
 
+Public Class Whirlpool
     Inherits Entity
 
     Public Shared LoadedWaterTemp As Boolean = False
@@ -11,7 +16,7 @@
     Public Overrides Sub Initialize()
         MyBase.Initialize()
 
-        WaterAnimation = New Animation(net.Pokemon3D.Game.TextureManager.GetTexture("Textures\Routes"), 1, 4, 16, 16, 9, 12, 0)
+        WaterAnimation = New Animation(TextureManager.GetTexture("Textures\Routes"), 1, 4, 16, 16, 9, 12, 0)
 
         If Whirlpool.LoadedWaterTemp = False Then
 
@@ -22,10 +27,10 @@
         If Core.GameOptions.GraphicStyle = 1 Then
             Whirlpool.WaterTexturesTemp.Clear()
 
-            Whirlpool.WaterTexturesTemp.Add(net.Pokemon3D.Game.TextureManager.GetTexture("Routes", New Rectangle(0, 176, 16, 16)))
-            Whirlpool.WaterTexturesTemp.Add(net.Pokemon3D.Game.TextureManager.GetTexture("Routes", New Rectangle(16, 176, 16, 16)))
-            Whirlpool.WaterTexturesTemp.Add(net.Pokemon3D.Game.TextureManager.GetTexture("Routes", New Rectangle(32, 176, 16, 16)))
-            Whirlpool.WaterTexturesTemp.Add(net.Pokemon3D.Game.TextureManager.GetTexture("Routes", New Rectangle(48, 176, 16, 16)))
+            Whirlpool.WaterTexturesTemp.Add(TextureManager.GetTexture("Routes", New Rectangle(0, 176, 16, 16)))
+            Whirlpool.WaterTexturesTemp.Add(TextureManager.GetTexture("Routes", New Rectangle(16, 176, 16, 16)))
+            Whirlpool.WaterTexturesTemp.Add(TextureManager.GetTexture("Routes", New Rectangle(32, 176, 16, 16)))
+            Whirlpool.WaterTexturesTemp.Add(TextureManager.GetTexture("Routes", New Rectangle(48, 176, 16, 16)))
             Whirlpool.LoadedWaterTemp = True
         End If
     End Sub

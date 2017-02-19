@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class BatonPass
 
@@ -55,7 +58,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If own = True Then
                 If Core.Player.CountFightablePokemon > 1 Then
                     BattleScreen.FieldEffects.OwnUsedBatonPass = True
@@ -82,13 +85,13 @@
         Private Function GetPokemonIndex(ByVal BattleScreen As BattleScreen, ByVal own As Boolean) As Integer
             If own = True Then
                 Dim i As Integer = 0
-                While Core.Player.Pokemons(i).HP <= 0 Or Core.Player.Pokemons(i).Status = Pokemon.StatusProblems.Fainted Or i = BattleScreen.OwnPokemonIndex Or Core.Player.Pokemons(i).IsEgg()
+                While Core.Player.Pokemons(i).HP <= 0 Or Core.Player.Pokemons(i).Status = BasePokemon.StatusProblems.Fainted Or i = BattleScreen.OwnPokemonIndex Or Core.Player.Pokemons(i).IsEgg()
                     i += 1
                 End While
                 Return i
             Else
                 Dim i As Integer = 0
-                While BattleScreen.Trainer.Pokemons(i).HP <= 0 Or BattleScreen.Trainer.Pokemons(i).Status = Pokemon.StatusProblems.Fainted Or i = BattleScreen.OwnPokemonIndex Or BattleScreen.Trainer.Pokemons(i).IsEgg()
+                While BattleScreen.Trainer.Pokemons(i).HP <= 0 Or BattleScreen.Trainer.Pokemons(i).Status = BasePokemon.StatusProblems.Fainted Or i = BattleScreen.OwnPokemonIndex Or BattleScreen.Trainer.Pokemons(i).IsEgg()
                     i += 1
                 End While
                 Return i

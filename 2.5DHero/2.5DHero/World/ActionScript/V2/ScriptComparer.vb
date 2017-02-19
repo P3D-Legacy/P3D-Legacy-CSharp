@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Resources
+
 Namespace ScriptVersion2
 
     Partial Class ScriptComparer

@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Flying
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Flying
 
     Public Class Peck
 

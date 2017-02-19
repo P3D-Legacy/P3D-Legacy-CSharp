@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Ground
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Ground
 
     Public Class Spikes
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim spikes As Integer = 0
             If own = True Then
                 spikes = BattleScreen.FieldEffects.OwnSpikes

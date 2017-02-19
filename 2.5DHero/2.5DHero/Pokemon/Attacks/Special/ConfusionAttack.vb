@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem
 
     Public Class ConfusionAttack
 

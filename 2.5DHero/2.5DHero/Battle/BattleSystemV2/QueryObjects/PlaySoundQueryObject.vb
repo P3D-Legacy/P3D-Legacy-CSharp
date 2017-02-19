@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources.Sound
+
+Namespace BattleSystem
 
     Public Class PlaySoundQueryObject
 

@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Bug
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Bug
 
     Public Class LeechLife
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.Absorbing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then

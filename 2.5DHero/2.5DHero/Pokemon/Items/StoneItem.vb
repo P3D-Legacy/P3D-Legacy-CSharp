@@ -1,3 +1,7 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items
 
     Public MustInherit Class StoneItem
@@ -22,8 +26,8 @@ Namespace Items
 
             Dim p As Pokemon = Core.Player.Pokemons(PokeIndex)
 
-            If p.IsEgg() = False And p.CanEvolve(EvolutionCondition.EvolutionTrigger.ItemUse, Me.ID.ToString()) = True Then
-                Core.SetScreen(New TransitionScreen(Core.CurrentScreen, New EvolutionScreen(Core.CurrentScreen, {PokeIndex}.ToList(), Me.ID.ToString(), EvolutionCondition.EvolutionTrigger.ItemUse), Color.Black, False))
+            If p.IsEgg() = False And p.CanEVolve(EvolutionCondition.EvolutionTrigger.ItemUse, Me.Id.ToString()) = True Then
+                Core.SetScreen(New TransitionScreen(Core.CurrentScreen, New EvolutionScreen(Core.CurrentScreen, {PokeIndex}.ToList(), Me.Id.ToString(), EvolutionCondition.EvolutionTrigger.ItemUse), Color.Black, False))
 
                 PlayerStatistics.Track("[22]Evolution stones used", 1)
                 RemoveItem()

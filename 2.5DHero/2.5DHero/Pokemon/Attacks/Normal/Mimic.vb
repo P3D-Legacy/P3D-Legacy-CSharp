@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Mimic
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then
@@ -68,7 +70,7 @@
             Dim failsMoves() As Integer = {165, 166, 118, 448}
 
             If p.KnowsMove(moveToCopy) = False And failsMoves.Contains(moveToCopy.ID) = False Then
-                p.OriginalMoves = New List(Of BattleSystem.Attack)
+                p.OriginalMoves = New List(Of BaseAttack)
                 p.OriginalMoves.AddRange(p.Attacks.ToArray())
 
                 For Each m As BattleSystem.Attack In p.Attacks

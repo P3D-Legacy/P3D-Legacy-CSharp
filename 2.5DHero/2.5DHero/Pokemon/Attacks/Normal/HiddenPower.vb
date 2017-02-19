@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class HiddenPower
 
@@ -52,10 +55,11 @@
             '#End
         End Sub
 
-        Public Overrides Function GetAttackType(own As Boolean, BattleScreen As BattleScreen) As Element
-            Dim p As Pokemon = BattleScreen.OwnPokemon
+        Public Overrides Function GetAttackType(own As Boolean, BattleScreen As Screen) As Element
+            Dim screen As BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OwnPokemon
             If own = False Then
-                p = BattleScreen.OppPokemon
+                p = screen.OppPokemon
             End If
 
             If p.Ability.Name.ToLower() = "normalize" Then

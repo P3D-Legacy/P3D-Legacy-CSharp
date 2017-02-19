@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Rage
 
@@ -52,27 +55,28 @@
             '#End
         End Sub
 
-        Public Overrides Sub MoveSelected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveSelected(own As Boolean, BattleScreen As Screen)
+            Dim screen as BattleScreen = BattleScreen
             If own = True Then
-                If Not BattleScreen.FieldEffects.OwnLastMove Is Nothing Then
-                    If BattleScreen.FieldEffects.OwnLastMove.ID <> Me.ID Then
-                        BattleScreen.FieldEffects.OwnRageCounter = 0
+                If Not screen.FieldEffects.OwnLastMove Is Nothing Then
+                    If screen.FieldEffects.OwnLastMove.ID <> Me.ID Then
+                        screen.FieldEffects.OwnRageCounter = 0
                     End If
                 Else
-                    BattleScreen.FieldEffects.OwnRageCounter = 0
+                    screen.FieldEffects.OwnRageCounter = 0
                 End If
             Else
-                If Not BattleScreen.FieldEffects.OppLastMove Is Nothing Then
-                    If BattleScreen.FieldEffects.OppLastMove.ID <> Me.ID Then
-                        BattleScreen.FieldEffects.OppRageCounter = 0
+                If Not screen.FieldEffects.OppLastMove Is Nothing Then
+                    If screen.FieldEffects.OppLastMove.ID <> Me.ID Then
+                        screen.FieldEffects.OppRageCounter = 0
                     End If
                 Else
-                    BattleScreen.FieldEffects.OppRageCounter = 0
+                    screen.FieldEffects.OppRageCounter = 0
                 End If
             End If
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If own = True Then
                 If BattleScreen.FieldEffects.OwnRageCounter = 0 Then
                     BattleScreen.FieldEffects.OwnRageCounter = 1
@@ -84,13 +88,14 @@
             End If
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen as BattleScreen = BattleScreen
             Dim addPower As Integer = 0
 
             If own = True Then
-                addPower = (BattleScreen.FieldEffects.OwnRageCounter.Clamp(1, 9) - 1) * 10
+                addPower = (screen.FieldEffects.OwnRageCounter.Clamp(1, 9) - 1) * 10
             Else
-                addPower = (BattleScreen.FieldEffects.OppRageCounter.Clamp(1, 9) - 1) * 10
+                addPower = (screen.FieldEffects.OppRageCounter.Clamp(1, 9) - 1) * 10
             End If
 
             Return Me.Power + addPower

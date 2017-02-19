@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Fire
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Fire
 
     Public Class Inferno
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.Burn
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             BattleScreen.Battle.InflictBurn(Not own, own, BattleScreen, "", "move:inferno")
         End Sub
 

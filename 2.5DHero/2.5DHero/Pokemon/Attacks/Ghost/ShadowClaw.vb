@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Ghost
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Ghost
 
     Public Class ShadowClaw
 

@@ -1,4 +1,10 @@
-﻿Public Class AddServerScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class AddServerScreen
 
     Inherits Screen
 
@@ -121,10 +127,10 @@
         End If
 
         Dim d As New Dictionary(Of Buttons, String)
-        d.Add(Input.Buttons.A, "Accept")
-        d.Add(Input.Buttons.B, "Back")
-        d.Add(Input.Buttons.Y, "Edit")
-        d.Add(Input.Buttons.X, "Clear")
+        d.Add(Buttons.A, "Accept")
+        d.Add(Buttons.B, "Back")
+        d.Add(Buttons.Y, "Edit")
+        d.Add(Buttons.X, "Clear")
         Me.DrawGamePadControls(d)
     End Sub
 

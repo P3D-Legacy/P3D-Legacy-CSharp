@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core
+
 Namespace Items.Medicine
 
     <Item(13, "Paralyze Heal")>
@@ -9,7 +12,7 @@ Namespace Items.Medicine
         Public Overrides ReadOnly Property PokeDollarPrice As Integer = 200
 
         Public Sub New()
-            _textureRectangle = New Rectangle(264, 0, 24, 24)
+            TextureRectangle = New Rectangle(264, 0, 24, 24)
         End Sub
 
         Public Overrides Sub Use()

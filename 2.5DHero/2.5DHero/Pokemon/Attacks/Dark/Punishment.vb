@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
 Namespace BattleSystem.Moves.Dark
 
     Public Class Punishment
@@ -52,10 +55,11 @@ Namespace BattleSystem.Moves.Dark
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim p As Pokemon = BattleScreen.OppPokemon
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OppPokemon
             If own = False Then
-                p = BattleScreen.OwnPokemon
+                p = screen.OwnPokemon
             End If
 
             Dim powerup As Integer = 0

@@ -1,4 +1,11 @@
-﻿Public Class ItemDetailScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class ItemDetailScreen
 
     Inherits Screen
 
@@ -188,7 +195,7 @@
         If Item.CanBeHold = True Then
             MenuItems.Add(Localization.GetString("item_detail_screen_give"))
         End If
-        If Item.ItemType <> Game.Items.ItemTypes.KeyItems And Item.CanBeTossed = True Then
+        If Item.ItemType <> Item.ItemTypes.KeyItems And Item.CanBeTossed = True Then
             MenuItems.Add(Localization.GetString("item_detail_screen_trash"))
         End If
         MenuItems.Add(Localization.GetString("item_detail_screen_back"))

@@ -1,4 +1,8 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Stomp
 
@@ -54,10 +58,11 @@
             Me.EffectChances.Add(30)
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim minimize As Integer = BattleScreen.FieldEffects.OppMinimize
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen as BattleScreen = BattleScreen
+            Dim minimize As Integer = screen.FieldEffects.OppMinimize
             If own = False Then
-                minimize = BattleScreen.FieldEffects.OwnMinimize
+                minimize = screen.FieldEffects.OwnMinimize
             End If
             If minimize > 0 Then
                 Return Me.Power * 2
@@ -66,7 +71,7 @@
             End If
         End Function
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim chance As Integer = GetEffectChance(0, own, BattleScreen)
 
             If Core.Random.Next(0, 100) < chance Then

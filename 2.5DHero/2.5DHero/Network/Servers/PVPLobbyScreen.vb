@@ -1,4 +1,16 @@
-﻿Public Class PVPLobbyScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Objects
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.Server
+
+Public Class PVPLobbyScreen
 
     Inherits Screen
 
@@ -12,8 +24,8 @@
 
     Public Shared ScreenState As ScreenStates = ScreenStates.Idle
 
-    Shared OppTeam As List(Of Pokemon) = Nothing 'The team the opponent is using.
-    Dim OwnTeam As List(Of Pokemon) = Nothing 'The team you are using.
+    Shared OppTeam As List(Of BasePokemon) = Nothing 'The team the opponent is using.
+    Dim OwnTeam As List(Of BasePokemon) = Nothing 'The team you are using.
 
     Shared PartnerNetworkID As Integer = 0 'The NetworkID of your partner.
     Shared WaitingForPlayer As Boolean = False 'If you are the host and waiting for the other player to accept.
@@ -57,9 +69,9 @@
         ScreenState = ScreenStates.Idle
 
         If isHost = False Then
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(Servers.Package.PackageTypes.BattleJoin, Core.ServersManager.ID, Servers.Package.ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleJoin, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
         Else
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(Servers.Package.PackageTypes.BattleRequest, Core.ServersManager.ID, Servers.Package.ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleRequest, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
         End If
 
         Me.menuItems = {"Start Battle!", "Choose Team", "Quit"}.ToList()
@@ -70,29 +82,29 @@
     Private Sub DownloadOnlineSprite()
         Dim p As Servers.Player = Core.ServersManager.PlayerCollection.GetPlayer(PartnerNetworkID)
         If Not p Is Nothing Then
-            If p.GamejoltID <> "" Then
-                GameJolt.Emblem.GetOnlineSprite(p.GamejoltID)
+            If p.GameJoltId <> "" Then
+                Emblem.GetOnlineSprite(p.GameJoltId)
             End If
         End If
     End Sub
 
     Public Overrides Sub Draw()
-        Canvas.DrawGradient(Core.windowSize, New Color(10, 145, 227), New Color(6, 77, 139), False, -1)
-        Canvas.DrawGradient(New Rectangle(0, 0, CInt(Core.windowSize.Width), 65), New Color(0, 24, 114), New Color(13, 138, 228), False, -1)
-        Core.SpriteBatch.DrawString(FontManager.MainFont, "Versus Battle", New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString("Versus Battle").X / 2), 20), New Color(196, 231, 255))
-        Canvas.DrawRectangle(New Rectangle(0, 65, Core.windowSize.Width, 1), New Color(0, 24, 114))
+        Canvas.DrawGradient(Core.WindowSize, New Color(10, 145, 227), New Color(6, 77, 139), False, -1)
+        Canvas.DrawGradient(New Rectangle(0, 0, CInt(Core.WindowSize.Width), 65), New Color(0, 24, 114), New Color(13, 138, 228), False, -1)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, "Versus Battle", New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString("Versus Battle").X / 2), 20), New Color(196, 231, 255))
+        Canvas.DrawRectangle(New Rectangle(0, 65, Core.WindowSize.Width, 1), New Color(0, 24, 114))
 
         Select Case ScreenState
             Case ScreenStates.Idle
                 If WaitingForPlayer = True Then
                     Dim t As String = "Waiting for other player" & LoadingDots.Dots
-                    Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), CSng(Core.windowSize.Height / 2 - 10)), Color.White)
+                    Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), CSng(Core.WindowSize.Height / 2 - 10)), Color.White)
                 Else
                     Me.DrawIdle()
                 End If
             Case ScreenStates.Stopped
                 Dim t As String = DisconnectMessage
-                Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), CSng(Core.windowSize.Height / 2 - 10)), Color.White)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), CSng(Core.WindowSize.Height / 2 - 10)), Color.White)
             Case ScreenStates.ChooseTeam
                 Me.DrawChooseTeam()
             Case ScreenStates.BattleResults
@@ -157,28 +169,28 @@
 
         'Menu:
         If ReceivedBattleOffer = True Then
-            Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2), 100, 64 * 4, 64), New Color(255, 255, 255, 150))
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Your opponent wants to" & vbNewLine & "battle with this setup.", New Vector2(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2) + 4, 104), Color.Black)
+            Canvas.DrawRectangle(New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2), 100, 64 * 4, 64), New Color(255, 255, 255, 150))
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Your opponent wants to" & vbNewLine & "battle with this setup.", New Vector2(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2) + 4, 104), Color.Black)
         Else
             If SentBattleOffer = True Then
-                Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2), 100, 64 * 4, 64), New Color(255, 255, 255, 150))
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, "You want to battle" & vbNewLine & "with this setup.", New Vector2(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2) + 4, 104), Color.Black)
+                Canvas.DrawRectangle(New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2), 100, 64 * 4, 64), New Color(255, 255, 255, 150))
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, "You want to battle" & vbNewLine & "with this setup.", New Vector2(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2) + 4, 104), Color.Black)
             End If
         End If
 
         For i = 0 To Me.menuItems.Count - 1
-            Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2), 200 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White)
-            Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2) + 64, 200 + i * 96, 64 * 2, 64), New Rectangle(32, 16, 16, 16), Color.White)
-            Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2) + 64 * 3, 200 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
+            Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2), 200 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White)
+            Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2) + 64, 200 + i * 96, 64 * 2, 64), New Rectangle(32, 16, 16, 16), Color.White)
+            Core.SpriteBatch.Draw(Me.texture, New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2) + 64 * 3, 200 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
 
-            Core.SpriteBatch.DrawString(FontManager.MainFont, Me.menuItems(i), New Vector2(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2) + 20, 216 + i * 96), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, Me.menuItems(i), New Vector2(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2) + 20, 216 + i * 96), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
         Next
 
         DrawCursor()
 
         'Opp side:
-        Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width - 300), 200, 300, 64), New Color(177, 228, 247, 200))
-        Canvas.DrawGradient(New Rectangle(CInt(Core.windowSize.Width - 400), 200, 100, 64), New Color(255, 255, 255, 0), New Color(177, 228, 247, 200), True, -1)
+        Canvas.DrawRectangle(New Rectangle(CInt(Core.WindowSize.Width - 300), 200, 300, 64), New Color(177, 228, 247, 200))
+        Canvas.DrawGradient(New Rectangle(CInt(Core.WindowSize.Width - 400), 200, 100, 64), New Color(255, 255, 255, 0), New Color(177, 228, 247, 200), True, -1)
 
         Dim t As Texture2D = Nothing
         Dim tempPlayer As Servers.Player = Nothing
@@ -193,8 +205,8 @@
                 tempPlayer = p
 
                 If p.GameJoltId <> "" Then
-                    If GameJolt.Emblem.HasDownloadedSprite(p.GameJoltId) = True Then
-                        Dim newT As Texture2D = GameJolt.Emblem.GetOnlineSprite(p.GameJoltId)
+                    If Emblem.HasDownloadedSprite(p.GameJoltId) = True Then
+                        Dim newT As Texture2D = Emblem.GetOnlineSprite(p.GameJoltId)
                         If Not newT Is Nothing Then
                             t = newT
                         End If
@@ -206,24 +218,24 @@
         Next
 
         If Not t Is Nothing And Not tempPlayer Is Nothing Then
-            Core.SpriteBatch.DrawString(FontManager.MainFont, tempPlayer.Name, New Vector2(Core.windowSize.Width - 260, 215), Color.Black, 0.0F, Vector2.Zero, 1.5F, SpriteEffects.None, 0.0F)
-            Core.SpriteBatch.Draw(t, New Rectangle(CInt(Core.windowSize.Width - 340), 200, 64, 64), New Rectangle(0, 64, 32, 32), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, tempPlayer.Name, New Vector2(Core.WindowSize.Width - 260, 215), Color.Black, 0.0F, Vector2.Zero, 1.5F, SpriteEffects.None, 0.0F)
+            Core.SpriteBatch.Draw(t, New Rectangle(CInt(Core.WindowSize.Width - 340), 200, 64, 64), New Rectangle(0, 64, 32, 32), Color.White)
         End If
 
-        Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width - 400), 264, 400, 32), New Color(6, 77, 139))
+        Canvas.DrawRectangle(New Rectangle(CInt(Core.WindowSize.Width - 400), 264, 400, 32), New Color(6, 77, 139))
 
         If Not OppTeam Is Nothing Then
             If OppTeam.Count > 0 Then
                 For i = 0 To OppTeam.Count - 1
                     Dim p As Pokemon = OppTeam(i)
-                    Core.SpriteBatch.Draw(p.GetMenuTexture(), New Rectangle(CInt(Core.windowSize.Width - 360) + i * 40, 264, 32, 32), Color.White)
+                    Core.SpriteBatch.Draw(p.GetMenuTexture(), New Rectangle(CInt(Core.WindowSize.Width - 360) + i * 40, 264, 32, 32), Color.White)
                 Next
             End If
         End If
     End Sub
 
     Private Sub DrawCursor()
-        Dim cPosition As Vector2 = New Vector2(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2) + 160, 200 + Me.Cursor * 96 - 42)
+        Dim cPosition As Vector2 = New Vector2(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2) + 160, 200 + Me.Cursor * 96 - 42)
 
         Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(0, 0, 16, 16), "")
         Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
@@ -252,7 +264,7 @@
 
                 If Controls.Accept(True, False, False) = True Then
                     For i = 0 To Me.menuItems.Count - 1
-                        If New Rectangle(CInt(Core.windowSize.Width / 2 - (64 * 4) / 2), 200 + i * 96, 64 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
+                        If New Rectangle(CInt(Core.WindowSize.Width / 2 - (64 * 4) / 2), 200 + i * 96, 64 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
                             If i = Cursor Then
                                 Me.SelectMenuEntry()
                             Else
@@ -286,14 +298,14 @@
 
     Private Sub StartBattle()
         If Not Me.OwnTeam Is Nothing And Not OppTeam Is Nothing Then
-            Core.SetScreen(New ChoosePokemonScreen(Core.CurrentScreen, Item.GetItemByID(5), AddressOf LeadPickedStart, "Choose your lead.", True, True, False, _pokemonList:=OwnTeam))
+            Core.SetScreen(New ChoosePokemonScreen(Core.CurrentScreen, Item.GetItemById(5), AddressOf LeadPickedStart, "Choose your lead.", True, True, False, _pokemonList:=OwnTeam))
         End If
     End Sub
 
     Private Sub LeadPickedStart(ByVal index As Integer)
         BattleSystem.BattleScreen.OwnLeadIndex = index
-        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(Servers.Package.PackageTypes.BattleOffer,
-                Core.ServersManager.ID, Servers.Package.ProtocolTypes.TCP, {PartnerNetworkID.ToString(), CStr(index)}.ToList()))
+        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleOffer,
+                Core.ServersManager.ID, ProtocolTypes.TCP, {PartnerNetworkID.ToString(), CStr(index)}.ToList()))
         If ReceivedBattleOffer = True Then
             InitializeBattle()
         Else
@@ -302,7 +314,7 @@
     End Sub
 
     Private Sub QuitBattle()
-        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(Servers.Package.PackageTypes.BattleQuit, Core.ServersManager.ID, Servers.Package.ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleQuit, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
         Core.SetScreen(Me.PreScreen)
     End Sub
 
@@ -417,7 +429,7 @@
     End Sub
 
     Private Sub SelectTeam()
-        Me.OwnTeam = New List(Of Pokemon)
+        Me.OwnTeam = New List(Of BasePokemon)
 
         If ChooseTeamCursor = 0 Then
             Me.OwnTeam.AddRange(BattleBoxPokemon.ToArray())
@@ -447,7 +459,7 @@
             End If
         Next
 
-        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(Servers.Package.PackageTypes.BattleOffer, Core.ServersManager.ID, Servers.Package.ProtocolTypes.TCP, {PartnerNetworkID.ToString(), sendPokemonData}.ToList()))
+        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleOffer, Core.ServersManager.ID, ProtocolTypes.TCP, {PartnerNetworkID.ToString(), sendPokemonData}.ToList()))
         ScreenState = ScreenStates.Idle
     End Sub
 
@@ -473,7 +485,7 @@
             If data = "none" Then
                 OppTeam = Nothing
             Else
-                OppTeam = New List(Of Pokemon)
+                OppTeam = New List(Of BasePokemon)
 
                 Dim tempData As String = ""
                 Dim cData As String = data
@@ -616,13 +628,13 @@
     Class BattleResult
 
         Public Won As Boolean = False
-        Public OwnPokemon As New List(Of Pokemon)
-        Public OppPokemon As New List(Of Pokemon)
+        Public OwnPokemon As New List(Of BasePokemon)
+        Public OppPokemon As New List(Of BasePokemon)
 
         Public OwnStatistics As BattleSystem.BattleScreen.NetworkPlayerStatistics
         Public OppStatistics As BattleSystem.BattleScreen.NetworkPlayerStatistics
 
-        Public Sub New(ByVal won As Boolean, ByVal own As List(Of Pokemon), ByVal opp As List(Of Pokemon), ByVal ownStatistics As BattleSystem.BattleScreen.NetworkPlayerStatistics, ByVal oppStatistics As BattleSystem.BattleScreen.NetworkPlayerStatistics)
+        Public Sub New(ByVal won As Boolean, ByVal own As List(Of BasePokemon), ByVal opp As List(Of BasePokemon), ByVal ownStatistics As BattleSystem.BattleScreen.NetworkPlayerStatistics, ByVal oppStatistics As BattleSystem.BattleScreen.NetworkPlayerStatistics)
             Me.Won = won
 
             For Each p As Pokemon In own
@@ -637,12 +649,12 @@
             If won = False Then
                 For Each p As Pokemon In Me.OwnPokemon
                     p.HP = 0
-                    p.Status = Pokemon.StatusProblems.Fainted
+                    p.Status = BasePokemon.StatusProblems.Fainted
                 Next
             Else
                 For Each p As Pokemon In Me.OppPokemon
                     p.HP = 0
-                    p.Status = Pokemon.StatusProblems.Fainted
+                    p.Status = BasePokemon.StatusProblems.Fainted
                 Next
             End If
         End Sub
@@ -672,8 +684,8 @@
                 resultStateText = "Lost"
                 resultColor = Color.LightBlue
             End If
-            Core.SpriteBatch.DrawString(FontManager.MainFont, resultText, New Vector2(Core.windowSize.Width / 2.0F - FontManager.MainFont.MeasureString(resultText).X / 2.0F, 120), Color.White)
-            Core.SpriteBatch.DrawString(FontManager.MainFont, resultStateText, New Vector2(Core.windowSize.Width / 2.0F - FontManager.MainFont.MeasureString(resultText).X / 2.0F + FontManager.MainFont.MeasureString("You ").X, 120), resultColor)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, resultText, New Vector2(Core.WindowSize.Width / 2.0F - FontManager.MainFont.MeasureString(resultText).X / 2.0F, 120), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, resultStateText, New Vector2(Core.WindowSize.Width / 2.0F - FontManager.MainFont.MeasureString(resultText).X / 2.0F + FontManager.MainFont.MeasureString("You ").X, 120), resultColor)
 
             'Own side:
             Canvas.DrawRectangle(New Rectangle(100, 200, 300, 64), New Color(177, 228, 247, 200))
@@ -688,7 +700,7 @@
                 Dim p As Pokemon = BattleResults.OwnPokemon(i)
 
                 Dim c As Color = Color.White
-                If p.Status = Pokemon.StatusProblems.Fainted Or p.HP <= 0 Then
+                If p.Status = BasePokemon.StatusProblems.Fainted Or p.HP <= 0 Then
                     c = New Color(65, 65, 65, 255)
                 End If
 
@@ -719,23 +731,23 @@
             'Draw Pokémon left:
             Dim countOwnPokemon As Integer = 0
             For Each p As Pokemon In BattleResults.OwnPokemon
-                If p.IsEgg() = False And p.HP > 0 And p.Status <> Pokemon.StatusProblems.Fainted Then
+                If p.IsEgg() = False And p.HP > 0 And p.Status <> BasePokemon.StatusProblems.Fainted Then
                     countOwnPokemon += 1
                 End If
             Next
             Dim countOppPokemon As Integer = 0
             For Each p As Pokemon In BattleResults.OppPokemon
-                If p.IsEgg() = False And p.HP > 0 And p.Status <> Pokemon.StatusProblems.Fainted Then
+                If p.IsEgg() = False And p.HP > 0 And p.Status <> BasePokemon.StatusProblems.Fainted Then
                     countOppPokemon += 1
                 End If
             Next
 
             Dim pokeLeft As String = countOwnPokemon.ToString & " VS " & countOppPokemon.ToString()
-            Core.SpriteBatch.DrawString(FontManager.MainFont, pokeLeft, New Vector2(Core.windowSize.Width / 2.0F - FontManager.MainFont.MeasureString(pokeLeft).X * 2.0F, 240), Color.White, 0.0F, Vector2.Zero, 4.0F, SpriteEffects.None, 0.0F)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, pokeLeft, New Vector2(Core.WindowSize.Width / 2.0F - FontManager.MainFont.MeasureString(pokeLeft).X * 2.0F, 240), Color.White, 0.0F, Vector2.Zero, 4.0F, SpriteEffects.None, 0.0F)
 
             'Opp Side:
-            Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width - 300), 200, 300, 64), New Color(177, 228, 247, 200))
-            Canvas.DrawGradient(New Rectangle(CInt(Core.windowSize.Width - 400), 200, 100, 64), New Color(255, 255, 255, 0), New Color(177, 228, 247, 200), True, -1)
+            Canvas.DrawRectangle(New Rectangle(CInt(Core.WindowSize.Width - 300), 200, 300, 64), New Color(177, 228, 247, 200))
+            Canvas.DrawGradient(New Rectangle(CInt(Core.WindowSize.Width - 400), 200, 100, 64), New Color(255, 255, 255, 0), New Color(177, 228, 247, 200), True, -1)
 
             Dim t As Texture2D = Nothing
             Dim tempPlayer As Servers.Player = Nothing
@@ -753,17 +765,17 @@
             Next
 
             If Not t Is Nothing And Not tempPlayer Is Nothing Then
-                Core.SpriteBatch.DrawString(FontManager.MainFont, tempPlayer.Name, New Vector2(Core.windowSize.Width - 260, 215), Color.Black, 0.0F, Vector2.Zero, 1.5F, SpriteEffects.None, 0.0F)
-                Core.SpriteBatch.Draw(t, New Rectangle(CInt(Core.windowSize.Width - 340), 200, 64, 64), New Rectangle(0, 64, 32, 32), Color.White)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, tempPlayer.Name, New Vector2(Core.WindowSize.Width - 260, 215), Color.Black, 0.0F, Vector2.Zero, 1.5F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.Draw(t, New Rectangle(CInt(Core.WindowSize.Width - 340), 200, 64, 64), New Rectangle(0, 64, 32, 32), Color.White)
             End If
 
-            Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width - 400), 264, 400, 32), New Color(6, 77, 139))
+            Canvas.DrawRectangle(New Rectangle(CInt(Core.WindowSize.Width - 400), 264, 400, 32), New Color(6, 77, 139))
 
             For i = 0 To BattleResults.OppPokemon.Count - 1
                 Dim p As Pokemon = BattleResults.OppPokemon(i)
 
                 Dim c As Color = Color.White
-                If p.Status = Pokemon.StatusProblems.Fainted Or p.HP <= 0 Then
+                If p.Status = BasePokemon.StatusProblems.Fainted Or p.HP <= 0 Then
                     c = New Color(65, 65, 65, 255)
                 End If
 

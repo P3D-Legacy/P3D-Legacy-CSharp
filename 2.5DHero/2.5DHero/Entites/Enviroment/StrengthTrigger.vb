@@ -1,4 +1,8 @@
-﻿Public Class StrengthTrigger
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Screens
+
+Public Class StrengthTrigger
 
     Inherits Entity
 

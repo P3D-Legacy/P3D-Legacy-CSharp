@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Dark
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Dark
 
     Public Class KnockOff
 
@@ -52,15 +55,16 @@
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            If BattleScreen.Battle.RemoveHeldItem(Not own, own, BattleScreen, "", "", True) = True Then
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            If screen.Battle.RemoveHeldItem(Not own, own, BattleScreen, "", "", True) = True Then
                 Return CInt(Me.Power * 1.5F)
             End If
 
             Return Me.Power
         End Function
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then

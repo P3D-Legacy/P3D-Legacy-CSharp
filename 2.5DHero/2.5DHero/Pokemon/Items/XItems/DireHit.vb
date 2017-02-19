@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.XItems
 
     <Item(44, "Dire Hit")>
@@ -9,7 +14,7 @@ Namespace Items.XItems
         Public Overrides ReadOnly Property Description As String = "An item that raises the critical-hit ratio greatly. It can be used only once and wears off if the Pokémon is withdrawn."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(480, 24, 24, 24)
+            TextureRectangle = New Rectangle(480, 24, 24, 24)
         End Sub
 
         Public Overrides Function UseOnPokemon(PokeIndex As Integer) As Boolean

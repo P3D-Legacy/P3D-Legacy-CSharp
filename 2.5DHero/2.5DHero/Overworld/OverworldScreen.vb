@@ -1,16 +1,20 @@
-﻿Imports System.Threading
+﻿Imports System.Drawing
+Imports System.Threading
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
 
 ''' <summary>
 ''' The screen to display the default Overworld gameplay.
 ''' </summary>
 Public Class OverworldScreen
-
-    Inherits Screen
+    Inherits BaseOverworldScreen
 
 #Region "Fields"
-
-    Private Shared _fadeValue As Integer = 0 'Fade progress value for the black screen fade.
-    Private Shared _drawRodID As Integer = -1 'The rod ID to display on the screen during the fishing animation.
 
     Private _actionScript As ActionScript 'Private ActionScript instance.
     Private _particlesTexture As Texture2D 'A texture field to contain the particles texture, currently only used for the crosshair.
@@ -47,37 +51,12 @@ Public Class OverworldScreen
     ''' <summary>
     ''' Checks if the player encountered a trainer.
     ''' </summary>
-    Public Property TrainerEncountered() As Boolean
+    Public Overrides Property TrainerEncountered() As Boolean
         Get
             Return Me._trainerEncountered
         End Get
         Set(value As Boolean)
             Me._trainerEncountered = value
-        End Set
-    End Property
-
-    ''' <summary>
-    ''' Fade progress value for the black screen fade.
-    ''' </summary>
-    Public Shared Property FadeValue() As Integer
-        Get
-            Return _fadeValue
-        End Get
-        Set(value As Integer)
-            _fadeValue = value
-        End Set
-    End Property
-
-    ''' <summary>
-    ''' The Fishing Rod that should be rendered on the screen.
-    ''' </summary>
-    ''' <remarks>-1 = No Rod, 0 = Old Rod, 1 = Good Rod, 2 = Super Rod</remarks>
-    Public Shared Property DrawRodID() As Integer
-        Get
-            Return _drawRodID
-        End Get
-        Set(value As Integer)
-            _drawRodID = value
         End Set
     End Property
 
@@ -188,7 +167,7 @@ Public Class OverworldScreen
             End If
 
             'Open the MenuScreen:
-            If KeyBoardHandler.KeyPressed(KeyBindings.OpenInventoryKey) = True Or ControllerHandler.ButtonPressed(Buttons.X) = True Then
+            If KeyBoardHandler.KeyPressed(Core.KeyBindings.Inventory) = True Or ControllerHandler.ButtonPressed(Buttons.X) = True Then
                 If Screen.Camera.IsMoving() = False And ActionScript.IsReady = True Then
                     Level.RouteSign.Hide()
 
@@ -198,7 +177,7 @@ Public Class OverworldScreen
             End If
 
             'Open the PokégearScreen:
-            If KeyBoardHandler.KeyPressed(KeyBindings.SpecialKey) = True Or ControllerHandler.ButtonPressed(Buttons.Y) = True Then
+            If KeyBoardHandler.KeyPressed(Core.KeyBindings.Special) = True Or ControllerHandler.ButtonPressed(Buttons.Y) = True Then
                 If Core.Player.HasPokegear = True Or GameController.IS_DEBUG_ACTIVE = True Then
                     If Screen.Camera.IsMoving() = False And ActionScript.IsReady = True Then
                         Core.SetScreen(New GameJolt.PokegearScreen(Me, GameJolt.PokegearScreen.EntryModes.MainMenu, {}))
@@ -303,7 +282,7 @@ Public Class OverworldScreen
 
         Level.Draw()
 
-        World.DrawWeather(Screen.Level.World.CurrentMapWeather)
+        World.DrawWeather(Screen.Level.World.CurrentWeather)
 
         DrawGUI()
         PokemonImageView.Draw()
@@ -322,7 +301,7 @@ Public Class OverworldScreen
             d.Add(Buttons.A, "Interact")
             d.Add(Buttons.X, "Menu")
 
-            If Core.Player.hasPokegear = True Then
+            If Core.Player.HasPokegear = True Then
                 d.Add(Buttons.Y, "Pokégear")
             End If
 
@@ -346,16 +325,16 @@ Public Class OverworldScreen
 
         'Render the Rod (based on the DrawRodID property).
         If DrawRodID > -1 And isThirdPerson = False Then
-            Dim t As Texture2D = TextureManager.GetTexture("GUI\Overworld\Rods", New Rectangle(DrawRodID * 8, 0, 8, 64), "") 'Load the texture.
-            Dim P As New Vector2(CSng(Core.windowSize.Width / 2 - 32), Core.windowSize.Height - 490)
+            Dim t As Texture2D = TextureManager.GetTexture("GUI\Overworld\Rods", New Microsoft.Xna.Framework.Rectangle(DrawRodID * 8, 0, 8, 64), "") 'Load the texture.
+            Dim P As New Vector2(CSng(Core.WindowSize.Width / 2 - 32), Core.WindowSize.Height - 490)
 
-            Core.SpriteBatch.Draw(t, New Rectangle(CInt(P.X), CInt(P.Y), 64, 512), Color.White)
+            Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(P.X), CInt(P.Y), 64, 512), Microsoft.Xna.Framework.Color.White)
         End If
 
         'Render Crosshair:
         If Core.GameOptions.ShowGUI = True And isThirdPerson = False Then
             Dim P As Vector2 = Core.GetMiddlePosition(New Size(16, 16))
-            Core.SpriteBatch.Draw(_particlesTexture, New Rectangle(CInt(P.X), CInt(P.Y), 16, 16), New Rectangle(0, 0, 9, 9), Color.White)
+            Core.SpriteBatch.Draw(_particlesTexture, New Microsoft.Xna.Framework.Rectangle(CInt(P.X), CInt(P.Y), 16, 16), New Microsoft.Xna.Framework.Rectangle(0, 0, 9, 9), Microsoft.Xna.Framework.Color.White)
         End If
 
         'Render all active titles:
@@ -365,7 +344,7 @@ Public Class OverworldScreen
 
         'If the black fade is visible, render it:
         If FadeValue > 0 Then
-            Canvas.DrawRectangle(Core.windowSize, New Color(0, 0, 0, FadeValue))
+            Canvas.DrawRectangle(Core.WindowSize, New Microsoft.Xna.Framework.Color(0, 0, 0, FadeValue))
         End If
     End Sub
 
@@ -387,7 +366,7 @@ Public Class OverworldScreen
                 Thread.Sleep(20)
                 x = x + 1
             End While
-            If String.IsNullOrEmpty(Level.MusicLoop)
+            If String.IsNullOrEmpty(Level.MusicLoop) Then
                 Return
             End If
 
@@ -423,13 +402,19 @@ Public Class OverworldScreen
         Next
     End Sub
 
+    Public Overrides ReadOnly Property ActionScriptIsReady As Boolean
+        Get
+            Return ActionScript.IsReady
+        End Get
+    End Property
+
     ''' <summary>
     ''' A class to display text on the OverworldScreen.
     ''' </summary>
     Public Class Title
 
         Private _text As String = "Sample Text"
-        Private _textColor As Color = Color.White
+        Private _textColor As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.White
         Private _scale As Single = 10.0F
         Private _position As Vector2 = Vector2.Zero
         Private _isCentered As Boolean = True
@@ -452,11 +437,11 @@ Public Class OverworldScreen
         ''' The color of the text on the screen.
         ''' </summary>
         ''' <remarks>The default is White (255,255,255). No transparency is suppoorted.</remarks>
-        Public Property TextColor() As Color
+        Public Property TextColor() As Microsoft.Xna.Framework.Color
             Get
                 Return Me._textColor
             End Get
-            Set(value As Color)
+            Set(value As Microsoft.Xna.Framework.Color)
                 Me._textColor = value
             End Set
         End Property
@@ -529,7 +514,7 @@ Public Class OverworldScreen
         ''' <param name="Scale">The scale of the text.</param>
         ''' <param name="Position">The position of the text on the screen.</param>
         ''' <param name="IsCentered">If the text should always get centered on the screen.</param>
-        Public Sub New(ByVal Text As String, ByVal Delay As Single, ByVal TextColor As Color, ByVal Scale As Single, ByVal Position As Vector2, ByVal IsCentered As Boolean)
+        Public Sub New(ByVal Text As String, ByVal Delay As Single, ByVal TextColor As Microsoft.Xna.Framework.Color, ByVal Scale As Single, ByVal Position As Vector2, ByVal IsCentered As Boolean)
             Me._text = Text
             Me._delay = Delay
             Me._textColor = TextColor
@@ -547,7 +532,7 @@ Public Class OverworldScreen
             'If the text is centered, set the draw position to the center of the screen, then add the position.
             If Me._isCentered = True Then
                 Dim v As Vector2 = FontManager.TextFont.MeasureString(Me._text) * Me._scale
-                p = New Vector2(CSng(Core.windowSize.Width / 2 - v.X / 2), CSng(Core.windowSize.Height / 2 - v.Y / 2))
+                p = New Vector2(CSng(Core.WindowSize.Width / 2 - v.X / 2), CSng(Core.WindowSize.Height / 2 - v.Y / 2))
             End If
             p += Me._position
 
@@ -557,7 +542,7 @@ Public Class OverworldScreen
                 A = CInt(255 * (1 / 3 * Me._delay))
             End If
 
-            Core.SpriteBatch.DrawString(FontManager.TextFont, Me._text, p, New Color(Me._textColor.R, Me._textColor.G, Me._textColor.B, A), 0.0F, Vector2.Zero, Me._scale, SpriteEffects.None, 0.0F)
+            Core.SpriteBatch.DrawString(FontManager.TextFont, Me._text, p, New Microsoft.Xna.Framework.Color(Me._textColor.R, Me._textColor.G, Me._textColor.B, A), 0.0F, Vector2.Zero, Me._scale, SpriteEffects.None, 0.0F)
         End Sub
 
         ''' <summary>

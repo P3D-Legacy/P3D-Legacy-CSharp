@@ -1,4 +1,8 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class NaturePower
 
@@ -54,31 +58,31 @@
 
         Public Shared Function GetMoveID() As Integer
             Select Case Screen.Level.Terrain.TerrainType
-                Case Terrain.TerrainTypes.Plain
+                Case TerrainTypeEnums.Plain
                     Return 161
-                Case Terrain.TerrainTypes.Cave
+                Case TerrainTypeEnums.Cave
                     Return 247
-                Case Terrain.TerrainTypes.DisortionWorld
+                Case TerrainTypeEnums.DisortionWorld
                     Return 185
-                Case Terrain.TerrainTypes.LongGrass
+                Case TerrainTypeEnums.LongGrass
                     Return 75
-                Case Terrain.TerrainTypes.Magma
+                Case TerrainTypeEnums.Magma
                     Return 172
-                Case Terrain.TerrainTypes.PondWater
+                Case TerrainTypeEnums.PondWater
                     Return 61
-                Case Terrain.TerrainTypes.Puddles
+                Case TerrainTypeEnums.Puddles
                     Return 426
-                Case Terrain.TerrainTypes.Rock
+                Case TerrainTypeEnums.Rock
                     Return 157
-                Case Terrain.TerrainTypes.Sand
+                Case TerrainTypeEnums.Sand
                     Return 89
-                Case Terrain.TerrainTypes.SeaWater
+                Case TerrainTypeEnums.SeaWater
                     Return 56
-                Case Terrain.TerrainTypes.Snow
+                Case TerrainTypeEnums.Snow
                     Return 58
-                Case Terrain.TerrainTypes.TallGrass
+                Case TerrainTypeEnums.TallGrass
                     Return 402
-                Case Terrain.TerrainTypes.Underwater
+                Case TerrainTypeEnums.Underwater
                     Return 291
             End Select
 

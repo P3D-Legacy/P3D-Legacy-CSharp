@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.KeyItems
 
     <Item(71, "Silver Wing")>
@@ -8,7 +10,7 @@ Namespace Items.KeyItems
         Public Overrides ReadOnly Property Description As String = "A strange, silvery feather that sparkles."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(48, 72, 24, 24)
+            TextureRectangle = New Rectangle(48, 72, 24, 24)
         End Sub
 
     End Class

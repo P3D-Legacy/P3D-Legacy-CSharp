@@ -1,7 +1,20 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Debug
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Interfaces
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
 ''' <summary>
 ''' A class that manages the collection of entities to represent a map.
 ''' </summary>
 Public Class Level
+    Implements ILevel
 
 #Region "Fields"
 
@@ -12,12 +25,12 @@ Public Class Level
     ''' <summary>
     ''' Stores warp data for warping to a new map.
     ''' </summary>
-    Public WarpData As WarpDataStruct
+    Public Property WarpData As WarpDataStruct Implements ILevel.WarpData
 
     ''' <summary>
     ''' Stores temporary Pokémon encounter data.
     ''' </summary>
-    Public PokemonEncounterData As PokemonEcounterDataStruct
+    Public Property PokemonEncounterData As PokemonEcounterDataStruct Implements ILevel.PokemonEncounterData
 
     'Level states:
     Private _isSurfing As Boolean = False
@@ -29,7 +42,7 @@ Public Class Level
     Private _offsetMapUpdateDelay As Integer = 50 'Ticks until the next Offset Map update occurs.
 
     'Map properties:
-    Private _terrain As Terrain = New Terrain(net.Pokemon3D.Game.Terrain.TerrainTypes.Plain)
+    Private _terrain As Terrain = New Terrain(TerrainTypeEnums.Plain)
     Private _mapName As String = ""
     Private _musicLoop As String = ""
     Private _levelFile As String = ""
@@ -58,11 +71,11 @@ Public Class Level
 
     Private _entities As New List(Of Entity)
     Private _floors As New List(Of Entity)
-    Private _shaders As New List(Of Shader)
-    Private _backdropRenderer As BackdropRenderer
+    Private _shaders As New List(Of IShader)
+    Private _backdropRenderer As IBackdropRenderer
 
-    Private _networkPlayers As New List(Of NetworkPlayer)
-    Private _networkPokemon As New List(Of NetworkPokemon)
+    Private _networkPlayers As New List(Of BaseNetworkPlayer)
+    Private _networkPokemon As New List(Of BaseNetworkPokemon)
 
     Private _offsetMapEntities As New List(Of Entity)
     Private _offsetMapFloors As New List(Of Entity)
@@ -82,7 +95,7 @@ Public Class Level
     ''' <summary>
     ''' The Terrain of this level.
     ''' </summary>
-    Public ReadOnly Property Terrain() As Terrain
+    Public ReadOnly Property Terrain As ITerrain Implements ILevel.Terrain
         Get
             Return Me._terrain
         End Get
@@ -91,7 +104,7 @@ Public Class Level
     ''' <summary>
     ''' A RouteSign on the top left corner of the screen to display the map's name.
     ''' </summary>
-    Public ReadOnly Property RouteSign() As RouteSign
+    Public ReadOnly Property RouteSign As RouteSign Implements ILevel.RouteSign
         Get
             Return Me._routeSign
         End Get
@@ -100,7 +113,7 @@ Public Class Level
     ''' <summary>
     ''' Indicates wether the player is surfing.
     ''' </summary>
-    Public Property Surfing() As Boolean
+    Public Property Surfing As Boolean Implements ILevel.Surfing
         Get
             Return _isSurfing
         End Get
@@ -112,7 +125,7 @@ Public Class Level
     ''' <summary>
     ''' Indicates wether the player is riding.
     ''' </summary>
-    Public Property Riding() As Boolean
+    Public Property Riding As Boolean Implements ILevel.Riding
         Get
             Return Me._isRiding
         End Get
@@ -124,7 +137,7 @@ Public Class Level
     ''' <summary>
     ''' Indicates wether the player used Strength already.
     ''' </summary>
-    Public Property UsedStrength() As Boolean
+    Public Property UsedStrength As Boolean Implements ILevel.UsedStrength
         Get
             Return Me._usedStrength
         End Get
@@ -136,11 +149,11 @@ Public Class Level
     ''' <summary>
     ''' The reference to the active OwnPlayer instance.
     ''' </summary>
-    Public Property OwnPlayer() As OwnPlayer
+    Public Property OwnPlayer As BaseOwnPlayer Implements ILevel.OwnPlayer
         Get
             Return Me._ownPlayer
         End Get
-        Set(value As OwnPlayer)
+        Set(value As BaseOwnPlayer)
             Me._ownPlayer = value
         End Set
     End Property
@@ -148,11 +161,11 @@ Public Class Level
     ''' <summary>
     ''' The reference to the active OverworldPokemon instance.
     ''' </summary>
-    Public Property OverworldPokemon() As OverworldPokemon
+    Public Property OverworldPokemon As BaseOverworldPokemon Implements ILevel.OverworldPokemon
         Get
             Return Me._ownOverworldPokemon
         End Get
-        Set(value As OverworldPokemon)
+        Set(value As BaseOverworldPokemon)
             Me._ownOverworldPokemon = value
         End Set
     End Property
@@ -160,7 +173,7 @@ Public Class Level
     ''' <summary>
     ''' The array of entities composing the map.
     ''' </summary>
-    Public Property Entities() As List(Of Entity)
+    Public Property Entities As List(Of Entity) Implements ILevel.Entities
         Get
             Return Me._entities
         End Get
@@ -172,7 +185,7 @@ Public Class Level
     ''' <summary>
     ''' The array of floors the player can move on.
     ''' </summary>
-    Public Property Floors() As List(Of Entity)
+    Public Property Floors As List(Of Entity) Implements ILevel.Floors
         Get
             Return Me._floors
         End Get
@@ -184,11 +197,11 @@ Public Class Level
     ''' <summary>
     ''' The array of shaders that add specific lighting to the map.
     ''' </summary>
-    Public Property Shaders() As List(Of Shader)
+    Public Property Shaders As List(Of IShader) Implements ILevel.Shaders
         Get
             Return Me._shaders
         End Get
-        Set(value As List(Of Shader))
+        Set(value As List(Of IShader))
             Me._shaders = value
         End Set
     End Property
@@ -196,11 +209,11 @@ Public Class Level
     ''' <summary>
     ''' The array of players on the server to render.
     ''' </summary>
-    Public Property NetworkPlayers() As List(Of NetworkPlayer)
+    Public Property NetworkPlayers As List(Of BaseNetworkPlayer) Implements ILevel.NetworkPlayers
         Get
             Return Me._networkPlayers
         End Get
-        Set(value As List(Of NetworkPlayer))
+        Set(value As List(Of BaseNetworkPlayer))
             Me._networkPlayers = value
         End Set
     End Property
@@ -208,11 +221,11 @@ Public Class Level
     ''' <summary>
     ''' The array of Pokémon on the server to render.
     ''' </summary>
-    Public Property NetworkPokemon() As List(Of NetworkPokemon)
+    Public Property NetworkPokemon As List(Of BaseNetworkPokemon) Implements ILevel.NetworkPokemon
         Get
             Return Me._networkPokemon
         End Get
-        Set(value As List(Of NetworkPokemon))
+        Set(value As List(Of BaseNetworkPokemon))
             Me._networkPokemon = value
         End Set
     End Property
@@ -220,7 +233,7 @@ Public Class Level
     ''' <summary>
     ''' The array of entities the offset maps are composed of.
     ''' </summary>
-    Public Property OffsetmapEntities() As List(Of Entity)
+    Public Property OffsetmapEntities As List(Of Entity) Implements ILevel.OffsetmapEntities
         Get
             Return Me._offsetMapEntities
         End Get
@@ -232,7 +245,7 @@ Public Class Level
     ''' <summary>
     ''' The array of floors the offset maps are composed of.
     ''' </summary>
-    Public Property OffsetmapFloors() As List(Of Entity)
+    Public Property OffsetmapFloors As List(Of Entity) Implements ILevel.OffsetmapFloors
         Get
             Return Me._offsetMapFloors
         End Get
@@ -245,7 +258,7 @@ Public Class Level
     ''' The name of the current map.
     ''' </summary>
     ''' <remarks>This name gets displayed on the RouteSign.</remarks>
-    Public Property MapName() As String
+    Public Property MapName As String Implements ILevel.MapName
         Get
             Return Me._mapName
         End Get
@@ -258,7 +271,7 @@ Public Class Level
     ''' The default background music for this level.
     ''' </summary>
     ''' <remarks>Doesn't play for surfing, riding and radio.</remarks>
-    Public Property MusicLoop() As String
+    Public Property MusicLoop As String Implements ILevel.MusicLoop
         Get
             Return Me._musicLoop
         End Get
@@ -271,7 +284,7 @@ Public Class Level
     ''' The file this level got loaded from.
     ''' </summary>
     ''' <remarks>The path is relative to the \maps\ or \GameMode\[gamemode]\maps\ path.</remarks>
-    Public Property LevelFile() As String
+    Public Property LevelFile As String Implements ILevel.LevelFile
         Get
             Return Me._levelFile
         End Get
@@ -283,7 +296,7 @@ Public Class Level
     ''' <summary>
     ''' Wether the player can use the move Teleport.
     ''' </summary>
-    Public Property CanTeleport As Boolean
+    Public Property CanTeleport As Boolean Implements ILevel.CanTeleport
         Get
             Return Me._canTeleport
         End Get
@@ -295,7 +308,7 @@ Public Class Level
     ''' <summary>
     ''' Wether the player can use the move Dig or an Escape Rope.
     ''' </summary>
-    Public Property CanDig As Boolean
+    Public Property CanDig As Boolean Implements ILevel.CanDig
         Get
             Return Me._canDig
         End Get
@@ -307,7 +320,7 @@ Public Class Level
     ''' <summary>
     ''' Wether the player can use the move Fly.
     ''' </summary>
-    Public Property CanFly As Boolean
+    Public Property CanFly As Boolean Implements ILevel.CanFly
         Get
             Return Me._canFly
         End Get
@@ -320,7 +333,7 @@ Public Class Level
     ''' The type of Ride the player can use on this map.
     ''' </summary>
     ''' <remarks>0 = Depends on CanDig and CanFly, 1 = True, 2 = False</remarks>
-    Public Property RideType As Integer
+    Public Property RideType As Integer Implements ILevel.RideType
         Get
             Return Me._rideType
         End Get
@@ -332,8 +345,8 @@ Public Class Level
     ''' <summary>
     ''' The Weather on this map.
     ''' </summary>
-    ''' <remarks>For the weather, look at the WeatherTypes enumeration in World.vb</remarks>
-    Public Property WeatherType As Integer
+    ''' <remarks>For the weather, look at the BattleWeather.WeatherTypes enumeration in World.vb</remarks>
+    Public Property WeatherType As Integer Implements ILevel.WeatherType
         Get
             Return Me._weatherType
         End Get
@@ -345,7 +358,7 @@ Public Class Level
     ''' <summary>
     ''' The environment type for this map.
     ''' </summary>
-    Public Property EnvironmentType As Integer
+    Public Property EnvironmentType As Integer Implements ILevel.EnvironmentType
         Get
             Return Me._environmentType
         End Get
@@ -357,7 +370,7 @@ Public Class Level
     ''' <summary>
     ''' Wether the player can encounter wild Pokémon in the Grass entities.
     ''' </summary>
-    Public Property WildPokemonGrass As Boolean
+    Public Property WildPokemonGrass As Boolean Implements ILevel.WildPokemonGrass
         Get
             Return Me._wildPokemonGrass
         End Get
@@ -369,7 +382,7 @@ Public Class Level
     ''' <summary>
     ''' Wether the player can encounter wild Pokémon on every floor tile.
     ''' </summary>
-    Public Property WildPokemonFloor As Boolean
+    Public Property WildPokemonFloor As Boolean Implements ILevel.WildPokemonFloor
         Get
             Return Me._wildPokemonFloor
         End Get
@@ -381,7 +394,7 @@ Public Class Level
     ''' <summary>
     ''' Wether the player can encounter wild Pokémon while surfing.
     ''' </summary>
-    Public Property WildPokemonWater As Boolean
+    Public Property WildPokemonWater As Boolean Implements ILevel.WildPokemonWater
         Get
             Return Me._wildPokemonWater
         End Get
@@ -393,7 +406,7 @@ Public Class Level
     ''' <summary>
     ''' Wether the map is dark, and needs to be lightened up by Flash.
     ''' </summary>
-    Public Property IsDark As Boolean
+    Public Property IsDark As Boolean Implements ILevel.IsDark
         Get
             Return Me._isDark
         End Get
@@ -405,7 +418,7 @@ Public Class Level
     ''' <summary>
     ''' Wether the Overworld Pokémon is visible.
     ''' </summary>
-    Public Property ShowOverworldPokemon As Boolean
+    Public Property ShowOverworldPokemon As Boolean Implements ILevel.ShowOverworldPokemon
         Get
             Return Me._showOverworldPokemon
         End Get
@@ -417,7 +430,7 @@ Public Class Level
     ''' <summary>
     ''' The amount of walked steps on this map.
     ''' </summary>
-    Public Property WalkedSteps As Integer
+    Public Property WalkedSteps As Integer Implements ILevel.WalkedSteps
         Get
             Return Me._walkedSteps
         End Get
@@ -430,7 +443,7 @@ Public Class Level
     ''' The region this map is assigned to.
     ''' </summary>
     ''' <remarks>The default is "Johto".</remarks>
-    Public Property CurrentRegion As String
+    Public Property CurrentRegion As String Implements ILevel.CurrentRegion
         Get
             Return Me._currentRegion
         End Get
@@ -442,7 +455,7 @@ Public Class Level
     ''' <summary>
     ''' Chance of a Hidden Ability being on a wild pokemon.
     ''' </summary>
-    Public Property HiddenAbilityChance As Integer
+    Public Property HiddenAbilityChance As Integer Implements ILevel.HiddenAbilityChance
         Get
             Return Me._hiddenabilitychance
         End Get
@@ -454,7 +467,7 @@ Public Class Level
     ''' <summary>
     ''' The LightingType of this map. More information in the Level\UpdateLighting.
     ''' </summary>
-    Public Property LightingType As Integer
+    Public Property LightingType As Integer Implements ILevel.LightingType
         Get
             Return Me._lightingType
         End Get
@@ -466,7 +479,7 @@ Public Class Level
     ''' <summary>
     ''' Wether the map is a part of the SafariZone. This changes the Battle Menu and the MenuScreen.
     ''' </summary>
-    Public Property IsSafariZone As Boolean
+    Public Property IsSafariZone As Boolean Implements ILevel.IsSafariZone
         Get
             Return Me._isSafariZone
         End Get
@@ -478,7 +491,7 @@ Public Class Level
     ''' <summary>
     ''' Wether the map is a part of the BugCatchingContest. This changes the Battle Menu and the MenuScreen.
     ''' </summary>
-    Public Property IsBugCatchingContest As Boolean
+    Public Property IsBugCatchingContest As Boolean Implements ILevel.IsBugCatchingContest
         Get
             Return Me._isBugCatchingContest
         End Get
@@ -491,7 +504,7 @@ Public Class Level
     ''' Holds data for the Bug Catching Contest.
     ''' </summary>
     ''' <remarks>Composed of 3 values, separated by ",": 0 = script location for ending the contest, 1 = script location for selecting the remaining balls item, 2 = Menu Item name for the remaining balls item.</remarks>
-    Public Property BugCatchingContestData As String
+    Public Property BugCatchingContestData As String Implements ILevel.BugCatchingContestData
         Get
             Return Me._bugCatchingContestData
         End Get
@@ -504,7 +517,7 @@ Public Class Level
     ''' Used to modify the Battle Map camera position.
     ''' </summary>
     ''' <remarks>Data: MapName,x,y,z OR Mapname OR x,y,z OR empty</remarks>
-    Public Property BattleMapData() As String
+    Public Property BattleMapData As String Implements ILevel.BattleMapData
         Get
             Return Me._battleMapData
         End Get
@@ -517,16 +530,16 @@ Public Class Level
     ''' Used to modify the Battle Map.
     ''' </summary>
     ''' <remarks>Data: MapName,x,y,z OR Mapname OR empty</remarks>
-    Public Property SurfingBattleMapData As String
+    Public Property SurfingBattleMapData As String Implements ILevel.SurfingBattleMapData
 
     ''' <summary>
     ''' The instance of the World class, handling time, season and weather based operations.
     ''' </summary>
-    Public Property World() As World
+    Public Property World As BaseWorld Implements ILevel.World
         Get
             Return Me._world
         End Get
-        Set(value As World)
+        Set(value As BaseWorld)
             Me._world = value
         End Set
     End Property
@@ -534,7 +547,7 @@ Public Class Level
     ''' <summary>
     ''' Wether the radio is currently activated.
     ''' </summary>
-    Public Property IsRadioOn() As Boolean
+    Public Property IsRadioOn As Boolean Implements ILevel.IsRadioOn
         Get
             Return Me._isRadioOn
         End Get
@@ -546,11 +559,11 @@ Public Class Level
     ''' <summary>
     ''' The currently selected radio station. If possible, this will replace the MusicLoop.
     ''' </summary>
-    Public Property SelectedRadioStation() As GameJolt.PokegearScreen.RadioStation
+    Public Property SelectedRadioStation As IRadioStation Implements ILevel.SelectedRadioStation
         Get
             Return Me._selectedRadioStation
         End Get
-        Set(value As GameJolt.PokegearScreen.RadioStation)
+        Set(value As IRadioStation)
             Me._selectedRadioStation = value
         End Set
     End Property
@@ -558,7 +571,7 @@ Public Class Level
     ''' <summary>
     ''' Allowed radio channels on this map.
     ''' </summary>
-    Public Property AllowedRadioChannels() As List(Of Decimal)
+    Public Property AllowedRadioChannels As List(Of Decimal) Implements ILevel.AllowedRadioChannels
         Get
             Return Me._radioChannels
         End Get
@@ -570,7 +583,7 @@ Public Class Level
     ''' <summary>
     ''' Handles wild Pokémon encounters.
     ''' </summary>
-    Public ReadOnly Property PokemonEncounter() As PokemonEncounter
+    Public ReadOnly Property PokemonEncounter As IPokemonEncounter Implements ILevel.PokemonEncounter
         Get
             Return Me._pokemonEncounter
         End Get
@@ -579,75 +592,11 @@ Public Class Level
     ''' <summary>
     ''' The backdrop renderer of this level.
     ''' </summary>
-    Public ReadOnly Property BackdropRenderer() As BackdropRenderer
+    Public ReadOnly Property BackdropRenderer As IBackdropRenderer Implements ILevel.BackdropRenderer
         Get
             Return _backdropRenderer
         End Get
     End Property
-
-#End Region
-
-#Region "Structures"
-
-    ''' <summary>
-    ''' A structure to store warp data in.
-    ''' </summary>
-    Public Structure WarpDataStruct
-        ''' <summary>
-        ''' The destination map file.
-        ''' </summary>
-        Public WarpDestination As String
-
-        ''' <summary>
-        ''' The position to warp the player to.
-        ''' </summary>
-        Public WarpPosition As Vector3
-
-        ''' <summary>
-        ''' The check to see if the player should get warped next tick.
-        ''' </summary>
-        Public DoWarpInNextTick As Boolean
-
-        ''' <summary>
-        ''' Amount of 90° rotations counter clockwise.
-        ''' </summary>
-        Public WarpRotations As Integer
-
-        ''' <summary>
-        ''' The correct camera yaw to set the camera to after the warping.
-        ''' </summary>
-        Public CorrectCameraYaw As Single
-
-        ''' <summary>
-        ''' If the warp action got triggered by a warp block.
-        ''' </summary>
-        Public IsWarpBlock As Boolean
-    End Structure
-
-    ''' <summary>
-    ''' A structure to store wild pokémon encounter data in.
-    ''' </summary>
-    Public Structure PokemonEcounterDataStruct
-        ''' <summary>
-        ''' The assumed position the player will be in when encounterning the Pokémon.
-        ''' </summary>
-        Public Position As Vector3
-
-        ''' <summary>
-        ''' Wether the player encountered a Pokémon.
-        ''' </summary>
-        Public EncounteredPokemon As Boolean
-
-        ''' <summary>
-        ''' The encounter method.
-        ''' </summary>
-        Public Method As Spawner.EncounterMethods
-
-        ''' <summary>
-        ''' The link to the .poke file used to spawn the Pokémon in.
-        ''' </summary>
-        Public PokeFile As String
-    End Structure
 
 #End Region
 
@@ -669,7 +618,7 @@ Public Class Level
     ''' <summary>
     ''' Initializes the offset map update cycle.
     ''' </summary>
-    Public Sub StartOffsetMapUpdate()
+    Public Sub StartOffsetMapUpdate() Implements ILevel.StartOffsetMapUpdate
         If Not Me._offsetTimer Is Nothing Then
             Me._offsetTimer.Stop()
         End If
@@ -683,7 +632,7 @@ Public Class Level
         Logger.Debug("Started Offset map update")
     End Sub
 
-    Public Sub StopOffsetMapUpdate()
+    Public Sub StopOffsetMapUpdate() Implements ILevel.StopOffsetMapUpdate
         Me._offsetTimer.Stop()
         While Me._isUpdatingOffsetMaps : End While
 
@@ -694,7 +643,7 @@ Public Class Level
     ''' Loads a level from a levelfile.
     ''' </summary>
     ''' <param name="Levelpath">The path to load the level from. Start with "|" to prevent loading a levelfile.</param>
-    Public Sub Load(ByVal Levelpath As String)
+    Public Sub Load(ByVal Levelpath As String) Implements ILevel.Load
         'Create a parameter array to pass over to the LevelLoader.
         Dim params As New List(Of Object)
         params.AddRange({Levelpath, False, New Vector3(0, 0, 0), 0, New List(Of String)})
@@ -711,7 +660,7 @@ Public Class Level
         End If
 
         'Create own player entity and OverworldPokémon entity and add them to the entity enumeration.
-        OwnPlayer = New OwnPlayer(0, 0, 0, {net.Pokemon3D.Game.TextureManager.DefaultTexture}, Core.Player.Skin, 0, 0, "", "Gold", 0)
+        OwnPlayer = New OwnPlayer(0, 0, 0, {TextureManager.DefaultTexture}, Core.Player.Skin, 0, 0, "", "Gold", 0)
         OverworldPokemon = New OverworldPokemon(Screen.Camera.Position.X, Screen.Camera.Position.Y, Screen.Camera.Position.Z + 1)
         OverworldPokemon.ChangeRotation()
         Entities.AddRange({OwnPlayer, OverworldPokemon})
@@ -723,7 +672,7 @@ Public Class Level
     ''' <summary>
     ''' Renders the level.
     ''' </summary>
-    Public Sub Draw()
+    Public Sub Draw() Implements ILevel.Draw
         Me._backdropRenderer.Draw()
 
         'Set the effect's View and Projection matrices.
@@ -763,7 +712,7 @@ Public Class Level
     ''' <summary>
     ''' Updates the level's logic.
     ''' </summary>
-    Public Sub Update()
+    Public Sub Update() Implements ILevel.Update
         Me._backdropRenderer.Update()
 
         Me.UpdatePlayerWarp()
@@ -790,7 +739,7 @@ Public Class Level
     ''' <summary>
     ''' Updates all entities on the map and offset map and sorts the enumarations.
     ''' </summary>
-    Public Sub UpdateEntities()
+    Public Sub UpdateEntities() Implements ILevel.UpdateEntities
         'Update and remove entities:
         If LevelLoader.IsBusy = False Then
             For i = 0 To Entities.Count - 1
@@ -829,7 +778,7 @@ Public Class Level
     ''' <summary>
     ''' Sorts the entity enumerations.
     ''' </summary>
-    Public Sub SortEntities()
+    Public Sub SortEntities() Implements ILevel.SortEntities
         If LevelLoader.IsBusy = False Then
             Entities = (From f In Entities Order By f.CameraDistance Descending).ToList()
         End If
@@ -838,7 +787,7 @@ Public Class Level
     ''' <summary>
     ''' Sorts and updates offset map entities.
     ''' </summary>
-    Public Sub UpdateOffsetMap()
+    Public Sub UpdateOffsetMap() Implements ILevel.UpdateOffsetMap
         Me._isUpdatingOffsetMaps = True
         If Core.GameOptions.LoadOffsetMaps > 0 Then
             'The Update function of entities on offset maps are not getting called.
@@ -887,8 +836,8 @@ Public Class Level
     ''' Renders offset map entities.
     ''' </summary>
     Private Sub RenderOffsetMap()
-        Dim state = GraphicsDevice.DepthStencilState
-        GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
+        Dim state = Core.GraphicsDevice.DepthStencilState
+        Core.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
 
         'Render floors:
         For i = 0 To Me.OffsetmapFloors.Count - 1
@@ -910,14 +859,14 @@ Public Class Level
             End If
         Next
 
-        GraphicsDevice.DepthStencilState = state
+        Core.GraphicsDevice.DepthStencilState = state
     End Sub
 
     ''' <summary>
     ''' Draws the flash overlay to the screen.
     ''' </summary>
     Private Sub DrawFlashOverlay()
-        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Overworld\flash_overlay"), New Rectangle(0, 0, Core.windowSize.Width, Core.windowSize.Height), Color.White)
+        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Overworld\flash_overlay"), New Rectangle(0, 0, Core.WindowSize.Width, Core.WindowSize.Height), Color.White)
     End Sub
 
     ''' <summary>
@@ -927,7 +876,7 @@ Public Class Level
         If WarpData.DoWarpInNextTick = True Then 'If a warp event got scheduled.
             'Disable wild Pokémon:
             Me._wildPokemonFloor = False
-            Me.PokemonEncounterData.EncounteredPokemon = False
+            PokemonEncounterData.EncounteredPokemon = False
 
             'Set the surfing flag for the next map:
             Core.Player.startSurfing = Surfing
@@ -956,7 +905,7 @@ Public Class Level
             Me.Surfing = Core.Player.startSurfing 'Set the surfing property after map switch.
 
             'Create player and Pokémon entities.
-            OwnPlayer = New OwnPlayer(0, 0, 0, {net.Pokemon3D.Game.TextureManager.DefaultTexture}, Core.Player.Skin, 0, 0, "", "Gold", 0)
+            OwnPlayer = New OwnPlayer(0, 0, 0, {TextureManager.DefaultTexture}, Core.Player.Skin, 0, 0, "", "Gold", 0)
             OwnPlayer.SetTexture(Core.Player.Skin, usingGameJoltTexture)
 
             OverworldPokemon = New OverworldPokemon(Screen.Camera.Position.X, Screen.Camera.Position.Y, Screen.Camera.Position.Z + 1)
@@ -1029,21 +978,22 @@ Public Class Level
             Screen.Camera.Update()
 
             'Disable the warp check:
-            Me.WarpData.DoWarpInNextTick = False
+            WarpData.DoWarpInNextTick = False
             WarpData.IsWarpBlock = False
 
-            If Core.ServersManager.ServerConnection.Connected = True Then
-                'Update network players:
-                Core.ServersManager.PlayerManager.NeedsUpdate = True
-            End If
+            'TODO
+            'If Core.ServersManager.ServerConnection.Connected = True Then
+            ''Update network players:
+            'Core.ServersManager.PlayerManager.NeedsUpdate = True
+            'End If
         End If
     End Sub
 
     ''' <summary>
     ''' Returns a list of all NPCs on the map.
     ''' </summary>
-    Public Function GetNPCs() As List(Of NPC)
-        Dim reList As New List(Of NPC)
+    Public Function GetNPCs() As List(Of BaseNPC) Implements ILevel.GetNPCs
+        Dim reList As New List(Of BaseNPC)
 
         For Each Entity As Entity In Me.Entities
             If Entity.EntityID = "NPC" Then
@@ -1059,7 +1009,7 @@ Public Class Level
     ''' </summary>
     ''' <param name="ID">The ID of the NPC to return from the level.</param>
     ''' <returns>Returns either a matching NPC or Nothing.</returns>
-    Public Function GetNPC(ByVal ID As Integer) As NPC
+    Public Function GetNPC(ByVal ID As Integer) As BaseNPC Implements ILevel.GetNPC
         For Each NPC As NPC In GetNPCs()
             If NPC.NPCID = ID Then
                 Return NPC
@@ -1072,7 +1022,7 @@ Public Class Level
     ''' <summary>
     ''' Returns an NPC based on the entity ID.
     ''' </summary>
-    Public Function GetEntity(ByVal ID As Integer) As Entity
+    Public Function GetEntity(ByVal ID As Integer) As Entity Implements ILevel.GetEntity
         If ID = -1 Then
             Throw New Exception("-1 is the default value for NOT having an ID, therefore is not a valid ID.")
         Else
@@ -1089,7 +1039,7 @@ Public Class Level
     ''' <summary>
     ''' Checks all NPCs on the map for if the player is in their line of sight.
     ''' </summary>
-    Public Sub CheckTrainerSights()
+    Public Sub CheckTrainerSights() Implements ILevel.CheckTrainerSights
         For Each Entity As Entity In Entities
             If Entity.EntityID = "NPC" Then
                 Dim NPC As NPC = CType(Entity, NPC)
@@ -1103,7 +1053,7 @@ Public Class Level
     ''' <summary>
     ''' Determines wether the player can use Ride on this map.
     ''' </summary>
-    Public Function CanRide() As Boolean
+    Public Function CanRide() As Boolean Implements ILevel.CanRide
         If GameController.IS_DEBUG_ACTIVE = True Or Core.Player.SandBoxMode = True Then 'Always true for Sandboxmode and Debug mode.
             Return True
         End If
@@ -1125,7 +1075,7 @@ Public Class Level
     ''' <summary>
     ''' Wether the player can move based on the entity around him.
     ''' </summary>
-    Public Function CanMove() As Boolean
+    Public Function CanMove() As Boolean Implements ILevel.CanMove
         For Each e As Entity In Me.Entities
             If e.Position.X = Screen.Camera.Position.X And e.Position.Z = Screen.Camera.Position.Z And CInt(e.Position.Y) = CInt(Screen.Camera.Position.Y) Then
                 Return e.LetPlayerMove()

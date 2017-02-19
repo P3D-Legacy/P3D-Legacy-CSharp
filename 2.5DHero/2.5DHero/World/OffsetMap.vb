@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Screens
+
 ''' <summary>
 ''' Represents an Offset Map to be stored by the LevelLoader.
 ''' </summary>
@@ -39,7 +42,7 @@ Public Class OffsetMap
 
         'Set the identifier:
         '             Offset map       Map weather                                  Region weather                          Time                    Season
-        _Identifier = _MapName & "|" & Screen.Level.World.CurrentMapWeather & "|" & World.GetCurrentRegionWeather() & "|" & World.GetTime() & "|" & World.CurrentSeason()
+        _Identifier = _MapName & "|" & Screen.Level.World.CurrentWeather & "|" & World.GetCurrentRegionWeather() & "|" & World.GetTime() & "|" & World.CurrentSeason()
     End Sub
 
     ''' <summary>

@@ -1,14 +1,31 @@
-﻿Namespace BattleSystem
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Battle.BattleSystemV2
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Objects
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Models
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.Server
+
+Namespace BattleSystem
 
     Public Class BattleScreen
+        Inherits BaseBattleScreen
 
-
-        Inherits Screen
-
-        'Used for after fainting switching
-        Public Shared OwnFaint As Boolean = False
-        Public Shared OppFaint As Boolean = False
-
+        Public Property Battle() As Battle
+            Get
+                Return m_Battle
+            End Get
+            Set
+                m_Battle = Value
+            End Set
+        End Property
+        Private m_Battle As Battle
 
 
         'Used for lead picking in PvP Battles
@@ -40,15 +57,9 @@
             PVP
         End Enum
 
-        Public Battle As Battle
-        Public FieldEffects As FieldEffects
         Public SavedOverworld As OverworldStorage
         Public BattleMenu As BattleMenu
         Public BattleQuery As New List(Of QueryObject)
-
-        'Remove when new system gets put in place:
-        Public OwnPokemon As Pokemon
-        Public OppPokemon As Pokemon
 
         Public IsMegaEvolvingOwn As Boolean = False
         Public IsMegaEvolvingOpp As Boolean = False
@@ -165,7 +176,7 @@
             LoadBattleMap()
 
             If Core.Player.Badges.Count > 0 Then 'Only have weather effects carry over from the Overworld if the player has at least one badge.
-                FieldEffects.Weather = BattleWeather.GetBattleWeather(SavedOverworld.Level.World.CurrentMapWeather)
+                FieldEffects.Weather = BattleWeather.GetBattleWeather(SavedOverworld.Level.World.CurrentWeather)
             End If
 
             Me.UpdateFadeIn = True
@@ -216,7 +227,7 @@
 
             Dim meIndex As Integer = 0
             For i = 0 To Core.Player.Pokemons.Count - 1
-                If Core.Player.Pokemons(i).IsEgg() = False And Core.Player.Pokemons(i).HP > 0 And Core.Player.Pokemons(i).Status <> Pokemon.StatusProblems.Fainted Then
+                If Core.Player.Pokemons(i).IsEgg() = False And Core.Player.Pokemons(i).HP > 0 And Core.Player.Pokemons(i).Status <> BasePokemon.StatusProblems.Fainted Then
                     meIndex = i
                     Exit For
                 End If
@@ -349,7 +360,7 @@
 
             Dim meIndex As Integer = 0
             For i = 0 To Core.Player.Pokemons.Count - 1
-                If Core.Player.Pokemons(i).IsEgg() = False And Core.Player.Pokemons(i).HP > 0 And Core.Player.Pokemons(i).Status <> Pokemon.StatusProblems.Fainted Then
+                If Core.Player.Pokemons(i).IsEgg() = False And Core.Player.Pokemons(i).HP > 0 And Core.Player.Pokemons(i).Status <> BasePokemon.StatusProblems.Fainted Then
                     meIndex = i
                     Exit For
                 End If
@@ -495,7 +506,7 @@
 
             Dim meIndex As Integer = 0
             For i = 0 To Core.Player.Pokemons.Count - 1
-                If Core.Player.Pokemons(i).IsEgg() = False And Core.Player.Pokemons(i).HP > 0 And Core.Player.Pokemons(i).Status <> Pokemon.StatusProblems.Fainted Then
+                If Core.Player.Pokemons(i).IsEgg() = False And Core.Player.Pokemons(i).HP > 0 And Core.Player.Pokemons(i).Status <> BasePokemon.StatusProblems.Fainted Then
                     meIndex = i
                     Exit For
                 End If
@@ -611,7 +622,7 @@
 
             Dim meIndex As Integer = 0
             For i = 0 To Core.Player.Pokemons.Count - 1
-                If Core.Player.Pokemons(i).IsEgg() = False And Core.Player.Pokemons(i).HP > 0 And Core.Player.Pokemons(i).Status <> Pokemon.StatusProblems.Fainted Then
+                If Core.Player.Pokemons(i).IsEgg() = False And Core.Player.Pokemons(i).HP > 0 And Core.Player.Pokemons(i).Status <> BasePokemon.StatusProblems.Fainted Then
                     meIndex = i
                     Exit For
                 End If
@@ -796,12 +807,12 @@
         Public Overrides Sub Draw()
             SkyDome.Draw(45.0F)
             Level.Draw()
-            World.DrawWeather(Screen.Level.World.CurrentMapWeather)
+            World.DrawWeather(Screen.Level.World.CurrentWeather)
 
             If HasToWaitPVP() = True Then
-                Canvas.DrawRectangle(New Rectangle(0, CInt(Core.windowSize.Height / 2 - 60), CInt(Core.windowSize.Width), 120), New Color(0, 0, 0, 150))
+                Canvas.DrawRectangle(New Rectangle(0, CInt(Core.WindowSize.Height / 2 - 60), CInt(Core.WindowSize.Width), 120), New Color(0, 0, 0, 150))
                 Dim t As String = "Waiting for the other player  "
-                Core.SpriteBatch.DrawString(FontManager.MainFont, t.Remove(t.Length - 2, 2) & LoadingDots.Dots, New Vector2(CSng(Core.windowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), CSng(Core.windowSize.Height / 2 - FontManager.MainFont.MeasureString(t).Y / 2)), Color.White)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, t.Remove(t.Length - 2, 2) & LoadingDots.Dots, New Vector2(CSng(Core.WindowSize.Width / 2 - FontManager.MainFont.MeasureString(t).X / 2), CSng(Core.WindowSize.Height / 2 - FontManager.MainFont.MeasureString(t).Y / 2)), Color.White)
             Else
                 If BattleMenu.Visible = True Then
                     BattleMenu.Draw(Me)
@@ -829,12 +840,12 @@ nextIndex:
                 Next
             End If
 
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Battle system not final!", New Vector2(0, Core.windowSize.Height - 20), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Battle system not final!", New Vector2(0, Core.WindowSize.Height - 20), Color.White)
 
             TextBox.Draw()
 
             If DrawColoredScreen = True Then
-                Canvas.DrawRectangle(Core.windowSize, Me.ColorOverlay)
+                Canvas.DrawRectangle(Core.WindowSize, Me.ColorOverlay)
             End If
         End Sub
 
@@ -913,7 +924,7 @@ nextIndex:
             End If
 
             'Update the world:
-            Screen.Level.World.Initialize(Screen.Level.EnvironmentType, World.GetWeatherTypeFromWeather(Screen.Level.World.CurrentMapWeather))
+            Screen.Level.World.Initialize(Screen.Level.EnvironmentType, World.GetWeatherTypeFromWeather(Screen.Level.World.CurrentWeather))
         End Sub
 
 #Region "CameraStuffs"
@@ -995,7 +1006,7 @@ nextIndex:
             If CBool(GameModeManager.GetGameRuleValue("DeathInsteadOfFaint", "0")) = True Then
                 For i = 0 To Core.Player.Pokemons.Count - 1
                     If i <= Core.Player.Pokemons.Count - 1 Then
-                        If Core.Player.Pokemons(i).HP <= 0 Or Core.Player.Pokemons(i).Status = Pokemon.StatusProblems.Fainted Then
+                        If Core.Player.Pokemons(i).HP <= 0 Or Core.Player.Pokemons(i).Status = BasePokemon.StatusProblems.Fainted Then
                             Core.Player.Pokemons.RemoveAt(i)
                             i -= 1
                         End If
@@ -1068,7 +1079,7 @@ nextIndex:
 
                 Dim hasLevelUp As Boolean = False
                 For Each p As Pokemon In Core.Player.Pokemons
-                    If p.hasLeveledUp = True Then
+                    If p.HasLeveledUp = True Then
                         hasLevelUp = True
                     End If
                     p.ResetTemp()
@@ -1081,9 +1092,9 @@ nextIndex:
                     For i = 0 To Core.Player.Pokemons.Count - 1
                         Dim p As Pokemon = Core.Player.Pokemons(i)
 
-                        If p.hasLeveledUp = True And p.EvolutionConditions.Count > 0 Then
-                            p.hasLeveledUp = False
-                            If p.CanEvolve(EvolutionCondition.EvolutionTrigger.LevelUp, "") = True Then
+                        If p.HasLeveledUp = True And p.EvolutionConditions.Count > 0 Then
+                            p.HasLeveledUp = False
+                            If p.CanEVolve(EvolutionCondition.EvolutionTrigger.LevelUp, "") = True Then
                                 EvolvePokeList.Add(i)
                             End If
                         End If
@@ -1101,7 +1112,7 @@ nextIndex:
                         If Not p.Item Is Nothing Then
                             If p.Item.IsBerry = True Then
                                 If Core.Random.Next(0, 3) = 0 Then
-                                    p.Item = Item.GetItemByID(139)
+                                    p.Item = Item.GetItemById(139)
                                 End If
                             End If
                         End If
@@ -1125,7 +1136,7 @@ nextIndex:
 
         Public Function TrainerHasFightablePokemon() As Boolean
             For Each p As Pokemon In Trainer.Pokemons
-                If p.Status <> Pokemon.StatusProblems.Fainted Then
+                If p.Status <> BasePokemon.StatusProblems.Fainted Then
                     Return True
                 End If
             Next
@@ -1138,14 +1149,14 @@ nextIndex:
             If i = -1 Then
                 If IsPVPBattle Then
                     i = 0
-                    While Trainer.Pokemons(i).Status = Pokemon.StatusProblems.Fainted OrElse OppPokemonIndex = i OrElse Trainer.Pokemons(i).HP <= 0
+                    While Trainer.Pokemons(i).Status = BasePokemon.StatusProblems.Fainted OrElse OppPokemonIndex = i OrElse Trainer.Pokemons(i).HP <= 0
                         i += 1
                     End While
 
                 Else
-                    i = Core.Random.Next(0, Trainer.Pokemons.count)
-                    While Trainer.Pokemons(i).Status = Pokemon.StatusProblems.Fainted OrElse OppPokemonIndex = i OrElse Trainer.Pokemons(i).HP <= 0
-                        i = Core.Random.Next(0, Trainer.Pokemons.count)
+                    i = Core.Random.Next(0, Trainer.Pokemons.Count)
+                    While Trainer.Pokemons(i).Status = BasePokemon.StatusProblems.Fainted OrElse OppPokemonIndex = i OrElse Trainer.Pokemons(i).HP <= 0
+                        i = Core.Random.Next(0, Trainer.Pokemons.Count)
                     End While
                 End If
             End If
@@ -1329,7 +1340,7 @@ nextIndex:
         Public ClientWonBattle As Boolean = True
 
         Public Sub SendClientCommand(ByVal c As String)
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(Servers.Package.PackageTypes.BattleClientData, Core.ServersManager.ID, Servers.Package.ProtocolTypes.TCP, {PartnerNetworkID.ToString(), c}.ToList()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleClientData, Core.ServersManager.ID, ProtocolTypes.TCP, {PartnerNetworkID.ToString(), c}.ToList()))
             Me.SentInput = True
         End Sub
 
@@ -1483,9 +1494,9 @@ nextIndex:
 
         Public Sub SendEndRoundData()
             Dim lockData As String = "{}"
-            Dim oppStep As Battle.RoundConst = Battle.GetOppStep(Me, Battle.OwnStep)
+            Dim oppStep As RoundConst = Battle.GetOppStep(Me, Battle.OwnStep)
             If Battle.SelectedMoveOpp = False Then
-                If oppStep.StepType = BattleSystem.Battle.RoundConst.StepTypes.Move Then
+                If oppStep.StepType = RoundConst.StepTypes.Move Then
                     lockData = "{" & CType(oppStep.Argument, Attack).ID.ToString() & "}"
                 Else
                     lockData = "{" & CStr(oppStep.Argument) & "}"
@@ -1510,7 +1521,7 @@ nextIndex:
                 d &= p.GetSaveData()
             Next
 
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(Servers.Package.PackageTypes.BattlePokemonData, Core.ServersManager.ID, Servers.Package.ProtocolTypes.TCP, {PartnerNetworkID.ToString(), d}.ToList()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattlePokemonData, Core.ServersManager.ID, ProtocolTypes.TCP, {PartnerNetworkID.ToString(), d}.ToList()))
         End Sub
 
         Public Sub SendHostQuery()
@@ -1533,7 +1544,7 @@ nextIndex:
             Next
             Me.TempPVPBattleQuery.Clear()
 
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(Servers.Package.PackageTypes.BattleHostData, Core.ServersManager.ID, Servers.Package.ProtocolTypes.TCP, {PartnerNetworkID.ToString(), d}.ToList()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleHostData, Core.ServersManager.ID, ProtocolTypes.TCP, {PartnerNetworkID.ToString(), d}.ToList()))
             SentHostData = True
         End Sub
 

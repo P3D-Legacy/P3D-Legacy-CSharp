@@ -1,3 +1,9 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Medicine
 
     <Item(40, "Max Revive")>
@@ -10,7 +16,7 @@ Namespace Items.Medicine
         Public Overrides ReadOnly Property PokeDollarPrice As Integer = 4000
 
         Public Sub New()
-            _textureRectangle = New Rectangle(384, 24, 24, 24)
+            TextureRectangle = New Rectangle(384, 24, 24, 24)
         End Sub
 
         Public Overrides Sub Use()
@@ -24,8 +30,8 @@ Namespace Items.Medicine
         Public Overrides Function UseOnPokemon(ByVal PokeIndex As Integer) As Boolean
             Dim Pokemon As Pokemon = Core.Player.Pokemons(PokeIndex)
 
-            If Pokemon.Status = net.Pokemon3D.Game.Pokemon.StatusProblems.Fainted Then
-                Pokemon.Status = net.Pokemon3D.Game.Pokemon.StatusProblems.None
+            If Pokemon.Status = BasePokemon.StatusProblems.Fainted Then
+                Pokemon.Status = BasePokemon.StatusProblems.None
                 Pokemon.HP = Pokemon.MaxHP
 
                 SoundManager.PlaySound("single_heal", False)

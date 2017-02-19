@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class HeadCharge
 
@@ -55,17 +58,18 @@
             Me.AIField2 = AIField.Recoil
         End Sub
 
-        Public Overrides Sub MoveRecoil(own As Boolean, BattleScreen As BattleScreen)
-            Dim lastDamage As Integer = BattleScreen.FieldEffects.OwnLastDamage
+        Public Overrides Sub MoveRecoil(own As Boolean, BattleScreen As Screen)
+            Dim screen as BattleScreen = BattleScreen
+            Dim lastDamage As Integer = screen.FieldEffects.OwnLastDamage
             If own = False Then
-                lastDamage = BattleScreen.FieldEffects.OppLastDamage
+                lastDamage = screen.FieldEffects.OppLastDamage
             End If
             Dim recoilDamage As Integer = CInt(Math.Floor(lastDamage / 3))
             If recoilDamage <= 0 Then
                 recoilDamage = 1
             End If
 
-            BattleScreen.Battle.InflictRecoil(own, own, BattleScreen, Me, recoilDamage, "", "move:headcharge")
+            screen.Battle.InflictRecoil(own, own, screen, Me, recoilDamage, "", "move:headcharge")
         End Sub
 
     End Class

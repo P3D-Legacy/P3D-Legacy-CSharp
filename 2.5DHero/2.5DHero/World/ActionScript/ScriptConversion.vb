@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Resources
+
 ''' <summary>
 ''' Used to convert strings into various types.
 ''' </summary>

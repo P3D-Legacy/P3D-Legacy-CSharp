@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Ground
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Ground
 
     Public Class MudSport
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If BattleScreen.FieldEffects.MudSport = 0 Then
                 BattleScreen.FieldEffects.MudSport = 5
                 BattleScreen.BattleQuery.Add(New TextQueryObject("Electricity's power was weakened!"))

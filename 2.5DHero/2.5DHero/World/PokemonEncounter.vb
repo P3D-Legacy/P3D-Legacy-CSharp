@@ -1,7 +1,15 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
 ''' <summary>
 ''' A class to handle wild Pokémon encounters.
 ''' </summary>
 Public Class PokemonEncounter
+    Implements IPokemonEncounter
 
 #Region "Fields and Constants"
 
@@ -30,7 +38,7 @@ Public Class PokemonEncounter
     ''' <param name="Position">The position the encounter should happen.</param>
     ''' <param name="Method">The method of the encounter.</param>
     ''' <param name="pokeFile">The source .poke file. If left empty, the game will assume the levelfile as source .poke file.</param>
-    Public Sub TryEncounterWildPokemon(ByVal Position As Vector3, ByVal Method As Spawner.EncounterMethods, ByVal pokeFile As String)
+    Public Sub TryEncounterWildPokemon(ByVal Position As Vector3, ByVal Method As EncounterMethods, ByVal pokeFile As String) Implements IPokemonEncounter.TryEncounterWildPokemon
         With Me._levelReference
 
             If .WalkedSteps > 3 Then 'Only after walking 3 steps, try to encounter a wild Pokémon.
@@ -103,7 +111,7 @@ Public Class PokemonEncounter
     ''' <summary>
     ''' Triggers a battle with a wild Pokémon if the requirements are met.
     ''' </summary>
-    Public Sub TriggerBattle()
+    Public Sub TriggerBattle() Implements IPokemonEncounter.TriggerBattle
         'If the encounter check is true.
         If Me._levelReference.PokemonEncounterData.EncounteredPokemon = True And Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
             'If the player met the set position:
@@ -131,7 +139,7 @@ Public Class PokemonEncounter
                     'Cleanse Tag prevents wild Pokémon if held by first Pokémon in party.
                     If Core.Player.Pokemons(0).Level >= Pokemon.Level Then
                         If Not Core.Player.Pokemons(0).Item Is Nothing Then
-                            If Core.Player.Pokemons(0).Item.ID = 94 Then
+                            If Core.Player.Pokemons(0).Item.Id = 94 Then
                                 If Core.Random.Next(0, 3) = 0 Then
                                     Exit Sub
                                 End If
@@ -139,10 +147,10 @@ Public Class PokemonEncounter
                         End If
                     End If
 
-                     'Pure Incense Lowers the chance of encountering wild Pokémon if held by first Pokémon in party.
+                    'Pure Incense Lowers the chance of encountering wild Pokémon if held by first Pokémon in party.
                     If Core.Player.Pokemons(0).Level >= Pokemon.Level Then
                         If Not Core.Player.Pokemons(0).Item Is Nothing Then
-                            If Core.Player.Pokemons(0).Item.ID = 291 Then
+                            If Core.Player.Pokemons(0).Item.Id = 291 Then
                                 If Core.Random.Next(0, 3) = 0 Then
                                     Exit Sub
                                 End If

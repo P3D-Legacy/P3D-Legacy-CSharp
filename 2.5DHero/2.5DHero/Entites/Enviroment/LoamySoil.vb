@@ -1,4 +1,10 @@
-﻿Public Class LoamySoil
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+
+Public Class LoamySoil
 
     Inherits Entity
 
@@ -32,7 +38,7 @@
     Public Sub PlantBerry(ByVal ChosenBerry As Integer)
         Dim testItem As Item = Item.GetItemByID(ChosenBerry)
         If testItem.isBerry = True Then
-            Dim Berry As Items.Berry = CType(Item.GetItemByID(ChosenBerry), Items.Berry)
+            Dim Berry As Berry = CType(Item.GetItemById(ChosenBerry), Berry)
 
             BerryPlant.AddBerryPlant(Screen.Level.LevelFile, Me.Position, Berry.BerryIndex)
             Screen.TextBox.reDelay = 0.0F

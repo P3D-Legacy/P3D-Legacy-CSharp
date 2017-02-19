@@ -1,3 +1,10 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
 ''' <summary>
 ''' A class to name Pokémon and other objects (namely the rival).
 ''' </summary>
@@ -48,7 +55,7 @@ Public Class NameObjectScreen
         Me._mainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
 
         'Show the Pokémon image:
-        Screen.PokemonImageView.Show(Pokemon, True)
+        PokemonImageView.Show(Pokemon, True)
     End Sub
 
     Public Sub New(ByVal CurrentScreen As Screen, ByVal Texture As Texture2D, ByVal canExit As Boolean, ByVal canChoose As Boolean, ByVal NameString As String, ByVal DefaultName As String, ByVal AcceptName As DNameAcceptEventHandler)
@@ -106,21 +113,21 @@ Public Class NameObjectScreen
             Dim genderString As String = ""
             Dim genderUnicode As Integer = 0
             If _renamePokemon = True Then
-                If _pokemon.Gender = Pokemon.Genders.Male Then
+                If _pokemon.Gender = BasePokemon.Genders.Male Then
                     genderString = "     "
                     genderUnicode = 156
-                ElseIf _pokemon.Gender = Pokemon.Genders.Female Then
+                ElseIf _pokemon.Gender = BasePokemon.Genders.Female Then
                     genderString = "     "
                     genderUnicode = 157
                 End If
             End If
 
-            Core.SpriteBatch.DrawString(FontManager.InGameFont, "Rename " & Me._defaultName & genderString & "?", New Vector2(CInt(Core.windowSize.Width / 2) - 182 + 25, 93), Color.Black)
-            Core.SpriteBatch.DrawString(FontManager.InGameFont, "Rename " & Me._defaultName & genderString & "?", New Vector2(CInt(Core.windowSize.Width / 2) - 182 + 22, 90), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.InGameFont, "Rename " & Me._defaultName & genderString & "?", New Vector2(CInt(Core.WindowSize.Width / 2) - 182 + 25, 93), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.InGameFont, "Rename " & Me._defaultName & genderString & "?", New Vector2(CInt(Core.WindowSize.Width / 2) - 182 + 22, 90), Color.White)
 
             If genderUnicode <> 0 Then
-                Core.SpriteBatch.DrawString(FontManager.TextFont, ChrW(genderUnicode), New Vector2(CInt(Core.windowSize.Width / 2) + FontManager.InGameFont.MeasureString("Rename " & Me._defaultName).X - 147, 93), Color.Black, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
-                Core.SpriteBatch.DrawString(FontManager.TextFont, ChrW(genderUnicode), New Vector2(CInt(Core.windowSize.Width / 2) + FontManager.InGameFont.MeasureString("Rename " & Me._defaultName).X - 150, 90), Color.White, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.TextFont, ChrW(genderUnicode), New Vector2(CInt(Core.WindowSize.Width / 2) + FontManager.InGameFont.MeasureString("Rename " & Me._defaultName).X - 147, 93), Color.Black, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.TextFont, ChrW(genderUnicode), New Vector2(CInt(Core.WindowSize.Width / 2) + FontManager.InGameFont.MeasureString("Rename " & Me._defaultName).X - 150, 90), Color.White, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
             End If
 
             ChooseBox.Showing = False
@@ -129,10 +136,10 @@ Public Class NameObjectScreen
                 Dim genderString As String = ""
                 Dim genderUnicode As Integer = 0
                 If _renamePokemon = True Then
-                    If _pokemon.Gender = Pokemon.Genders.Male Then
+                    If _pokemon.Gender = BasePokemon.Genders.Male Then
                         genderString = "     "
                         genderUnicode = 156
-                    ElseIf _pokemon.Gender = Pokemon.Genders.Female Then
+                    ElseIf _pokemon.Gender = BasePokemon.Genders.Female Then
                         genderString = "     "
                         genderUnicode = 157
                     End If
@@ -182,7 +189,7 @@ Public Class NameObjectScreen
             End If
         Next
 
-        If Controls.Accept(True, False, True) = True Or KeyBoardHandler.KeyPressed(KeyBindings.EnterKey1) = True Then
+        If Controls.Accept(True, False, True) = True Or KeyBoardHandler.KeyPressed(Core.KeyBindings.Enter1) = True Then
             Select Case _index
                 Case 0
                     ClickYes()

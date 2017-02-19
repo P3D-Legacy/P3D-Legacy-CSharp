@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Bug
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Bug
 
     Public Class Megahorn
 

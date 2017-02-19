@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Fighting
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Fighting
 
     Public Class AuraSphere
 

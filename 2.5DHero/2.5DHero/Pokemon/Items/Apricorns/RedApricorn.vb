@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.Apricorns
 
     <Item(85, "Red Apricorn")>
@@ -8,7 +10,7 @@ Namespace Items.Apricorns
         Public Overrides ReadOnly Property Description As String = "A red Apricorn. It assails your nostrils."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(240, 72, 24, 24)
+            TextureRectangle = New Rectangle(240, 72, 24, 24)
         End Sub
 
     End Class

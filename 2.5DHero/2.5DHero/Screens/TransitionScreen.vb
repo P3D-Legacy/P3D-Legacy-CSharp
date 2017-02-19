@@ -1,4 +1,8 @@
-﻿Public Class TransitionScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class TransitionScreen
 
     Inherits Screen
 

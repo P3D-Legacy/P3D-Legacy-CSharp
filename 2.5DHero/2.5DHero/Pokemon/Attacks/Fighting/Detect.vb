@@ -1,4 +1,8 @@
-﻿Namespace BattleSystem.Moves.Fighting
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Fighting
 
     Public Class Detect
 
@@ -55,11 +59,12 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
             Dim chance As Double = 100D
-            Dim protects As Integer = BattleScreen.FieldEffects.OwnProtectMovesCount
+            Dim protects As Integer = screen.FieldEffects.OwnProtectMovesCount
             If Own = False Then
-                protects = BattleScreen.FieldEffects.OppProtectMovesCount
+                protects = screen.FieldEffects.OppProtectMovesCount
             End If
 
             If protects > 0 Then
@@ -71,12 +76,12 @@
             If Core.Random.Next(0, 100) < chance Then
                 Return False
             Else
-                BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
+                screen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
                 Return True
             End If
         End Function
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If own = True Then
                 BattleScreen.FieldEffects.OwnProtectMovesCount += 1
 

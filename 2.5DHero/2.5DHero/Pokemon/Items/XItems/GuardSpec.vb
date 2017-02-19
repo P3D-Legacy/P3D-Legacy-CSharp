@@ -1,3 +1,9 @@
+Imports net.Pokemon3D.Game.BattleSystem
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.XItems
 
     <Item(68, "Guard Spec.")>
@@ -9,7 +15,7 @@ Namespace Items.XItems
         Public Overrides ReadOnly Property Description As String = "An item that prevents stat reduction among the Trainer's party Pokémon for five turns after it is used in battle."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(408, 24, 24, 24)
+            TextureRectangle = New Rectangle(408, 24, 24, 24)
         End Sub
 
         Public Overrides Function UseOnPokemon(PokeIndex As Integer) As Boolean

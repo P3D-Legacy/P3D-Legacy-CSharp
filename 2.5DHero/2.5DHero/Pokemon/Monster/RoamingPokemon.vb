@@ -1,3 +1,7 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Security
+
 Public Class RoamingPokemon
 
     Public WorldID As Integer = -1
@@ -37,7 +41,7 @@ Public Class RoamingPokemon
 
                 If CInt(data(2)) = worldID Or worldID = -1 Then
                     Dim regionsFile As String = GameModeManager.GetScriptPath("worldmap\roaming_regions.dat")
-                    Security.FileValidation.CheckFileValid(regionsFile, False, "RoamingPokemon.vb")
+                    FileValidation.CheckFileValid(regionsFile, False, "RoamingPokemon.vb")
 
                     Dim worldList As List(Of String) = System.IO.File.ReadAllLines(regionsFile).ToList()
                     Dim levelList As New List(Of String)

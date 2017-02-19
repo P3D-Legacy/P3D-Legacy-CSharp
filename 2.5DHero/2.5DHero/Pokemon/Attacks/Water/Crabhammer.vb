@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Water
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Water
 
     Public Class Crabhammer
 

@@ -1,4 +1,8 @@
-﻿Public Class Chat
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+
+Public Class Chat
 
     Public Const NEWMESSAGEDELAY As Single = 35.0F
 

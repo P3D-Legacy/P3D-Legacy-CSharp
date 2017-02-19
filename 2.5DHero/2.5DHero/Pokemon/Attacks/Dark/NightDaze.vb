@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Dark
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Dark
 
     Public Class NightDaze
 
@@ -57,7 +60,7 @@
             Me.AIField2 = AIField.CanLowerAccuracy
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim chance As Integer = GetEffectChance(0, own, BattleScreen)
             If Core.Random.Next(0, 100) < chance Then
                 BattleScreen.Battle.LowerStat(Not own, own, BattleScreen, "Accuracy", 1, "", "move:nightdaze")

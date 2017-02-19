@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Metronome
 
@@ -53,12 +56,12 @@
         End Sub
 
         Public Shared Function GetMetronomeMove() As Attack
-            Dim moveID As Integer = Core.Random.Next(1, MOVE_COUNT + 1)
+            Dim moveID As Integer = Core.Random.Next(1, MoveCount + 1)
 
             Dim forbiddenIDs As List(Of Integer) = {68, 102, 119, 144, 165, 166, 168, 173, 182, 194, 197, 203, 214, 243, 264, 266, 267, 270, 271, 274, 289, 343, 364, 382, 383, 415, 448, 476, 469, 495, 501, 511, 516, 546, 547, 548, 553, 554, 555, 557}.ToList()
 
             While forbiddenIDs.Contains(moveID) = True
-                moveID = Core.Random.Next(1, MOVE_COUNT + 1)
+                moveID = Core.Random.Next(1, MoveCount + 1)
             End While
 
             Return Attack.GetAttackByID(moveID)

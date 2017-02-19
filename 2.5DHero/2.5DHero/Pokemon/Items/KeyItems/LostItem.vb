@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.KeyItems
 
     <Item(130, "Lost Item")>
@@ -8,7 +10,7 @@ Namespace Items.KeyItems
         Public Overrides ReadOnly Property Description As String = "The Poké Doll lost by the Copycat."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(216, 120, 24, 24)
+            TextureRectangle = New Rectangle(216, 120, 24, 24)
         End Sub
 
     End Class

@@ -1,4 +1,8 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Thrash
 
@@ -56,7 +60,7 @@
             Me.AIField2 = AIField.ConfuseOwn
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim currentTurns As Integer = BattleScreen.FieldEffects.OwnThrash
             If own = False Then
                 currentTurns = BattleScreen.FieldEffects.OppThrash
@@ -82,15 +86,15 @@
             BattleScreen.Battle.InflictConfusion(own, own, BattleScreen, "", "move:thrash")
         End Sub
 
-        Public Overrides Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 

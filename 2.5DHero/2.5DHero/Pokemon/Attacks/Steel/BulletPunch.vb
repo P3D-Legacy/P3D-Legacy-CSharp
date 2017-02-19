@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Steel
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Steel
 
     Public Class BulletPunch
 

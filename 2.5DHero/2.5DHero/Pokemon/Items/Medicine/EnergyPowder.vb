@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Medicine
 
     <Item(121, "Energy Powder")>
@@ -10,7 +15,7 @@ Namespace Items.Medicine
         Public Overrides ReadOnly Property IsHealingItem As Boolean = True
 
         Public Sub New()
-            _textureRectangle = New Rectangle(0, 120, 24, 24)
+            TextureRectangle = New Rectangle(0, 120, 24, 24)
         End Sub
 
         Public Overrides Sub Use()
@@ -24,7 +29,7 @@ Namespace Items.Medicine
         Public Overrides Function UseOnPokemon(ByVal PokeIndex As Integer) As Boolean
             Dim success As Boolean = HealPokemon(PokeIndex, 50)
             If success Then
-                Core.Player.Pokemons(PokeIndex).ChangeFriendShip(Pokemon.FriendShipCauses.EnergyPowder)
+                Core.Player.Pokemons(PokeIndex).ChangeFriendShip(BasePokemon.FriendShipCauses.EnergyPowder)
             End If
             Return success
         End Function

@@ -1,35 +1,15 @@
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.World
+
 ''' <summary>
 ''' Defines and handles terrain definitions for a map.
 ''' </summary>
 Public Class Terrain
-
-#Region "Enums"
-
-    ''' <summary>
-    ''' A terrain type defined in the Terrain tag of a map.
-    ''' </summary>
-    Public Enum TerrainTypes
-        Plain
-        Sand
-        Cave
-        Rock
-        TallGrass
-        LongGrass
-        PondWater
-        SeaWater
-        Underwater
-        DisortionWorld
-        Puddles
-        Snow
-        Magma
-        PvPBattle
-    End Enum
-
-#End Region
+    Implements ITerrain
 
 #Region "Fields and Constants"
 
-    Private _terrainType As TerrainTypes = TerrainTypes.Plain
+    Private _terrainType As TerrainTypeEnums = TerrainTypeEnums.Plain
 
 #End Region
 
@@ -38,11 +18,11 @@ Public Class Terrain
     ''' <summary>
     ''' The terrain type of this Terrain instance.
     ''' </summary>
-    Public Property TerrainType() As TerrainTypes
+    Public Property TerrainType() As TerrainTypeEnums Implements ITerrain.TerrainType
         Get
             Return Me._terrainType
         End Get
-        Set(value As TerrainTypes)
+        Set(value As TerrainTypeEnums)
             Me._terrainType = value
         End Set
     End Property
@@ -55,7 +35,7 @@ Public Class Terrain
     ''' Creates a new instance of the Terrain class and sets an initial TerrainType.
     ''' </summary>
     ''' <param name="InitialTerrainType">The TerrainType for this instance.</param>
-    Public Sub New(ByVal InitialTerrainType As TerrainTypes)
+    Public Sub New(ByVal InitialTerrainType As TerrainTypeEnums)
         Me._terrainType = InitialTerrainType
     End Sub
 
@@ -67,41 +47,41 @@ Public Class Terrain
     ''' Converts a Terrain name to the correct Terrain class instance.
     ''' </summary>
     ''' <param name="input">The Terrain name.</param>
-    Public Shared Function FromString(ByVal input As String) As Terrain.TerrainTypes
+    Public Shared Function FromString(ByVal input As String) As TerrainTypeEnums
         Select Case input.ToLower()
             Case "plain"
-                Return TerrainTypes.Plain
+                Return TerrainTypeEnums.Plain
             Case "sand"
-                Return TerrainTypes.Sand
+                Return TerrainTypeEnums.Sand
             Case "cave"
-                Return TerrainTypes.Cave
+                Return TerrainTypeEnums.Cave
             Case "rock"
-                Return TerrainTypes.Rock
+                Return TerrainTypeEnums.Rock
             Case "tallgrass"
-                Return TerrainTypes.TallGrass
+                Return TerrainTypeEnums.TallGrass
             Case "longgrass"
-                Return TerrainTypes.LongGrass
+                Return TerrainTypeEnums.LongGrass
             Case "pondwater"
-                Return TerrainTypes.PondWater
+                Return TerrainTypeEnums.PondWater
             Case "seawater"
-                Return TerrainTypes.SeaWater
+                Return TerrainTypeEnums.SeaWater
             Case "underwater"
-                Return TerrainTypes.Underwater
+                Return TerrainTypeEnums.Underwater
             Case "disortionworld"
-                Return TerrainTypes.DisortionWorld
+                Return TerrainTypeEnums.DisortionWorld
             Case "puddles"
-                Return TerrainTypes.Puddles
+                Return TerrainTypeEnums.Puddles
             Case "snow"
-                Return TerrainTypes.Snow
+                Return TerrainTypeEnums.Snow
             Case "magma"
-                Return TerrainTypes.Magma
+                Return TerrainTypeEnums.Magma
             Case "pvp"
-                Return TerrainTypes.PvPBattle
+                Return TerrainTypeEnums.PvPBattle
         End Select
 
         'Default terrain:
         Logger.Log(Logger.LogTypes.Warning, "Terrain.vb: Invalid terrain name: """ & input & """. Returning ""Plains"".")
-        Return TerrainTypes.Plain
+        Return TerrainTypeEnums.Plain
     End Function
 
 #End Region

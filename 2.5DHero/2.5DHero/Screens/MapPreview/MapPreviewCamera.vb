@@ -1,5 +1,8 @@
-﻿Public Class MapPreviewCamera
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.HelperClasses
+Imports P3D.Legacy.Core.Input
 
+Public Class MapPreviewCamera
     Inherits Camera
 
     Public oldX, oldY As Single
@@ -81,7 +84,7 @@
 
         Pitch += -RotationSpeed * dy
 
-        Pitch = MathHelper.Clamp(Pitch, -1.5f, 1.5f)
+        Pitch = MathHelper.Clamp(Pitch, -1.5F, 1.5F)
     End Sub
 
     Private Sub MoveCamera()
@@ -109,9 +112,9 @@
 
     Public Sub ResetCursor()
         If Core.GameInstance.IsActive = True Then
-            Mouse.SetPosition(CInt(Core.windowSize.Width / 2), CInt(Core.windowSize.Height / 2))
-            oldX = CInt(Core.windowSize.Width / 2)
-            oldY = CInt(Core.windowSize.Height / 2)
+            Mouse.SetPosition(CInt(Core.WindowSize.Width / 2), CInt(Core.WindowSize.Height / 2))
+            oldX = CInt(Core.WindowSize.Width / 2)
+            oldY = CInt(Core.WindowSize.Height / 2)
         End If
     End Sub
 
@@ -136,8 +139,8 @@
     End Sub
 
     Public Function createRay() As Ray
-        Dim centerX As Integer = CInt(Core.windowSize.Width / 2)
-        Dim centerY As Integer = CInt(Core.windowSize.Height / 2)
+        Dim centerX As Integer = CInt(Core.WindowSize.Width / 2)
+        Dim centerY As Integer = CInt(Core.WindowSize.Height / 2)
 
         Dim nearSource As Vector3 = New Vector3(centerX, centerY, 0)
         Dim farSource As Vector3 = New Vector3(centerX, centerY, 1)
@@ -150,5 +153,4 @@
 
         Return New Ray(nearPoint, direction)
     End Function
-
 End Class

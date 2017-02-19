@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Pokemon.Items
+Imports P3D.Legacy.Core.Screens
+
 Namespace Items.Berries
 
     <Item(2020, "Pomeg")>
@@ -30,13 +35,13 @@ Namespace Items.Berries
                 If p.EVHP < reduce Then
                     reduce = p.EVHP
                 End If
-                
-                p.ChangeFriendShip(Pokemon.FriendShipCauses.EVBerry)
+
+                p.ChangeFriendShip(BasePokemon.FriendShipCauses.EVBerry)
                 p.EVHP -= reduce
                 p.CalculateStats()
 
                 If p.HP <= 0 Then
-                    If p.Status = Pokemon.StatusProblems.Fainted Then
+                    If p.Status = BasePokemon.StatusProblems.Fainted Then
                         p.HP = 0
                     Else
                         p.HP = 1

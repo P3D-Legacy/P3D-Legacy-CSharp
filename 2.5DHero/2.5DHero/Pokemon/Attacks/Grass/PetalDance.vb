@@ -1,4 +1,8 @@
-﻿Namespace BattleSystem.Moves.Grass
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Grass
 
     Public Class PetalDance
 
@@ -56,7 +60,7 @@
             Me.AIField3 = AIField.ConfuseOwn
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim currentTurns As Integer = BattleScreen.FieldEffects.OwnPetalDance
             If own = False Then
                 currentTurns = BattleScreen.FieldEffects.OppPetalDance
@@ -82,15 +86,15 @@
             BattleScreen.Battle.InflictConfusion(own, own, BattleScreen, "", "move:petaldance")
         End Sub
 
-        Public Overrides Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 

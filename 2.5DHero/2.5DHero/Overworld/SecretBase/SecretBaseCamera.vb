@@ -1,5 +1,8 @@
-﻿Public Class SecretBaseCamera
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.HelperClasses
+Imports P3D.Legacy.Core.Input
 
+Public Class SecretBaseCamera
     Inherits Camera
 
     Dim oldX, oldY As Integer
@@ -55,11 +58,13 @@
 
         If Position.X + MoveX < 0.0F Then
             MoveX = 0.0F
-            Position.X = 0.0F
+            'Position.X = 0.0F
+            Position = New Vector3(0.0F, Position.Y, Position.Z)
         End If
         If Position.Z + MoveZ < 0.0F Then
             MoveZ = 0.0F
-            Position.Z = 0.0F
+            'Position.Z = 0.0F
+            Position = New Vector3(Position.X, Position.Y, 0.0F)
         End If
 
         Me.Position = New Vector3(Me.Position.X + MoveX, Me.Position.Y, Me.Position.Z + MoveZ)
@@ -71,9 +76,9 @@
 
     Public Sub ResetCursor()
         If Core.GameInstance.IsActive = True Then
-            Mouse.SetPosition(CInt(Core.windowSize.Width / 2), CInt(Core.windowSize.Height / 2))
-            oldX = CInt(Core.windowSize.Width / 2)
-            oldY = CInt(Core.windowSize.Height / 2)
+            Mouse.SetPosition(CInt(Core.WindowSize.Width / 2), CInt(Core.WindowSize.Height / 2))
+            oldX = CInt(Core.WindowSize.Width / 2)
+            oldY = CInt(Core.WindowSize.Height / 2)
         End If
     End Sub
 
@@ -98,8 +103,8 @@
     End Sub
 
     Public Function CreateRay() As Ray
-        Dim centerX As Integer = CInt(Core.windowSize.Width / 2)
-        Dim centerY As Integer = CInt(Core.windowSize.Height / 2)
+        Dim centerX As Integer = CInt(Core.WindowSize.Width / 2)
+        Dim centerY As Integer = CInt(Core.WindowSize.Height / 2)
 
         Dim nearSource As Vector3 = New Vector3(centerX, centerY, 0)
         Dim farSource As Vector3 = New Vector3(centerX, centerY, 1)

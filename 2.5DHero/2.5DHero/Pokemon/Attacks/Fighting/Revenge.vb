@@ -1,3 +1,6 @@
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
 Namespace BattleSystem.Moves.Fighting
 
     Public Class Revenge
@@ -52,19 +55,20 @@ Namespace BattleSystem.Moves.Fighting
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
             If own = True Then
-                If BattleScreen.FieldEffects.OppTurnCounts > BattleScreen.FieldEffects.OwnTurnCounts Then
-                    If Not BattleScreen.FieldEffects.OppLastMove Is Nothing Then
-                        If BattleScreen.FieldEffects.OppLastMove.IsDamagingMove = True Then
+                If screen.FieldEffects.OppTurnCounts > screen.FieldEffects.OwnTurnCounts Then
+                    If Not screen.FieldEffects.OppLastMove Is Nothing Then
+                        If screen.FieldEffects.OppLastMove.IsDamagingMove = True Then
                             Return Me.Power * 2
                         End If
                     End If
                 End If
             Else
-                If BattleScreen.FieldEffects.OwnTurnCounts > BattleScreen.FieldEffects.OppTurnCounts Then
-                    If Not BattleScreen.FieldEffects.OwnLastMove Is Nothing Then
-                        If BattleScreen.FieldEffects.OwnLastMove.IsDamagingMove = True Then
+                If screen.FieldEffects.OwnTurnCounts > screen.FieldEffects.OppTurnCounts Then
+                    If Not screen.FieldEffects.OwnLastMove Is Nothing Then
+                        If screen.FieldEffects.OwnLastMove.IsDamagingMove = True Then
                             Return Me.Power * 2
                         End If
                     End If

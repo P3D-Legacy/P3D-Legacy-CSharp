@@ -1,4 +1,8 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Snore
 
@@ -57,21 +61,22 @@
             Me.EffectChances.Add(30)
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Dim p As Pokemon = BattleScreen.OwnPokemon
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen as BattleScreen = BattleScreen
+            Dim p As Pokemon = screen.OwnPokemon
             If Own = False Then
-                p = BattleScreen.OppPokemon
+                p = screen.OppPokemon
             End If
 
-            If p.Status = Pokemon.StatusProblems.Sleep Then
+            If p.Status = BasePokemon.StatusProblems.Sleep Then
                 Return False
             Else
-                BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
+                screen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
                 Return True
             End If
         End Function
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim chance As Integer = GetEffectChance(0, own, BattleScreen)
 
             If Core.Random.Next(0, 100) < chance Then

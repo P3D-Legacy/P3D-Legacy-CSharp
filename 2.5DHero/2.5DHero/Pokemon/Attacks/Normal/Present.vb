@@ -1,4 +1,8 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Present
 
@@ -52,24 +56,25 @@
             '#End
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen as BattleScreen = BattleScreen
             If Core.Random.Next(0, 100) < 80 Then
                 Return False
             Else
-                Dim op As Pokemon = BattleScreen.OppPokemon
+                Dim op As Pokemon = screen.OppPokemon
                 If Own = False Then
-                    op = BattleScreen.OwnPokemon
+                    op = screen.OwnPokemon
                 End If
 
                 If op.HP < op.MaxHP And op.HP > 0 Then
-                    BattleScreen.Battle.GainHP(CInt(Math.Ceiling(op.MaxHP / 4)), Not Own, Own, BattleScreen, op.GetDisplayName() & " had its HP restored!", "move:present")
+                    screen.Battle.GainHP(CInt(Math.Ceiling(op.MaxHP / 4)), Not Own, Own, screen, op.GetDisplayName() & " had its HP restored!", "move:present")
                 End If
 
                 Return True
             End If
         End Function
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
             Dim r As Integer = Core.Random.Next(0, 80)
             If r < 40 Then
                 Return 40

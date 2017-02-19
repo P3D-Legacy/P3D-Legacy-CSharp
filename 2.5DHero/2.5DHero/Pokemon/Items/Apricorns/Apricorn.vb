@@ -1,4 +1,5 @@
-﻿Namespace Items.Apricorns
+Imports P3D.Legacy.Core.Pokemon
+Namespace Items.Apricorns
 
     Public MustInherit Class Apricorn
 

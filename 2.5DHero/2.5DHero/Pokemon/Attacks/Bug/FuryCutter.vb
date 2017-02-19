@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Bug
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Bug
 
     Public Class FuryCutter
 
@@ -52,10 +55,11 @@
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As BattleScreen) As Integer
-            Dim fury As Integer = BattleScreen.FieldEffects.OwnFuryCutter
+        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
+            Dim fury As Integer = screen.FieldEffects.OwnFuryCutter
             If own = False Then
-                fury = BattleScreen.FieldEffects.OppFuryCutter
+                fury = screen.FieldEffects.OppFuryCutter
             End If
 
             Dim p As Integer = Me.Power
@@ -69,7 +73,7 @@
             Return p
         End Function
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim lastMove As Attack = BattleScreen.FieldEffects.OwnLastMove
             If own = False Then
                 lastMove = BattleScreen.FieldEffects.OppLastMove
@@ -105,15 +109,15 @@
             End If
         End Sub
 
-        Public Overrides Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
             ResetCounter(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
             ResetCounter(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
             ResetCounter(own, BattleScreen)
         End Sub
 

@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace BattleSystem.Moves.Fighting
 
     Public Class BrickBreak
@@ -55,7 +57,7 @@ Namespace BattleSystem.Moves.Fighting
             Me.AIField2 = AIField.RemoveReflectLightscreen
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim p As Pokemon = BattleScreen.OppPokemon
             If own = False Then
                 p = BattleScreen.OwnPokemon

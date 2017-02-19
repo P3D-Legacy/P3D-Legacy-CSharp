@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 ''' <summary>
 ''' Storage space for scripts.
 ''' Used with @storage and the storage construct.

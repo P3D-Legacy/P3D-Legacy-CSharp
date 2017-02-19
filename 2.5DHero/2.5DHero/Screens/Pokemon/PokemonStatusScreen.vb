@@ -1,4 +1,12 @@
-﻿Public Class PokemonStatusScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Battle
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class PokemonStatusScreen
 
     Inherits Screen
     Dim pageIndex As Integer = 0
@@ -258,10 +266,10 @@
             End If
 
             Dim r As New Rectangle(96, 0, 6, 10)
-            If Me.Pokemon.Gender = net.Pokemon3D.Game.Pokemon.Genders.Female Then
+            If Me.Pokemon.Gender = BasePokemon.Genders.Female Then
                 r = New Rectangle(102, 0, 6, 10)
             End If
-            If Me.Pokemon.Gender <> net.Pokemon3D.Game.Pokemon.Genders.Genderless Then
+            If Me.Pokemon.Gender <> BasePokemon.Genders.Genderless Then
                 Core.SpriteBatch.Draw(MainTexture, New Rectangle(180, 376, 12, 20), r, Color.White)
             End If
 

@@ -1,9 +1,16 @@
-﻿Public Class ChoosePokemonScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Battle
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
 
+Public Class ChoosePokemonScreen
     Inherits Screen
 
-    Private PokemonList As New List(Of Pokemon)
-    Private AltPokemonList As New List(Of Pokemon)
+    Private PokemonList As New List(Of BasePokemon)
+    Private AltPokemonList As New List(Of BasePokemon)
 
     Public Shared Selected As Integer = -1
     Public Shared Exited As Boolean = False
@@ -30,7 +37,7 @@
     Public LearnAttack As BattleSystem.Attack
     Public LearnType As Integer = 0
 
-    Public Sub New(ByVal currentScreen As Screen, ByVal Item As Item, ByVal ChoosePokemon As DoStuff, ByVal Title As String, ByVal canExit As Boolean, ByVal canChooseFainted As Boolean, ByVal canChooseEgg As Boolean, Optional ByVal _pokemonList As List(Of Pokemon) = Nothing)
+    Public Sub New(ByVal currentScreen As Screen, ByVal Item As Item, ByVal ChoosePokemon As DoStuff, ByVal Title As String, ByVal canExit As Boolean, ByVal canChooseFainted As Boolean, ByVal canChooseEgg As Boolean, Optional ByVal _pokemonList As List(Of BasePokemon) = Nothing)
         Me.PreScreen = currentScreen
         Me.Identification = Identifications.ChoosePokemonScreen
 
@@ -157,7 +164,7 @@
 
     Private Function CanChoosePokemon(ByVal p As Pokemon) As Boolean
         If Me.CanChooseFainted = False Then
-            If p.HP <= 0 Or p.Status = Pokemon.StatusProblems.Fainted Then
+            If p.HP <= 0 Or p.Status = BasePokemon.StatusProblems.Fainted Then
                 Return False
             End If
         End If
@@ -167,7 +174,7 @@
             End If
         End If
         If Me.CanChooseHMPokemon = False Then
-            If p.HasHMMove() = True Then
+            If p.HasHmMove() = True Then
                 Return False
             End If
         End If
@@ -241,16 +248,16 @@
     Private Sub DrawPokemonTile(ByVal i As Integer, ByVal Pokemon As Pokemon)
         Dim BorderTexture As Texture2D
         If i = index Then
-            If Pokemon.Status = net.Pokemon3D.Game.Pokemon.StatusProblems.Fainted Then
+            If Pokemon.Status = BasePokemon.StatusProblems.Fainted Then
                 BorderTexture = TextureManager.GetTexture(MainTexture, New Rectangle(0, 128, 48, 48), ContentPackManager.GetTextureResolution("GUI\Menus\Menu"))
             Else
                 BorderTexture = TextureManager.GetTexture(MainTexture, New Rectangle(48, 0, 48, 48), ContentPackManager.GetTextureResolution("GUI\Menus\Menu"))
             End If
         Else
-            If Pokemon.Status = net.Pokemon3D.Game.Pokemon.StatusProblems.Fainted Then
+            If Pokemon.Status = BasePokemon.StatusProblems.Fainted Then
                 BorderTexture = TextureManager.GetTexture(MainTexture, New Rectangle(48, 48, 48, 48), ContentPackManager.GetTextureResolution("GUI\Menus\Menu"))
             Else
-                BorderTexture =  TextureManager.GetTexture(MainTexture, New Rectangle(0, 0, 48, 48), ContentPackManager.GetTextureResolution("GUI\Menus\Menu"))
+                BorderTexture = TextureManager.GetTexture(MainTexture, New Rectangle(0, 0, 48, 48), ContentPackManager.GetTextureResolution("GUI\Menus\Menu"))
             End If
         End If
 
@@ -300,7 +307,7 @@
             If i = index Then
                 offset *= 3
             End If
-            If Pokemon.Status = net.Pokemon3D.Game.Pokemon.StatusProblems.Fainted Then
+            If Pokemon.Status = BasePokemon.StatusProblems.Fainted Then
                 offset = 0
             End If
 
@@ -310,9 +317,9 @@
             If Pokemon.IsEgg() = False Then
                 .Draw(MainTexture, New Rectangle(CInt(p.X + 72), CInt(p.Y + 46), 26, 12), New Rectangle(96, 10, 13, 6), Color.White)
 
-                If Pokemon.Gender = net.Pokemon3D.Game.Pokemon.Genders.Male Then
+                If Pokemon.Gender = BasePokemon.Genders.Male Then
                     .Draw(MainTexture, New Rectangle(CInt(p.X + FontManager.MiniFont.MeasureString(Pokemon.GetDisplayName()).X + 80), CInt(p.Y + 18), 12, 20), New Rectangle(96, 0, 6, 10), Color.White)
-                ElseIf Pokemon.Gender = net.Pokemon3D.Game.Pokemon.Genders.Female Then
+                ElseIf Pokemon.Gender = BasePokemon.Genders.Female Then
                     .Draw(MainTexture, New Rectangle(CInt(p.X + FontManager.MiniFont.MeasureString(Pokemon.GetDisplayName()).X + 80), CInt(p.Y + 18), 12, 20), New Rectangle(102, 0, 6, 10), Color.White)
                 End If
             End If

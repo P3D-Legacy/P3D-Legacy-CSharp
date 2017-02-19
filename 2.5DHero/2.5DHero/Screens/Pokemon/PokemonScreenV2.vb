@@ -1,4 +1,11 @@
-﻿Public Class PokemonScreenV2
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Battle
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class PokemonScreenV2
 
     Inherits WindowScreen
 

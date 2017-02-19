@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.KeyItems
 
     <Item(56, "Crystal Wing")>
@@ -8,7 +10,7 @@ Namespace Items.KeyItems
         Public Overrides ReadOnly Property Description As String = "A mystical feather entirely made out of crystal."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(240, 192, 24, 24)
+            TextureRectangle = New Rectangle(240, 192, 24, 24)
         End Sub
 
     End Class

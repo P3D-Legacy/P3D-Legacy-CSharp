@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Steel
+﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem.Moves.Steel
 
     Public Class MetalBurst
 
@@ -55,15 +58,17 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As BattleScreen) As Boolean
-            Return Not BattleScreen.FieldEffects.MovesFirst(Own)
+        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
+            Dim screen As BattleScreen = BattleScreen
+            Return Not screen.FieldEffects.MovesFirst(Own)
         End Function
 
-        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As Screen) As Integer
+            Dim screen As BattleScreen = BattleScreen
             If Own = True Then
-                Return CInt(BattleScreen.FieldEffects.OppLastDamage * 1.5)
+                Return CInt(screen.FieldEffects.OppLastDamage * 1.5)
             Else
-                Return CInt(BattleScreen.FieldEffects.OwnLastDamage * 1.5)
+                Return CInt(screen.FieldEffects.OwnLastDamage * 1.5)
             End If
         End Function
 

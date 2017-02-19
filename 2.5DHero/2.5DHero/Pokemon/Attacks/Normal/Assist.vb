@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Assist
 
@@ -55,7 +58,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim disabledMoves() As Integer = {274, 562, 448, 509, 383, 68, 343, 194, 197, 525, 203, 364, 264, 266, 270, 588, 561, 382, 118, 102, 243, 119, 267, 566, 182, 46, 166, 214, 289, 596, 564, 165, 415, 168, 144, 271, 18}
 
             Dim p As Pokemon = BattleScreen.OwnPokemon

@@ -1,12 +1,76 @@
-﻿Imports Microsoft.Xna.Framework.Input
+﻿Imports System.Drawing
+Imports Microsoft.Xna.Framework.Input
 Imports Microsoft.Xna.Framework
 Imports System.Runtime.InteropServices
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Objects
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.Security
 
 Namespace GameJolt
 
     Public Class LogInScreen
+        Inherits BaseLogInScreen
 
-        Inherits Screen
+        Private Class LogInScreenManagerImplementation
+            Inherits LogInScreenManager
+
+            Public Overrides Function UserBanned(ByVal GameJoltID As String) As Boolean
+                Dim ID_list() As String = BanList.SplitAtNewline()
+
+                For i As Integer = 0 To ID_list.Count() - 1
+                    If ID_list(i).GetSplit(0, "|") = GameJoltID Then
+                        Return True
+                    End If
+                Next
+
+                Return False
+            End Function
+
+            Public Overrides Function BanReasonIDForUser(ByVal User_ID As String) As String
+                Dim ID_list() As String = BanList.SplitAtNewline()
+
+                For i As Integer = 0 To ID_list.Count() - 1
+                    If ID_list(i).GetSplit(0, "|") = User_ID Then
+                        Return ID_list(i).GetSplit(1, "|")
+                    End If
+                Next
+
+                Return "0"
+            End Function
+
+            Public Overrides Function GetBanReasonByID(ByVal banReasonID As String) As String
+                For Each reasonString As String In BanReasons.SplitAtNewline()
+                    Dim reason As String = reasonString.GetSplit(1, "|")
+                    Dim reasonID As String = reasonString.GetSplit(0, "|")
+
+                    If reasonID = banReasonID Then
+                        Return reason
+                    End If
+                Next
+
+                Return ""
+            End Function
+
+            ''' <summary>
+            ''' This gets called from all GameJolt screens. If the player is no longer connected to GameJolt, it opens up the login screen.
+            ''' </summary>
+            Public Overrides Sub KickFromOnlineScreen(ByVal SetToScreen As Screen)
+                If Core.Player.IsGamejoltSave = True AndAlso API.LoggedIn = False Then
+                    Core.SetScreen(New GameJolt.LogInScreen(SetToScreen))
+                End If
+            End Sub
+
+        End Class
+
+        Shared Sub New()
+            LISM = New LogInScreenManagerImplementation()
+        End Sub
+
 
         Public Shared BanList As String = ""
         Public Shared BanReasons As String = ""
@@ -34,32 +98,32 @@ Namespace GameJolt
         Public Sub New(ByVal currentScreen As Screen)
             Me.PreScreen = currentScreen
 
-            Me.Identification = Identifications.GameJoltLoginScreen
+            Me.Identification = Screen.Identifications.GameJoltLoginScreen
             Me.MouseVisible = True
             Me.CanBePaused = False
             Me.CanChat = False
             Me.CanMuteMusic = False
 
-            Me.UserName = New JoltTextBox(FontManager.MainFont, Color.Black, Color.White)
+            Me.UserName = New JoltTextBox(FontManager.MainFont, Microsoft.Xna.Framework.Color.Black, Microsoft.Xna.Framework.Color.White)
             UserName.Size = New Size(400, 30)
 
-            Me.Token = New JoltTextBox(FontManager.MainFont, Color.Black, Color.White)
+            Me.Token = New JoltTextBox(FontManager.MainFont, Microsoft.Xna.Framework.Color.Black, Microsoft.Xna.Framework.Color.White)
             Token.Size = New Size(400, 30)
             Token.IsPassword = True
 
-            Me.LogInButton = New JoltButton("Log in", FontManager.MainFont, New Color(68, 68, 68), New Color(204, 255, 0))
+            Me.LogInButton = New JoltButton("Log in", FontManager.MainFont, New Microsoft.Xna.Framework.Color(68, 68, 68), New Microsoft.Xna.Framework.Color(204, 255, 0))
             LogInButton.Size = New Size(100, 30)
             LogInButton.SetDelegate(AddressOf LogIn)
 
-            Me.CloseButton = New JoltButton("Close", FontManager.MainFont, New Color(68, 68, 68), New Color(204, 255, 0))
+            Me.CloseButton = New JoltButton("Close", FontManager.MainFont, New Microsoft.Xna.Framework.Color(68, 68, 68), New Microsoft.Xna.Framework.Color(204, 255, 0))
             CloseButton.Size = New Size(100, 30)
             CloseButton.SetDelegate(AddressOf Me.Close)
 
-            Me.CreateAccountButton = New JoltButton("Create Account", FontManager.MainFont, New Color(68, 68, 68), New Color(204, 255, 0))
+            Me.CreateAccountButton = New JoltButton("Create Account", FontManager.MainFont, New Microsoft.Xna.Framework.Color(68, 68, 68), New Microsoft.Xna.Framework.Color(204, 255, 0))
             CreateAccountButton.Size = New Size(180, 30)
             CreateAccountButton.SetDelegate(AddressOf Me.CreateAccount)
 
-            Me.OkButton = New JoltButton("OK", FontManager.MainFont, New Color(68, 68, 68), New Color(204, 255, 0))
+            Me.OkButton = New JoltButton("OK", FontManager.MainFont, New Microsoft.Xna.Framework.Color(68, 68, 68), New Microsoft.Xna.Framework.Color(204, 255, 0))
             OkButton.Size = New Size(100, 30)
             OkButton.SetDelegate(AddressOf Me.PressOK)
 
@@ -67,9 +131,9 @@ Namespace GameJolt
 
             UserName.IsActive = True
 
-            If GameJolt.API.LoggedIn = True Then
-                UserName.Text = GameJolt.API.username
-                Token.Text = GameJolt.API.token
+            If API.LoggedIn = True Then
+                UserName.Text = API.username
+                Token.Text = API.token
 
                 LogInButton.Text = "Log out"
             Else
@@ -112,25 +176,25 @@ Namespace GameJolt
         Public Overrides Sub Draw()
             Me.PreScreen.Draw()
 
-            Canvas.DrawRectangle(Core.ScreenSize, New Color(0, 0, 0, 150), True)
-            Canvas.DrawRectangle(New Rectangle(CInt(Core.ScreenSize.Width / 2 - 310), 90, 620, 420), New Color(16, 16, 16), True)
-            Canvas.DrawRectangle(New Rectangle(CInt(Core.ScreenSize.Width / 2 - 300), 100, 600, 400), New Color(39, 39, 39), True)
+            Canvas.DrawRectangle(Core.ScreenSize, New Microsoft.Xna.Framework.Color(0, 0, 0, 150), True)
+            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2 - 310), 90, 620, 420), New Microsoft.Xna.Framework.Color(16, 16, 16), True)
+            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2 - 300), 100, 600, 400), New Microsoft.Xna.Framework.Color(39, 39, 39), True)
 
             If DownloadedBanList = True Then
-                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, "Sign in with", New Vector2(CSng(Core.ScreenSize.Width / 2 - 280), 130), Color.White)
-                Core.SpriteBatch.DrawInterface(Core.Content.Load(Of Texture2D)("GUI\Logos\GameJolt"), New Rectangle(CInt(Core.ScreenSize.Width / 2 - 120), 130, 328, 36), Color.White)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, "Sign in with", New Vector2(CSng(Core.ScreenSize.Width / 2 - 280), 130), Microsoft.Xna.Framework.Color.White)
+                Core.SpriteBatch.DrawInterface(Core.Content.Load(Of Texture2D)("GUI\Logos\GameJolt"), New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2 - 120), 130, 328, 36), Microsoft.Xna.Framework.Color.White)
 
                 If WaitingForResponse = True Then
                     Dim textSize As Vector2 = FontManager.MainFont.MeasureString(WaitingMessage)
 
-                    Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, WaitingMessage, New Vector2(CSng(Core.ScreenSize.Width / 2 - textSize.X / 2), 310 - textSize.Y / 2), Color.White)
+                    Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, WaitingMessage, New Vector2(CSng(Core.ScreenSize.Width / 2 - textSize.X / 2), 310 - textSize.Y / 2), Microsoft.Xna.Framework.Color.White)
 
                     If ShowokButton = True Then
                         OkButton.Draw()
                     End If
                 Else
-                    Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Username:", New Vector2(CSng(Core.ScreenSize.Width / 2) - 200, 195), Color.White)
-                    Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Token:", New Vector2(CSng(Core.ScreenSize.Width / 2) - 200, 275), Color.White)
+                    Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Username:", New Vector2(CSng(Core.ScreenSize.Width / 2) - 200, 195), Microsoft.Xna.Framework.Color.White)
+                    Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Token:", New Vector2(CSng(Core.ScreenSize.Width / 2) - 200, 275), Microsoft.Xna.Framework.Color.White)
 
                     Me.UserName.Draw()
                     Me.Token.Draw()
@@ -139,7 +203,7 @@ Namespace GameJolt
                     Me.CreateAccountButton.Draw()
                 End If
             Else
-                Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Please wait" & LoadingDots.Dots, New Vector2(CSng(Core.ScreenSize.Width / 2) - 200, 195), Color.White)
+                Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, "Please wait" & LoadingDots.Dots, New Vector2(CSng(Core.ScreenSize.Width / 2) - 200, 195), Microsoft.Xna.Framework.Color.White)
             End If
         End Sub
 
@@ -216,7 +280,7 @@ Namespace GameJolt
                                 End If
                         End Select
                     End If
-                    If Controls.Accept(False, False, True) = True Or KeyBoardHandler.KeyPressed(KeyBindings.EnterKey1) = True Then
+                    If Controls.Accept(False, False, True) = True Or KeyBoardHandler.KeyPressed(Core.KeyBindings.Enter1) = True Then
                         Select Case True
                             Case UserName.IsActive
                                 UserName.DoPress()
@@ -300,12 +364,12 @@ Namespace GameJolt
         End Sub
 
         Private Sub LogIn()
-            If GameJolt.API.LoggedIn = True Then
-                GameJolt.SessionManager.Close()
+            If API.LoggedIn = True Then
+                SessionManager.Close()
 
-                GameJolt.API.LoggedIn = False
-                GameJolt.API.username = ""
-                GameJolt.API.token = ""
+                API.LoggedIn = False
+                API.username = ""
+                API.token = ""
 
                 UserName.Text = ""
                 Token.Text = ""
@@ -328,14 +392,14 @@ Namespace GameJolt
         End Sub
 
         Private Sub VerifyVersion(ByVal result As String)
-            Dim list As List(Of GameJolt.API.JoltValue) = GameJolt.API.HandleData(result)
+            Dim list As List(Of API.JoltValue) = API.HandleData(result)
             If CBool(list(0).Value) = True Then
                 If Version.Parse(list(1).Value) <= Version.Parse(GameController.GAMEVERSION) Or GameController.IS_DEBUG_ACTIVE = True Then
                     Dim APICall As New APICall(AddressOf VerifyResult)
                     APICall.VerifyUser(UserName.Text, Token.Text)
                 Else
                     WaitingForResponse = True
-                    GameJolt.API.LoggedIn = False
+                    API.LoggedIn = False
 
                     WaitingMessage = "The version of your game does not match with" & vbNewLine & "the version required to play online. If you have" & vbNewLine & "the lastest version of the game, the game is" & vbNewLine & "getting updated right now." & vbNewLine & vbNewLine & vbNewLine & "Your version: " & GameController.GAMEVERSION & vbNewLine & "Required version: " & list(1).Value
                     ShowokButton = True
@@ -346,15 +410,15 @@ Namespace GameJolt
         End Sub
 
         Private Sub VerifyResult(ByVal result As String)
-            Dim list As List(Of GameJolt.API.JoltValue) = GameJolt.API.HandleData(result)
+            Dim list As List(Of API.JoltValue) = API.HandleData(result)
             If CBool(list(0).Value) = True Then
-                GameJolt.API.LoggedIn = True
+                API.LoggedIn = True
 
                 Dim APICall As New APICall(AddressOf HandleUserData)
                 APICall.FetchUserdata(API.username)
             Else
                 WaitingForResponse = True
-                GameJolt.API.LoggedIn = False
+                API.LoggedIn = False
 
                 WaitingMessage = "Cannot connect to account!" & vbNewLine & "You have to use your Token," & vbNewLine & "not your Password."
                 ShowokButton = True
@@ -364,8 +428,8 @@ Namespace GameJolt
         End Sub
 
         Private Sub HandleUserData(ByVal result As String)
-            Dim list As List(Of GameJolt.API.JoltValue) = GameJolt.API.HandleData(result)
-            For Each Item As GameJolt.API.JoltValue In list
+            Dim list As List(Of API.JoltValue) = API.HandleData(result)
+            For Each Item As API.JoltValue In list
                 If Item.Name = "id" Then
                     LoadedGameJoltID = Item.Value 'set the public shared field to the GameJolt ID.
 
@@ -390,49 +454,6 @@ Namespace GameJolt
             ShowokButton = False
         End Sub
 
-        Public Shared ReadOnly Property UserBanned(ByVal GameJoltID As String) As Boolean
-            Get
-                Dim ID_list() As String = BanList.SplitAtNewline()
-
-                For i As Integer = 0 To ID_list.Count() - 1
-                    If ID_list(i).GetSplit(0, "|") = GameJoltID Then
-                        Return True
-                    End If
-                Next
-
-                Return False
-            End Get
-        End Property
-
-        Public Shared ReadOnly Property BanReasonIDForUser(ByVal User_ID As String) As String
-            Get
-                Dim ID_list() As String = BanList.SplitAtNewline()
-
-                For i As Integer = 0 To ID_list.Count() - 1
-                    If ID_list(i).GetSplit(0, "|") = User_ID Then
-                        Return ID_list(i).GetSplit(1, "|")
-                    End If
-                Next
-
-                Return "0"
-            End Get
-        End Property
-
-        Public Shared ReadOnly Property GetBanReasonByID(ByVal banReasonID As String) As String
-            Get
-                For Each reasonString As String In BanReasons.SplitAtNewline()
-                    Dim reason As String = reasonString.GetSplit(1, "|")
-                    Dim reasonID As String = reasonString.GetSplit(0, "|")
-
-                    If reasonID = banReasonID Then
-                        Return reason
-                    End If
-                Next
-
-                Return ""
-            End Get
-        End Property
-
         Private Sub DownloadBanList()
             Try
                 Dim w As New System.Net.WebClient
@@ -443,15 +464,6 @@ Namespace GameJolt
             Catch ex As Exception
                 Logger.Log(Logger.LogTypes.ErrorMessage, "Failed to fetch ban list data!")
             End Try
-        End Sub
-
-        ''' <summary>
-        ''' This gets called from all GameJolt screens. If the player is no longer connected to GameJolt, it opens up the login screen.
-        ''' </summary>
-        Public Shared Sub KickFromOnlineScreen(ByVal SetToScreen As Screen)
-            If Core.Player.IsGameJoltSave = True AndAlso GameJolt.API.LoggedIn = False Then
-                Core.SetScreen(New GameJolt.LogInScreen(SetToScreen))
-            End If
         End Sub
 
         Private Class JoltControl
@@ -467,8 +479,8 @@ Namespace GameJolt
             Dim _text As String = ""
             Dim _password As Boolean = False
 
-            Dim _backcolor As Color
-            Dim _forecolor As Color
+            Dim _backcolor As Microsoft.Xna.Framework.Color
+            Dim _forecolor As Microsoft.Xna.Framework.Color
 
             Dim _font As SpriteFont
 
@@ -476,7 +488,7 @@ Namespace GameJolt
             Public Size As New Size(0, 0)
             Public MaxChars As Integer = -1
 
-            Public Sub New(ByVal Font As SpriteFont, ByVal BackColor As Color, ByVal FontColor As Color)
+            Public Sub New(ByVal Font As SpriteFont, ByVal BackColor As Microsoft.Xna.Framework.Color, ByVal FontColor As Microsoft.Xna.Framework.Color)
                 Me._font = Font
                 Me._backcolor = BackColor
                 Me._forecolor = FontColor
@@ -500,20 +512,20 @@ Namespace GameJolt
                 End Set
             End Property
 
-            Public Property BackColor() As Color
+            Public Property BackColor() As Microsoft.Xna.Framework.Color
                 Get
                     Return Me._backcolor
                 End Get
-                Set(value As Color)
+                Set(value As Microsoft.Xna.Framework.Color)
                     Me._backcolor = value
                 End Set
             End Property
 
-            Public Property FontColor() As Color
+            Public Property FontColor() As Microsoft.Xna.Framework.Color
                 Get
                     Return Me._forecolor
                 End Get
-                Set(value As Color)
+                Set(value As Microsoft.Xna.Framework.Color)
                     Me._forecolor = value
                 End Set
             End Property
@@ -528,14 +540,14 @@ Namespace GameJolt
             End Property
 
             Public Sub Draw()
-                Dim useColor As Color = _backcolor
-                Dim useFontColor As Color = _forecolor
+                Dim useColor As Microsoft.Xna.Framework.Color = _backcolor
+                Dim useFontColor As Microsoft.Xna.Framework.Color = _forecolor
                 If Me.IsActive = True Then
                     useColor = _forecolor
                     useFontColor = _backcolor
                 End If
 
-                Canvas.DrawRectangle(New Rectangle(CInt(Me.Position.X), CInt(Me.Position.Y), Me.Size.Width, Me.Size.Height), useColor, True)
+                Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Me.Position.X), CInt(Me.Position.Y), Me.Size.Width, Me.Size.Height), useColor, True)
 
                 Dim useText As String = Me._text
                 If Me._password = True Then
@@ -560,8 +572,8 @@ Namespace GameJolt
                 End If
             End Sub
 
-            Public Function GetRectangle() As Rectangle
-                Return New Rectangle(CInt(Me.Position.X), CInt(Me.Position.Y), Me.Size.Width, Me.Size.Height)
+            Public Function GetRectangle() As Microsoft.Xna.Framework.Rectangle
+                Return New Microsoft.Xna.Framework.Rectangle(CInt(Me.Position.X), CInt(Me.Position.Y), Me.Size.Width, Me.Size.Height)
             End Function
 
             Public Sub DoPress()
@@ -579,8 +591,8 @@ Namespace GameJolt
             Inherits JoltControl
 
             Dim _text As String
-            Dim _backColor As Color
-            Dim _textColor As Color
+            Dim _backColor As Microsoft.Xna.Framework.Color
+            Dim _textColor As Microsoft.Xna.Framework.Color
             Dim _font As SpriteFont
 
             Public Position As Vector2 = New Vector2(0)
@@ -592,7 +604,7 @@ Namespace GameJolt
 
             Public DoPress As Press
 
-            Public Sub New(ByVal Text As String, ByVal Font As SpriteFont, ByVal BackColor As Color, ByVal TextColor As Color)
+            Public Sub New(ByVal Text As String, ByVal Font As SpriteFont, ByVal BackColor As Microsoft.Xna.Framework.Color, ByVal TextColor As Microsoft.Xna.Framework.Color)
                 Me._text = Text
                 Me._backColor = BackColor
                 Me._textColor = TextColor
@@ -608,14 +620,14 @@ Namespace GameJolt
 
             Public Sub Draw()
                 If Visible = True Then
-                    Dim useColor As Color = _backColor
-                    Dim useFontColor As Color = _textColor
+                    Dim useColor As Microsoft.Xna.Framework.Color = _backColor
+                    Dim useFontColor As Microsoft.Xna.Framework.Color = _textColor
                     If Me.IsActive = True Then
                         useColor = _textColor
                         useFontColor = _backColor
                     End If
 
-                    Canvas.DrawRectangle(New Rectangle(CInt(Me.Position.X), CInt(Me.Position.Y), Me.Size.Width, Me.Size.Height), useColor, True)
+                    Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Me.Position.X), CInt(Me.Position.Y), Me.Size.Width, Me.Size.Height), useColor, True)
 
                     Core.SpriteBatch.DrawInterfaceString(Me._font, Me._text, New Vector2(Me.Position.X + CSng(Me.Size.Width / 2 - Me._font.MeasureString(Me._text).X / 2), Me.Position.Y + CSng(Me.Size.Height / 2 - Me._font.MeasureString(Me._text).Y / 2)), useFontColor)
                 End If
@@ -630,8 +642,8 @@ Namespace GameJolt
                 End Set
             End Property
 
-            Public Function GetRectangle() As Rectangle
-                Return New Rectangle(CInt(Me.Position.X), CInt(Me.Position.Y), Me.Size.Width, Me.Size.Height)
+            Public Function GetRectangle() As Microsoft.Xna.Framework.Rectangle
+                Return New Microsoft.Xna.Framework.Rectangle(CInt(Me.Position.X), CInt(Me.Position.Y), Me.Size.Width, Me.Size.Height)
             End Function
 
         End Class

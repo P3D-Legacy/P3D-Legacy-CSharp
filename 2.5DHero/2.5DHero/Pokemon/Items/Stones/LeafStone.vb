@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.Stones
 
     <Item(34, "Leaf Stone")>
@@ -8,7 +10,7 @@ Namespace Items.Stones
         Public Overrides ReadOnly Property Description As String = "A peculiar stone that can make certain species of Pokémon evolve. It has an unmistakable leaf pattern."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(240, 24, 24, 24)
+            TextureRectangle = New Rectangle(240, 24, 24, 24)
         End Sub
 
     End Class

@@ -1,3 +1,7 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt
+Imports P3D.Legacy.Core.GameJolt.Profiles
+
 ''' <summary>
 ''' A class that helps with saving the game.
 ''' </summary>
@@ -5,7 +9,7 @@ Public Class SaveGameHelpers
 
     Shared _savingProgress As Integer = 0
     Shared _failedSaveParts As Integer = 0
-    Shared _tempGJSave As GameJolt.GamejoltSave = Nothing
+    Shared _tempGJSave As GamejoltSave = Nothing
     Shared _validatedDownloadCheck As Boolean = False
     Shared _startedDownloadCheck As Boolean = False
 
@@ -33,14 +37,14 @@ Public Class SaveGameHelpers
     Public Shared Sub AddGameJoltSaveCounter(ByVal result As String)
         _savingProgress += 1
 
-        Dim resultList As List(Of GameJolt.API.JoltValue) = GameJolt.API.HandleData(result)
+        Dim resultList As List(Of API.JoltValue) = API.HandleData(result)
         For Each lEntry In resultList
             If lEntry.Value.ToLower() <> "true" Then
                 _failedSaveParts += 1
             End If
         Next
 
-        If _failedSaveParts = 0 And _savingProgress >= GameJolt.GamejoltSave.EXTRADATAUPLOADCOUNT + GameJolt.GamejoltSave.SAVEFILECOUNT Then
+        If _failedSaveParts = 0 And _savingProgress >= GamejoltSave.EXTRADATAUPLOADCOUNT + GamejoltSave.SAVEFILECOUNT Then
             PerformDownloadCheck()
         End If
     End Sub
@@ -49,16 +53,16 @@ Public Class SaveGameHelpers
     ''' Increments the counter once the data files have been uploaded and starts the download check if the upload is finished.
     ''' </summary>
     Public Shared Sub CompleteGameJoltSave(ByVal result As String)
-        _savingProgress += GameJolt.GamejoltSave.SAVEFILECOUNT
+        _savingProgress += GamejoltSave.SAVEFILECOUNT
 
-        Dim resultList As List(Of GameJolt.API.JoltValue) = GameJolt.API.HandleData(result)
+        Dim resultList As List(Of API.JoltValue) = API.HandleData(result)
         For Each lEntry In resultList
             If lEntry.Value.ToLower() <> "true" Then
                 _failedSaveParts += 1
             End If
         Next
 
-        If _failedSaveParts = 0 And _savingProgress >= GameJolt.GamejoltSave.EXTRADATAUPLOADCOUNT + GameJolt.GamejoltSave.SAVEFILECOUNT Then
+        If _failedSaveParts = 0 And _savingProgress >= GamejoltSave.EXTRADATAUPLOADCOUNT + GamejoltSave.SAVEFILECOUNT Then
             PerformDownloadCheck()
         End If
     End Sub
@@ -82,7 +86,7 @@ Public Class SaveGameHelpers
                     ValidateDownloadCheck()
                 End If
             End If
-            Return _savingProgress >= GameJolt.GamejoltSave.EXTRADATAUPLOADCOUNT + GameJolt.GamejoltSave.SAVEFILECOUNT And _validatedDownloadCheck = True
+            Return _savingProgress >= GamejoltSave.EXTRADATAUPLOADCOUNT + GamejoltSave.SAVEFILECOUNT And _validatedDownloadCheck = True
         End Get
     End Property
 
@@ -103,7 +107,7 @@ Public Class SaveGameHelpers
     Private Shared Sub PerformDownloadCheck()
         _startedDownloadCheck = True
 
-        _tempGJSave = New GameJolt.GamejoltSave()
+        _tempGJSave = New GamejoltSave()
         _tempGJSave.DownloadSave(Core.GameJoltSave.GameJoltID, False)
     End Sub
 
@@ -112,22 +116,22 @@ Public Class SaveGameHelpers
     ''' </summary>
     Private Shared Sub ValidateDownloadCheck()
         'Checks all data downloaded against current save data:
-        If _tempGJSave.Apricorns = Core.Player.GetApricornsData() And
-            _tempGJSave.Berries = Core.Player.GetBerriesData() And
-            _tempGJSave.Box = Core.Player.GetBoxData() And
-            _tempGJSave.Daycare = Core.Player.GetDaycareData() And
-            _tempGJSave.HallOfFame = Core.Player.GetHallOfFameData() And
-            _tempGJSave.ItemData = Core.Player.GetItemDataData() And
+        If _tempGJSave.Apricorns = Core.Player.ApricornData And
+            _tempGJSave.Berries = Core.Player.BerryData And
+            _tempGJSave.Box = Core.Player.BoxData And
+            _tempGJSave.Daycare = Core.Player.DaycareData And
+            _tempGJSave.HallOfFame = Core.Player.HallOfFameData And
+            _tempGJSave.ItemData = Core.Player.ItemData And
             _tempGJSave.Items = Core.Player.GetItemsData() And
-            _tempGJSave.NPC = Core.Player.GetNPCDataData() And
+            _tempGJSave.NPC = Core.Player.NPCData And
             _tempGJSave.Options = Core.Player.GetOptionsData() And
             _tempGJSave.Party = Core.Player.GetPartyData() And
             GetTimeFixedPlayerData(_tempGJSave.Player) = GetTimeFixedPlayerData(Core.Player.GetPlayerData(False)) And
-            _tempGJSave.Pokedex = Core.Player.GetPokedexData() And
-            _tempGJSave.Register = Core.Player.GetRegisterData() And
-            _tempGJSave.RoamingPokemon = Core.Player.GetRoamingPokemonData() And
-            _tempGJSave.SecretBase = Core.Player.GetSecretBaseData() And
-            _tempGJSave.Statistics = Core.Player.GetStatisticsData() Then
+            _tempGJSave.Pokedex = Core.Player.PokedexData And
+            _tempGJSave.Register = Core.Player.RegisterData And
+            _tempGJSave.RoamingPokemon = Core.Player.RoamingPokemonData And
+            _tempGJSave.SecretBase = Core.Player.SecretBaseData And
+            _tempGJSave.Statistics = Core.Player.Statistics Then
             _validatedDownloadCheck = True
             Exit Sub
         End If

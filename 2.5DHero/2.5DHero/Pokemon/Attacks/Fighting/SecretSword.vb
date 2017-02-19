@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Fighting
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Fighting
 
     Public Class SecretSword
 
@@ -52,7 +54,7 @@
             '#End
         End Sub
 
-        Public Overrides Function GetUseDefenseStat(p As Pokemon) As Integer
+        Public Overrides Function GetUseDefenseStat(p As BasePokemon) As Integer
             Return p.Defense
         End Function
 

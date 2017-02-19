@@ -1,4 +1,15 @@
-﻿Public Class PokedexSelectScreen
+﻿Imports System.Drawing
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.Security
+
+Public Class PokedexSelectScreen
 
     Inherits Screen
 
@@ -36,13 +47,13 @@
             End If
         Next
         If hasEevee = True Then
-            GameJolt.Emblem.AchieveEmblem("eevee")
+            Emblem.AchieveEmblem("eevee")
         End If
 
         'Pokedex:
-        If Core.Player.IsGameJoltSave = True Then
+        If Core.Player.IsGamejoltSave = True Then
             If Me.Profiles(0).Pokedex.Obtained >= Me.Profiles(0).Pokedex.Count Then
-                GameJolt.Emblem.AchieveEmblem("pokedex")
+                Emblem.AchieveEmblem("pokedex")
             End If
         End If
     End Sub
@@ -54,39 +65,39 @@
     End Structure
 
     Public Overrides Sub Draw()
-        Canvas.DrawRectangle(Core.windowSize, New Color(84, 198, 216))
+        Canvas.DrawRectangle(Core.windowSize, New Microsoft.Xna.Framework.Color(84, 198, 216))
 
         For y = -64 To Core.windowSize.Height Step 64
-            Core.SpriteBatch.Draw(Me.texture, New Rectangle(Core.windowSize.Width - 128, y + PokedexScreen.TileOffset, 128, 64), New Rectangle(48, 0, 16, 16), Color.White)
+            Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(Core.windowSize.Width - 128, y + PokedexScreen.TileOffset, 128, 64), New Microsoft.Xna.Framework.Rectangle(48, 0, 16, 16), Microsoft.Xna.Framework.Color.White)
         Next
 
-        Canvas.DrawGradient(New Rectangle(0, 0, CInt(Core.windowSize.Width), 200), New Color(42, 167, 198), New Color(42, 167, 198, 0), False, -1)
-        Canvas.DrawGradient(New Rectangle(0, CInt(Core.windowSize.Height - 200), CInt(Core.windowSize.Width), 200), New Color(42, 167, 198, 0), New Color(42, 167, 198), False, -1)
+        Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(0, 0, CInt(Core.windowSize.Width), 200), New Microsoft.Xna.Framework.Color(42, 167, 198), New Microsoft.Xna.Framework.Color(42, 167, 198, 0), False, -1)
+        Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(0, CInt(Core.windowSize.Height - 200), CInt(Core.windowSize.Width), 200), New Microsoft.Xna.Framework.Color(42, 167, 198, 0), New Microsoft.Xna.Framework.Color(42, 167, 198), False, -1)
 
-        Core.SpriteBatch.DrawString(FontManager.MainFont, "Select a Pokédex", New Vector2(100, 24), Color.White, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, "Select a Pokédex", New Vector2(100, 24), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
 
         For i = 0 To Me.Profiles.Count
             If i = Me.Profiles.Count Then
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(100, 100 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White)
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(100 + 64, 100 + i * 96, 64 * 5, 64), New Rectangle(32, 16, 16, 16), Color.White)
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(100 + 64 * 6, 100 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100, 100 + i * 96, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100 + 64, 100 + i * 96, 64 * 5, 64), New Microsoft.Xna.Framework.Rectangle(32, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100 + 64 * 6, 100 + i * 96, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
 
-                Core.SpriteBatch.DrawString(FontManager.MainFont, "Habitat-Dex", New Vector2(120, 116 + i * 96), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, "Habitat-Dex", New Vector2(120, 116 + i * 96), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
             Else
                 Dim p As Pokedex = Me.Profiles(i).Pokedex
 
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(100, 100 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White)
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(100 + 64, 100 + i * 96, 64 * 5, 64), New Rectangle(32, 16, 16, 16), Color.White)
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(100 + 64 * 6, 100 + i * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100, 100 + i * 96, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100 + 64, 100 + i * 96, 64 * 5, 64), New Microsoft.Xna.Framework.Rectangle(32, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100 + 64 * 6, 100 + i * 96, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
 
-                Core.SpriteBatch.DrawString(FontManager.MainFont, p.Name, New Vector2(120, 116 + i * 96), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
-                Core.SpriteBatch.DrawString(FontManager.MainFont, Me.Profiles(i).Obtained.ToString(), New Vector2(460, 116 + i * 96), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, p.Name, New Vector2(120, 116 + i * 96), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, Me.Profiles(i).Obtained.ToString(), New Vector2(460, 116 + i * 96), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
 
                 If Me.Profiles(i).Obtained >= Me.Profiles(i).Pokedex.Count Then
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Rectangle(160, 160, 10, 10), ""), New Rectangle(430, 122 + i * 96, 20, 20), Color.White)
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Microsoft.Xna.Framework.Rectangle(160, 160, 10, 10), ""), New Microsoft.Xna.Framework.Rectangle(430, 122 + i * 96, 20, 20), Microsoft.Xna.Framework.Color.White)
                 Else
                     If Me.Profiles(i).Seen + Me.Profiles(i).Obtained >= Me.Profiles(i).Pokedex.Count Then
-                        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Rectangle(160, 170, 10, 10), ""), New Rectangle(430, 122 + i * 96, 20, 20), Color.White)
+                        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Microsoft.Xna.Framework.Rectangle(160, 170, 10, 10), ""), New Microsoft.Xna.Framework.Rectangle(430, 122 + i * 96, 20, 20), Microsoft.Xna.Framework.Color.White)
                     End If
                 End If
             End If
@@ -98,8 +109,8 @@
     Private Sub DrawCursor()
         Dim cPosition As Vector2 = New Vector2(380, 100 + Me.Cursor * 96 - 42)
 
-        Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(0, 0, 16, 16), "")
-        Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
+        Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(0, 0, 16, 16), "")
+        Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
     End Sub
 
     Public Overrides Sub Update()
@@ -120,7 +131,7 @@
 
         If Controls.Accept(True, False, False) = True Then
             For i = 0 To Me.Profiles.Count
-                If New Rectangle(100, 100 + i * 96, 64 * 7, 64).Contains(MouseHandler.MousePosition) = True Then
+                If New Microsoft.Xna.Framework.Rectangle(100, 100 + i * 96, 64 * 7, 64).Contains(MouseHandler.MousePosition) = True Then
                     If i = Cursor Then
                         If Me.Cursor = Me.Profiles.Count Then
                             Core.SetScreen(New PokedexHabitatScreen(Me))
@@ -143,7 +154,7 @@
         End If
 
         If Controls.Dismiss(True, True, True) = True Then
-            Core.SetScreen(New TransitionScreen(Core.CurrentScreen, Me.PreScreen, Color.White, False))
+            Core.SetScreen(New TransitionScreen(Core.CurrentScreen, Me.PreScreen, Microsoft.Xna.Framework.Color.White, False))
         End If
 
         PokedexScreen.TileOffset += 1
@@ -194,34 +205,34 @@ Public Class PokedexHabitatScreen
     End Sub
 
     Public Overrides Sub Draw()
-        Canvas.DrawRectangle(Core.windowSize, New Color(84, 198, 216))
+        Canvas.DrawRectangle(Core.windowSize, New Microsoft.Xna.Framework.Color(84, 198, 216))
 
         For y = -64 To Core.windowSize.Height Step 64
-            Core.SpriteBatch.Draw(Me.texture, New Rectangle(Core.windowSize.Width - 128, y + PokedexScreen.TileOffset, 128, 64), New Rectangle(48, 0, 16, 16), Color.White)
+            Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(Core.windowSize.Width - 128, y + PokedexScreen.TileOffset, 128, 64), New Microsoft.Xna.Framework.Rectangle(48, 0, 16, 16), Microsoft.Xna.Framework.Color.White)
         Next
 
-        Canvas.DrawGradient(New Rectangle(0, 0, CInt(Core.windowSize.Width), 200), New Color(42, 167, 198), New Color(42, 167, 198, 0), False, -1)
-        Canvas.DrawGradient(New Rectangle(0, CInt(Core.windowSize.Height - 200), CInt(Core.windowSize.Width), 200), New Color(42, 167, 198, 0), New Color(42, 167, 198), False, -1)
+        Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(0, 0, CInt(Core.windowSize.Width), 200), New Microsoft.Xna.Framework.Color(42, 167, 198), New Microsoft.Xna.Framework.Color(42, 167, 198, 0), False, -1)
+        Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(0, CInt(Core.windowSize.Height - 200), CInt(Core.windowSize.Width), 200), New Microsoft.Xna.Framework.Color(42, 167, 198, 0), New Microsoft.Xna.Framework.Color(42, 167, 198), False, -1)
 
-        Core.SpriteBatch.DrawString(FontManager.MainFont, "Select a Habitat", New Vector2(100, 24), Color.White, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, "Select a Habitat", New Vector2(100, 24), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
 
         For i = Scroll To Scroll + 5
             If i <= Me.HabitatList.Count - 1 Then
                 Dim p As Integer = i - Scroll
 
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(100, 100 + p * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White)
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(100 + 64, 100 + p * 96, 64 * 8, 64), New Rectangle(32, 16, 16, 16), Color.White)
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(100 + 64 * 9, 100 + p * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100, 100 + p * 96, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100 + 64, 100 + p * 96, 64 * 8, 64), New Microsoft.Xna.Framework.Rectangle(32, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100 + 64 * 9, 100 + p * 96, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
 
-                Core.SpriteBatch.Draw(HabitatList(i).Texture, New Rectangle(120, 108 + p * 96, 64, 48), Color.White)
-                Core.SpriteBatch.DrawString(FontManager.MainFont, HabitatList(i).Name, New Vector2(200, 116 + p * 96), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.Draw(HabitatList(i).Texture, New Microsoft.Xna.Framework.Rectangle(120, 108 + p * 96, 64, 48), Microsoft.Xna.Framework.Color.White)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, HabitatList(i).Name, New Vector2(200, 116 + p * 96), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
 
                 Dim t As String = HabitatList(i).PokemonCaught.ToString() & "/" & HabitatList(i).PokemonList.Count
-                Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(680 - CSng((FontManager.MainFont.MeasureString(t).X * 1.25F) / 2.0F), 116 + p * 96), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(680 - CSng((FontManager.MainFont.MeasureString(t).X * 1.25F) / 2.0F), 116 + p * 96), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
 
                 Dim progressTexture As Texture2D = Me.HabitatList(i).ProgressTexture
                 If Not progressTexture Is Nothing Then
-                    Core.SpriteBatch.Draw(progressTexture, New Rectangle(CInt(650 - CSng((FontManager.MainFont.MeasureString(t).X * 1.25F) / 2.0F)), 121 + p * 96, 20, 20), Color.White)
+                    Core.SpriteBatch.Draw(progressTexture, New Microsoft.Xna.Framework.Rectangle(CInt(650 - CSng((FontManager.MainFont.MeasureString(t).X * 1.25F) / 2.0F)), 121 + p * 96, 20, 20), Microsoft.Xna.Framework.Color.White)
                 End If
             End If
         Next
@@ -232,8 +243,8 @@ Public Class PokedexHabitatScreen
     Private Sub DrawCursor()
         Dim cPosition As Vector2 = New Vector2(520, 100 + Me.Cursor * 96 - 42)
 
-        Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(0, 0, 16, 16), "")
-        Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
+        Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(0, 0, 16, 16), "")
+        Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
     End Sub
 
     Public Overrides Sub Update()
@@ -275,7 +286,7 @@ Public Class PokedexHabitatScreen
             If Controls.Accept(True, False, False) = True Then
                 For i = Scroll To Scroll + 5
                     If i <= Me.HabitatList.Count - 1 Then
-                        If New Rectangle(100, 100 + (i - Scroll) * 96, 640, 64).Contains(MouseHandler.MousePosition) = True Then
+                        If New Microsoft.Xna.Framework.Rectangle(100, 100 + (i - Scroll) * 96, 640, 64).Contains(MouseHandler.MousePosition) = True Then
                             If i = Cursor + Scroll Then
                                 Core.SetScreen(New PokedexScreen(Me, Nothing, Me.HabitatList(Cursor + Scroll)))
                             Else
@@ -485,30 +496,30 @@ Public Class PokedexScreen
     End Sub
 
     Public Overrides Sub Draw()
-        Canvas.DrawRectangle(Core.windowSize, New Color(84, 198, 216))
+        Canvas.DrawRectangle(Core.windowSize, New Microsoft.Xna.Framework.Color(84, 198, 216))
 
         For y = -64 To Core.windowSize.Height Step 64
-            Core.SpriteBatch.Draw(Me.texture, New Rectangle(Core.windowSize.Width - 128, y + TileOffset, 128, 64), New Rectangle(48, 0, 16, 16), Color.White)
+            Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(Core.windowSize.Width - 128, y + TileOffset, 128, 64), New Microsoft.Xna.Framework.Rectangle(48, 0, 16, 16), Microsoft.Xna.Framework.Color.White)
         Next
 
-        Canvas.DrawGradient(New Rectangle(0, 0, CInt(Core.windowSize.Width), 200), New Color(42, 167, 198), New Color(42, 167, 198, 0), False, -1)
-        Canvas.DrawGradient(New Rectangle(0, CInt(Core.windowSize.Height - 200), CInt(Core.windowSize.Width), 200), New Color(42, 167, 198, 0), New Color(42, 167, 198), False, -1)
+        Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(0, 0, CInt(Core.windowSize.Width), 200), New Microsoft.Xna.Framework.Color(42, 167, 198), New Microsoft.Xna.Framework.Color(42, 167, 198, 0), False, -1)
+        Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(0, CInt(Core.windowSize.Height - 200), CInt(Core.windowSize.Width), 200), New Microsoft.Xna.Framework.Color(42, 167, 198, 0), New Microsoft.Xna.Framework.Color(42, 167, 198), False, -1)
 
-        Canvas.DrawRectangle(New Rectangle(50, 30, 564, 90), New Color(42, 167, 198, 150))
+        Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(50, 30, 564, 90), New Microsoft.Xna.Framework.Color(42, 167, 198, 150))
 
         If CHabitat Is Nothing Then
-            Core.SpriteBatch.DrawString(FontManager.MainFont, Profile.Pokedex.Name, New Vector2(60, 55), Color.White, 0.0F, Vector2.Zero, 1.5F, SpriteEffects.None, 0.0F)
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "Seen: " & vbNewLine & vbNewLine & "Obtained: ", New Vector2(420, 45), Color.White)
-            Core.SpriteBatch.DrawString(FontManager.MainFont, Profile.Seen + Profile.Obtained & vbNewLine & vbNewLine & Profile.Obtained, New Vector2(540, 45), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, Profile.Pokedex.Name, New Vector2(60, 55), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, 1.5F, SpriteEffects.None, 0.0F)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "Seen: " & vbNewLine & vbNewLine & "Obtained: ", New Vector2(420, 45), Microsoft.Xna.Framework.Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, Profile.Seen + Profile.Obtained & vbNewLine & vbNewLine & Profile.Obtained, New Vector2(540, 45), Microsoft.Xna.Framework.Color.Black)
         Else
-            Core.SpriteBatch.DrawString(FontManager.MainFont, CHabitat.Name, New Vector2(60, 80), Color.White, 0.0F, Vector2.Zero, 1.5F, SpriteEffects.None, 0.0F)
-            Core.SpriteBatch.Draw(CHabitat.Texture, New Rectangle(60, 32, 64, 48), Color.White)
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "Available: " & vbNewLine & vbNewLine & "Obtained: ", New Vector2(420, 45), Color.White)
-            Core.SpriteBatch.DrawString(FontManager.MainFont, CHabitat.PokemonList.Count & vbNewLine & vbNewLine & CHabitat.PokemonCaught, New Vector2(540, 45), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, CHabitat.Name, New Vector2(60, 80), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, 1.5F, SpriteEffects.None, 0.0F)
+            Core.SpriteBatch.Draw(CHabitat.Texture, New Microsoft.Xna.Framework.Rectangle(60, 32, 64, 48), Microsoft.Xna.Framework.Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "Available: " & vbNewLine & vbNewLine & "Obtained: ", New Vector2(420, 45), Microsoft.Xna.Framework.Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, CHabitat.PokemonList.Count & vbNewLine & vbNewLine & CHabitat.PokemonCaught, New Vector2(540, 45), Microsoft.Xna.Framework.Color.Black)
 
             Dim progressTexture As Texture2D = Me.CHabitat.ProgressTexture
             If Not progressTexture Is Nothing Then
-                Core.SpriteBatch.Draw(progressTexture, New Rectangle(134, 46, 20, 20), Color.White)
+                Core.SpriteBatch.Draw(progressTexture, New Microsoft.Xna.Framework.Rectangle(134, 46, 20, 20), Microsoft.Xna.Framework.Color.White)
             End If
         End If
 
@@ -519,9 +530,9 @@ Public Class PokedexScreen
 
                     If id <= Me.PokemonList.Count - 1 Then
                         If Not CHabitat Is Nothing OrElse Me.Profile.Pokedex.OriginalCount >= Profile.Pokedex.GetPlace(Me.PokemonList(id).Number) Then
-                            Canvas.DrawRectangle(New Rectangle(50 + x * 100, 140 + y * 100, 64, 92), New Color(42, 167, 198, 150))
+                            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(50 + x * 100, 140 + y * 100, 64, 92), New Microsoft.Xna.Framework.Color(42, 167, 198, 150))
                         Else
-                            Canvas.DrawBorder(3, New Rectangle(50 + x * 100, 140 + y * 100, 64, 92), New Color(42, 167, 198, 150))
+                            Canvas.DrawBorder(3, New Microsoft.Xna.Framework.Rectangle(50 + x * 100, 140 + y * 100, 64, 92), New Microsoft.Xna.Framework.Color(42, 167, 198, 150))
                         End If
 
                         Dim p As Pokemon = Nothing
@@ -538,12 +549,12 @@ Public Class PokedexScreen
                             DrawPokemonPreview(p)
                         End If
 
-                        Dim c As Color = Color.Gray
+                        Dim c As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.Gray
                         If entryType > 0 Then
                             If entryType > 1 Then
-                                c = Color.White
+                                c = Microsoft.Xna.Framework.Color.White
                             End If
-                            Core.SpriteBatch.Draw(p.GetMenuTexture(), New Rectangle(50 + x * 100, 140 + y * 100, 64, 64), c)
+                            Core.SpriteBatch.Draw(p.GetMenuTexture(), New Microsoft.Xna.Framework.Rectangle(50 + x * 100, 140 + y * 100, 64, 64), c)
                         End If
 
                         Dim no As String = "000"
@@ -555,19 +566,19 @@ Public Class PokedexScreen
                         While no.Length < 3
                             no = "0" & no
                         End While
-                        Core.SpriteBatch.DrawString(FontManager.MainFont, no, New Vector2(50 + x * 100 + CInt(32 - FontManager.MainFont.MeasureString(no).X / 2), 206 + y * 100), Color.White)
+                        Core.SpriteBatch.DrawString(FontManager.MainFont, no, New Vector2(50 + x * 100 + CInt(32 - FontManager.MainFont.MeasureString(no).X / 2), 206 + y * 100), Microsoft.Xna.Framework.Color.White)
                     End If
                 Next
             Next
         Else
-            Canvas.DrawGradient(New Rectangle(50, 300, 80, 90), New Color(84, 198, 216), New Color(42, 167, 198, 150), True, -1)
-            Canvas.DrawRectangle(New Rectangle(130, 300, 404, 90), New Color(42, 167, 198, 150))
-            Canvas.DrawGradient(New Rectangle(534, 300, 80, 90), New Color(42, 167, 198, 150), New Color(84, 198, 216), True, -1)
+            Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(50, 300, 80, 90), New Microsoft.Xna.Framework.Color(84, 198, 216), New Microsoft.Xna.Framework.Color(42, 167, 198, 150), True, -1)
+            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(130, 300, 404, 90), New Microsoft.Xna.Framework.Color(42, 167, 198, 150))
+            Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(534, 300, 80, 90), New Microsoft.Xna.Framework.Color(42, 167, 198, 150), New Microsoft.Xna.Framework.Color(84, 198, 216), True, -1)
 
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "No search results.", New Vector2(50 + CInt(564 / 2) - CInt(FontManager.MainFont.MeasureString("No search results.").X / 2), 330), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "No search results.", New Vector2(50 + CInt(564 / 2) - CInt(FontManager.MainFont.MeasureString("No search results.").X / 2), 330), Microsoft.Xna.Framework.Color.White)
         End If
 
-        Canvas.DrawRectangle(New Rectangle(670, 30, 400, 90), New Color(42, 167, 198, 150))
+        Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(670, 30, 400, 90), New Microsoft.Xna.Framework.Color(42, 167, 198, 150))
         Dim orderText As String = "Numeric"
         Select Case Me.Order
             Case OrderType.Alphabetically
@@ -594,8 +605,8 @@ Public Class PokedexScreen
                 End Select
             Next
         End If
-        Core.SpriteBatch.DrawString(FontManager.MainFont, "Order:" & vbNewLine & "Filter:" & vbNewLine & "Press Q on the keyboard to search.", New Vector2(685, 45), Color.White)
-        Core.SpriteBatch.DrawString(FontManager.MainFont, orderText & vbNewLine & filterText, New Vector2(790, 45), Color.Black)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, "Order:" & vbNewLine & "Filter:" & vbNewLine & "Press Q on the keyboard to search.", New Vector2(685, 45), Microsoft.Xna.Framework.Color.White)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, orderText & vbNewLine & filterText, New Vector2(790, 45), Microsoft.Xna.Framework.Color.Black)
 
         If menu.Visible = True Then
             menu.Draw()
@@ -620,9 +631,9 @@ Public Class PokedexScreen
         Dim entryType As Integer = Pokedex.GetEntryType(Core.Player.PokedexData, p.Number)
 
         For i = 0 To 4
-            Canvas.DrawGradient(New Rectangle(650, 300 + i * 40, 50, 2), New Color(255, 255, 255, 10), New Color(255, 255, 255, 255), True, -1)
-            Canvas.DrawRectangle(New Rectangle(700, 300 + i * 40, 350, 2), Color.White)
-            Canvas.DrawGradient(New Rectangle(1050, 300 + i * 40, 50, 2), New Color(255, 255, 255, 255), New Color(255, 255, 255, 10), True, -1)
+            Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(650, 300 + i * 40, 50, 2), New Microsoft.Xna.Framework.Color(255, 255, 255, 10), New Microsoft.Xna.Framework.Color(255, 255, 255, 255), True, -1)
+            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(700, 300 + i * 40, 350, 2), Microsoft.Xna.Framework.Color.White)
+            Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(1050, 300 + i * 40, 50, 2), New Microsoft.Xna.Framework.Color(255, 255, 255, 255), New Microsoft.Xna.Framework.Color(255, 255, 255, 10), True, -1)
         Next
 
         Dim no As String = "000"
@@ -636,17 +647,17 @@ Public Class PokedexScreen
         End While
 
         If entryType = 0 Then
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "???" & vbNewLine & vbNewLine & "No. " & no, New Vector2(830, 200), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "???" & vbNewLine & vbNewLine & "No. " & no, New Vector2(830, 200), Microsoft.Xna.Framework.Color.White)
         Else
-            Core.SpriteBatch.DrawString(FontManager.MainFont, p.GetName() & vbNewLine & vbNewLine & "No. " & no, New Vector2(830, 200), Color.White)
-            Core.SpriteBatch.Draw(p.GetTexture(True), New Rectangle(670, 140, 128, 128), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, p.GetName() & vbNewLine & vbNewLine & "No. " & no, New Vector2(830, 200), Microsoft.Xna.Framework.Color.White)
+            Core.SpriteBatch.Draw(p.GetTexture(True), New Microsoft.Xna.Framework.Rectangle(670, 140, 128, 128), Microsoft.Xna.Framework.Color.White)
 
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "SPECIES", New Vector2(680, 310), Color.Black)
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "TYPE", New Vector2(680, 350), Color.Black)
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "HEIGHT", New Vector2(680, 390), Color.Black)
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "WEIGHT", New Vector2(680, 430), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "SPECIES", New Vector2(680, 310), Microsoft.Xna.Framework.Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "TYPE", New Vector2(680, 350), Microsoft.Xna.Framework.Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "HEIGHT", New Vector2(680, 390), Microsoft.Xna.Framework.Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "WEIGHT", New Vector2(680, 430), Microsoft.Xna.Framework.Color.Black)
 
-            Canvas.DrawRectangle(New Rectangle(670, 480, 400, 152), New Color(42, 167, 198, 150))
+            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(670, 480, 400, 152), New Microsoft.Xna.Framework.Color(42, 167, 198, 150))
 
             If Not CHabitat Is Nothing Then
                 Dim encounterTypes As New List(Of Integer)
@@ -659,31 +670,31 @@ Public Class PokedexScreen
                 Next
                 For i = 0 To encounterTypes.Count - 1
                     Dim encounterType As Integer = encounterTypes(i)
-                    Core.SpriteBatch.Draw(PokedexScreen.Habitat.GetEncounterTypeImage(encounterType), New Rectangle(824 + i * 32, 266, 32, 32), Color.White)
+                    Core.SpriteBatch.Draw(PokedexScreen.Habitat.GetEncounterTypeImage(encounterType), New Microsoft.Xna.Framework.Rectangle(824 + i * 32, 266, 32, 32), Microsoft.Xna.Framework.Color.White)
                 Next
             End If
 
             If entryType > 1 Then
-                Core.SpriteBatch.DrawString(FontManager.MainFont, p.PokedexEntry.Species, New Vector2(850, 310), Color.Black)
-                Core.SpriteBatch.DrawString(FontManager.MainFont, "", New Vector2(850, 350), Color.Black)
-                Core.SpriteBatch.DrawString(FontManager.MainFont, p.PokedexEntry.Height & " m", New Vector2(850, 390), Color.Black)
-                Core.SpriteBatch.DrawString(FontManager.MainFont, p.PokedexEntry.Weight & " kg", New Vector2(850, 430), Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, p.PokedexEntry.Species, New Vector2(850, 310), Microsoft.Xna.Framework.Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, "", New Vector2(850, 350), Microsoft.Xna.Framework.Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, p.PokedexEntry.Height & " m", New Vector2(850, 390), Microsoft.Xna.Framework.Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, p.PokedexEntry.Weight & " kg", New Vector2(850, 430), Microsoft.Xna.Framework.Color.Black)
 
-                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Types"), New Rectangle(850, 356, 48, 16), p.Type1.GetElementImage(), Color.White)
+                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Types"), New Microsoft.Xna.Framework.Rectangle(850, 356, 48, 16), p.Type1.GetElementImage(), Microsoft.Xna.Framework.Color.White)
                 If p.Type2.Type <> Element.Types.Blank Then
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Types"), New Rectangle(900, 356, 48, 16), p.Type2.GetElementImage(), Color.White)
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Types"), New Microsoft.Xna.Framework.Rectangle(900, 356, 48, 16), p.Type2.GetElementImage(), Microsoft.Xna.Framework.Color.White)
                 End If
 
-                Core.SpriteBatch.DrawString(FontManager.MainFont, p.PokedexEntry.Text.CropStringToWidth(FontManager.MainFont, 380), New Vector2(680, 490), Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, p.PokedexEntry.Text.CropStringToWidth(FontManager.MainFont, 380), New Vector2(680, 490), Microsoft.Xna.Framework.Color.Black)
 
-                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Rectangle(160, 160, 10, 10), ""), New Rectangle(915, 242, 20, 20), Color.White)
+                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Microsoft.Xna.Framework.Rectangle(160, 160, 10, 10), ""), New Microsoft.Xna.Framework.Rectangle(915, 242, 20, 20), Microsoft.Xna.Framework.Color.White)
             Else
-                Core.SpriteBatch.DrawString(FontManager.MainFont, "??? Pokémon", New Vector2(850, 310), Color.Black)
-                Core.SpriteBatch.DrawString(FontManager.MainFont, "???", New Vector2(850, 350), Color.Black)
-                Core.SpriteBatch.DrawString(FontManager.MainFont, "??? m", New Vector2(850, 390), Color.Black)
-                Core.SpriteBatch.DrawString(FontManager.MainFont, "??? kg", New Vector2(850, 430), Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, "??? Pokémon", New Vector2(850, 310), Microsoft.Xna.Framework.Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, "???", New Vector2(850, 350), Microsoft.Xna.Framework.Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, "??? m", New Vector2(850, 390), Microsoft.Xna.Framework.Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, "??? kg", New Vector2(850, 430), Microsoft.Xna.Framework.Color.Black)
 
-                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Rectangle(160, 170, 10, 10), ""), New Rectangle(915, 242, 20, 20), Color.White)
+                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Microsoft.Xna.Framework.Rectangle(160, 170, 10, 10), ""), New Microsoft.Xna.Framework.Rectangle(915, 242, 20, 20), Microsoft.Xna.Framework.Color.White)
             End If
         End If
     End Sub
@@ -691,8 +702,8 @@ Public Class PokedexScreen
     Private Sub DrawCursor()
         Dim cPosition As Vector2 = New Vector2(50 + Me.Cursor.X * 100 + 42, 140 + Me.Cursor.Y * 100 - 42)
 
-        Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(0, 0, 16, 16), "")
-        Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
+        Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(0, 0, 16, 16), "")
+        Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
     End Sub
 
     Public Overrides Sub Update()
@@ -745,7 +756,7 @@ Public Class PokedexScreen
                         y += 1
                     End While
 
-                    If New Rectangle(50 + x * 100, 140 + y * 100, 64, 92).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(50 + x * 100, 140 + y * 100, 64, 92).Contains(MouseHandler.MousePosition) = True Then
                         If Cursor.X + Cursor.Y * 6 = i Then
                             If TempPokemonDexType(CInt((Cursor.Y + Scroll) * 6 + Cursor.X + 1)) > 0 Then
                                 Core.SetScreen(New PokedexViewScreen(Me, TempPokemonStorage(CInt((Cursor.Y + Scroll) * 6 + Cursor.X + 1)), False))
@@ -766,7 +777,7 @@ Public Class PokedexScreen
                 End If
             End If
 
-            If KeyBoardHandler.KeyPressed(KeyBindings.SpecialKey) = True Or ControllerHandler.ButtonPressed(Buttons.Y) = True Then
+            If KeyBoardHandler.KeyPressed(Core.KeyBindings.Special) = True Or ControllerHandler.ButtonPressed(Buttons.Y) = True Then
                 Me.menu = New SelectMenu({"Order", "Filter", "Reset", "Back"}.ToList(), 0, AddressOf SelectMenu1, 3)
             End If
 
@@ -951,8 +962,8 @@ Public Class PokedexScreen
             End If
             Me.Visible = True
 
-            t1 = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(16, 16, 16, 16), "")
-            t2 = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(32, 16, 16, 16), "")
+            t1 = TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), "")
+            t2 = TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(32, 16, 16, 16), "")
         End Sub
 
         Public Sub Update()
@@ -967,7 +978,7 @@ Public Class PokedexScreen
 
                 For i = Scroll To Me.Scroll + 8
                     If i <= Me.Items.Count - 1 Then
-                        If Controls.Accept(True, False, False) = True And i = Me.Index And New Rectangle(Core.windowSize.Width - 270, 66 * ((i + 1) - Scroll), 256, 64).Contains(MouseHandler.MousePosition) = True Or
+                        If Controls.Accept(True, False, False) = True And i = Me.Index And New Microsoft.Xna.Framework.Rectangle(Core.WindowSize.Width - 270, 66 * ((i + 1) - Scroll), 256, 64).Contains(MouseHandler.MousePosition) = True Or
                             Controls.Accept(False, True, True) = True And i = Me.Index Or Controls.Dismiss(True, True, True) = True And Me.BackIndex = Me.Index Then
 
                             If Not ClickHandler Is Nothing Then
@@ -982,7 +993,7 @@ Public Class PokedexScreen
                             End If
                             Me.Visible = False
                         End If
-                        If New Rectangle(Core.windowSize.Width - 270, 66 * ((i + 1) - Scroll), 256, 64).Contains(MouseHandler.MousePosition) = True And Controls.Accept(True, False, False) = True Then
+                        If New Microsoft.Xna.Framework.Rectangle(Core.WindowSize.Width - 270, 66 * ((i + 1) - Scroll), 256, 64).Contains(MouseHandler.MousePosition) = True And Controls.Accept(True, False, False) = True Then
                             Me.Index = i
                         End If
                     End If
@@ -1003,19 +1014,19 @@ Public Class PokedexScreen
                     If i <= Me.Items.Count - 1 Then
                         Dim Text As String = Items(i)
 
-                        Dim startPos As New Vector2(Core.windowSize.Width - 270, 66 * ((i + 1) - Scroll))
+                        Dim startPos As New Vector2(Core.WindowSize.Width - 270, 66 * ((i + 1) - Scroll))
 
-                        Core.SpriteBatch.Draw(t1, New Rectangle(CInt(startPos.X), CInt(startPos.Y), 64, 64), Color.White)
-                        Core.SpriteBatch.Draw(t2, New Rectangle(CInt(startPos.X + 64), CInt(startPos.Y), 64, 64), Color.White)
-                        Core.SpriteBatch.Draw(t2, New Rectangle(CInt(startPos.X + 128), CInt(startPos.Y), 64, 64), Color.White)
-                        Core.SpriteBatch.Draw(t1, New Rectangle(CInt(startPos.X + 192), CInt(startPos.Y), 64, 64), Nothing, Color.White, 0.0F, New Vector2(0), SpriteEffects.FlipHorizontally, 0.0F)
+                        Core.SpriteBatch.Draw(t1, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X), CInt(startPos.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
+                        Core.SpriteBatch.Draw(t2, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X + 64), CInt(startPos.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
+                        Core.SpriteBatch.Draw(t2, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X + 128), CInt(startPos.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
+                        Core.SpriteBatch.Draw(t1, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X + 192), CInt(startPos.Y), 64, 64), Nothing, Microsoft.Xna.Framework.Color.White, 0.0F, New Vector2(0), SpriteEffects.FlipHorizontally, 0.0F)
 
-                        Core.SpriteBatch.DrawString(FontManager.MainFont, Text, New Vector2(startPos.X + 128 - (FontManager.MainFont.MeasureString(Text).X * 1.4F) / 2, startPos.Y + 15), Color.Black, 0.0F, Vector2.Zero, 1.4F, SpriteEffects.None, 0.0F)
+                        Core.SpriteBatch.DrawString(FontManager.MainFont, Text, New Vector2(startPos.X + 128 - (FontManager.MainFont.MeasureString(Text).X * 1.4F) / 2, startPos.Y + 15), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.4F, SpriteEffects.None, 0.0F)
 
                         If Me.Index = i Then
                             Dim cPosition As Vector2 = New Vector2(startPos.X + 128, startPos.Y - 40)
-                            Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(0, 0, 16, 16), "")
-                            Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
+                            Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(0, 0, 16, 16), "")
+                            Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
                         End If
                     End If
                 Next
@@ -1053,7 +1064,7 @@ Public Class PokedexScreen
 
         Public File As String = ""
         Public Name As String = ""
-        Public HabitatType As HabitatTypes = HabitatTypes.Grassland
+        Public HabitatType As HabitatTypes = HabitatType.Grassland
 
         Public PokemonList As New List(Of Integer)
         Public ObtainTypeList As New List(Of EncounterPokemon)
@@ -1062,7 +1073,7 @@ Public Class PokedexScreen
         Public PokemonSeen As Integer = 0
 
         Public Sub New(ByVal file As String)
-            Security.FileValidation.CheckFileValid(file, False, "PokedexScreen.vb")
+            FileValidation.CheckFileValid(file, False, "PokedexScreen.vb")
             Dim data() As String = System.IO.File.ReadAllLines(file)
             Me.MergeData = data
             Me.File = file
@@ -1074,21 +1085,21 @@ Public Class PokedexScreen
                     Dim arg As String = line.Remove(0, 5)
                     Select Case arg.ToLower()
                         Case "grassland"
-                            Me.HabitatType = HabitatTypes.Grassland
+                            Me.HabitatType = HabitatType.Grassland
                         Case "forest"
-                            Me.HabitatType = HabitatTypes.Forest
+                            Me.HabitatType = HabitatType.Forest
                         Case "watersedge"
-                            Me.HabitatType = HabitatTypes.WatersEdge
+                            Me.HabitatType = HabitatType.WatersEdge
                         Case "sea"
-                            Me.HabitatType = HabitatTypes.Sea
+                            Me.HabitatType = HabitatType.Sea
                         Case "cave"
-                            Me.HabitatType = HabitatTypes.Cave
+                            Me.HabitatType = HabitatType.Cave
                         Case "mountain"
-                            Me.HabitatType = HabitatTypes.Mountain
+                            Me.HabitatType = HabitatType.Mountain
                         Case "roughterrain"
-                            Me.HabitatType = HabitatTypes.RoughTerrain
+                            Me.HabitatType = HabitatType.RoughTerrain
                         Case "city"
-                            Me.HabitatType = HabitatTypes.City
+                            Me.HabitatType = HabitatType.City
                     End Select
                 ElseIf line.StartsWith("{") = True And line.EndsWith("}") = True Then
                     Dim pokemonData() As String = line.Remove(line.Length - 1, 1).Remove(0, 1).Split(CChar("|"))
@@ -1139,7 +1150,7 @@ Public Class PokedexScreen
                     x -= 2
                     y += 1
                 End While
-                Return TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Rectangle(x * 64, y * 48, 64, 48), "")
+                Return TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Microsoft.Xna.Framework.Rectangle(x * 64, y * 48, 64, 48), "")
             End Get
         End Property
 
@@ -1168,16 +1179,16 @@ Public Class PokedexScreen
                     y = 2
             End Select
 
-            Return TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Rectangle(128 + x * 32, y * 32, 32, 32), "")
+            Return TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Microsoft.Xna.Framework.Rectangle(128 + x * 32, y * 32, 32, 32), "")
         End Function
 
         Public ReadOnly Property ProgressTexture() As Texture2D
             Get
                 If Me.PokemonCaught >= Me.PokemonList.Count Then
-                    Return TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Rectangle(160, 160, 10, 10), "")
+                    Return TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Microsoft.Xna.Framework.Rectangle(160, 160, 10, 10), "")
                 Else
                     If Me.PokemonSeen >= Me.PokemonList.Count Then
-                        Return TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Rectangle(160, 170, 10, 10), "")
+                        Return TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Microsoft.Xna.Framework.Rectangle(160, 170, 10, 10), "")
                     End If
                 End If
                 Return Nothing
@@ -1354,12 +1365,12 @@ Public Class PokedexViewScreen
         Dim t As Texture2D = Pokemon.GetTexture(FrontView)
         Me.yOffset = -1
 
-        Dim cArr(t.Width * t.Height - 1) As Color
+        Dim cArr(t.Width * t.Height - 1) As Microsoft.Xna.Framework.Color
         t.GetData(cArr)
 
         For y = 0 To t.Height - 1
             For x = 0 To t.Width - 1
-                If cArr(x + y * t.Height) <> Color.Transparent Then
+                If cArr(x + y * t.Height) <> Microsoft.Xna.Framework.Color.Transparent Then
                     Me.yOffset = y
                     Exit For
                 End If
@@ -1372,14 +1383,14 @@ Public Class PokedexViewScreen
     End Sub
 
     Public Overrides Sub Draw()
-        Canvas.DrawRectangle(Core.windowSize, New Color(84, 198, 216))
+        Canvas.DrawRectangle(Core.WindowSize, New Microsoft.Xna.Framework.Color(84, 198, 216))
 
-        For y = -64 To Core.windowSize.Height Step 64
-            Core.SpriteBatch.Draw(Me.texture, New Rectangle(Core.windowSize.Width - 128, y + PokedexScreen.TileOffset, 128, 64), New Rectangle(48, 0, 16, 16), Color.White)
+        For y = -64 To Core.WindowSize.Height Step 64
+            Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(Core.WindowSize.Width - 128, y + PokedexScreen.TileOffset, 128, 64), New Microsoft.Xna.Framework.Rectangle(48, 0, 16, 16), Microsoft.Xna.Framework.Color.White)
         Next
 
-        Canvas.DrawGradient(New Rectangle(0, 0, CInt(Core.windowSize.Width), 200), New Color(42, 167, 198), New Color(42, 167, 198, 0), False, -1)
-        Canvas.DrawGradient(New Rectangle(0, CInt(Core.windowSize.Height - 200), CInt(Core.windowSize.Width), 200), New Color(42, 167, 198, 0), New Color(42, 167, 198), False, -1)
+        Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(0, 0, CInt(Core.WindowSize.Width), 200), New Microsoft.Xna.Framework.Color(42, 167, 198), New Microsoft.Xna.Framework.Color(42, 167, 198, 0), False, -1)
+        Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(0, CInt(Core.WindowSize.Height - 200), CInt(Core.WindowSize.Width), 200), New Microsoft.Xna.Framework.Color(42, 167, 198, 0), New Microsoft.Xna.Framework.Color(42, 167, 198), False, -1)
 
         Select Case Me.Page
             Case 0
@@ -1390,39 +1401,39 @@ Public Class PokedexViewScreen
                 DrawPage3()
         End Select
 
-        Core.SpriteBatch.Draw(Me.texture, New Rectangle(20, 20, 64, 64), New Rectangle(16, 16, 16, 16), Color.White)
+        Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(20, 20, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
 
-        Core.SpriteBatch.Draw(Me.texture, New Rectangle(20 + 64, 20, 64 * 8, 64), New Rectangle(32, 16, 16, 16), Color.White)
-        Core.SpriteBatch.Draw(Me.texture, New Rectangle(20 + 64 * 9, 20, 64, 64), New Rectangle(16, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
+        Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(20 + 64, 20, 64 * 8, 64), New Microsoft.Xna.Framework.Rectangle(32, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
+        Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(20 + 64 * 9, 20, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
 
-        Core.SpriteBatch.Draw(Me.texture, New Rectangle(20 + 64, 20, 64 * 5, 64), New Rectangle(32, 16, 16, 16), Color.White)
-        Core.SpriteBatch.Draw(Me.texture, New Rectangle(20 + 64 * 6, 20, 64, 64), New Rectangle(16, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
+        Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(20 + 64, 20, 64 * 5, 64), New Microsoft.Xna.Framework.Rectangle(32, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
+        Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(20 + 64 * 6, 20, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
 
-        Core.SpriteBatch.Draw(Pokemon.GetMenuTexture(), New Rectangle(28, 20, 64, 64), Color.White)
-        Core.SpriteBatch.DrawString(FontManager.MainFont, Pokemon.GetName(), New Vector2(100, 36), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+        Core.SpriteBatch.Draw(Pokemon.GetMenuTexture(), New Microsoft.Xna.Framework.Rectangle(28, 20, 64, 64), Microsoft.Xna.Framework.Color.White)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, Pokemon.GetName(), New Vector2(100, 36), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
 
         If EntryType = 1 Then
-            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Rectangle(160, 170, 10, 10), ""), New Rectangle(64 * 6 + 40, 42, 20, 20), Color.White)
+            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Microsoft.Xna.Framework.Rectangle(160, 170, 10, 10), ""), New Microsoft.Xna.Framework.Rectangle(64 * 6 + 40, 42, 20, 20), Microsoft.Xna.Framework.Color.White)
         ElseIf EntryType > 1 Then
-            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Rectangle(160, 160, 10, 10), ""), New Rectangle(64 * 6 + 40, 42, 20, 20), Color.White)
+            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Microsoft.Xna.Framework.Rectangle(160, 160, 10, 10), ""), New Microsoft.Xna.Framework.Rectangle(64 * 6 + 40, 42, 20, 20), Microsoft.Xna.Framework.Color.White)
         End If
 
         If Me.mLineLength = 100 Then
             If Me.Page = 0 Or Me.Page = 1 Then
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(Core.windowSize.Width - 70, CInt(Core.windowSize.Height / 2 - 32), 64, 64), New Rectangle(0, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(Core.WindowSize.Width - 70, CInt(Core.WindowSize.Height / 2 - 32), 64, 64), New Microsoft.Xna.Framework.Rectangle(0, 16, 16, 16), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
             End If
             If Me.Page = 1 Or Me.Page = 2 Then
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(6, CInt(Core.windowSize.Height / 2 - 32), 64, 64), New Rectangle(0, 16, 16, 16), Color.White)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(6, CInt(Core.WindowSize.Height / 2 - 32), 64, 64), New Microsoft.Xna.Framework.Rectangle(0, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
             End If
         End If
 
         Select Case Me.Page
             Case 0
-                Core.SpriteBatch.DrawString(FontManager.MainFont, "Details", New Vector2(480, 36), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, "Details", New Vector2(480, 36), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
             Case 1
-                Core.SpriteBatch.DrawString(FontManager.MainFont, "Habitat", New Vector2(480, 36), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, "Habitat", New Vector2(480, 36), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
             Case 2
-                Core.SpriteBatch.DrawString(FontManager.MainFont, "Evolution", New Vector2(480, 36), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, "Evolution", New Vector2(480, 36), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
         End Select
     End Sub
 
@@ -1433,39 +1444,39 @@ Public Class PokedexViewScreen
 
     Private Sub DrawPage1()
         Dim v As Vector2 = Core.GetMiddlePosition(New Size(512, 512))
-        Core.SpriteBatch.Draw(Pokemon.GetTexture(Me.FrontView), New Rectangle(CInt(v.X), CInt(v.Y) - yOffset * 2, 512, 512), New Color(255, 255, 255, fadeMainImage))
+        Core.SpriteBatch.Draw(Pokemon.GetTexture(Me.FrontView), New Microsoft.Xna.Framework.Rectangle(CInt(v.X), CInt(v.Y) - yOffset * 2, 512, 512), New Microsoft.Xna.Framework.Color(255, 255, 255, fadeMainImage))
 
         If fadeMainImage = 255 Then
             Dim mV As Vector2 = Core.GetMiddlePosition(New Size(0, 0))
 
-            Canvas.DrawLine(Color.Black, New Vector2(mV.X + 40, mV.Y - 40), New Vector2(mV.X + vLineLength, mV.Y - vLineLength), 2)
-            Canvas.DrawLine(Color.Black, New Vector2(mV.X + 40, mV.Y + 40), New Vector2(mV.X + vLineLength, mV.Y + vLineLength), 2)
-            Canvas.DrawLine(Color.Black, New Vector2(mV.X - 40, mV.Y - 40), New Vector2(mV.X - vLineLength, mV.Y - vLineLength), 2)
-            Canvas.DrawLine(Color.Black, New Vector2(mV.X - 40, mV.Y + 40), New Vector2(mV.X - vLineLength, mV.Y + vLineLength), 2)
+            Canvas.DrawLine(Microsoft.Xna.Framework.Color.Black, New Vector2(mV.X + 40, mV.Y - 40), New Vector2(mV.X + vLineLength, mV.Y - vLineLength), 2)
+            Canvas.DrawLine(Microsoft.Xna.Framework.Color.Black, New Vector2(mV.X + 40, mV.Y + 40), New Vector2(mV.X + vLineLength, mV.Y + vLineLength), 2)
+            Canvas.DrawLine(Microsoft.Xna.Framework.Color.Black, New Vector2(mV.X - 40, mV.Y - 40), New Vector2(mV.X - vLineLength, mV.Y - vLineLength), 2)
+            Canvas.DrawLine(Microsoft.Xna.Framework.Color.Black, New Vector2(mV.X - 40, mV.Y + 40), New Vector2(mV.X - vLineLength, mV.Y + vLineLength), 2)
 
             If vLineLength = 140 Then
-                Canvas.DrawLine(Color.Black, New Vector2(mV.X + 140, mV.Y - 140), New Vector2(mV.X + (140 + mLineLength), mV.Y - 140), 2)
-                Canvas.DrawLine(Color.Black, New Vector2(mV.X + 139, mV.Y + 140), New Vector2(mV.X + (140 + mLineLength), mV.Y + 140), 2)
-                Canvas.DrawLine(Color.Black, New Vector2(mV.X - 139, mV.Y - 140), New Vector2(mV.X - (140 + mLineLength), mV.Y - 140), 2)
-                Canvas.DrawLine(Color.Black, New Vector2(mV.X - 139, mV.Y + 140), New Vector2(mV.X - (140 + mLineLength), mV.Y + 140), 2)
+                Canvas.DrawLine(Microsoft.Xna.Framework.Color.Black, New Vector2(mV.X + 140, mV.Y - 140), New Vector2(mV.X + (140 + mLineLength), mV.Y - 140), 2)
+                Canvas.DrawLine(Microsoft.Xna.Framework.Color.Black, New Vector2(mV.X + 139, mV.Y + 140), New Vector2(mV.X + (140 + mLineLength), mV.Y + 140), 2)
+                Canvas.DrawLine(Microsoft.Xna.Framework.Color.Black, New Vector2(mV.X - 139, mV.Y - 140), New Vector2(mV.X - (140 + mLineLength), mV.Y - 140), 2)
+                Canvas.DrawLine(Microsoft.Xna.Framework.Color.Black, New Vector2(mV.X - 139, mV.Y + 140), New Vector2(mV.X - (140 + mLineLength), mV.Y + 140), 2)
             End If
 
             If mLineLength = 100 Then
                 If EntryType > 1 Then
-                    Core.SpriteBatch.DrawString(FontManager.MainFont, Pokemon.PokedexEntry.Height & " m", New Vector2(mV.X + 250, mV.Y - 152), Color.Black)
-                    Core.SpriteBatch.DrawString(FontManager.MainFont, Pokemon.PokedexEntry.Weight & " kg", New Vector2(mV.X + 250, mV.Y + 128), Color.Black)
-                    Core.SpriteBatch.DrawString(FontManager.MainFont, Pokemon.PokedexEntry.Species, New Vector2(mV.X - 248 - FontManager.MainFont.MeasureString(Pokemon.PokedexEntry.Species).X, mV.Y - 152), Color.Black)
+                    Core.SpriteBatch.DrawString(FontManager.MainFont, Pokemon.PokedexEntry.Height & " m", New Vector2(mV.X + 250, mV.Y - 152), Microsoft.Xna.Framework.Color.Black)
+                    Core.SpriteBatch.DrawString(FontManager.MainFont, Pokemon.PokedexEntry.Weight & " kg", New Vector2(mV.X + 250, mV.Y + 128), Microsoft.Xna.Framework.Color.Black)
+                    Core.SpriteBatch.DrawString(FontManager.MainFont, Pokemon.PokedexEntry.Species, New Vector2(mV.X - 248 - FontManager.MainFont.MeasureString(Pokemon.PokedexEntry.Species).X, mV.Y - 152), Microsoft.Xna.Framework.Color.Black)
                     If Pokemon.Type2.Type <> Element.Types.Blank Then
-                        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Types"), New Rectangle(CInt(mV.X - 450), CInt(mV.Y + 123), 96, 32), Pokemon.Type1.GetElementImage(), Color.White)
-                        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Types"), New Rectangle(CInt(mV.X - 350), CInt(mV.Y + 123), 96, 32), Pokemon.Type2.GetElementImage(), Color.White)
+                        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Types"), New Microsoft.Xna.Framework.Rectangle(CInt(mV.X - 450), CInt(mV.Y + 123), 96, 32), Pokemon.Type1.GetElementImage(), Microsoft.Xna.Framework.Color.White)
+                        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Types"), New Microsoft.Xna.Framework.Rectangle(CInt(mV.X - 350), CInt(mV.Y + 123), 96, 32), Pokemon.Type2.GetElementImage(), Microsoft.Xna.Framework.Color.White)
                     Else
-                        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Types"), New Rectangle(CInt(mV.X - 350), CInt(mV.Y + 123), 96, 32), Pokemon.Type1.GetElementImage(), Color.White)
+                        Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Types"), New Microsoft.Xna.Framework.Rectangle(CInt(mV.X - 350), CInt(mV.Y + 123), 96, 32), Pokemon.Type1.GetElementImage(), Microsoft.Xna.Framework.Color.White)
                     End If
                 Else
-                    Core.SpriteBatch.DrawString(FontManager.MainFont, "??? m", New Vector2(mV.X + 250, mV.Y - 152), Color.Black)
-                    Core.SpriteBatch.DrawString(FontManager.MainFont, "??? kg", New Vector2(mV.X + 250, mV.Y + 128), Color.Black)
-                    Core.SpriteBatch.DrawString(FontManager.MainFont, "??? Pokémon", New Vector2(mV.X - 248 - FontManager.MainFont.MeasureString("??? Pokémon").X, mV.Y - 152), Color.Black)
-                    Core.SpriteBatch.DrawString(FontManager.MainFont, "???", New Vector2(mV.X - 248 - FontManager.MainFont.MeasureString("???").X, mV.Y + 128), Color.Black)
+                    Core.SpriteBatch.DrawString(FontManager.MainFont, "??? m", New Vector2(mV.X + 250, mV.Y - 152), Microsoft.Xna.Framework.Color.Black)
+                    Core.SpriteBatch.DrawString(FontManager.MainFont, "??? kg", New Vector2(mV.X + 250, mV.Y + 128), Microsoft.Xna.Framework.Color.Black)
+                    Core.SpriteBatch.DrawString(FontManager.MainFont, "??? Pokémon", New Vector2(mV.X - 248 - FontManager.MainFont.MeasureString("??? Pokémon").X, mV.Y - 152), Microsoft.Xna.Framework.Color.Black)
+                    Core.SpriteBatch.DrawString(FontManager.MainFont, "???", New Vector2(mV.X - 248 - FontManager.MainFont.MeasureString("???").X, mV.Y + 128), Microsoft.Xna.Framework.Color.Black)
                 End If
             End If
         End If
@@ -1476,22 +1487,22 @@ Public Class PokedexViewScreen
 
     Private Sub DrawPage2()
         If Me.HabitatList.Count = 0 Then
-            Canvas.DrawGradient(New Rectangle(CInt(Core.windowSize.Width / 2) - 282, CInt(Core.windowSize.Height / 2 - 45), 80, 90), New Color(84, 198, 216), New Color(42, 167, 198, 150), True, -1)
-            Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width / 2) - 202, CInt(Core.windowSize.Height / 2 - 45), 404, 90), New Color(42, 167, 198, 150))
-            Canvas.DrawGradient(New Rectangle(CInt(Core.windowSize.Width / 2) + 202, CInt(Core.windowSize.Height / 2 - 45), 80, 90), New Color(42, 167, 198, 150), New Color(84, 198, 216), True, -1)
+            Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(CInt(Core.WindowSize.Width / 2) - 282, CInt(Core.WindowSize.Height / 2 - 45), 80, 90), New Microsoft.Xna.Framework.Color(84, 198, 216), New Microsoft.Xna.Framework.Color(42, 167, 198, 150), True, -1)
+            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Core.WindowSize.Width / 2) - 202, CInt(Core.WindowSize.Height / 2 - 45), 404, 90), New Microsoft.Xna.Framework.Color(42, 167, 198, 150))
+            Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(CInt(Core.WindowSize.Width / 2) + 202, CInt(Core.WindowSize.Height / 2 - 45), 80, 90), New Microsoft.Xna.Framework.Color(42, 167, 198, 150), New Microsoft.Xna.Framework.Color(84, 198, 216), True, -1)
 
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "Area Unknown.", New Vector2(CInt(Core.windowSize.Width / 2) - CInt(FontManager.MainFont.MeasureString("Area Unknown.").X / 2), CInt(Core.windowSize.Height / 2 - 15)), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "Area Unknown.", New Vector2(CInt(Core.WindowSize.Width / 2) - CInt(FontManager.MainFont.MeasureString("Area Unknown.").X / 2), CInt(Core.WindowSize.Height / 2 - 15)), Microsoft.Xna.Framework.Color.White)
         Else
             For i = Scroll To Scroll + 4
                 If i <= Me.HabitatList.Count - 1 Then
                     Dim p As Integer = i - Scroll
 
-                    Core.SpriteBatch.Draw(Me.texture, New Rectangle(100, 160 + p * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White)
-                    Core.SpriteBatch.Draw(Me.texture, New Rectangle(100 + 64, 160 + p * 96, 64 * 9, 64), New Rectangle(32, 16, 16, 16), Color.White)
-                    Core.SpriteBatch.Draw(Me.texture, New Rectangle(100 + 64 * 10, 160 + p * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
+                    Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100, 160 + p * 96, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
+                    Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100 + 64, 160 + p * 96, 64 * 9, 64), New Microsoft.Xna.Framework.Rectangle(32, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
+                    Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100 + 64 * 10, 160 + p * 96, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
 
-                    Core.SpriteBatch.Draw(HabitatList(i).Texture, New Rectangle(120, 168 + p * 96, 64, 48), Color.White)
-                    Core.SpriteBatch.DrawString(FontManager.MainFont, HabitatList(i).Name, New Vector2(200, 176 + p * 96), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                    Core.SpriteBatch.Draw(HabitatList(i).Texture, New Microsoft.Xna.Framework.Rectangle(120, 168 + p * 96, 64, 48), Microsoft.Xna.Framework.Color.White)
+                    Core.SpriteBatch.DrawString(FontManager.MainFont, HabitatList(i).Name, New Vector2(200, 176 + p * 96), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
 
                     Dim encounterTypes As New List(Of Integer)
                     For j = 0 To HabitatList(i).ObtainTypeList.Count - 1
@@ -1501,7 +1512,7 @@ Public Class PokedexViewScreen
                     Next
 
                     For j = 0 To encounterTypes.Count - 1
-                        Core.SpriteBatch.Draw(PokedexScreen.Habitat.GetEncounterTypeImage(encounterTypes(j)), New Rectangle(560 + j * 40, 176 + p * 96, 32, 32), Color.White)
+                        Core.SpriteBatch.Draw(PokedexScreen.Habitat.GetEncounterTypeImage(encounterTypes(j)), New Microsoft.Xna.Framework.Rectangle(560 + j * 40, 176 + p * 96, 32, 32), Microsoft.Xna.Framework.Color.White)
                     Next
                 End If
             Next
@@ -1513,19 +1524,19 @@ Public Class PokedexViewScreen
     Private Sub DrawCursor()
         Dim cPosition As Vector2 = New Vector2(520, 160 + Me.Cursor * 96 - 42)
 
-        Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(0, 0, 16, 16), "")
-        Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
+        Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(0, 0, 16, 16), "")
+        Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
     End Sub
 
     Dim scale As Single = 2.0F
 
     Private Sub DrawPage3()
         If EvolutionLine.Devolution Is Nothing And EvolutionLine.Evolutions.Count = 0 Then
-            Canvas.DrawGradient(New Rectangle(CInt(Core.windowSize.Width / 2) - 282, CInt(Core.windowSize.Height / 2 - 45), 80, 90), New Color(84, 198, 216), New Color(42, 167, 198, 150), True, -1)
-            Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width / 2) - 202, CInt(Core.windowSize.Height / 2 - 45), 404, 90), New Color(42, 167, 198, 150))
-            Canvas.DrawGradient(New Rectangle(CInt(Core.windowSize.Width / 2) + 202, CInt(Core.windowSize.Height / 2 - 45), 80, 90), New Color(42, 167, 198, 150), New Color(84, 198, 216), True, -1)
+            Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(CInt(Core.windowSize.Width / 2) - 282, CInt(Core.windowSize.Height / 2 - 45), 80, 90), New Microsoft.Xna.Framework.Color(84, 198, 216), New Microsoft.Xna.Framework.Color(42, 167, 198, 150), True, -1)
+            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Core.windowSize.Width / 2) - 202, CInt(Core.windowSize.Height / 2 - 45), 404, 90), New Microsoft.Xna.Framework.Color(42, 167, 198, 150))
+            Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(CInt(Core.windowSize.Width / 2) + 202, CInt(Core.windowSize.Height / 2 - 45), 80, 90), New Microsoft.Xna.Framework.Color(42, 167, 198, 150), New Microsoft.Xna.Framework.Color(84, 198, 216), True, -1)
 
-            Core.SpriteBatch.DrawString(FontManager.MainFont, Pokemon.GetName() & " doesn't evolve.", New Vector2(CInt(Core.windowSize.Width / 2) - CInt(FontManager.MainFont.MeasureString(Pokemon.GetName() & " doesn't evolve.").X / 2), CInt(Core.windowSize.Height / 2 - 15)), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, Pokemon.GetName() & " doesn't evolve.", New Vector2(CInt(Core.windowSize.Width / 2) - CInt(FontManager.MainFont.MeasureString(Pokemon.GetName() & " doesn't evolve.").X / 2), CInt(Core.windowSize.Height / 2 - 15)), Microsoft.Xna.Framework.Color.White)
         Else
             Dim connections As New List(Of String)
             Dim levels As New Dictionary(Of Integer, Integer)
@@ -1602,19 +1613,19 @@ Public Class PokedexViewScreen
 
                 Dim level2Offset As Integer = CInt(GetOffset(level2Count, PokemonDraws(p2)) * (64 * scale))
 
-                Canvas.DrawLine(Color.Black, New Vector2(mv.X + (level1 * (128 * scale)) + (scale * 32), mv.Y + (scale * 32) + level1Offset), New Vector2(mv.X + (level2 * (128 * scale)) + (scale * 32), mv.Y + (scale * 32) + level2Offset), 2)
+                Canvas.DrawLine(Microsoft.Xna.Framework.Color.Black, New Vector2(mv.X + (level1 * (128 * scale)) + (scale * 32), mv.Y + (scale * 32) + level1Offset), New Vector2(mv.X + (level2 * (128 * scale)) + (scale * 32), mv.Y + (scale * 32) + level2Offset), 2)
 
                 If Pokedex.GetEntryType(Core.Player.PokedexData, pokemon1.Number) = 0 Then
-                    Core.SpriteBatch.Draw(pokemon1.GetMenuTexture(), New Rectangle(CInt(mv.X + (level1 * (128 * scale))), CInt(mv.Y + level1Offset), CInt(64 * scale), CInt(64 * scale)), Color.Black)
+                    Core.SpriteBatch.Draw(pokemon1.GetMenuTexture(), New Microsoft.Xna.Framework.Rectangle(CInt(mv.X + (level1 * (128 * scale))), CInt(mv.Y + level1Offset), CInt(64 * scale), CInt(64 * scale)), Microsoft.Xna.Framework.Color.Black)
                 Else
-                    Core.SpriteBatch.Draw(pokemon1.GetMenuTexture(), New Rectangle(CInt(mv.X + (level1 * (128 * scale))), CInt(mv.Y + level1Offset), CInt(64 * scale), CInt(64 * scale)), Color.White)
-                    Core.SpriteBatch.DrawString(FontManager.MainFont, pokemon1.GetName(), New Vector2(CInt(mv.X + (level1 * (128 * scale))) + (32 * scale) - (FontManager.MainFont.MeasureString(pokemon1.GetName()).X / 2 * CSng(scale / 2)), CInt(mv.Y + level1Offset) + (58 * scale)), Color.Black, 0.0F, Vector2.Zero, CSng(scale / 2), SpriteEffects.None, 0.0F)
+                    Core.SpriteBatch.Draw(pokemon1.GetMenuTexture(), New Microsoft.Xna.Framework.Rectangle(CInt(mv.X + (level1 * (128 * scale))), CInt(mv.Y + level1Offset), CInt(64 * scale), CInt(64 * scale)), Microsoft.Xna.Framework.Color.White)
+                    Core.SpriteBatch.DrawString(FontManager.MainFont, pokemon1.GetName(), New Vector2(CInt(mv.X + (level1 * (128 * scale))) + (32 * scale) - (FontManager.MainFont.MeasureString(pokemon1.GetName()).X / 2 * CSng(scale / 2)), CInt(mv.Y + level1Offset) + (58 * scale)), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, CSng(scale / 2), SpriteEffects.None, 0.0F)
                 End If
                 If Pokedex.GetEntryType(Core.Player.PokedexData, pokemon2.Number) = 0 Then
-                    Core.SpriteBatch.Draw(pokemon2.GetMenuTexture(), New Rectangle(CInt(mv.X + (level2 * (128 * scale))), CInt(mv.Y + level2Offset), CInt(64 * scale), CInt(64 * scale)), Color.Black)
+                    Core.SpriteBatch.Draw(pokemon2.GetMenuTexture(), New Microsoft.Xna.Framework.Rectangle(CInt(mv.X + (level2 * (128 * scale))), CInt(mv.Y + level2Offset), CInt(64 * scale), CInt(64 * scale)), Microsoft.Xna.Framework.Color.Black)
                 Else
-                    Core.SpriteBatch.Draw(pokemon2.GetMenuTexture(), New Rectangle(CInt(mv.X + (level2 * (128 * scale))), CInt(mv.Y + level2Offset), CInt(64 * scale), CInt(64 * scale)), Color.White)
-                    Core.SpriteBatch.DrawString(FontManager.MainFont, pokemon2.GetName(), New Vector2(CInt(mv.X + (level2 * (128 * scale))) + (32 * scale) - (FontManager.MainFont.MeasureString(pokemon2.GetName()).X / 2 * CSng(scale / 2)), CInt(mv.Y + level2Offset) + (58 * scale)), Color.Black, 0.0F, Vector2.Zero, CSng(scale / 2), SpriteEffects.None, 0.0F)
+                    Core.SpriteBatch.Draw(pokemon2.GetMenuTexture(), New Microsoft.Xna.Framework.Rectangle(CInt(mv.X + (level2 * (128 * scale))), CInt(mv.Y + level2Offset), CInt(64 * scale), CInt(64 * scale)), Microsoft.Xna.Framework.Color.White)
+                    Core.SpriteBatch.DrawString(FontManager.MainFont, pokemon2.GetName(), New Vector2(CInt(mv.X + (level2 * (128 * scale))) + (32 * scale) - (FontManager.MainFont.MeasureString(pokemon2.GetName()).X / 2 * CSng(scale / 2)), CInt(mv.Y + level2Offset) + (58 * scale)), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, CSng(scale / 2), SpriteEffects.None, 0.0F)
                 End If
             Next
         End If
@@ -1644,7 +1655,7 @@ Public Class PokedexViewScreen
     Public Overrides Sub Update()
         If Controls.Dismiss(True, True, True) = True Then
             If Me._transitionOut = True Then
-                Core.SetScreen(New TransitionScreen(Me, Me.PreScreen, Color.White, False))
+                Core.SetScreen(New TransitionScreen(Me, Me.PreScreen, Microsoft.Xna.Framework.Color.White, False))
             Else
                 Core.SetScreen(Me.PreScreen)
             End If
@@ -1662,12 +1673,12 @@ Public Class PokedexViewScreen
 
             If Controls.Accept(True, False, False) = True Then
                 If Me.Page = 0 Or Me.Page = 1 Then
-                    If New Rectangle(Core.windowSize.Width - 70, CInt(Core.windowSize.Height / 2 - 32), 64, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(Core.windowSize.Width - 70, CInt(Core.windowSize.Height / 2 - 32), 64, 64).Contains(MouseHandler.MousePosition) = True Then
                         Me.Page += 1
                     End If
                 End If
                 If Me.Page = 1 Or Me.Page = 2 Then
-                    If New Rectangle(6, CInt(Core.windowSize.Height / 2 - 32), 64, 64).Contains(MouseHandler.MousePosition) = True Then
+                    If New Microsoft.Xna.Framework.Rectangle(6, CInt(Core.windowSize.Height / 2 - 32), 64, 64).Contains(MouseHandler.MousePosition) = True Then
                         Me.Page -= 1
                     End If
                 End If
@@ -1758,7 +1769,7 @@ Public Class PokedexViewScreen
             If Controls.Accept(True, False, False) = True Then
                 For i = Scroll To Scroll + 4
                     If i <= Me.HabitatList.Count - 1 Then
-                        If New Rectangle(100, 160 + (i - Scroll) * 96, 640, 64).Contains(MouseHandler.MousePosition) = True Then
+                        If New Microsoft.Xna.Framework.Rectangle(100, 160 + (i - Scroll) * 96, 640, 64).Contains(MouseHandler.MousePosition) = True Then
                             If i = Cursor + Scroll Then
                                 Core.SetScreen(New PokedexScreen(Me, Nothing, Me.HabitatList(Cursor + Scroll)))
                             Else

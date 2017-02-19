@@ -1,4 +1,14 @@
-﻿Public Class PokemonInteractions
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Security
+Imports P3D.Legacy.Core.World
+
+Public Class PokemonInteractions
 
     'Procedure:
     '1. If has a status condition, return that
@@ -96,7 +106,7 @@
 
         Dim newPosition As New Vector2(0, 1)
 
-        Dim item As Item = Item.GetItemByID(PickupItemID)
+        Dim item As Item = Item.GetItemById(PickupItemID)
 
         Dim s As String = "version=2" & vbNewLine &
            "@pokemon.cry(" & p.Number & ")" & vbNewLine
@@ -149,7 +159,7 @@
 
         Dim reaction As ReactionContainer = Nothing
 
-        If p.Status <> Pokemon.StatusProblems.None Then
+        If p.Status <> BasePokemon.StatusProblems.None Then
             'Return status condition text
             reaction = GetStatusConditionReaction(p)
         End If
@@ -228,20 +238,20 @@
 
     Private Shared Function GetStatusConditionReaction(ByVal p As Pokemon) As ReactionContainer
         Select Case p.Status
-            Case Pokemon.StatusProblems.BadPoison, Pokemon.StatusProblems.Poison
+            Case BasePokemon.StatusProblems.BadPoison, BasePokemon.StatusProblems.Poison
                 Return New ReactionContainer("<name> is shivering~with the effects of being~poisoned.", MessageBulb.NotifcationTypes.Poisoned)
-            Case Pokemon.StatusProblems.Burn
+            Case BasePokemon.StatusProblems.Burn
                 Return New ReactionContainer("<name>'s burn~looks painful!", MessageBulb.NotifcationTypes.Poisoned)
-            Case Pokemon.StatusProblems.Freeze
+            Case BasePokemon.StatusProblems.Freeze
                 Select Case Core.Random.Next(0, 2)
                     Case 0
                         Return New ReactionContainer("<name> seems very cold!", MessageBulb.NotifcationTypes.Poisoned)
                     Case 1
                         Return New ReactionContainer(".....Your Pokémon seems~a little cold.", MessageBulb.NotifcationTypes.Poisoned)
                 End Select
-            Case Pokemon.StatusProblems.Paralyzed
+            Case BasePokemon.StatusProblems.Paralyzed
                 Return New ReactionContainer("<name> is trying~very hard to keep~up with you...", MessageBulb.NotifcationTypes.Poisoned)
-            Case Pokemon.StatusProblems.Sleep
+            Case BasePokemon.StatusProblems.Sleep
                 Select Case Core.Random.Next(0, 3)
                     Case 0
                         Return New ReactionContainer("<name> seems~a little tiered.", MessageBulb.NotifcationTypes.Poisoned)
@@ -426,7 +436,7 @@
                         r = New ReactionContainer("<name> is looking~up at the sky.", MessageBulb.NotifcationTypes.Waiting)
                     End If
                 Case 27
-                    If IsOutside() = True And World.GetTime() = World.DayTime.Night And World.GetCurrentRegionWeather() = World.Weathers.Clear Then
+                    If IsOutside() = True And World.GetTime() = DayTime.Night And World.GetCurrentRegionWeather() = WeatherEnum.Clear Then
                         r = New ReactionContainer("Your Pokémon is happily~gazing at the beautiful,~starry sky!", MessageBulb.NotifcationTypes.Waiting)
                     End If
                 Case 28
@@ -436,7 +446,7 @@
                         r = New ReactionContainer("<name> is looking~up at the ceiling.", MessageBulb.NotifcationTypes.Note)
                     End If
                 Case 30
-                    If IsOutside() = True And World.GetTime() = World.DayTime.Night Then
+                    If IsOutside() = True And World.GetTime() = DayTime.Night Then
                         r = New ReactionContainer("Your Pokémon is staring~spellbound at the night sky!", MessageBulb.NotifcationTypes.Friendly)
                     End If
                 Case 31
@@ -454,11 +464,11 @@
                         r = New ReactionContainer("<name> feels something~and is howling!", MessageBulb.NotifcationTypes.Exclamation)
                     End If
                 Case 35
-                    If p.HP = p.MaxHP And p.Status = Pokemon.StatusProblems.None Then
+                    If p.HP = p.MaxHP And p.Status = BasePokemon.StatusProblems.None Then
                         r = New ReactionContainer("<name> seems~refreshed!", MessageBulb.NotifcationTypes.Friendly)
                     End If
                 Case 36
-                    If p.HP = p.MaxHP And p.Status = Pokemon.StatusProblems.None Then
+                    If p.HP = p.MaxHP And p.Status = BasePokemon.StatusProblems.None Then
                         r = New ReactionContainer("<name> feels~refreshed.", MessageBulb.NotifcationTypes.Friendly)
                     End If
                 Case 37
@@ -506,11 +516,11 @@
                 Case 50
                     r = New ReactionContainer("<name> is sniffing~at <player.name>.", MessageBulb.NotifcationTypes.Friendly)
                 Case 51
-                    If IsOutside() = True And World.GetCurrentRegionWeather() = World.Weathers.Rain And GrassAround() = True Then
+                    If IsOutside() = True And World.GetCurrentRegionWeather() = WeatherEnum.Rain And GrassAround() = True Then
                         r = New ReactionContainer("<name> is taking shelter in the grass from the rain!", MessageBulb.NotifcationTypes.Waiting)
                     End If
                 Case 52
-                    If IsOutside() = True And World.GetCurrentRegionWeather() = World.Weathers.Rain And GrassAround() = True Then
+                    If IsOutside() = True And World.GetCurrentRegionWeather() = WeatherEnum.Rain And GrassAround() = True Then
                         r = New ReactionContainer("<name> is splashing~around in the wet grass", MessageBulb.NotifcationTypes.Note)
                     End If
             End Select
@@ -523,7 +533,7 @@
         While r Is Nothing
             Select Case Core.Random.Next(0, 28)
                 Case 0
-                    If IsOutside() = True And World.GetCurrentRegionWeather() = World.Weathers.Clear Then
+                    If IsOutside() = True And World.GetCurrentRegionWeather() = WeatherEnum.Clear Then
                         r = New ReactionContainer("Your Pokémon seems happy~about the great weather!", MessageBulb.NotifcationTypes.Happy)
                     End If
                 Case 1
@@ -695,7 +705,7 @@
         SpecialReactionList.Clear()
 
         Dim path As String = GameModeManager.GetContentFilePath("Data\interactions.dat")
-        Security.FileValidation.CheckFileValid(path, False, "PokemonInteractions.vb")
+        FileValidation.CheckFileValid(path, False, "PokemonInteractions.vb")
 
         Dim data() As String = System.IO.File.ReadAllLines(path)
 
@@ -882,7 +892,7 @@
         If Screen.Level.ShowOverworldPokemon = True And CBool(GameModeManager.GetGameRuleValue("ShowFollowPokemon", "1")) = True Then
             'Checks if the player has a Pokémon:
             If Core.Player.Pokemons.Count > 0 And Screen.Level.Surfing = False And Screen.Level.Riding = False And Screen.Level.ShowOverworldPokemon = True And Not Core.Player.GetWalkPokemon() Is Nothing Then
-                If Core.Player.GetWalkPokemon().Status = Pokemon.StatusProblems.None Then
+                If Core.Player.GetWalkPokemon().Status = BasePokemon.StatusProblems.None Then
                     'If the player switched the Pokémon, reset the item ID.
                     If PickupIndividualValue <> Core.Player.GetWalkPokemon().IndividualValue Then
                         PickupItemID = -1
@@ -895,7 +905,7 @@
                         'Checks if the player is outside:
                         If IsOutside() = True Then
                             'Checks if the leading Pokémon is holding a sticky feather, which ensures a 90% feather pickup outside:
-                            If Not Core.Player.GetWalkPokemon().Item Is Nothing AndAlso Core.Player.GetWalkPokemon().Item.ID = 261 AndAlso Core.Random.Next(0, 100) < 90 Then
+                            If Not Core.Player.GetWalkPokemon().Item Is Nothing AndAlso Core.Player.GetWalkPokemon().Item.Id = 261 AndAlso Core.Random.Next(0, 100) < 90 Then
                                 newItemID = Core.Random.Next(254, 261)
                             Else
                                 'Checks if ice is around:
@@ -992,7 +1002,7 @@
                             'Player is in cave:
                         ElseIf IsCave() = True Then
                             'Checks if the leading Pokémon is holding a sticky rock, which ensures a 90% feather pickup in a cave:
-                            If Not Core.Player.GetWalkPokemon().Item Is Nothing AndAlso Core.Player.GetWalkPokemon().Item.ID = 262 AndAlso Core.Random.Next(0, 100) < 90 Then
+                            If Not Core.Player.GetWalkPokemon().Item Is Nothing AndAlso Core.Player.GetWalkPokemon().Item.Id = 262 AndAlso Core.Random.Next(0, 100) < 90 Then
                                 'Thunderstone(20%),Firestone(20%),Waterstone(20%),Leafstone(20%),Moonstone(10%),Sunstone(10%)
                                 Dim r1 As Integer = Core.Random.Next(0, 100)
                                 If r1 < 20 Then
@@ -1046,7 +1056,7 @@
 
                         'If an item got generated, assign it to the global value to store it until the player interacts with the Pokémon. Also store the individual value.
                         If newItemID > -1 Then
-                            Logger.Debug("Pokémon picks up item (" & Item.GetItemByID(newItemID).Name & ")")
+                            Logger.Debug("Pokémon picks up item (" & Item.GetItemById(newItemID).Name & ")")
                             PickupItemID = newItemID
                             PickupIndividualValue = Core.Player.GetWalkPokemon().IndividualValue
                             SoundManager.PlaySound("pickup")

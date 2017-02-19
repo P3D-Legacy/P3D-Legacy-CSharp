@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class SleepTalk
 
@@ -55,7 +58,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim disabledMoves() As Integer = {214, 274, 117, 340, 448, 383, 91, 291, 19, 264, 382, 118, 119, 467, 166, 130, 214, 143, 76, 13, 253}
 
             Dim p As Pokemon = BattleScreen.OwnPokemon
@@ -63,22 +66,22 @@
                 p = BattleScreen.OppPokemon
             End If
 
-            If p.Status = Pokemon.StatusProblems.Sleep Then
+            If p.Status = BasePokemon.StatusProblems.Sleep Then
                 Dim countedDisabledMoves As Integer = 0
 
                 For i = 0 To p.Attacks.Count - 1
-                    If disabledMoves.Contains(p.Attacks(i).ID) = True Then
+                    If disabledMoves.Contains(p.Attacks(i).Id) = True Then
                         countedDisabledMoves += 1
                     End If
                 Next
 
                 If countedDisabledMoves < p.Attacks.Count Then
                     Dim s As Integer = Core.Random.Next(0, p.Attacks.Count)
-                    While disabledMoves.Contains(p.Attacks(s).ID) = True
+                    While disabledMoves.Contains(p.Attacks(s).Id) = True
                         s = Core.Random.Next(0, p.Attacks.Count)
                     End While
 
-                    Dim m As Attack = Attack.GetAttackByID(p.Attacks(s).ID)
+                    Dim m As Attack = Attack.GetAttackByID(p.Attacks(s).Id)
                     BattleScreen.Battle.DoAttackRound(BattleScreen, own, m)
                 Else
                     'fail:

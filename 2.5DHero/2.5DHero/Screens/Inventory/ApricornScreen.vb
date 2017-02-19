@@ -1,4 +1,12 @@
-﻿Public Class ApricornScreen
+﻿Imports System.Drawing
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class ApricornScreen
 
     Inherits Screen
 
@@ -57,26 +65,26 @@
             Select Case Me.State
                 Case States.Wait
                     Me.Labels.Add(New Label(Localization.GetString("apricorn_screen_producing").Replace("~", vbNewLine), New Vector2(100, 200), FontManager.MainFont))
-                    Me.Labels.Add(New Label(Localization.GetString("apricorn_screen_backadvice"), New Vector2(100, 260), Color.DarkGray, FontManager.MainFont))
+                    Me.Labels.Add(New Label(Localization.GetString("apricorn_screen_backadvice"), New Vector2(100, 260), Microsoft.Xna.Framework.Color.DarkGray, FontManager.MainFont))
                 Case States.CanGive
                     Dim T As Texture2D = TextureManager.GetTexture("Items\ItemSheet")
 
                     Me.Labels.Add(New Label(Localization.GetString("apricorn_screen_choose_apricorns"), New Vector2(100, 200), FontManager.MainFont))
-                    Dim RedApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(85), FontManager.MainFont, T, New Rectangle(240, 72, 24, 24), New Vector2(98, 240), New Size(48, 48), "85")
-                    Dim BlueApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(89), FontManager.MainFont, T, New Rectangle(336, 72, 24, 24), New Vector2(98, 304), New Size(48, 48), "89")
-                    Dim YellowApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(92), FontManager.MainFont, T, New Rectangle(384, 72, 24, 24), New Vector2(98, 368), New Size(48, 48), "92")
-                    Dim GreenApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(93), FontManager.MainFont, T, New Rectangle(408, 72, 24, 24), New Vector2(98, 432), New Size(48, 48), "93")
-                    Dim WhiteApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(97), FontManager.MainFont, T, New Rectangle(0, 96, 24, 24), New Vector2(98, 496), New Size(48, 48), "97")
-                    Dim BlackApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(99), FontManager.MainFont, T, New Rectangle(48, 96, 24, 24), New Vector2(162, 240), New Size(48, 48), "99")
-                    Dim PinkApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(101), FontManager.MainFont, T, New Rectangle(72, 96, 24, 24), New Vector2(162, 304), New Size(48, 48), "101")
+                    Dim RedApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(85), FontManager.MainFont, T, New Microsoft.Xna.Framework.Rectangle(240, 72, 24, 24), New Vector2(98, 240), New Size(48, 48), "85")
+                    Dim BlueApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(89), FontManager.MainFont, T, New Microsoft.Xna.Framework.Rectangle(336, 72, 24, 24), New Vector2(98, 304), New Size(48, 48), "89")
+                    Dim YellowApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(92), FontManager.MainFont, T, New Microsoft.Xna.Framework.Rectangle(384, 72, 24, 24), New Vector2(98, 368), New Size(48, 48), "92")
+                    Dim GreenApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(93), FontManager.MainFont, T, New Microsoft.Xna.Framework.Rectangle(408, 72, 24, 24), New Vector2(98, 432), New Size(48, 48), "93")
+                    Dim WhiteApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(97), FontManager.MainFont, T, New Microsoft.Xna.Framework.Rectangle(0, 96, 24, 24), New Vector2(98, 496), New Size(48, 48), "97")
+                    Dim BlackApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(99), FontManager.MainFont, T, New Microsoft.Xna.Framework.Rectangle(48, 96, 24, 24), New Vector2(162, 240), New Size(48, 48), "99")
+                    Dim PinkApricorn As ButtonIcon = New ButtonIcon(AddressOf Me.GiveApricorn, "0 / " & Core.Player.Inventory.GetItemAmount(101), FontManager.MainFont, T, New Microsoft.Xna.Framework.Rectangle(72, 96, 24, 24), New Vector2(162, 304), New Size(48, 48), "101")
 
-                    Dim GiveButton As ButtonIcon = New ButtonIcon(AddressOf Me.Give, Localization.GetString("apricorn_screen_ok"), FontManager.MainFont, mainTexture, New Rectangle(48, 128, 16, 16), New Vector2(162, 496), New Size(48, 48), "OK")
+                    Dim GiveButton As ButtonIcon = New ButtonIcon(AddressOf Me.Give, Localization.GetString("apricorn_screen_ok"), FontManager.MainFont, mainTexture, New Microsoft.Xna.Framework.Rectangle(48, 128, 16, 16), New Vector2(162, 496), New Size(48, 48), "OK")
                     GiveButton.Enabled = False
-                    Dim ClearButton As ButtonIcon = New ButtonIcon(AddressOf Me.ClearApricorns, Localization.GetString("apricorn_screen_clear"), FontManager.MainFont, mainTexture, New Rectangle(64, 128, 16, 16), New Vector2(162, 432), New Size(48, 48), "Clear")
+                    Dim ClearButton As ButtonIcon = New ButtonIcon(AddressOf Me.ClearApricorns, Localization.GetString("apricorn_screen_clear"), FontManager.MainFont, mainTexture, New Microsoft.Xna.Framework.Rectangle(64, 128, 16, 16), New Vector2(162, 432), New Size(48, 48), "Clear")
 
                     Buttons.AddRange({RedApricorn, BlueApricorn, YellowApricorn, GreenApricorn, WhiteApricorn, BlackApricorn, PinkApricorn, ClearButton, GiveButton})
                 Case States.CanTake
-                    Dim TakeButton As ButtonIcon = New ButtonIcon(AddressOf Me.Take, Localization.GetString("apricorn_screen_take"), FontManager.MainFont, mainTexture, New Rectangle(48, 128, 16, 16), New Vector2(98, 450), New Size(48, 48))
+                    Dim TakeButton As ButtonIcon = New ButtonIcon(AddressOf Me.Take, Localization.GetString("apricorn_screen_take"), FontManager.MainFont, mainTexture, New Microsoft.Xna.Framework.Rectangle(48, 128, 16, 16), New Vector2(98, 450), New Size(48, 48))
                     Buttons.AddRange({TakeButton})
                     Me.Labels.Add(New Label(Localization.GetString("apricorn_screen_ready"), New Vector2(100, 200), FontManager.MainFont))
             End Select
@@ -141,14 +149,14 @@
     Public Overrides Sub Draw()
         Me.PreScreen.Draw()
 
-        Canvas.DrawImageBorder(TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), ""), 2, New Rectangle(60, 100, 800, 480))
+        Canvas.DrawImageBorder(TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), ""), 2, New Microsoft.Xna.Framework.Rectangle(60, 100, 800, 480))
 
         For i = 0 To Me.Buttons.Count - 1
             Dim b As ButtonIcon = Me.Buttons(i)
 
             If i = Me.CursorIndex Then
-                Canvas.DrawRectangle(New Rectangle(CInt(b.Position.X) - 2, CInt(b.Position.Y) - 2, 52, 52), New Color(0, 125, 255))
-                Canvas.DrawRectangle(New Rectangle(CInt(b.Position.X), CInt(b.Position.Y), 48, 48), New Color(102, 196, 255))
+                Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(b.Position.X) - 2, CInt(b.Position.Y) - 2, 52, 52), New Microsoft.Xna.Framework.Color(0, 125, 255))
+                Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(b.Position.X), CInt(b.Position.Y), 48, 48), New Microsoft.Xna.Framework.Color(102, 196, 255))
             End If
 
             b.Draw()
@@ -205,9 +213,9 @@
                     ItemID = 166
             End Select
 
-            Dim Item As Item = Item.GetItemByID(ItemID)
-            Core.SpriteBatch.Draw(Item.Texture, New Rectangle(100 + x * 64, 260 + y * 96, 48, 48), Color.White)
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "x" & Apricorns(i), New Vector2(110 + x * 64, 300 + y * 96), Color.Black)
+            Dim Item As Item = P3D.Legacy.Core.Pokemon.Item.GetItemById(ItemID)
+            Core.SpriteBatch.Draw(Item.Texture, New Microsoft.Xna.Framework.Rectangle(100 + x * 64, 260 + y * 96, 48, 48), Microsoft.Xna.Framework.Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "x" & Apricorns(i), New Vector2(110 + x * 64, 300 + y * 96), Microsoft.Xna.Framework.Color.Black)
         Next
     End Sub
 
@@ -320,31 +328,31 @@
 
         If CInt(Apricorns(0)) > 0 Then
             Core.Player.Inventory.AddItem(159, CInt(Apricorns(0)))
-            text &= "~" & Apricorns(0) & "  " & Item.GetItemByID(159).Name
+            text &= "~" & Apricorns(0) & "  " & P3D.Legacy.Core.Pokemon.Item.GetItemById(159).Name
         End If
         If CInt(Apricorns(1)) > 0 Then
             Core.Player.Inventory.AddItem(160, CInt(Apricorns(1)))
-            text &= ",~" & Apricorns(1) & "  " & Item.GetItemByID(160).Name
+            text &= ",~" & Apricorns(1) & "  " & P3D.Legacy.Core.Pokemon.Item.GetItemById(160).Name
         End If
         If CInt(Apricorns(2)) > 0 Then
             Core.Player.Inventory.AddItem(165, CInt(Apricorns(2)))
-            text &= ",~" & Apricorns(2) & "  " & Item.GetItemByID(165).Name
+            text &= ",~" & Apricorns(2) & "  " & P3D.Legacy.Core.Pokemon.Item.GetItemById(165).Name
         End If
         If CInt(Apricorns(3)) > 0 Then
             Core.Player.Inventory.AddItem(164, CInt(Apricorns(3)))
-            text &= ",~" & Apricorns(3) & "  " & Item.GetItemByID(164).Name
+            text &= ",~" & Apricorns(3) & "  " & P3D.Legacy.Core.Pokemon.Item.GetItemById(164).Name
         End If
         If CInt(Apricorns(4)) > 0 Then
             Core.Player.Inventory.AddItem(161, CInt(Apricorns(4)))
-            text &= ",~" & Apricorns(4) & "  " & Item.GetItemByID(161).Name
+            text &= ",~" & Apricorns(4) & "  " & P3D.Legacy.Core.Pokemon.Item.GetItemById(161).Name
         End If
         If CInt(Apricorns(5)) > 0 Then
             Core.Player.Inventory.AddItem(157, CInt(Apricorns(5)))
-            text &= ",~" & Apricorns(5) & "  " & Item.GetItemByID(157).Name
+            text &= ",~" & Apricorns(5) & "  " & P3D.Legacy.Core.Pokemon.Item.GetItemById(157).Name
         End If
         If CInt(Apricorns(6)) > 0 Then
             Core.Player.Inventory.AddItem(166, CInt(Apricorns(6)))
-            text &= ",~" & Apricorns(6) & "  " & Item.GetItemByID(166).Name
+            text &= ",~" & Apricorns(6) & "  " & P3D.Legacy.Core.Pokemon.Item.GetItemById(166).Name
         End If
 
         text &= "."
@@ -433,14 +441,14 @@
 
         Public Position As Vector2
         Public Text As String
-        Public ForeColor As Color = Color.Black
+        Public ForeColor As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.Black
         Public Font As SpriteFont
 
         Public Sub New(ByVal Text As String, ByVal Position As Vector2, ByVal Font As SpriteFont)
-            Me.New(Text, Position, Color.Black, Font)
+            Me.New(Text, Position, Microsoft.Xna.Framework.Color.Black, Font)
         End Sub
 
-        Public Sub New(ByVal Text As String, ByVal Position As Vector2, ByVal ForeColor As Color, ByVal Font As SpriteFont)
+        Public Sub New(ByVal Text As String, ByVal Position As Vector2, ByVal ForeColor As Microsoft.Xna.Framework.Color, ByVal Font As SpriteFont)
             Me.Position = Position
             Me.Text = Text
             Me.ForeColor = ForeColor
@@ -461,7 +469,7 @@
         Public Font As SpriteFont
         Public Position As Vector2
         Public Texture As Texture2D
-        Public TextureRectangle As Rectangle
+        Public TextureRectangle As Microsoft.Xna.Framework.Rectangle
         Public Size As Size
         Public AdditionalValue As String = ""
         Public Enabled As Boolean = True
@@ -470,7 +478,7 @@
 
         Dim DoSub As DoOnClick
 
-        Public Sub New(ByVal DoOnClick As DoOnClick, ByVal Text As String, ByVal Font As SpriteFont, ByVal Texture As Texture2D, ByVal TextureRectangle As Rectangle, ByVal Position As Vector2, ByVal Size As Size, Optional ByVal AdditionalValue As String = "")
+        Public Sub New(ByVal DoOnClick As DoOnClick, ByVal Text As String, ByVal Font As SpriteFont, ByVal Texture As Texture2D, ByVal TextureRectangle As Microsoft.Xna.Framework.Rectangle, ByVal Position As Vector2, ByVal Size As Size, Optional ByVal AdditionalValue As String = "")
             Me.DoSub = DoOnClick
 
             Me.Text = Text
@@ -485,10 +493,10 @@
 
         Public Sub Update()
             If Enabled = True Then
-                Dim MousePosition As Point = New Point(MouseHandler.MousePosition.X, MouseHandler.MousePosition.Y)
+                Dim MousePosition As Microsoft.Xna.Framework.Point = New Microsoft.Xna.Framework.Point(MouseHandler.MousePosition.X, MouseHandler.MousePosition.Y)
                 Me.State = 0
 
-                If New Rectangle(CInt(Me.Position.X), CInt(Me.Position.Y), Me.Size.Width, Me.Size.Height).Contains(MousePosition) = True Then
+                If New Microsoft.Xna.Framework.Rectangle(CInt(Me.Position.X), CInt(Me.Position.Y), Me.Size.Width, Me.Size.Height).Contains(MousePosition) = True Then
                     If MouseHandler.ButtonPressed(MouseHandler.MouseButtons.LeftButton) = True Then
                         Me.DoSub(Me)
                     Else
@@ -503,16 +511,16 @@
         End Sub
 
         Public Sub Draw()
-            Dim bColor As Color = New Color(Color.White.R - (State * 50), Color.White.G - (State * 50), Color.White.B - (State * 50))
+            Dim bColor As Microsoft.Xna.Framework.Color = New Microsoft.Xna.Framework.Color(Microsoft.Xna.Framework.Color.White.R - (State * 50), Microsoft.Xna.Framework.Color.White.G - (State * 50), Microsoft.Xna.Framework.Color.White.B - (State * 50))
 
             If Me.Enabled = False Then
-                bColor = Color.DarkGray
+                bColor = Microsoft.Xna.Framework.Color.DarkGray
             End If
 
-            Core.SpriteBatch.Draw(Me.Texture, New Rectangle(CInt(Me.Position.X), CInt(Me.Position.Y), Me.Size.Width, Me.Size.Height), TextureRectangle, bColor)
+            Core.SpriteBatch.Draw(Me.Texture, New Microsoft.Xna.Framework.Rectangle(CInt(Me.Position.X), CInt(Me.Position.Y), Me.Size.Width, Me.Size.Height), TextureRectangle, bColor)
 
             Dim TextSize As Vector2 = Font.MeasureString(Me.Text)
-            Dim TColor As Color = Color.Black
+            Dim TColor As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.Black
             Core.SpriteBatch.DrawString(Me.Font, Me.Text, New Vector2(CInt(Me.Size.Width / 2) - CInt(TextSize.X / 2) + Me.Position.X, Me.Size.Height + Me.Position.Y), TColor)
         End Sub
 

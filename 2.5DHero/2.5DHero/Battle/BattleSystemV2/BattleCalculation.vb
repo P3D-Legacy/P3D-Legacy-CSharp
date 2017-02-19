@@ -1,4 +1,8 @@
-﻿Namespace BattleSystem
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+Namespace BattleSystem
 
     Public Class BattleCalculation
 
@@ -103,7 +107,7 @@
                 Dim Claw As Integer = 0
 
                 If Not ownPokemon.Item Is Nothing And BattleScreen.FieldEffects.CanUseItem(True) = True And BattleScreen.FieldEffects.CanUseOwnItem(True, BattleScreen) = True Then
-                    If ownPokemon.Item.ID = 73 Then
+                    If ownPokemon.Item.Id = 73 Then
                         If Core.Random.Next(0, 100) < 20 Then
                             Claw += 1 'Own claw succeeded
                         End If
@@ -111,7 +115,7 @@
                 End If
 
                 If Not oppPokemon.Item Is Nothing And BattleScreen.FieldEffects.CanUseItem(False) = True And BattleScreen.FieldEffects.CanUseOwnItem(False, BattleScreen) = True Then
-                    If oppPokemon.Item.ID = 73 Then
+                    If oppPokemon.Item.Id = 73 Then
                         If Core.Random.Next(0, 100) < 20 Then
                             Claw += 10 'Opp's claw succeeded
                         End If
@@ -225,7 +229,7 @@
                 End If
             End If
 
-            If p.Status = net.Pokemon3D.Game.Pokemon.StatusProblems.Paralyzed And p.Ability.Name.ToLower() <> "quick feet" Then
+            If p.Status = BasePokemon.StatusProblems.Paralyzed And p.Ability.Name.ToLower() <> "quick feet" Then
                 speed = CInt(speed / 4) 'Divide the speed by 4 if the Pokemon is paralyzed.
             End If
 
@@ -283,7 +287,7 @@
             End If
 
             If p.Ability.Name.ToLower() = "quick feet" Then
-                If p.Status = Pokemon.StatusProblems.Paralyzed Or p.Status = Pokemon.StatusProblems.Burn Or p.Status = Pokemon.StatusProblems.Poison Or p.Status = Pokemon.StatusProblems.Sleep Or p.Status = Pokemon.StatusProblems.Freeze Then
+                If p.Status = BasePokemon.StatusProblems.Paralyzed Or p.Status = BasePokemon.StatusProblems.Burn Or p.Status = BasePokemon.StatusProblems.Poison Or p.Status = BasePokemon.StatusProblems.Sleep Or p.Status = BasePokemon.StatusProblems.Freeze Then
                     speed = CInt(speed * 1.5F)
                 End If
             End If
@@ -459,7 +463,7 @@
                     End If
                 Case "tangled feet"
                     If BattleScreen.FieldEffects.CanUseAbility(Not own, BattleScreen) = True Then
-                        If op.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) = True Then
+                        If op.HasVolatileStatus(BasePokemon.VolatileStatus.Confusion) = True Then
                             result *= 0.5F
                         End If
                     End If
@@ -571,7 +575,7 @@
             If Core.Random.Next(0, chance) = 0 Then
                 Return True
             End If
-            If UsedAttack.ID = 524 Then
+            If UsedAttack.Id = 524 Then
                 Return True
             End If
 
@@ -657,7 +661,7 @@
             Dim effectiveness As Single = Type1 * Type2
 
             'Freeze Dry
-            If move.ID = 573 Then
+            If move.Id = 573 Then
                 If op.Type1.Type = Element.Types.Water Or op.Type2.Type = Element.Types.Water Then
                     effectiveness *= 4
                 End If
@@ -850,7 +854,7 @@
             Return EXP
         End Function
 
-        Public Shared Function SafariRound(ByVal BattleScreen As BattleScreen) As Battle.RoundConst
+        Public Shared Function SafariRound(ByVal BattleScreen As BattleScreen) As RoundConst
             If BattleScreen.PokemonSafariStatus > 0 Then
                 BattleScreen.PokemonSafariStatus -= 1
             ElseIf BattleScreen.PokemonSafariStatus < 0 Then
@@ -879,14 +883,14 @@
             End If
 
             If flee = True And CanSwitch(BattleScreen, False) = True Then
-                Return New Battle.RoundConst() With {.StepType = Battle.RoundConst.StepTypes.Flee, .Argument = BattleScreen.OppPokemon.GetDisplayName() & " fled!"}
+                Return New RoundConst() With {.StepType = RoundConst.StepTypes.Flee, .Argument = BattleScreen.OppPokemon.GetDisplayName() & " fled!"}
             Else
                 If BattleScreen.PokemonSafariStatus < 0 Then
-                    Return New Battle.RoundConst() With {.StepType = Battle.RoundConst.StepTypes.Text, .Argument = BattleScreen.OppPokemon.GetDisplayName() & " is angry!"}
+                    Return New RoundConst() With {.StepType = RoundConst.StepTypes.Text, .Argument = BattleScreen.OppPokemon.GetDisplayName() & " is angry!"}
                 ElseIf BattleScreen.PokemonSafariStatus > 0 Then
-                    Return New Battle.RoundConst() With {.StepType = Battle.RoundConst.StepTypes.Text, .Argument = BattleScreen.OppPokemon.GetDisplayName() & " is eating!"}
+                    Return New RoundConst() With {.StepType = RoundConst.StepTypes.Text, .Argument = BattleScreen.OppPokemon.GetDisplayName() & " is eating!"}
                 Else
-                    Return New Battle.RoundConst() With {.StepType = Battle.RoundConst.StepTypes.Text, .Argument = BattleScreen.OppPokemon.GetDisplayName() & " is watching carefully!"}
+                    Return New RoundConst() With {.StepType = RoundConst.StepTypes.Text, .Argument = BattleScreen.OppPokemon.GetDisplayName() & " is watching carefully!"}
                 End If
             End If
         End Function
@@ -1022,7 +1026,7 @@
                     Case Else
                         IT = 1.0F
                 End Select
-                Select Case p.Item.ID
+                Select Case p.Item.Id
                     Case 98, 270 'Black Belt, Fist Plate
                         If Attack.Type.Type = Element.Types.Fighting Then
                             IT = 1.2F
@@ -1114,7 +1118,7 @@
             'UA (User Ability)
             Select Case p.Ability.Name.ToLower()
                 Case "rivalry"
-                    If p.Gender <> Pokemon.Genders.Genderless And Op.Gender <> Pokemon.Genders.Genderless Then
+                    If p.Gender <> BasePokemon.Genders.Genderless And Op.Gender <> BasePokemon.Genders.Genderless Then
                         If p.Gender = Op.Gender Then
                             UA = 1.25F
                         Else
@@ -1256,7 +1260,7 @@
             Dim IM As Single = 1.0F
 
             If Attack.Category = Attack.Categories.Physical Then
-                If Attack.ID = 492 Then
+                If Attack.Id = 492 Then
                     AStat = Attack.GetUseAttackStat(Op) 'When the move is Foul Play
                     ASM = GetMultiplierFromStat(Op.StatAttack)
                 Else
@@ -1282,7 +1286,7 @@
                             End If
                         End If
                     Case "guts"
-                        If p.Status = Pokemon.StatusProblems.Paralyzed Or p.Status = Pokemon.StatusProblems.Poison Or p.Status = Pokemon.StatusProblems.Burn Or p.Status = Pokemon.StatusProblems.Sleep Or p.Status = Pokemon.StatusProblems.BadPoison Then
+                        If p.Status = BasePokemon.StatusProblems.Paralyzed Or p.Status = BasePokemon.StatusProblems.Poison Or p.Status = BasePokemon.StatusProblems.Burn Or p.Status = BasePokemon.StatusProblems.Sleep Or p.Status = BasePokemon.StatusProblems.BadPoison Then
                             AM = 1.5F
                         End If
                     Case "hustle"
@@ -1298,7 +1302,7 @@
                             End If
                         End If
                     Case "toxic boost"
-                        If p.Status = Pokemon.StatusProblems.Poison Or p.Status = Pokemon.StatusProblems.BadPoison Then
+                        If p.Status = BasePokemon.StatusProblems.Poison Or p.Status = BasePokemon.StatusProblems.BadPoison Then
                             AM = 1.5F
                         End If
                     Case "defeatist"
@@ -1343,7 +1347,7 @@
                             AM = 1.5F
                         End If
                     Case "flare boost"
-                        If Op.Status = Pokemon.StatusProblems.Burn Then
+                        If Op.Status = BasePokemon.StatusProblems.Burn Then
                             AM = 1.5F
                         End If
                     Case "defeatist"
@@ -1382,7 +1386,7 @@
                                 End If
                             End If
                             If Not lastAttack Is Nothing Then
-                                If lastAttack.ID = Attack.ID Then
+                                If lastAttack.Id = Attack.Id Then
                                     Dim multi As Integer = 1
                                     If Own = True Then
                                         BattleScreen.FieldEffects.OwnMetronomeItemCount += 1
@@ -1429,7 +1433,7 @@
             Dim SX As Single = 1.0F
             Dim DMod As Single = 1.0F
 
-            If Attack.Category = Attack.Categories.Physical OrElse Attack.ID = 473 OrElse Attack.ID = 548 Then 'Psyshock and Secret Sword.
+            If Attack.Category = Attack.Categories.Physical OrElse Attack.Id = 473 OrElse Attack.Id = 548 Then 'Psyshock and Secret Sword.
                 DStat = Attack.GetUseDefenseStat(Op)
                 DSM = GetMultiplierFromStat(Op.StatDefense)
 
@@ -1452,7 +1456,7 @@
 
                 If Op.Ability.Name.ToLower() = "marvel scale" Then
                     If BattleScreen.FieldEffects.CanUseAbility(Not Own, BattleScreen) = True Then
-                        If Op.Status = Pokemon.StatusProblems.Paralyzed Or Op.Status = Pokemon.StatusProblems.Poison Or Op.Status = Pokemon.StatusProblems.Burn Or Op.Status = Pokemon.StatusProblems.Sleep Or Op.Status = Pokemon.StatusProblems.Freeze Then
+                        If Op.Status = BasePokemon.StatusProblems.Paralyzed Or Op.Status = BasePokemon.StatusProblems.Poison Or Op.Status = BasePokemon.StatusProblems.Burn Or Op.Status = BasePokemon.StatusProblems.Sleep Or Op.Status = BasePokemon.StatusProblems.Freeze Then
                             DMod = 1.5F
                         End If
                     End If
@@ -1492,7 +1496,7 @@
                         Case "assault vest"
                             DMod = 1.5F
                         Case "eviolite"
-                            If p.IsFullyEvolved = False Then
+                            If p.IsFullyEVolved = False Then
                                 DMod = 1.5F
                             End If
                     End Select
@@ -1510,7 +1514,7 @@
             End If
 
             'Sacred Sword ignores defense stat changes
-            If Attack.ID = 533 Then
+            If Attack.Id = 533 Then
                 DSM = 1.0F
             End If
 
@@ -1530,7 +1534,7 @@
             Dim FF As Single = 1.0F
 
             If Attack.Category = Attack.Categories.Physical Then
-                If p.Ability.Name.ToLower() <> "guts" And p.Status = Pokemon.StatusProblems.Burn Then
+                If p.Ability.Name.ToLower() <> "guts" And p.Status = BasePokemon.StatusProblems.Burn Then
                     BRN = 0.5F
                 End If
             End If

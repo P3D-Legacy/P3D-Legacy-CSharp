@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Special
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Special
 
     Public Class TheDerpMove
 

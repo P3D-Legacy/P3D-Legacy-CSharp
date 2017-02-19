@@ -1,4 +1,15 @@
-﻿Public Class BattleCatchScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Battle.BattleAnimations
+Imports P3D.Legacy.Core.Battle.BattleSystemV2
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
+Public Class BattleCatchScreen
 
     Inherits Screen
 
@@ -65,7 +76,7 @@
             [Object].Render()
         Next
 
-        World.DrawWeather(Screen.Level.World.CurrentMapWeather)
+        World.DrawWeather(Screen.Level.World.CurrentWeather)
 
         TextBox.Draw()
     End Sub
@@ -113,8 +124,8 @@
 
         BattleScreen.OppPokemonNPC.UpdateEntity()
 
-        CType(Camera, BattleSystem.BattleCamera).UpdateMatrices()
-        CType(Camera, BattleSystem.BattleCamera).UpdateFrustum()
+        CType(Camera, BattleCamera).UpdateMatrices()
+        CType(Camera, BattleCamera).UpdateFrustum()
 
         If TextBox.Showing = False Then
 
@@ -193,7 +204,7 @@
                             Case 21 'After Break
                                 ResetVisibility()
                                 Core.SetScreen(Me.PreScreen)
-                                CType(Core.CurrentScreen, BattleSystem.BattleScreen).Battle.InitializeRound(CType(Core.CurrentScreen, BattleSystem.BattleScreen), New BattleSystem.Battle.RoundConst() With {.StepType = BattleSystem.Battle.RoundConst.StepTypes.Text, .Argument = "It broke free!"})
+                                CType(Core.CurrentScreen, BattleSystem.BattleScreen).Battle.InitializeRound(CType(Core.CurrentScreen, BattleSystem.BattleScreen), New RoundConst() With {.StepType = RoundConst.StepTypes.Text, .Argument = "It broke free!"})
                         End Select
                     End If
                 End If
@@ -251,7 +262,7 @@
 
         If p.IsShiny = True Then
             If p.Number <> 130 Then
-                GameJolt.Emblem.AchieveEmblem("stars")
+                Emblem.AchieveEmblem("stars")
             End If
         End If
 
@@ -321,9 +332,9 @@
                     BallRate = 3.5F
                 End If
             Case "dusk ball"
-                If Screen.Level.World.EnvironmentType = World.EnvironmentTypes.Cave Or Screen.Level.World.EnvironmentType = World.EnvironmentTypes.Dark Then
+                If Screen.Level.World.EnvironmentType = EnvironmentTypeEnum.Cave Or Screen.Level.World.EnvironmentType = EnvironmentTypeEnum.Dark Then
                     BallRate = 3.0F
-                ElseIf Screen.Level.World.EnvironmentType = World.EnvironmentTypes.Outside And World.GetTime() = 0 Then
+                ElseIf Screen.Level.World.EnvironmentType = EnvironmentTypeEnum.Outside And World.GetTime() = 0 Then
                     BallRate = 3.5F
                 End If
             Case "fast ball"
@@ -377,9 +388,9 @@
 
         Dim Status As Single = 1.0F
         Select Case cp.Status
-            Case Pokemon.StatusProblems.Poison, Pokemon.StatusProblems.BadPoison, Pokemon.StatusProblems.Burn, Pokemon.StatusProblems.Paralyzed
+            Case BasePokemon.StatusProblems.Poison, BasePokemon.StatusProblems.BadPoison, BasePokemon.StatusProblems.Burn, BasePokemon.StatusProblems.Paralyzed
                 Status = 1.5F
-            Case Pokemon.StatusProblems.Sleep, Pokemon.StatusProblems.Freeze
+            Case BasePokemon.StatusProblems.Sleep, BasePokemon.StatusProblems.Freeze
                 Status = 2.0F
         End Select
 

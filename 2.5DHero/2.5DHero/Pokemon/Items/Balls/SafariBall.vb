@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.Balls
 
     <Item(181, "Safari Ball")>
@@ -10,7 +12,7 @@ Namespace Items.Balls
         Public Overrides ReadOnly Property CatchMultiplier As Single = 1.5F
 
         Public Sub New()
-            _textureRectangle = New Rectangle(72, 144, 24, 24)
+            TextureRectangle = New Rectangle(72, 144, 24, 24)
         End Sub
 
     End Class

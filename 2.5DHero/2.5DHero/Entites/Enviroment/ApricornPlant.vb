@@ -1,4 +1,13 @@
-﻿Public Class ApricornPlant
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Dialogues
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Sound
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.World
+
+Public Class ApricornPlant
 
     Inherits Entity
 
@@ -70,7 +79,7 @@
                             Dim diff As Integer = CInt(DateDiff(DateInterval.Hour, PickDate, Date.Now))
 
                             Dim hasToDiff As Integer = 24
-                            If Game.World.CurrentSeason = Game.World.Seasons.Winter Or Game.World.CurrentSeason = Game.World.Seasons.Fall Then
+                            If Game.World.CurrentSeason = SeasonEnum.Winter Or Game.World.CurrentSeason = SeasonEnum.Fall Then
                                 hasToDiff = 12
                             End If
 

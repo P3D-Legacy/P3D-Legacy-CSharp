@@ -1,4 +1,12 @@
-﻿Namespace BattleSystem
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Battle
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Namespace BattleSystem
 
     Public Class BattleMenu
 
@@ -49,8 +57,8 @@
             End Select
 
             If y > -1 Then
-                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Battle\WeatherIcons"), New Rectangle(22, Core.windowSize.Height - 90, 176, 68), New Rectangle(x, y, 88, 34), Color.White)
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(110 - FontManager.MiniFont.MeasureString(t).X / 2, Core.windowSize.Height - 42), Color.Black)
+                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Battle\WeatherIcons"), New Rectangle(22, Core.WindowSize.Height - 90, 176, 68), New Rectangle(x, y, 88, 34), Color.White)
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(110 - FontManager.MiniFont.MeasureString(t).X / 2, Core.WindowSize.Height - 42), Color.Black)
             End If
         End Sub
 
@@ -76,9 +84,9 @@
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, nameInformation, New Vector2(pos.X, pos.Y), shinyHue)
 
                 'Gender:
-                If p.Gender = Pokemon.Genders.Male Then
+                If p.Gender = BasePokemon.Genders.Male Then
                     Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Battle\Interface"), New Rectangle(CInt(pos.X + 6 + FontManager.MiniFont.MeasureString(nameInformation).X), CInt(pos.Y), 12, 20), New Rectangle(0, 104, 6, 10), New Color(255, 255, 255, _moveMenuAlpha))
-                ElseIf p.Gender = Pokemon.Genders.Female Then
+                ElseIf p.Gender = BasePokemon.Genders.Female Then
                     Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Battle\Interface"), New Rectangle(CInt(pos.X + 6 + FontManager.MiniFont.MeasureString(nameInformation).X), CInt(pos.Y), 12, 20), New Rectangle(6, 104, 6, 10), New Color(255, 255, 255, _moveMenuAlpha))
                 End If
 
@@ -133,9 +141,9 @@
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, nameInformation, New Vector2(pos.X, pos.Y), shinyHue)
 
                 'Gender:
-                If p.Gender = Pokemon.Genders.Male Then
+                If p.Gender = BasePokemon.Genders.Male Then
                     Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Battle\Interface"), New Rectangle(CInt(pos.X + 6 + FontManager.MiniFont.MeasureString(nameInformation).X), CInt(pos.Y), 12, 20), New Rectangle(0, 104, 6, 10), New Color(255, 255, 255, _moveMenuAlpha))
-                ElseIf p.Gender = Pokemon.Genders.Female Then
+                ElseIf p.Gender = BasePokemon.Genders.Female Then
                     Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Battle\Interface"), New Rectangle(CInt(pos.X + 6 + FontManager.MiniFont.MeasureString(nameInformation).X), CInt(pos.Y), 12, 20), New Rectangle(6, 104, 6, 10), New Color(255, 255, 255, _moveMenuAlpha))
                 End If
             End If
@@ -185,7 +193,7 @@
             End If
         End Sub
 
-        Private Sub DrawPokeBalls(ByVal pos As Vector2, ByVal BattleScreen As BattleScreen, ByVal PokemonList As List(Of Pokemon), ByVal Mirrored As Boolean)
+        Private Sub DrawPokeBalls(ByVal pos As Vector2, ByVal BattleScreen As BattleScreen, ByVal PokemonList As List(Of BasePokemon), ByVal Mirrored As Boolean)
             If Mirrored = True Then
                 Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Battle\Interface"), New Rectangle(CInt(pos.X), CInt(pos.Y), 160, 14), New Rectangle(128, 7, 80, 7), New Color(255, 255, 255, _moveMenuAlpha))
             Else
@@ -204,9 +212,9 @@
 
                 If PokemonList.Count - 1 >= i Then
                     Dim p As Pokemon = PokemonList(i)
-                    If p.Status = Pokemon.StatusProblems.Fainted Then
+                    If p.Status = BasePokemon.StatusProblems.Fainted Then
                         texturePos = 10
-                    ElseIf p.Status = Pokemon.StatusProblems.None Then
+                    ElseIf p.Status = BasePokemon.StatusProblems.None Then
                         texturePos = 0
                     Else
                         texturePos = 30
@@ -252,10 +260,10 @@
                 DrawPokemonStats(New Vector2(50, 50), BattleScreen.OppPokemon, BattleScreen, False, Not BattleScreen.IsTrainerBattle)
 
                 If BattleScreen.BattleMode <> BattleScreen.BattleModes.Safari Then
-                    DrawPokemonStats(New Vector2(Core.windowSize.Width - 280, Core.windowSize.Height - 100), BattleScreen.OwnPokemon, BattleScreen, True, False)
+                    DrawPokemonStats(New Vector2(Core.WindowSize.Width - 280, Core.WindowSize.Height - 100), BattleScreen.OwnPokemon, BattleScreen, True, False)
                 End If
 
-                DrawPokeBalls(New Vector2(Core.windowSize.Width - 292, Core.windowSize.Height - 112), BattleScreen, Core.Player.Pokemons, False)
+                DrawPokeBalls(New Vector2(Core.WindowSize.Width - 292, Core.WindowSize.Height - 112), BattleScreen, Core.Player.Pokemons, False)
                 If BattleScreen.IsTrainerBattle = True Then
                     DrawPokeBalls(New Vector2(38, 38), BattleScreen, BattleScreen.Trainer.Pokemons, True)
                 End If
@@ -434,7 +442,7 @@
                     Dim ppColor As Color = GetPPColor()
                     ppColor.A = CByte((extraExtended + AllExtended - deductAlpha).Clamp(0, 255))
 
-                    Core.SpriteBatch.DrawString(FontManager.MiniFont, Me.Move.CurrentPP & "/" & Me.Move.MaxPP, New Vector2(Core.ScreenSize.Width - (AllExtended + extraExtended) + 28, 150 + Index * 96), ppColor)
+                    Core.SpriteBatch.DrawString(FontManager.MiniFont, Me.Move.CurrentPp & "/" & Me.Move.MaxPp, New Vector2(Core.ScreenSize.Width - (AllExtended + extraExtended) + 28, 150 + Index * 96), ppColor)
                     Core.SpriteBatch.DrawString(FontManager.MainFont, Me.Move.Name, New Vector2(Core.ScreenSize.Width - (AllExtended + extraExtended) + 86, 144 + Index * 96), New Color(0, 0, 0, (SelExtended + AllExtended) - deductAlpha))
                 Else
                     Core.SpriteBatch.DrawString(FontManager.MiniFont, Me.Move.Name, New Vector2(Core.ScreenSize.Width - (AllExtended + extraExtended) + 28, 150 + Index * 96), New Color(0, 0, 0, 255 - (extraExtended + AllExtended) - deductAlpha))
@@ -443,7 +451,7 @@
 
             Private Function GetPPColor() As Color
                 Dim c As Color = Color.Black
-                Dim per As Integer = CInt((Me.Move.CurrentPP / Me.Move.MaxPP) * 100)
+                Dim per As Integer = CInt((Me.Move.CurrentPp / Me.Move.MaxPp) * 100)
 
                 If per <= 50 And per > 25 Then
                     c = Color.Orange
@@ -460,7 +468,7 @@
 
             Public Sub Activate(ByVal BattleScreen As BattleScreen, ByVal AllExtended As Integer, ByVal isSelected As Boolean)
                 If BattleScreen.BattleMenu._isExtracting = False And BattleScreen.BattleMenu._isRetracting = False Then
-                    If Me.Move.CurrentPP > 0 Or isSelected = False Then
+                    If Me.Move.CurrentPp > 0 Or isSelected = False Then
                         If Controls.Accept(False, True, True) = True And isSelected = True Then
                             Me.ClickAction(BattleScreen)
                         End If
@@ -613,7 +621,7 @@
                         If BattleScreen.IsHost Then
                             BattleScreen.BattleQuery.Clear()
                             BattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                            BattleScreen.Battle.InitializeRound(BattleScreen, New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Text, .Argument = "The client sends the next pokemon!"})
+                            BattleScreen.Battle.InitializeRound(BattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Text, .Argument = "The client sends the next pokemon!"})
                         Else
                             BattleScreen.OwnStatistics.Switches += 1
                             BattleScreen.BattleQuery.Clear()
@@ -665,7 +673,7 @@
             If BattleScreen.FieldEffects.OwnMegaEvolved = False Then
                 If Not Core.Player.Pokemons(PokeIndex).Item Is Nothing Then
                     If Core.Player.Pokemons(PokeIndex).Item.IsMegaStone = True Then
-                        Dim megaStone = CType(Core.Player.Pokemons(PokeIndex).Item, Items.MegaStone)
+                        Dim megaStone = CType(Core.Player.Pokemons(PokeIndex).Item, MegaStone)
 
                         If megaStone.MegaPokemonNumber = Core.Player.Pokemons(PokeIndex).Number Then
                             _mainMenuItemList.Add(New MainMenuItem(5, "Mega Evolve!", Index, AddressOf MainMenuMegaEvolve))
@@ -690,7 +698,7 @@
 
         Private Sub MainMenuOpenPokemon(ByVal BattleScreen As BattleScreen)
             TempBattleScreen = BattleScreen
-            Core.SetScreen(New ChoosePokemonScreen(Core.CurrentScreen, Item.GetItemByID(5), AddressOf ShowPokemonMenu, "Choose Pokémon", True))
+            Core.SetScreen(New ChoosePokemonScreen(Core.CurrentScreen, Item.GetItemById(5), AddressOf ShowPokemonMenu, "Choose Pokémon", True))
             CType(Core.CurrentScreen, ChoosePokemonScreen).index = BattleScreen.OwnPokemonIndex
         End Sub
 
@@ -715,7 +723,7 @@
                 BattleScreen.BattleQuery.Clear()
                 BattleScreen.BattleQuery.Add(BattleScreen.FocusBattle())
                 BattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                BattleScreen.Battle.InitializeRound(BattleScreen, New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Text, .Argument = "Failed to run away."})
+                BattleScreen.Battle.InitializeRound(BattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Text, .Argument = "Failed to run away."})
             End If
         End Sub
 
@@ -725,7 +733,7 @@
                 BattleScreen.BattleQuery.Clear()
                 BattleScreen.BattleQuery.Add(BattleScreen.FocusBattle())
                 BattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                Core.SetScreen(New BattleCatchScreen(BattleScreen, Item.GetItemByID(181)))
+                Core.SetScreen(New BattleCatchScreen(BattleScreen, Item.GetItemById(181)))
 
                 Dim safariBallText As String = "Safari Ball x" & Core.Player.Inventory.GetItemAmount(181).ToString()
                 If Core.Player.Inventory.GetItemAmount(181) = 0 Then
@@ -741,7 +749,7 @@
                 BattleScreen.BattleQuery.Clear()
                 BattleScreen.BattleQuery.Add(BattleScreen.FocusBattle())
                 BattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                Core.SetScreen(New BattleCatchScreen(BattleScreen, Item.GetItemByID(177)))
+                Core.SetScreen(New BattleCatchScreen(BattleScreen, Item.GetItemById(177)))
 
                 Dim sportBallText As String = "Sport Ball x" & Core.Player.Inventory.GetItemAmount(177).ToString()
                 If Core.Player.Inventory.GetItemAmount(177) = 0 Then
@@ -759,7 +767,7 @@
             BattleScreen.BattleQuery.Clear()
             BattleScreen.BattleQuery.Add(BattleScreen.FocusBattle())
             BattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-            BattleScreen.Battle.InitializeRound(BattleScreen, New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Text, .Argument = "Threw Mud at " & BattleScreen.OppPokemon.GetDisplayName() & "!"})
+            BattleScreen.Battle.InitializeRound(BattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Text, .Argument = "Threw Mud at " & BattleScreen.OppPokemon.GetDisplayName() & "!"})
         End Sub
 
         Private Sub MainMenuThrowBait(ByVal BattleScreen As BattleScreen)
@@ -770,7 +778,7 @@
             BattleScreen.BattleQuery.Clear()
             BattleScreen.BattleQuery.Add(BattleScreen.FocusBattle())
             BattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-            BattleScreen.Battle.InitializeRound(BattleScreen, New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Text, .Argument = "Threw a Bait at " & BattleScreen.OppPokemon.GetDisplayName() & "!"})
+            BattleScreen.Battle.InitializeRound(BattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Text, .Argument = "Threw a Bait at " & BattleScreen.OppPokemon.GetDisplayName() & "!"})
         End Sub
 
         Private Sub MainMenuMegaEvolve(ByVal BattleScreen As BattleScreen)
@@ -875,17 +883,17 @@
                 BattleScreen.BattleQuery.Add(BattleScreen.FocusBattle())
                 BattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
                 If BattleScreen.IsMegaEvolvingOwn Then
-                    BattleScreen.SendClientCommand("MEGA|" & BattleScreen.OwnPokemon.Attacks(_moveMenuIndex).ID.ToString())
+                    BattleScreen.SendClientCommand("MEGA|" & BattleScreen.OwnPokemon.Attacks(_moveMenuIndex).Id.ToString())
                     BattleScreen.IsMegaEvolvingOwn = False
                 Else
-                    BattleScreen.SendClientCommand("MOVE|" & BattleScreen.OwnPokemon.Attacks(_moveMenuIndex).ID.ToString())
+                    BattleScreen.SendClientCommand("MOVE|" & BattleScreen.OwnPokemon.Attacks(_moveMenuIndex).Id.ToString())
                 End If
             Else
                 BattleScreen.OwnStatistics.Moves += 1
                 BattleScreen.BattleQuery.Clear()
                 BattleScreen.BattleQuery.Add(BattleScreen.FocusBattle())
                 BattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                BattleScreen.Battle.InitializeRound(BattleScreen, New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Move, .Argument = BattleScreen.OwnPokemon.Attacks(_moveMenuIndex)})
+                BattleScreen.Battle.InitializeRound(BattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Move, .Argument = BattleScreen.OwnPokemon.Attacks(_moveMenuIndex)})
             End If
             _moveMenuChoseMove = False
             _moveMenuAlpha = 255
@@ -893,11 +901,11 @@
         End Sub
 
         Private Sub UseStruggle(ByVal BattleScreen As BattleScreen)
-            If BattleScreen.OwnPokemon.CountPP() <= 0 Then 'Use Struggle
+            If BattleScreen.OwnPokemon.CountPp() <= 0 Then 'Use Struggle
                 BattleScreen.BattleQuery.Clear()
                 BattleScreen.BattleQuery.Add(BattleScreen.FocusBattle())
                 BattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                BattleScreen.Battle.InitializeRound(BattleScreen, New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Move, .Argument = Attack.GetAttackByID(165)})
+                BattleScreen.Battle.InitializeRound(BattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Move, .Argument = Attack.GetAttackByID(165)})
             End If
         End Sub
 
@@ -918,7 +926,7 @@
                 Screen.TextBox.Show(Pokemon.GetDisplayName() & " is already~in battle!", {}, True, False)
             Else
                 If Pokemon.IsEgg() = False Then
-                    If Pokemon.Status <> net.Pokemon3D.Game.Pokemon.StatusProblems.Fainted Then
+                    If Pokemon.Status <> BasePokemon.StatusProblems.Fainted Then
                         If BattleCalculation.CanSwitch(TempBattleScreen, True) = False Then
                             Screen.TextBox.Show("Cannot switch out.", {}, True, False)
                         Else
@@ -934,7 +942,7 @@
                                     TempBattleScreen.BattleQuery.Clear()
                                     TempBattleScreen.BattleQuery.Add(TempBattleScreen.FocusBattle())
                                     TempBattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                                    TempBattleScreen.Battle.InitializeRound(TempBattleScreen, New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Switch, .Argument = PokeIndex.ToString()})
+                                    TempBattleScreen.Battle.InitializeRound(TempBattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Switch, .Argument = PokeIndex.ToString()})
                                 End If
                             End If
                         End If
@@ -952,7 +960,7 @@
 #Region "UseItem"
 
         Private Shared Sub SelectedItem(ByVal itemID As Integer)
-            Dim Item As Item = Item.GetItemByID(itemID)
+            Dim Item As Item = Item.GetItemById(itemID)
 
             If Item.CanBeUsedInBattle = True Then
                 If Item.IsBall = True Then
@@ -962,19 +970,19 @@
                             TempBattleScreen.BattleQuery.Clear()
                             TempBattleScreen.BattleQuery.Add(TempBattleScreen.FocusBattle())
                             TempBattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                            Core.SetScreen(New BattleCatchScreen(TempBattleScreen, Item.GetItemByID(itemID)))
+                            Core.SetScreen(New BattleCatchScreen(TempBattleScreen, Item.GetItemById(itemID)))
                             PlayerStatistics.Track("[4]Poké Balls used", 1)
                         Else
                             TempBattleScreen.BattleQuery.Clear()
                             TempBattleScreen.BattleQuery.Add(TempBattleScreen.FocusBattle())
                             TempBattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                            TempBattleScreen.Battle.InitializeRound(TempBattleScreen, New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Text, .Argument = "The wild Pokémon blocked the Pokéball!"})
+                            TempBattleScreen.Battle.InitializeRound(TempBattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Text, .Argument = "The wild Pokémon blocked the Pokéball!"})
                         End If
                     Else
                         TempBattleScreen.BattleQuery.Clear()
                         TempBattleScreen.BattleQuery.Add(TempBattleScreen.FocusBattle())
                         TempBattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                        TempBattleScreen.Battle.InitializeRound(TempBattleScreen, New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Text, .Argument = "Hey! Don't be a thief!"})
+                        TempBattleScreen.Battle.InitializeRound(TempBattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Text, .Argument = "Hey! Don't be a thief!"})
                     End If
                 Else
                     TempItemID = itemID
@@ -993,13 +1001,13 @@
         Private Shared Sub UseItem(ByVal PokeIndex As Integer)
             Dim Pokemon As Pokemon = Core.Player.Pokemons(PokeIndex)
 
-            Dim Item As Item = Item.GetItemByID(TempItemID)
+            Dim Item As Item = Item.GetItemById(TempItemID)
 
             TempBattleScreen.BattleQuery.Clear()
             If Item.UseOnPokemon(PokeIndex) = True Then
                 TempBattleScreen.BattleQuery.Add(TempBattleScreen.FocusBattle())
                 TempBattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                TempBattleScreen.Battle.InitializeRound(TempBattleScreen, New Battle.RoundConst With {.StepType = Battle.RoundConst.StepTypes.Item, .Argument = TempItemID.ToString()})
+                TempBattleScreen.Battle.InitializeRound(TempBattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Item, .Argument = TempItemID.ToString()})
             End If
         End Sub
 

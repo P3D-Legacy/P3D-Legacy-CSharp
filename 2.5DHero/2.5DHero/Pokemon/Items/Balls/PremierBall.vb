@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.Balls
 
     <Item(3, "Premier Ball")>
@@ -9,7 +11,7 @@ Namespace Items.Balls
         Public Overrides ReadOnly Property PokeDollarPrice As Integer = 200
 
         Public Sub New()
-            _textureRectangle = New Rectangle(216, 216, 24, 24)
+            TextureRectangle = New Rectangle(216, 216, 24, 24)
         End Sub
 
     End Class

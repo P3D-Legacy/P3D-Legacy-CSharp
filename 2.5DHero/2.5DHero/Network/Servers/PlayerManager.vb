@@ -1,18 +1,27 @@
 ﻿Option Strict On
 
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.Interfaces
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Server
+
 Namespace Servers
 
     ''' <summary>
     ''' Manages all local player related operations.
     ''' </summary>
     Public Class PlayerManager
+        Implements IPlayerManager
 
         Private _receivedWorldData As Boolean = False 'If this client received the server's world data.
         Private _receivedID As Boolean = False 'if the client received the server's ID.
 
         Private _needsUpdate As Boolean = False 'If the player entities need to be updated.
 
-        Public Sub Reset()
+        Public Sub Reset() Implements IPlayerManager.Reset
             Logger.Debug("PlayerManager.vb: Reset PlayerManager")
 
             Me._receivedID = False
@@ -23,31 +32,31 @@ Namespace Servers
             Me._lastPackageSent = Nothing
         End Sub
 
-        Public WriteOnly Property ReceivedWorldData() As Boolean
+        Public WriteOnly Property ReceivedWorldData() As Boolean Implements IPlayerManager.ReceivedWorldData
             Set(value As Boolean)
                 Me._receivedWorldData = value
             End Set
         End Property
 
-        Public WriteOnly Property ReceivedID() As Boolean
+        Public WriteOnly Property ReceivedID() As Boolean Implements IPlayerManager.ReceivedID
             Set(value As Boolean)
                 Me._receivedID = value
             End Set
         End Property
 
-        Public WriteOnly Property NeedsUpdate() As Boolean
+        Public WriteOnly Property NeedsUpdate() As Boolean Implements IPlayerManager.NeedsUpdate
             Set(value As Boolean)
                 Me._needsUpdate = value
             End Set
         End Property
 
-        Public ReadOnly Property ReceivedIniData() As Boolean
+        Public ReadOnly Property ReceivedIniData() As Boolean Implements IPlayerManager.ReceivedIniData
             Get
                 Return Me._receivedWorldData = True And Me._receivedID = True
             End Get
         End Property
 
-        Public ReadOnly Property HasNewPlayerData() As Boolean
+        Public ReadOnly Property HasNewPlayerData() As Boolean Implements IPlayerManager.HasNewPlayerData
             Get
                 If Me._lastPackage Is Nothing Then
                     Return True
@@ -113,7 +122,7 @@ Namespace Servers
             End Get
         End Property
 
-        Public Sub UpdatePlayers()
+        Public Sub UpdatePlayers() Implements IPlayerManager.UpdatePlayers
             'For some reason, have Try Catch here.
             Try
                 If _needsUpdate = True Then
@@ -139,12 +148,12 @@ Namespace Servers
                     Dim removeList As New List(Of NetworkPlayer)
                     For i = 0 To Screen.Level.NetworkPlayers.Count - 1
                         If i <= Screen.Level.NetworkPlayers.Count - 1 Then
-                            Dim netPlayer As NetworkPlayer = Screen.Level.NetworkPlayers(i)
+                            Dim netPlayer As NetworkPlayer = CType(Screen.Level.NetworkPlayers(i), NetworkPlayer)
 
                             Dim exists As Boolean = False
                             For j = 0 To Core.ServersManager.PlayerCollection.Count - 1
                                 If j <= Core.ServersManager.PlayerCollection.Count - 1 Then
-                                    Dim p As Player = Core.ServersManager.PlayerCollection(j)
+                                    Dim p As IPlayer = Core.ServersManager.PlayerCollection(j)
                                     If p.ServersID = netPlayer.NetworkID Then
                                         exists = True
                                         Exit For
@@ -166,12 +175,12 @@ Namespace Servers
                     Dim removePokeList As New List(Of NetworkPokemon)
                     For i = 0 To Screen.Level.NetworkPokemon.Count - 1
                         If i <= Screen.Level.NetworkPokemon.Count - 1 Then
-                            Dim netPokemon As NetworkPokemon = Screen.Level.NetworkPokemon(i)
+                            Dim netPokemon As NetworkPokemon = CType(Screen.Level.NetworkPokemon(i), NetworkPokemon)
 
                             Dim exists As Boolean = False
                             For j = 0 To Core.ServersManager.PlayerCollection.Count - 1
                                 If j <= Core.ServersManager.PlayerCollection.Count - 1 Then
-                                    Dim p As Player = Core.ServersManager.PlayerCollection(j)
+                                    Dim p As IPlayer = Core.ServersManager.PlayerCollection(j)
                                     If p.ServersID = netPokemon.PlayerID Then
                                         exists = True
                                         Exit For
@@ -192,14 +201,15 @@ Namespace Servers
                     'Create new players and pokemon and add to the level.
                     For i = 0 To Core.ServersManager.PlayerCollection.Count - 1
                         If i <= Core.ServersManager.PlayerCollection.Count - 1 Then
-                            Dim p As Player = Core.ServersManager.PlayerCollection(i)
+                            'Dim p As Player = CType(Core.ServersManager.PlayerCollection(i), Player)
+                            Dim p As IPlayer = Core.ServersManager.PlayerCollection(i)
 
                             If p.Initialized = True Then
                                 If p.ServersID <> Core.ServersManager.ID Then
                                     Dim exists As Boolean = False
                                     For j = 0 To Screen.Level.NetworkPlayers.Count - 1
                                         If j <= Screen.Level.NetworkPlayers.Count - 1 Then
-                                            Dim netPlayer As NetworkPlayer = Screen.Level.NetworkPlayers(j)
+                                            Dim netPlayer As NetworkPlayer = CType(Screen.Level.NetworkPlayers(j), NetworkPlayer)
                                             If netPlayer.NetworkID = p.ServersID Then
                                                 netPlayer.ApplyPlayerData(p)
                                                 exists = True
@@ -222,7 +232,7 @@ Namespace Servers
                                     Else
                                         For j = 0 To Screen.Level.NetworkPokemon.Count - 1
                                             If j <= Screen.Level.NetworkPokemon.Count - 1 Then
-                                                Dim netPokemon As NetworkPokemon = Screen.Level.NetworkPokemon(j)
+                                                Dim netPokemon As NetworkPokemon = CType(Screen.Level.NetworkPokemon(i), NetworkPokemon)
                                                 If netPokemon.PlayerID = p.ServersID Then
                                                     netPokemon.ApplyPlayerData(p)
                                                     Exit For
@@ -258,10 +268,10 @@ Namespace Servers
 
 #Region "PlayerDataPackage"
 
-        Private _lastPackage As Package = Nothing 'This holds the current data items that was sent to the server. No empty data.
-        Private _lastPackageSent As Package = Nothing 'This holds the package that was sent to the server.
+        Private _lastPackage As IPackage = Nothing 'This holds the current data items that was sent to the server. No empty data.
+        Private _lastPackageSent As IPackage = Nothing 'This holds the package that was sent to the server.
 
-        Public Function CreatePlayerDataPackage() As Package
+        Public Function CreatePlayerDataPackage() As IPackage Implements IPlayerManager.CreatePlayerDataPackage
             Dim dataItems As New List(Of String)
 
             '---General information---
@@ -326,7 +336,7 @@ Namespace Servers
             AddToDataItems(dataItems, PokemonSkin, 13)
             AddToDataItems(dataItems, PokemonFacing, 14)
 
-            Return New Package(Package.PackageTypes.GameData, Core.ServersManager.ID, Servers.Package.ProtocolTypes.UDP, dataItems)
+            Return New Package(PackageTypes.GameData, Core.ServersManager.ID, ProtocolTypes.UDP, dataItems)
         End Function
 
         Private Sub AddToDataItems(ByRef l As List(Of String), ByVal value As String, ByVal listIndex As Integer)
@@ -343,7 +353,7 @@ Namespace Servers
             l.Add(insertValue)
         End Sub
 
-        Public Sub ApplyLastPackage(ByVal newP As Package)
+        Public Sub ApplyLastPackage(ByVal newP As IPackage) Implements IPlayerManager.ApplyLastPackage
             If Me._lastPackage Is Nothing Then
                 Me._lastPackage = newP
             Else

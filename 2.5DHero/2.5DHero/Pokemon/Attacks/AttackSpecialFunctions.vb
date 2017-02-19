@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem
+﻿Imports P3D.Legacy.Core
+
+Namespace BattleSystem
 
     ''' <summary>
     ''' A class to execute GameMode attack functions.

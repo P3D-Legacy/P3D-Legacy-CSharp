@@ -1,4 +1,10 @@
-﻿Public Class BattleGrowStatsScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class BattleGrowStatsScreen
 
     Inherits Screen
 

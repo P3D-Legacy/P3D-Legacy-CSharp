@@ -1,4 +1,13 @@
-﻿Public Class StatisticsScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt
+Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class StatisticsScreen
 
     Inherits Screen
 
@@ -31,7 +40,7 @@
 
     Private Sub LoadStatistics()
         If Core.Player.IsGamejoltSave = True Then
-            Me.Statistics.Add("Level", GameJolt.Emblem.GetPlayerLevel(Core.GameJoltSave.Points))
+            Me.Statistics.Add("Level", Emblem.GetPlayerLevel(Core.GameJoltSave.Points))
             Me.Statistics.Add("Points", Core.GameJoltSave.Points)
         End If
 
@@ -48,14 +57,14 @@
             End If
         Next
 
-        If Me.Statistics.Count > Me.StatisticsStartIndex Then ' And Basic.Player.IsGamejoltSave = True And GameJolt.API.LoggedIn = True
+        If Me.Statistics.Count > Me.StatisticsStartIndex Then ' And Basic.Player.IsGamejoltSave = True And API.LoggedIn = True
             Me.GJGrabIndex = Me.StatisticsStartIndex
             Me.GJCanGrabNewScore = True
         End If
     End Sub
 
     Public Overrides Sub Draw()
-        Canvas.DrawRectangle(Core.windowSize, New Color(84, 198, 216))
+        Canvas.DrawRectangle(Core.WindowSize, New Color(84, 198, 216))
 
         For i = 0 To Me.Statistics.Count - 1
             Dim ItemID As String = ""
@@ -70,46 +79,46 @@
             Dim value As Integer = Me.Statistics.Values(i)
 
             If ItemID <> "" Then
-                Dim Item As Item = Item.GetItemByID(CInt(ItemID))
+                Dim Item As Item = P3D.Legacy.Core.Pokemon.Item.GetItemByID(CInt(ItemID))
                 Core.SpriteBatch.Draw(Item.Texture, New Rectangle(150, 160 + i * 50 + Scroll, 32, 32), Color.White)
             End If
 
             Core.SpriteBatch.DrawString(FontManager.MainFont, name, New Vector2(150 + ItemIDX, 160 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
 
             If GJStatistics.ContainsKey(Me.Statistics.Keys(i)) = True Then
-                Core.SpriteBatch.DrawString(FontManager.MainFont, GJStatistics(Me.Statistics.Keys(i)).ToString(), New Vector2(Core.windowSize.Width - 418, 178 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 0.8F, SpriteEffects.None, 0.0F)
-                Core.SpriteBatch.DrawString(FontManager.MainFont, value.ToString(), New Vector2(Core.windowSize.Width - 420, 150 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, GJStatistics(Me.Statistics.Keys(i)).ToString(), New Vector2(Core.WindowSize.Width - 418, 178 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 0.8F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, value.ToString(), New Vector2(Core.WindowSize.Width - 420, 150 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
             Else
-                Core.SpriteBatch.DrawString(FontManager.MainFont, value.ToString(), New Vector2(Core.windowSize.Width - 420, 160 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, value.ToString(), New Vector2(Core.WindowSize.Width - 420, 160 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
             End If
 
-            Canvas.DrawRectangle(New Rectangle(130, 200 + i * 50 + Scroll, Core.windowSize.Width - 360, 1), Color.White)
+            Canvas.DrawRectangle(New Rectangle(130, 200 + i * 50 + Scroll, Core.WindowSize.Width - 360, 1), Color.White)
         Next
 
-        Canvas.DrawRectangle(New Rectangle(0, 0, Core.windowSize.Width, 150), New Color(84, 198, 216))
-        Canvas.DrawRectangle(New Rectangle(0, Core.windowSize.Height - 100, Core.windowSize.Width, 100), New Color(84, 198, 216))
+        Canvas.DrawRectangle(New Rectangle(0, 0, Core.WindowSize.Width, 150), New Color(84, 198, 216))
+        Canvas.DrawRectangle(New Rectangle(0, Core.WindowSize.Height - 100, Core.WindowSize.Width, 100), New Color(84, 198, 216))
 
         Canvas.DrawGradient(New Rectangle(50, 150, 50, 2), New Color(255, 255, 255, 0), Color.White, True, -1)
-        Canvas.DrawRectangle(New Rectangle(100, 150, Core.windowSize.Width - 300, 2), Color.White)
-        Canvas.DrawGradient(New Rectangle(Core.windowSize.Width - 200, 150, 50, 2), Color.White, New Color(255, 255, 255, 0), True, -1)
+        Canvas.DrawRectangle(New Rectangle(100, 150, Core.WindowSize.Width - 300, 2), Color.White)
+        Canvas.DrawGradient(New Rectangle(Core.WindowSize.Width - 200, 150, 50, 2), Color.White, New Color(255, 255, 255, 0), True, -1)
 
-        Canvas.DrawGradient(New Rectangle(Core.windowSize.Width - 450, 100, 2, 50), New Color(255, 255, 255, 0), Color.White, False, -1)
-        Canvas.DrawRectangle(New Rectangle(Core.windowSize.Width - 450, 150, 2, Core.windowSize.Height - 250), Color.White)
-        Canvas.DrawGradient(New Rectangle(Core.windowSize.Width - 450, Core.windowSize.Height - 100, 2, 50), Color.White, New Color(255, 255, 255, 0), False, -1)
+        Canvas.DrawGradient(New Rectangle(Core.WindowSize.Width - 450, 100, 2, 50), New Color(255, 255, 255, 0), Color.White, False, -1)
+        Canvas.DrawRectangle(New Rectangle(Core.WindowSize.Width - 450, 150, 2, Core.WindowSize.Height - 250), Color.White)
+        Canvas.DrawGradient(New Rectangle(Core.WindowSize.Width - 450, Core.WindowSize.Height - 100, 2, 50), Color.White, New Color(255, 255, 255, 0), False, -1)
 
-        Canvas.DrawGradient(New Rectangle(50, Core.windowSize.Height - 100, 50, 2), New Color(255, 255, 255, 0), Color.White, True, -1)
-        Canvas.DrawRectangle(New Rectangle(100, Core.windowSize.Height - 100, Core.windowSize.Width - 300, 2), Color.White)
-        Canvas.DrawGradient(New Rectangle(Core.windowSize.Width - 200, Core.windowSize.Height - 100, 50, 2), Color.White, New Color(255, 255, 255, 0), True, -1)
+        Canvas.DrawGradient(New Rectangle(50, Core.WindowSize.Height - 100, 50, 2), New Color(255, 255, 255, 0), Color.White, True, -1)
+        Canvas.DrawRectangle(New Rectangle(100, Core.WindowSize.Height - 100, Core.WindowSize.Width - 300, 2), Color.White)
+        Canvas.DrawGradient(New Rectangle(Core.WindowSize.Width - 200, Core.WindowSize.Height - 100, 50, 2), Color.White, New Color(255, 255, 255, 0), True, -1)
 
-        For y = -64 To Core.windowSize.Height Step 64
-            Core.SpriteBatch.Draw(Me.texture, New Rectangle(Core.windowSize.Width - 128, y + TileOffset, 128, 64), New Rectangle(48, 0, 16, 16), Color.White)
+        For y = -64 To Core.WindowSize.Height Step 64
+            Core.SpriteBatch.Draw(Me.texture, New Rectangle(Core.WindowSize.Width - 128, y + TileOffset, 128, 64), New Rectangle(48, 0, 16, 16), Color.White)
         Next
 
-        Canvas.DrawGradient(New Rectangle(0, 0, CInt(Core.windowSize.Width), 200), New Color(42, 167, 198), New Color(42, 167, 198, 0), False, -1)
-        Canvas.DrawGradient(New Rectangle(0, CInt(Core.windowSize.Height - 200), CInt(Core.windowSize.Width), 200), New Color(42, 167, 198, 0), New Color(42, 167, 198), False, -1)
+        Canvas.DrawGradient(New Rectangle(0, 0, CInt(Core.WindowSize.Width), 200), New Color(42, 167, 198), New Color(42, 167, 198, 0), False, -1)
+        Canvas.DrawGradient(New Rectangle(0, CInt(Core.WindowSize.Height - 200), CInt(Core.WindowSize.Width), 200), New Color(42, 167, 198, 0), New Color(42, 167, 198), False, -1)
 
         Core.SpriteBatch.DrawString(FontManager.MainFont, "Name", New Vector2(150, 110), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
-        Core.SpriteBatch.DrawString(FontManager.MainFont, "Value", New Vector2(Core.windowSize.Width - 420, 110), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, "Value", New Vector2(Core.WindowSize.Width - 420, 110), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
 
         Core.SpriteBatch.DrawString(FontManager.MainFont, "Statistics", New Vector2(100, 24), Color.White, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
     End Sub
@@ -145,16 +154,16 @@
             End If
         End If
 
-        If -Me.Statistics.Count * 50 + Core.windowSize.Height - 250 >= 0 Then
+        If -Me.Statistics.Count * 50 + Core.WindowSize.Height - 250 >= 0 Then
             Me.Scroll = 0
         Else
-            Me.Scroll = Me.Scroll.Clamp(-Me.Statistics.Count * 50 + Core.windowSize.Height - 250, 0)
+            Me.Scroll = Me.Scroll.Clamp(-Me.Statistics.Count * 50 + Core.WindowSize.Height - 250, 0)
         End If
 
         If Me.GJCanGrabNewScore = True Then
             If GJGrabDelay <= 0.0F Then
                 Me.GJCanGrabNewScore = False
-                GameJolt.GameJoltStatistics.GetStatisticValue(Me.Statistics.Keys(Me.GJGrabIndex), AddressOf Me.GetGJStatistic)
+                GameJoltStatistics.GetStatisticValue(Me.Statistics.Keys(Me.GJGrabIndex), AddressOf Me.GetGJStatistic)
             Else
                 GJGrabDelay -= 0.1F
             End If
@@ -174,7 +183,7 @@
         Dim statName As String = Me.Statistics.Keys(Me.GJGrabIndex)
         Dim statValue As String = "0"
 
-        Dim list As List(Of GameJolt.API.JoltValue) = GameJolt.API.HandleData(result)
+        Dim list As List(Of API.JoltValue) = API.HandleData(result)
         If CBool(list(0).Value) = True Then
             statValue = list(1).Value
             If Me.GJStatistics.ContainsKey(statName) = True Then

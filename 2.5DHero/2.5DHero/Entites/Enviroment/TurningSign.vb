@@ -1,4 +1,7 @@
-﻿Public Class TurningSign
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Entities
+
+Public Class TurningSign
 
     Inherits Entity
 

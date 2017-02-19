@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Water
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Water
 
     Public Class WaterSport
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             If BattleScreen.FieldEffects.WaterSport = 0 Then
                 BattleScreen.FieldEffects.WaterSport = 5
                 BattleScreen.BattleQuery.Add(New TextQueryObject("Fire's power was weakened!"))

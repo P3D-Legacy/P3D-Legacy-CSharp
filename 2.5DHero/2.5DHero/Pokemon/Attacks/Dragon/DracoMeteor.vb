@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Dragon
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Dragon
 
     Public Class DracoMeteor
 
@@ -52,7 +54,7 @@
             '#End
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             BattleScreen.Battle.LowerStat(own, own, BattleScreen, "Special Attack", 2, "", "move:dracometeor")
         End Sub
 

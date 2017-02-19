@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Grass
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Grass
 
     Public Class RazorLeaf
 

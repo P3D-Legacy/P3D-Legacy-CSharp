@@ -1,3 +1,8 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+
 Namespace Items.XItems
 
     <Item(33, "X Accuracy")>
@@ -9,7 +14,7 @@ Namespace Items.XItems
         Public Overrides ReadOnly Property Description As String = "An item that boosts the accuracy of a Pokémon during a battle. It wears off once the Pokémon is withdrawn."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(216, 24, 24, 24)
+            TextureRectangle = New Rectangle(216, 24, 24, 24)
         End Sub
 
         Public Overrides Function UseOnPokemon(PokeIndex As Integer) As Boolean

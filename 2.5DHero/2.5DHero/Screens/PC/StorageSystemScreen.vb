@@ -1,3 +1,11 @@
+Imports System.Drawing
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
 Public Class StorageSystemScreen
 
     Inherits Screen
@@ -169,7 +177,7 @@ Public Class StorageSystemScreen
 #Region "Update"
 
     Public Overrides Sub Update()
-        If ControllerHandler.ButtonPressed(Buttons.Y) = True Or KeyBoardHandler.KeyPressed(KeyBindings.SpecialKey) = True Then
+        If ControllerHandler.ButtonPressed(Buttons.Y) = True Or KeyBoardHandler.KeyPressed(Core.KeyBindings.Special) = True Then
             Core.SetScreen(New StorageSystemFilterScreen(Me))
         End If
 
@@ -482,12 +490,12 @@ Public Class StorageSystemScreen
         Dim t As Texture2D = p.GetTexture(True)
         Me.yOffset = -1
 
-        Dim cArr(t.Width * t.Height - 1) As Color
+        Dim cArr(t.Width * t.Height - 1) As Microsoft.Xna.Framework.Color
         t.GetData(cArr)
 
         For y = 0 To t.Height - 1
             For x = 0 To t.Width - 1
-                If cArr(x + y * t.Height) <> Color.Transparent Then
+                If cArr(x + y * t.Height) <> Microsoft.Xna.Framework.Color.Transparent Then
                     Me.yOffset = y
                     Exit For
                 End If
@@ -677,7 +685,7 @@ Public Class StorageSystemScreen
 
                 Core.Player.BoxData = GetBoxSaveData(Me.Boxes)
 
-                Core.SetScreen(New TransitionScreen(Me, Me.PreScreen, Color.Black, False))
+                Core.SetScreen(New TransitionScreen(Me, Me.PreScreen, Microsoft.Xna.Framework.Color.Black, False))
             End If
         End If
     End Sub
@@ -737,26 +745,26 @@ Public Class StorageSystemScreen
     Private Function GetRelativeMousePosition() As Vector2
         For x = 0 To 5
             For y = 0 To 4
-                If New Rectangle(50 + x * 100, 200 + y * 84, 64, 64).Contains(MouseHandler.MousePosition) = True Then
+                If New Microsoft.Xna.Framework.Rectangle(50 + x * 100, 200 + y * 84, 64, 64).Contains(MouseHandler.MousePosition) = True Then
                     Return New Vector2(x, y + 1)
                 End If
             Next
         Next
 
         For y = 0 To 5
-            If New Rectangle(Core.windowSize.Width - 260, y * 100 + 50, 128, 80).Contains(MouseHandler.MousePosition) = True Then
+            If New Microsoft.Xna.Framework.Rectangle(Core.windowSize.Width - 260, y * 100 + 50, 128, 80).Contains(MouseHandler.MousePosition) = True Then
                 Return New Vector2(6, y)
             End If
         Next
 
-        If New Rectangle(10, 52, 96, 96).Contains(MouseHandler.MousePosition) = True Then
+        If New Microsoft.Xna.Framework.Rectangle(10, 52, 96, 96).Contains(MouseHandler.MousePosition) = True Then
             Return New Vector2(0, 0)
         End If
-        If New Rectangle(655, 52, 96, 96).Contains(MouseHandler.MousePosition) = True Then
+        If New Microsoft.Xna.Framework.Rectangle(655, 52, 96, 96).Contains(MouseHandler.MousePosition) = True Then
             Return New Vector2(5, 0)
         End If
 
-        If New Rectangle(80, 50, 600, 100).Contains(MouseHandler.MousePosition) = True Then
+        If New Microsoft.Xna.Framework.Rectangle(80, 50, 600, 100).Contains(MouseHandler.MousePosition) = True Then
             Return New Vector2(1, 0)
         End If
 
@@ -864,7 +872,7 @@ Public Class StorageSystemScreen
                     l.Add(Me.MovingPokemon)
                     Dim hasPokemon As Boolean = False
                     For Each p As Pokemon In l
-                        If p.IsEgg() = False And p.Status <> Pokemon.StatusProblems.Fainted And p.HP > 0 Then
+                        If p.IsEgg() = False And p.Status <> BasePokemon.StatusProblems.Fainted And p.HP > 0 Then
                             hasPokemon = True
                             Exit For
                         End If
@@ -886,7 +894,7 @@ Public Class StorageSystemScreen
                     l.RemoveAt(CInt(CursorPosition.Y))
                     Dim hasPokemon As Boolean = False
                     For Each p As Pokemon In l
-                        If p.IsEgg() = False And p.Status <> Pokemon.StatusProblems.Fainted And p.HP > 0 Then
+                        If p.IsEgg() = False And p.Status <> BasePokemon.StatusProblems.Fainted And p.HP > 0 Then
                             hasPokemon = True
                             Exit For
                         End If
@@ -980,7 +988,7 @@ Public Class StorageSystemScreen
                 l.RemoveAt(CInt(CursorPosition.Y))
                 Dim hasPokemon As Boolean = False
                 For Each p As Pokemon In l
-                    If p.IsEgg() = False And p.Status <> Pokemon.StatusProblems.Fainted And p.HP > 0 Then
+                    If p.IsEgg() = False And p.Status <> BasePokemon.StatusProblems.Fainted And p.HP > 0 Then
                         hasPokemon = True
                         Exit For
                     End If
@@ -1024,7 +1032,7 @@ Public Class StorageSystemScreen
             l.RemoveAt(CInt(CursorPosition.Y))
 
             For Each p As Pokemon In l
-                If p.IsEgg() = False And p.Status <> Pokemon.StatusProblems.Fainted And p.HP > 0 Then
+                If p.IsEgg() = False And p.Status <> BasePokemon.StatusProblems.Fainted And p.HP > 0 Then
                     hasPokemon = True
                     Exit For
                 End If
@@ -1115,31 +1123,31 @@ Public Class StorageSystemScreen
 
         If Not b Is Nothing Then
             If b.IsBattleBox = True Then
-                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Box\BattleBox"), New Rectangle(80, 50, 600, 100), Color.White)
+                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Box\BattleBox"), New Microsoft.Xna.Framework.Rectangle(80, 50, 600, 100), Microsoft.Xna.Framework.Color.White)
 
-                Dim cArr(0) As Color
-                TextureManager.GetTexture("GUI\Box\BattleBox", New Rectangle(0, 0, 1, 1), "").GetData(cArr)
-                Canvas.DrawScrollBar(New Vector2(80, 36), Me.Boxes.Count, 1, boxIndex, New Size(600, 14), True, New Color(0, 0, 0, 0), cArr(0))
+                Dim cArr(0) As Microsoft.Xna.Framework.Color
+                TextureManager.GetTexture("GUI\Box\BattleBox", New Microsoft.Xna.Framework.Rectangle(0, 0, 1, 1), "").GetData(cArr)
+                Canvas.DrawScrollBar(New Vector2(80, 36), Me.Boxes.Count, 1, boxIndex, New Size(600, 14), True, New Microsoft.Xna.Framework.Color(0, 0, 0, 0), cArr(0))
             Else
-                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Box\" & b.Background.ToString()), New Rectangle(80, 50, 600, 100), Color.White)
+                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Box\" & b.Background.ToString()), New Microsoft.Xna.Framework.Rectangle(80, 50, 600, 100), Microsoft.Xna.Framework.Color.White)
 
-                Dim cArr(0) As Color
-                TextureManager.GetTexture("GUI\Box\" & b.Background, New Rectangle(0, 0, 1, 1), "").GetData(cArr)
-                Canvas.DrawScrollBar(New Vector2(80, 36), Me.Boxes.Count, 1, boxIndex, New Size(600, 14), True, New Color(0, 0, 0, 0), cArr(0))
+                Dim cArr(0) As Microsoft.Xna.Framework.Color
+                TextureManager.GetTexture("GUI\Box\" & b.Background, New Microsoft.Xna.Framework.Rectangle(0, 0, 1, 1), "").GetData(cArr)
+                Canvas.DrawScrollBar(New Vector2(80, 36), Me.Boxes.Count, 1, boxIndex, New Size(600, 14), True, New Microsoft.Xna.Framework.Color(0, 0, 0, 0), cArr(0))
             End If
 
 
-            Core.SpriteBatch.DrawString(FontManager.MainFont, b.Name, New Vector2(384 - FontManager.MainFont.MeasureString(b.Name).X, 80), Color.Black, 0.0F, New Vector2(0), 2, SpriteEffects.None, 0.0F)
-            Core.SpriteBatch.DrawString(FontManager.MainFont, b.Name, New Vector2(380 - FontManager.MainFont.MeasureString(b.Name).X, 76), Color.White, 0.0F, New Vector2(0), 2, SpriteEffects.None, 0.0F)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, b.Name, New Vector2(384 - FontManager.MainFont.MeasureString(b.Name).X, 80), Microsoft.Xna.Framework.Color.Black, 0.0F, New Vector2(0), 2, SpriteEffects.None, 0.0F)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, b.Name, New Vector2(380 - FontManager.MainFont.MeasureString(b.Name).X, 76), Microsoft.Xna.Framework.Color.White, 0.0F, New Vector2(0), 2, SpriteEffects.None, 0.0F)
 
-            Core.SpriteBatch.Draw(Me.menuTexture, New Rectangle(10, 52, 96, 96), New Rectangle(0, 16, 16, 16), Color.White)
-            Core.SpriteBatch.Draw(Me.menuTexture, New Rectangle(655, 52, 96, 96), New Rectangle(0, 16, 16, 16), Color.White, 0.0F, New Vector2(0), SpriteEffects.FlipHorizontally, 0.0F)
+            Core.SpriteBatch.Draw(Me.menuTexture, New Microsoft.Xna.Framework.Rectangle(10, 52, 96, 96), New Microsoft.Xna.Framework.Rectangle(0, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
+            Core.SpriteBatch.Draw(Me.menuTexture, New Microsoft.Xna.Framework.Rectangle(655, 52, 96, 96), New Microsoft.Xna.Framework.Rectangle(0, 16, 16, 16), Microsoft.Xna.Framework.Color.White, 0.0F, New Vector2(0), SpriteEffects.FlipHorizontally, 0.0F)
         End If
     End Sub
 
     Private Sub DrawMainWindow()
         If BoxChooseMode = True Then
-            Canvas.DrawRectangle(Core.windowSize, New Color(220, 220, 220))
+            Canvas.DrawRectangle(Core.windowSize, New Microsoft.Xna.Framework.Color(220, 220, 220))
 
             For x = 0 To 5
                 For y = 0 To 4
@@ -1155,16 +1163,16 @@ Public Class StorageSystemScreen
                             tCoord = New Vector2(32, 32)
                         End If
 
-                        Core.SpriteBatch.Draw(Me.texture, New Rectangle(50 + x * 100, 200 + y * 84, 64, 64), New Rectangle(CInt(tCoord.X), CInt(tCoord.Y), 32, 32), Color.White)
+                        Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(50 + x * 100, 200 + y * 84, 64, 64), New Microsoft.Xna.Framework.Rectangle(CInt(tCoord.X), CInt(tCoord.Y), 32, 32), Microsoft.Xna.Framework.Color.White)
                     End If
                 Next
             Next
         Else
             If GetBox(CurrentBox).IsBattleBox = True Then
-                Canvas.DrawGradient(Core.windowSize, New Color(203, 40, 41), New Color(238, 128, 128), False, -1)
+                Canvas.DrawGradient(Core.windowSize, New Microsoft.Xna.Framework.Color(203, 40, 41), New Microsoft.Xna.Framework.Color(238, 128, 128), False, -1)
 
-                Dim cArr(0) As Color
-                TextureManager.GetTexture("GUI\Box\BattleBox", New Rectangle(0, 0, 1, 1), "").GetData(cArr)
+                Dim cArr(0) As Microsoft.Xna.Framework.Color
+                TextureManager.GetTexture("GUI\Box\BattleBox", New Microsoft.Xna.Framework.Rectangle(0, 0, 1, 1), "").GetData(cArr)
 
                 For i = 0 To 5
                     Dim id As Integer = i
@@ -1174,16 +1182,16 @@ Public Class StorageSystemScreen
                         x -= 2
                         y += 1
                     End While
-                    Canvas.DrawRectangle(New Rectangle(50 + x * 100, 200 + y * 84, 64, 64), New Color(cArr(0).R, cArr(0).G, cArr(0).B, 150))
+                    Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(50 + x * 100, 200 + y * 84, 64, 64), New Microsoft.Xna.Framework.Color(cArr(0).R, cArr(0).G, cArr(0).B, 150))
 
                     Dim box As Box = GetBox(CurrentBox)
                     If box.Pokemon.Keys.Contains(id) = True Then
-                        Dim c As Color = Color.White
+                        Dim c As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.White
                         If IsLit(box.Pokemon(id).GetPokemon()) = False Then
-                            c = New Color(65, 65, 65, 255)
+                            c = New Microsoft.Xna.Framework.Color(65, 65, 65, 255)
                         End If
 
-                        Core.SpriteBatch.Draw(box.Pokemon(id).GetPokemon().GetMenuTexture(), New Rectangle(50 + x * 100, 200 + y * 84, 64, 64), c)
+                        Core.SpriteBatch.Draw(box.Pokemon(id).GetPokemon().GetMenuTexture(), New Microsoft.Xna.Framework.Rectangle(50 + x * 100, 200 + y * 84, 64, 64), c)
                     End If
                 Next
             Else
@@ -1197,26 +1205,26 @@ Public Class StorageSystemScreen
 
                 For x = 0 To Core.windowSize.Width Step 64
                     For y = 0 To Core.windowSize.Height Step 64
-                        Core.SpriteBatch.Draw(Me.texture, New Rectangle(x, y, 64, 64), New Rectangle(xt * 16, yt * 16 + 64, 16, 16), Color.White)
+                        Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(x, y, 64, 64), New Microsoft.Xna.Framework.Rectangle(xt * 16, yt * 16 + 64, 16, 16), Microsoft.Xna.Framework.Color.White)
                     Next
                 Next
 
-                Dim cArr(0) As Color
-                TextureManager.GetTexture("GUI\Box\" & GetBox(CurrentBox).Background, New Rectangle(0, 0, 1, 1), "").GetData(cArr)
+                Dim cArr(0) As Microsoft.Xna.Framework.Color
+                TextureManager.GetTexture("GUI\Box\" & GetBox(CurrentBox).Background, New Microsoft.Xna.Framework.Rectangle(0, 0, 1, 1), "").GetData(cArr)
                 For x = 0 To 5
                     For y = 0 To 4
                         Dim id As Integer = y * 6 + x
 
-                        Canvas.DrawRectangle(New Rectangle(50 + x * 100, 200 + y * 84, 64, 64), New Color(cArr(0).R, cArr(0).G, cArr(0).B, 150))
+                        Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(50 + x * 100, 200 + y * 84, 64, 64), New Microsoft.Xna.Framework.Color(cArr(0).R, cArr(0).G, cArr(0).B, 150))
 
                         Dim box As Box = GetBox(CurrentBox)
                         If box.Pokemon.Keys.Contains(id) = True Then
-                            Dim c As Color = Color.White
+                            Dim c As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.White
                             If IsLit(box.Pokemon(id).GetPokemon()) = False Then
-                                c = New Color(65, 65, 65, 255)
+                                c = New Microsoft.Xna.Framework.Color(65, 65, 65, 255)
                             End If
 
-                            Core.SpriteBatch.Draw(box.Pokemon(id).GetPokemon().GetMenuTexture(), New Rectangle(50 + x * 100, 200 + y * 84, 64, 64), c)
+                            Core.SpriteBatch.Draw(box.Pokemon(id).GetPokemon().GetMenuTexture(), New Microsoft.Xna.Framework.Rectangle(50 + x * 100, 200 + y * 84, 64, 64), c)
                         End If
                     Next
                 Next
@@ -1231,7 +1239,7 @@ Public Class StorageSystemScreen
             Dim box As Box = GetBox(CInt(CursorPosition.X) + CInt((CursorPosition.Y - 1) * 6))
 
             If Not box Is Nothing Then
-                Canvas.DrawRectangle(New Rectangle(660, 200, 200, 200), New Color(84, 198, 216, 150))
+                Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(660, 200, 200, 200), New Microsoft.Xna.Framework.Color(84, 198, 216, 150))
 
                 Dim minLevel As Integer = -1
                 Dim maxLevel As Integer = -1
@@ -1241,12 +1249,12 @@ Public Class StorageSystemScreen
                         Dim id As Integer = y * 6 + x
 
                         If box.Pokemon.Keys.Contains(id) = True Then
-                            Dim c As Color = Color.White
+                            Dim c As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.White
                             If IsLit(box.Pokemon(id).GetPokemon()) = False Then
-                                c = New Color(65, 65, 65, 255)
+                                c = New Microsoft.Xna.Framework.Color(65, 65, 65, 255)
                             End If
 
-                            Core.SpriteBatch.Draw(box.Pokemon(id).GetPokemon().GetMenuTexture(), New Rectangle(664 + x * 32, 215 + y * 32, 32, 32), c)
+                            Core.SpriteBatch.Draw(box.Pokemon(id).GetPokemon().GetMenuTexture(), New Microsoft.Xna.Framework.Rectangle(664 + x * 32, 215 + y * 32, 32, 32), c)
 
                             If box.Pokemon(id).GetPokemon().Level < minLevel Or minLevel = -1 Then
                                 minLevel = box.Pokemon(id).GetPokemon().Level
@@ -1258,7 +1266,7 @@ Public Class StorageSystemScreen
                     Next
                 Next
 
-                Canvas.DrawRectangle(New Rectangle(660, 410, 200, 210), New Color(84, 198, 216, 150))
+                Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(660, 410, 200, 210), New Microsoft.Xna.Framework.Color(84, 198, 216, 150))
 
                 Dim levelString As String = minLevel & " - " & maxLevel
                 If minLevel = -1 Or maxLevel = -1 Then
@@ -1272,8 +1280,8 @@ Public Class StorageSystemScreen
 
                 Dim t As String = "BOX:  " & box.Name & vbNewLine & "POKéMON:  " & box.Pokemon.Count & " / " & maxPokemon & vbNewLine & "LEVEL:  " & levelString
 
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(667, 417), Color.Black)
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(665, 415), Color.White)
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(667, 417), Microsoft.Xna.Framework.Color.Black)
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(665, 415), Microsoft.Xna.Framework.Color.White)
             End If
         Else
             Dim p As Pokemon = Nothing
@@ -1299,20 +1307,20 @@ Public Class StorageSystemScreen
             End If
 
             If Not p Is Nothing Then
-                Dim cArr(0) As Color
+                Dim cArr(0) As Microsoft.Xna.Framework.Color
 
                 If GetBox(CurrentBox).IsBattleBox = True Then
-                    TextureManager.GetTexture("GUI\Box\BattleBox", New Rectangle(0, 0, 1, 1), "").GetData(cArr)
+                    TextureManager.GetTexture("GUI\Box\BattleBox", New Microsoft.Xna.Framework.Rectangle(0, 0, 1, 1), "").GetData(cArr)
                 Else
-                    TextureManager.GetTexture("GUI\Box\" & GetBox(CurrentBox).Background, New Rectangle(0, 0, 1, 1), "").GetData(cArr)
+                    TextureManager.GetTexture("GUI\Box\" & GetBox(CurrentBox).Background, New Microsoft.Xna.Framework.Rectangle(0, 0, 1, 1), "").GetData(cArr)
                 End If
 
-                Dim c As Color = New Color(cArr(0).R, cArr(0).G, cArr(0).B, 150)
+                Dim c As Microsoft.Xna.Framework.Color = New Microsoft.Xna.Framework.Color(cArr(0).R, cArr(0).G, cArr(0).B, 150)
                 If BoxChooseMode = True Then
-                    c = New Color(84, 198, 216, 150)
+                    c = New Microsoft.Xna.Framework.Color(84, 198, 216, 150)
                 End If
 
-                Canvas.DrawRectangle(New Rectangle(660, 200, 200, 200), c)
+                Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(660, 200, 200, 200), c)
 
                 Dim modelName As String = p.AnimationName
                 Dim shinyString As String = "Normal"
@@ -1323,14 +1331,14 @@ Public Class StorageSystemScreen
                     Draw3DModel(p, "Models\" & modelName & "\" & shinyString)
                 Else
                     GetYOffset(p)
-                    Core.SpriteBatch.Draw(p.GetTexture(True), New Rectangle(634, 180 - yOffset, 256, 256), Color.White)
+                    Core.SpriteBatch.Draw(p.GetTexture(True), New Microsoft.Xna.Framework.Rectangle(634, 180 - yOffset, 256, 256), Microsoft.Xna.Framework.Color.White)
                 End If
 
-                Canvas.DrawRectangle(New Rectangle(660, 410, 200, 210), c)
+                Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(660, 410, 200, 210), c)
 
                 If p.IsEgg() = True Then
-                    Core.SpriteBatch.DrawString(FontManager.MiniFont, "EGG", New Vector2(667, 417), Color.Black)
-                    Core.SpriteBatch.DrawString(FontManager.MiniFont, "EGG", New Vector2(665, 415), Color.White)
+                    Core.SpriteBatch.DrawString(FontManager.MiniFont, "EGG", New Vector2(667, 417), Microsoft.Xna.Framework.Color.Black)
+                    Core.SpriteBatch.DrawString(FontManager.MiniFont, "EGG", New Vector2(665, 415), Microsoft.Xna.Framework.Color.White)
                 Else
                     Dim itemString As String = "None"
                     If Not p.Item Is Nothing Then
@@ -1353,8 +1361,8 @@ Public Class StorageSystemScreen
                                                  "SPEED  " & p.Speed & vbNewLine &
                                                  "ITEM  " & itemString
 
-                    Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(667, 417), Color.Black)
-                    Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(665, 415), Color.White)
+                    Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(667, 417), Microsoft.Xna.Framework.Color.Black)
+                    Core.SpriteBatch.DrawString(FontManager.MiniFont, t, New Vector2(665, 415), Microsoft.Xna.Framework.Color.White)
                 End If
             End If
         End If
@@ -1371,32 +1379,32 @@ Public Class StorageSystemScreen
         Dim roll As Single = propList.Item5
 
         Dim t As Texture2D = ModelManager.DrawModelToTexture(modelName, New Vector2(1200, 680), New Vector3(x, y, z), New Vector3(0.0F, 50.0F, 10.0F), New Vector3(0.0F, 0.2F, roll + modelRoll), scale, True)
-        Core.SpriteBatch.Draw(t, New Rectangle(160, 50, 1200, 680), Color.White)
+        Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(160, 50, 1200, 680), Microsoft.Xna.Framework.Color.White)
     End Sub
 
     Private Sub DrawTeamWindow()
-        Canvas.DrawRectangle(New Rectangle(Core.windowSize.Width - 310, 0, 400, Core.windowSize.Height), New Color(84, 198, 216))
+        Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(Core.windowSize.Width - 310, 0, 400, Core.windowSize.Height), New Microsoft.Xna.Framework.Color(84, 198, 216))
 
         For y = -64 To Core.windowSize.Height Step 64
-            Core.SpriteBatch.Draw(Me.menuTexture, New Rectangle(Core.windowSize.Width - 128, y + StorageSystemScreen.TileOffset, 128, 64), New Rectangle(48, 0, 16, 16), Color.White)
+            Core.SpriteBatch.Draw(Me.menuTexture, New Microsoft.Xna.Framework.Rectangle(Core.windowSize.Width - 128, y + StorageSystemScreen.TileOffset, 128, 64), New Microsoft.Xna.Framework.Rectangle(48, 0, 16, 16), Microsoft.Xna.Framework.Color.White)
         Next
 
-        Core.SpriteBatch.Draw(Me.texture, New Rectangle(Core.windowSize.Width - 430, 0, 128, CInt(Core.windowSize.Height / 2)), New Rectangle(96, 0, 32, 64), Color.White)
-        Core.SpriteBatch.Draw(Me.texture, New Rectangle(Core.windowSize.Width - 430, CInt(Core.windowSize.Height / 2), 128, CInt(Core.windowSize.Height / 2)), New Rectangle(96, 0, 32, 64), Color.White, 0.0F, New Vector2(0), SpriteEffects.FlipVertically, 0.0F)
+        Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(Core.windowSize.Width - 430, 0, 128, CInt(Core.windowSize.Height / 2)), New Microsoft.Xna.Framework.Rectangle(96, 0, 32, 64), Microsoft.Xna.Framework.Color.White)
+        Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(Core.windowSize.Width - 430, CInt(Core.windowSize.Height / 2), 128, CInt(Core.windowSize.Height / 2)), New Microsoft.Xna.Framework.Rectangle(96, 0, 32, 64), Microsoft.Xna.Framework.Color.White, 0.0F, New Vector2(0), SpriteEffects.FlipVertically, 0.0F)
 
         For i = 0 To 5
-            Canvas.DrawBorder(2, New Rectangle(Core.windowSize.Width - 260, i * 100 + 50, 128, 80), New Color(42, 167, 198))
+            Canvas.DrawBorder(2, New Microsoft.Xna.Framework.Rectangle(Core.windowSize.Width - 260, i * 100 + 50, 128, 80), New Microsoft.Xna.Framework.Color(42, 167, 198))
 
             If Core.Player.Pokemons.Count - 1 >= i Then
-                Dim c As Color = Color.White
+                Dim c As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.White
                 If IsLit(Core.Player.Pokemons(i)) = False Then
-                    c = New Color(65, 65, 65, 255)
+                    c = New Microsoft.Xna.Framework.Color(65, 65, 65, 255)
                 End If
 
-                Core.SpriteBatch.Draw(Core.Player.Pokemons(i).GetMenuTexture(), New Rectangle(Core.windowSize.Width - 228, i * 100 + 60, 64, 64), c)
+                Core.SpriteBatch.Draw(Core.Player.Pokemons(i).GetMenuTexture(), New Microsoft.Xna.Framework.Rectangle(Core.windowSize.Width - 228, i * 100 + 60, 64, 64), c)
 
                 If Not Core.Player.Pokemons(i).Item Is Nothing And Core.Player.Pokemons(i).IsEgg() = False Then
-                    Core.SpriteBatch.Draw(Core.Player.Pokemons(i).Item.Texture, New Rectangle(Core.windowSize.Width - 196, i * 100 + 92, 24, 24), Color.White)
+                    Core.SpriteBatch.Draw(Core.Player.Pokemons(i).Item.Texture, New Microsoft.Xna.Framework.Rectangle(Core.windowSize.Width - 196, i * 100 + 92, 24, 24), Microsoft.Xna.Framework.Color.White)
                 End If
             End If
         Next
@@ -1410,22 +1418,22 @@ Public Class StorageSystemScreen
         End If
 
         If Not Me.MovingPokemon Is Nothing Then
-            Core.SpriteBatch.Draw(Me.MovingPokemon.GetMenuTexture(), New Rectangle(CInt(cPosition.X - 10), CInt(cPosition.Y + 44), 64, 64), New Color(0, 0, 0, 150))
-            Core.SpriteBatch.Draw(Me.MovingPokemon.GetMenuTexture(), New Rectangle(CInt(cPosition.X - 20), CInt(cPosition.Y + 34), 64, 64), Color.White)
+            Core.SpriteBatch.Draw(Me.MovingPokemon.GetMenuTexture(), New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X - 10), CInt(cPosition.Y + 44), 64, 64), New Microsoft.Xna.Framework.Color(0, 0, 0, 150))
+            Core.SpriteBatch.Draw(Me.MovingPokemon.GetMenuTexture(), New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X - 20), CInt(cPosition.Y + 34), 64, 64), Microsoft.Xna.Framework.Color.White)
 
             If Not Me.MovingPokemon.Item Is Nothing And Me.MovingPokemon.IsEgg() = False Then
-                Core.SpriteBatch.Draw(Me.MovingPokemon.Item.Texture, New Rectangle(CInt(cPosition.X - 20) + 32, CInt(cPosition.Y + 34) + 32, 24, 24), Color.White)
+                Core.SpriteBatch.Draw(Me.MovingPokemon.Item.Texture, New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X - 20) + 32, CInt(cPosition.Y + 34) + 32, 24, 24), Microsoft.Xna.Framework.Color.White)
             End If
         End If
 
         Dim t As Texture2D = GetCursorTexture()
-        Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
+        Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
     End Sub
 
     Private Sub DrawMenuEntries()
         If Me.MenuHeader <> "" Then
-            Canvas.DrawRectangle(New Rectangle(Core.windowSize.Width - 370, 100, 356, 64), New Color(0, 0, 0, 180))
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, MenuHeader, New Vector2(Core.windowSize.Width - 192 - FontManager.MiniFont.MeasureString(MenuHeader).X / 2, 120), Color.White)
+            Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(Core.windowSize.Width - 370, 100, 356, 64), New Microsoft.Xna.Framework.Color(0, 0, 0, 180))
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, MenuHeader, New Vector2(Core.windowSize.Width - 192 - FontManager.MiniFont.MeasureString(MenuHeader).X / 2, 120), Microsoft.Xna.Framework.Color.White)
         End If
 
         For Each e As MenuEntry In Me.MenuEntries
@@ -1436,13 +1444,13 @@ Public Class StorageSystemScreen
     Private Function GetCursorTexture() As Texture2D
         Select Case Me.SelectionMode
             Case SelectionModes.SingleMove
-                Return TextureManager.GetTexture("GUI\Menus\General", New Rectangle(0, 0, 16, 16), "")
+                Return TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(0, 0, 16, 16), "")
             Case SelectionModes.EasyMove
-                Return TextureManager.GetTexture("GUI\Menus\General", New Rectangle(16, 0, 16, 16), "")
+                Return TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(16, 0, 16, 16), "")
             Case SelectionModes.Deposit
-                Return TextureManager.GetTexture("GUI\Menus\General", New Rectangle(32, 0, 16, 16), "")
+                Return TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(32, 0, 16, 16), "")
             Case SelectionModes.Withdraw
-                Return TextureManager.GetTexture("GUI\Menus\General", New Rectangle(0, 32, 16, 16), "")
+                Return TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(0, 32, 16, 16), "")
         End Select
 
         Return Nothing
@@ -1611,7 +1619,7 @@ Public Class StorageSystemScreen
             Me._pokemonData = PokemonData
         End Sub
 
-        Public Sub New(ByVal p As Pokemon)
+        Public Sub New(ByVal p As BasePokemon)
             Me._loaded = True
             Me._pokemon = p
             Me._pokemonData = p.GetSaveData()
@@ -1707,37 +1715,37 @@ Public Class StorageSystemScreen
             Me.IsBack = isBack
             Me.ClickHandler = ClickHandler
 
-            t1 = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(16, 16, 16, 16), "")
-            t2 = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(32, 16, 16, 16), "")
+            t1 = TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), "")
+            t2 = TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(32, 16, 16, 16), "")
         End Sub
 
         Public Sub Update(ByVal s As StorageSystemScreen)
-            If Controls.Accept(True, False, False) = True And s.MenuCursor = Me.Index And New Rectangle(Core.windowSize.Width - 270, 66 * Index, 256, 64).Contains(MouseHandler.MousePosition) = True Or
+            If Controls.Accept(True, False, False) = True And s.MenuCursor = Me.Index And New Microsoft.Xna.Framework.Rectangle(Core.WindowSize.Width - 270, 66 * Index, 256, 64).Contains(MouseHandler.MousePosition) = True Or
                 Controls.Accept(False, True, True) = True And s.MenuCursor = Me.Index Or Controls.Dismiss(True, True, True) = True And Me.IsBack = True Then
                 s.MenuVisible = False
                 If Not ClickHandler Is Nothing Then
                     ClickHandler(Me)
                 End If
             End If
-            If New Rectangle(Core.windowSize.Width - 270, 66 * Index, 256, 64).Contains(MouseHandler.MousePosition) = True And Controls.Accept(True, False, False) = True Then
+            If New Microsoft.Xna.Framework.Rectangle(Core.WindowSize.Width - 270, 66 * Index, 256, 64).Contains(MouseHandler.MousePosition) = True And Controls.Accept(True, False, False) = True Then
                 s.MenuCursor = Me.Index
             End If
         End Sub
 
         Public Sub Draw(ByVal CursorIndex As Integer, ByVal CursorTexture As Texture2D)
-            Dim startPos As New Vector2(Core.windowSize.Width - 270, 66 * Index)
+            Dim startPos As New Vector2(Core.WindowSize.Width - 270, 66 * Index)
 
-            Core.SpriteBatch.Draw(t1, New Rectangle(CInt(startPos.X), CInt(startPos.Y), 64, 64), Color.White)
-            Core.SpriteBatch.Draw(t2, New Rectangle(CInt(startPos.X + 64), CInt(startPos.Y), 64, 64), Color.White)
-            Core.SpriteBatch.Draw(t2, New Rectangle(CInt(startPos.X + 128), CInt(startPos.Y), 64, 64), Color.White)
-            Core.SpriteBatch.Draw(t1, New Rectangle(CInt(startPos.X + 192), CInt(startPos.Y), 64, 64), Nothing, Color.White, 0.0F, New Vector2(0), SpriteEffects.FlipHorizontally, 0.0F)
+            Core.SpriteBatch.Draw(t1, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X), CInt(startPos.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
+            Core.SpriteBatch.Draw(t2, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X + 64), CInt(startPos.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
+            Core.SpriteBatch.Draw(t2, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X + 128), CInt(startPos.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
+            Core.SpriteBatch.Draw(t1, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X + 192), CInt(startPos.Y), 64, 64), Nothing, Microsoft.Xna.Framework.Color.White, 0.0F, New Vector2(0), SpriteEffects.FlipHorizontally, 0.0F)
 
-            Core.SpriteBatch.DrawString(FontManager.MainFont, Me.Text, New Vector2(startPos.X + 128 - (FontManager.MainFont.MeasureString(Me.Text).X * 1.4F) / 2, startPos.Y + 15), Color.Black, 0.0F, Vector2.Zero, 1.4F, SpriteEffects.None, 0.0F)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, Me.Text, New Vector2(startPos.X + 128 - (FontManager.MainFont.MeasureString(Me.Text).X * 1.4F) / 2, startPos.Y + 15), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.4F, SpriteEffects.None, 0.0F)
 
             If Me.Index = CursorIndex Then
                 Dim cPosition As Vector2 = New Vector2(startPos.X + 128, startPos.Y - 40)
                 Dim t As Texture2D = CursorTexture
-                Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
+                Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
             End If
         End Sub
 
@@ -1835,8 +1843,8 @@ Public Class StorageSystemFilterScreen
             End If
             Me.Visible = True
 
-            t1 = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(16, 16, 16, 16), "")
-            t2 = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(32, 16, 16, 16), "")
+            t1 = TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), "")
+            t2 = TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(32, 16, 16, 16), "")
         End Sub
 
         Public Sub Update()
@@ -1851,7 +1859,7 @@ Public Class StorageSystemFilterScreen
 
                 For i = Scroll To Me.Scroll + 8
                     If i <= Me.Items.Count - 1 Then
-                        If Controls.Accept(True, False, False) = True And i = Me.Index And New Rectangle(Core.windowSize.Width - 270, 66 * ((i + 1) - Scroll), 256, 64).Contains(MouseHandler.MousePosition) = True Or
+                        If Controls.Accept(True, False, False) = True And i = Me.Index And New Microsoft.Xna.Framework.Rectangle(Core.WindowSize.Width - 270, 66 * ((i + 1) - Scroll), 256, 64).Contains(MouseHandler.MousePosition) = True Or
                             Controls.Accept(False, True, True) = True And i = Me.Index Or Controls.Dismiss(True, True, True) = True And Me.BackIndex = Me.Index Then
 
                             If Not ClickHandler Is Nothing Then
@@ -1866,7 +1874,7 @@ Public Class StorageSystemFilterScreen
                             End If
                             Me.Visible = False
                         End If
-                        If New Rectangle(Core.windowSize.Width - 270, 66 * ((i + 1) - Scroll), 256, 64).Contains(MouseHandler.MousePosition) = True And Controls.Accept(True, False, False) = True Then
+                        If New Microsoft.Xna.Framework.Rectangle(Core.WindowSize.Width - 270, 66 * ((i + 1) - Scroll), 256, 64).Contains(MouseHandler.MousePosition) = True And Controls.Accept(True, False, False) = True Then
                             Me.Index = i
                         End If
                     End If
@@ -1887,19 +1895,19 @@ Public Class StorageSystemFilterScreen
                     If i <= Me.Items.Count - 1 Then
                         Dim Text As String = Items(i)
 
-                        Dim startPos As New Vector2(Core.windowSize.Width - 270, 66 * ((i + 1) - Scroll))
+                        Dim startPos As New Vector2(Core.WindowSize.Width - 270, 66 * ((i + 1) - Scroll))
 
-                        Core.SpriteBatch.Draw(t1, New Rectangle(CInt(startPos.X), CInt(startPos.Y), 64, 64), Color.White)
-                        Core.SpriteBatch.Draw(t2, New Rectangle(CInt(startPos.X + 64), CInt(startPos.Y), 64, 64), Color.White)
-                        Core.SpriteBatch.Draw(t2, New Rectangle(CInt(startPos.X + 128), CInt(startPos.Y), 64, 64), Color.White)
-                        Core.SpriteBatch.Draw(t1, New Rectangle(CInt(startPos.X + 192), CInt(startPos.Y), 64, 64), Nothing, Color.White, 0.0F, New Vector2(0), SpriteEffects.FlipHorizontally, 0.0F)
+                        Core.SpriteBatch.Draw(t1, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X), CInt(startPos.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
+                        Core.SpriteBatch.Draw(t2, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X + 64), CInt(startPos.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
+                        Core.SpriteBatch.Draw(t2, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X + 128), CInt(startPos.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
+                        Core.SpriteBatch.Draw(t1, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X + 192), CInt(startPos.Y), 64, 64), Nothing, Microsoft.Xna.Framework.Color.White, 0.0F, New Vector2(0), SpriteEffects.FlipHorizontally, 0.0F)
 
-                        Core.SpriteBatch.DrawString(FontManager.MainFont, Text, New Vector2(startPos.X + 128 - (FontManager.MainFont.MeasureString(Text).X * 1.4F) / 2, startPos.Y + 15), Color.Black, 0.0F, Vector2.Zero, 1.4F, SpriteEffects.None, 0.0F)
+                        Core.SpriteBatch.DrawString(FontManager.MainFont, Text, New Vector2(startPos.X + 128 - (FontManager.MainFont.MeasureString(Text).X * 1.4F) / 2, startPos.Y + 15), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.4F, SpriteEffects.None, 0.0F)
 
                         If Me.Index = i Then
                             Dim cPosition As Vector2 = New Vector2(startPos.X + 128, startPos.Y - 40)
-                            Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(0, 0, 16, 16), "")
-                            Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
+                            Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(0, 0, 16, 16), "")
+                            Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
                         End If
                     End If
                 Next
@@ -1947,40 +1955,40 @@ Public Class StorageSystemFilterScreen
     End Sub
 
     Public Overrides Sub Draw()
-        Canvas.DrawRectangle(Core.windowSize, New Color(84, 198, 216))
+        Canvas.DrawRectangle(Core.WindowSize, New Microsoft.Xna.Framework.Color(84, 198, 216))
 
-        For y = -64 To Core.windowSize.Height Step 64
-            Core.SpriteBatch.Draw(Me.texture, New Rectangle(Core.windowSize.Width - 128, y + StorageSystemScreen.TileOffset, 128, 64), New Rectangle(48, 0, 16, 16), Color.White)
+        For y = -64 To Core.WindowSize.Height Step 64
+            Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(Core.WindowSize.Width - 128, y + StorageSystemScreen.TileOffset, 128, 64), New Microsoft.Xna.Framework.Rectangle(48, 0, 16, 16), Microsoft.Xna.Framework.Color.White)
         Next
 
-        Canvas.DrawGradient(New Rectangle(0, 0, CInt(Core.windowSize.Width), 200), New Color(42, 167, 198), New Color(42, 167, 198, 0), False, -1)
-        Canvas.DrawGradient(New Rectangle(0, CInt(Core.windowSize.Height - 200), CInt(Core.windowSize.Width), 200), New Color(42, 167, 198, 0), New Color(42, 167, 198), False, -1)
+        Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(0, 0, CInt(Core.WindowSize.Width), 200), New Microsoft.Xna.Framework.Color(42, 167, 198), New Microsoft.Xna.Framework.Color(42, 167, 198, 0), False, -1)
+        Canvas.DrawGradient(New Microsoft.Xna.Framework.Rectangle(0, CInt(Core.WindowSize.Height - 200), CInt(Core.WindowSize.Width), 200), New Microsoft.Xna.Framework.Color(42, 167, 198, 0), New Microsoft.Xna.Framework.Color(42, 167, 198), False, -1)
 
-        Core.SpriteBatch.DrawString(FontManager.MainFont, "Configure the filters:", New Vector2(100, 24), Color.White, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, "Configure the filters:", New Vector2(100, 24), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
 
         For i = Scroll To Scroll + 5
             If i <= Me.mainMenuItems.Count - 1 Then
                 Dim p As Integer = i - Scroll
 
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(100, 100 + p * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White)
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(100 + 64, 100 + p * 96, 64 * 8, 64), New Rectangle(32, 16, 16, 16), Color.White)
-                Core.SpriteBatch.Draw(Me.texture, New Rectangle(100 + 64 * 9, 100 + p * 96, 64, 64), New Rectangle(16, 16, 16, 16), Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100, 100 + p * 96, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100 + 64, 100 + p * 96, 64 * 8, 64), New Microsoft.Xna.Framework.Rectangle(32, 16, 16, 16), Microsoft.Xna.Framework.Color.White)
+                Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100 + 64 * 9, 100 + p * 96, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
 
                 Dim s As String = mainMenuItems(i)
                 If GetFilterText(mainMenuItems(i)) <> "" Then
                     s &= " (" & GetFilterText(mainMenuItems(i)) & ")"
-                    Core.SpriteBatch.Draw(Me.texture, New Rectangle(120, 116 + p * 96, 32, 32), New Rectangle(16, 48, 16, 16), Color.White)
+                    Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(120, 116 + p * 96, 32, 32), New Microsoft.Xna.Framework.Rectangle(16, 48, 16, 16), Microsoft.Xna.Framework.Color.White)
                 Else
-                    Core.SpriteBatch.Draw(Me.texture, New Rectangle(120, 116 + p * 96, 32, 32), New Rectangle(16, 32, 16, 16), Color.White)
+                    Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(120, 116 + p * 96, 32, 32), New Microsoft.Xna.Framework.Rectangle(16, 32, 16, 16), Microsoft.Xna.Framework.Color.White)
                 End If
 
-                Core.SpriteBatch.DrawString(FontManager.MainFont, s, New Vector2(160, 116 + p * 96), Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, s, New Vector2(160, 116 + p * 96), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
             End If
         Next
 
         If Filters.Count > 0 Then
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "Results: " & vbNewLine & vbNewLine & "Filters: ", New Vector2(90 + 64 * 11, 119), Color.Black)
-            Core.SpriteBatch.DrawString(FontManager.MainFont, Me.Results & vbNewLine & vbNewLine & Me.Filters.Count, New Vector2(190 + 64 * 11, 119), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "Results: " & vbNewLine & vbNewLine & "Filters: ", New Vector2(90 + 64 * 11, 119), Microsoft.Xna.Framework.Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, Me.Results & vbNewLine & vbNewLine & Me.Filters.Count, New Vector2(190 + 64 * 11, 119), Microsoft.Xna.Framework.Color.White)
         End If
 
         If Menu.Visible = True Then
@@ -2002,8 +2010,8 @@ Public Class StorageSystemFilterScreen
     Private Sub DrawCursor()
         Dim cPosition As Vector2 = New Vector2(520, 100 + Me.Cursor * 96 - 42)
 
-        Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Rectangle(0, 0, 16, 16), "")
-        Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
+        Dim t As Texture2D = TextureManager.GetTexture("GUI\Menus\General", New Microsoft.Xna.Framework.Rectangle(0, 0, 16, 16), "")
+        Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
     End Sub
 
     Private Sub ApplyFilters()
@@ -2055,7 +2063,7 @@ Public Class StorageSystemFilterScreen
                 If Controls.Accept(True, False, False) = True Then
                     For i = Scroll To Scroll + 5
                         If i <= Me.mainMenuItems.Count - 1 Then
-                            If New Rectangle(100, 100 + (i - Scroll) * 96, 640, 64).Contains(MouseHandler.MousePosition) = True Then
+                            If New Microsoft.Xna.Framework.Rectangle(100, 100 + (i - Scroll) * 96, 640, 64).Contains(MouseHandler.MousePosition) = True Then
                                 If i = Cursor + Scroll Then
                                     SelectFilter()
                                 Else

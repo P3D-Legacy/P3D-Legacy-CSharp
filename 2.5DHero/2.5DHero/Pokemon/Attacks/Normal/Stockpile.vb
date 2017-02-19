@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem.Moves.Normal
+﻿Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Normal
 
     Public Class Stockpile
 
@@ -55,7 +57,7 @@
             Me.AIField2 = AIField.RaiseSpDefense
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim stockpiled As Integer = BattleScreen.FieldEffects.OwnStockpileCount
             If own = False Then
                 stockpiled = BattleScreen.FieldEffects.OppStockpileCount

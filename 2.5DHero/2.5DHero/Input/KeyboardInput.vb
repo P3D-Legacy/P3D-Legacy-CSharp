@@ -1,3 +1,7 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+
 ''' <summary>
 ''' Handles text input from the keyboard.
 ''' </summary>

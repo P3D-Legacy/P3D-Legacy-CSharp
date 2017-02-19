@@ -1,3 +1,7 @@
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.HelperClasses
+Imports P3D.Legacy.Core.Screens
+
 ''' <summary>
 ''' Provides variables to store an overworld instance.
 ''' </summary>

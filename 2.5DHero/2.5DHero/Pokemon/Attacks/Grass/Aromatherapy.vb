@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Grass
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Grass
 
     Public Class Aromatherapy
 
@@ -55,7 +58,7 @@
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
             Dim healed As New List(Of Pokemon)
 
             Dim p As Pokemon = BattleScreen.OwnPokemon
@@ -63,7 +66,7 @@
                 p = BattleScreen.OppPokemon
             End If
 
-            If p.Status <> Pokemon.StatusProblems.None And p.Status <> Pokemon.StatusProblems.Fainted Then
+            If p.Status <> BasePokemon.StatusProblems.None And p.Status <> BasePokemon.StatusProblems.Fainted Then
                 If BattleScreen.FieldEffects.CanUseAbility(own, BattleScreen) = True Then
                     healed.Add(p)
                 End If
@@ -72,7 +75,7 @@
             If own = True Then
                 For Each tp As Pokemon In Core.Player.Pokemons
                     If tp.Equals(p) = False Then
-                        If tp.Status <> Pokemon.StatusProblems.None And tp.Status <> Pokemon.StatusProblems.Fainted Then
+                        If tp.Status <> BasePokemon.StatusProblems.None And tp.Status <> BasePokemon.StatusProblems.Fainted Then
                             If BattleScreen.FieldEffects.CanUseAbility(own, BattleScreen) = True Then
                                 healed.Add(tp)
                             End If
@@ -83,7 +86,7 @@
                 If BattleScreen.IsTrainerBattle = True Or BattleScreen.IsPVPBattle = True Or BattleScreen.IsRemoteBattle = True Then
                     For Each tp As Pokemon In BattleScreen.Trainer.Pokemons
                         If tp.Equals(p) = False Then
-                            If tp.Status <> Pokemon.StatusProblems.None And tp.Status <> Pokemon.StatusProblems.Fainted Then
+                            If tp.Status <> BasePokemon.StatusProblems.None And tp.Status <> BasePokemon.StatusProblems.Fainted Then
                                 If BattleScreen.FieldEffects.CanUseAbility(own, BattleScreen) = True Then
                                     healed.Add(tp)
                                 End If
@@ -99,17 +102,17 @@
                 For i = 0 To healed.Count - 1
                     Dim statusName As String = "poisoning"
                     Select Case healed(i).Status
-                        Case Pokemon.StatusProblems.BadPoison, Pokemon.StatusProblems.Poison
+                        Case BasePokemon.StatusProblems.BadPoison, BasePokemon.StatusProblems.Poison
                             statusName = "poisong"
-                        Case Pokemon.StatusProblems.Burn
+                        Case BasePokemon.StatusProblems.Burn
                             statusName = "burn"
-                        Case Pokemon.StatusProblems.Freeze
+                        Case BasePokemon.StatusProblems.Freeze
                             statusName = "freezing"
-                        Case Pokemon.StatusProblems.Paralyzed
+                        Case BasePokemon.StatusProblems.Paralyzed
                             statusName = "paralyzis"
                     End Select
 
-                    healed(i).Status = Pokemon.StatusProblems.None
+                    healed(i).Status = BasePokemon.StatusProblems.None
                     BattleScreen.BattleQuery.Add(New TextQueryObject(healed(i).GetDisplayName() & " was cured of its " & statusName & "!"))
                 Next
             Else

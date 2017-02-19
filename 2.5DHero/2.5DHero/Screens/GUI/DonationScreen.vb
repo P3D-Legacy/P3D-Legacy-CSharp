@@ -1,4 +1,11 @@
-﻿Public Class DonationScreen
+﻿Imports System.Drawing
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+
+Public Class DonationScreen
 
     Inherits Screen
 
@@ -12,7 +19,7 @@
     Public Sub New(ByVal currentScreen As Screen)
         Me.PreScreen = currentScreen
         Me.Identification = Identifications.DonationScreen
-        mainTexture = TextureManager.GetTexture("House", New Rectangle(83, 98, 10, 12))
+        mainTexture = TextureManager.GetTexture("House", New Microsoft.Xna.Framework.Rectangle(83, 98, 10, 12))
 
         Me.scrollTexture = TextureManager.GetTexture("GUI\Menus\Menu")
 
@@ -47,7 +54,7 @@
 
     Public Overrides Sub Draw()
         Me.PreScreen.Draw()
-        Core.SpriteBatch.Draw(mainTexture, New Rectangle(CInt(Core.windowSize.Width / 2) - 285, 0, 570, 680), Color.White)
+        Core.SpriteBatch.Draw(mainTexture, New Microsoft.Xna.Framework.Rectangle(CInt(Core.windowSize.Width / 2) - 285, 0, 570, 680), Microsoft.Xna.Framework.Color.White)
 
         Dim t As String = ""
         For i = OffsetY To 12 + OffsetY
@@ -60,13 +67,13 @@
         Next
 
         If DonatorList.Count > 13 Then
-            Canvas.DrawScrollBar(New Vector2(CInt(Core.windowSize.Width / 2) + 180, 100), DonatorList.Count, 13, OffsetY, New Size(4, 500), False, TextureManager.GetTexture(scrollTexture, New Rectangle(112, 12, 1, 1)), TextureManager.GetTexture(scrollTexture, New Rectangle(113, 12, 1, 1)))
+            Canvas.DrawScrollBar(New Vector2(CInt(Core.windowSize.Width / 2) + 180, 100), DonatorList.Count, 13, OffsetY, New Size(4, 500), False, TextureManager.GetTexture(scrollTexture, New Microsoft.Xna.Framework.Rectangle(112, 12, 1, 1)), TextureManager.GetTexture(scrollTexture, New Microsoft.Xna.Framework.Rectangle(113, 12, 1, 1)))
         End If
 
-        Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CInt(Core.windowSize.Width / 2) - 180, 100), Color.Black)
-        Canvas.DrawRectangle(New Rectangle(CInt(Core.windowSize.Width / 2) - 285, 0, 570, 57), New Color(56, 56, 56))
-        Core.SpriteBatch.DrawString(FontManager.MainFont, Localization.GetString("donation_screen_donators") & ": ", New Vector2(CInt(Core.windowSize.Width / 2) - FontManager.MainFont.MeasureString("Donators:").X / 2, 20), Color.White)
-        Core.SpriteBatch.DrawString(FontManager.MainFont, Localization.GetString("donation_screen_backadvice"), New Vector2(CInt(Core.windowSize.Width / 2) - FontManager.MainFont.MeasureString("Press E to close").X / 2, 640), Color.White)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CInt(Core.windowSize.Width / 2) - 180, 100), Microsoft.Xna.Framework.Color.Black)
+        Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(Core.windowSize.Width / 2) - 285, 0, 570, 57), New Microsoft.Xna.Framework.Color(56, 56, 56))
+        Core.SpriteBatch.DrawString(FontManager.MainFont, Localization.GetString("donation_screen_donators") & ": ", New Vector2(CInt(Core.windowSize.Width / 2) - FontManager.MainFont.MeasureString("Donators:").X / 2, 20), Microsoft.Xna.Framework.Color.White)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, Localization.GetString("donation_screen_backadvice"), New Vector2(CInt(Core.windowSize.Width / 2) - FontManager.MainFont.MeasureString("Press E to close").X / 2, 640), Microsoft.Xna.Framework.Color.White)
     End Sub
 
 End Class

@@ -1,4 +1,11 @@
-﻿Public Class MapScreen
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.Security
+
+Public Class MapScreen
 
     Inherits Screen
 
@@ -91,7 +98,7 @@
         Dim RoamingPokeName As New List(Of String)
 
         Dim path As String = GameModeManager.GetScriptPath("worldmap\" & Me.currentRegion & ".dat")
-        Security.FileValidation.CheckFileValid(path, False, "MapScreen.vb")
+        FileValidation.CheckFileValid(path, False, "MapScreen.vb")
 
         Dim InputData() As String = System.IO.File.ReadAllLines(path)
 
@@ -291,16 +298,16 @@
             Me.lastMousePosition = New Vector2(MouseHandler.MousePosition.X, MouseHandler.MousePosition.Y)
         End If
 
-        If New Rectangle(0, 0, 50, Core.windowSize.Height).Contains(New Point(CInt(CursorPosition.X), CInt(CursorPosition.Y))) = True Then
+        If New Rectangle(0, 0, 50, Core.WindowSize.Height).Contains(New Point(CInt(CursorPosition.X), CInt(CursorPosition.Y))) = True Then
             mapOffsetX += MapMoveSpeed
         End If
-        If New Rectangle(0, 0, Core.windowSize.Width, 50).Contains(New Point(CInt(CursorPosition.X), CInt(CursorPosition.Y))) = True Then
+        If New Rectangle(0, 0, Core.WindowSize.Width, 50).Contains(New Point(CInt(CursorPosition.X), CInt(CursorPosition.Y))) = True Then
             mapOffsetY += MapMoveSpeed
         End If
-        If New Rectangle(Core.windowSize.Width - 50, 0, 50, Core.windowSize.Height).Contains(New Point(CInt(CursorPosition.X), CInt(CursorPosition.Y))) = True Then
+        If New Rectangle(Core.WindowSize.Width - 50, 0, 50, Core.WindowSize.Height).Contains(New Point(CInt(CursorPosition.X), CInt(CursorPosition.Y))) = True Then
             mapOffsetX -= MapMoveSpeed
         End If
-        If New Rectangle(0, Core.windowSize.Height - 50, Core.windowSize.Width, 50).Contains(New Point(CInt(CursorPosition.X), CInt(CursorPosition.Y))) = True Then
+        If New Rectangle(0, Core.WindowSize.Height - 50, Core.WindowSize.Width, 50).Contains(New Point(CInt(CursorPosition.X), CInt(CursorPosition.Y))) = True Then
             mapOffsetY -= MapMoveSpeed
         End If
 
@@ -386,7 +393,7 @@
 
     Private Sub UpdateSwitch()
         For i = 0 To 3
-            Dim r As New Rectangle(Core.windowSize.Width - 170, 100 + i * 30, 90, 30)
+            Dim r As New Rectangle(Core.WindowSize.Width - 170, 100 + i * 30, 90, 30)
             If Controls.Accept(True, True, True) = True Then
                 If r.Contains(New Point(CInt(MouseHandler.MousePosition.X), CInt(MouseHandler.MousePosition.Y))) = True Then
                     Me.drawObjects(i) = Not Me.drawObjects(i)
@@ -396,10 +403,10 @@
     End Sub
 
     Public Overrides Sub Draw()
-        Canvas.DrawRectangle(Core.windowSize, New Color(84, 198, 216))
+        Canvas.DrawRectangle(Core.WindowSize, New Color(84, 198, 216))
 
-        For y = 0 To Core.windowSize.Height Step 64
-            Core.SpriteBatch.Draw(Me.texture, New Rectangle(Core.windowSize.Width - 128, y, 128, 64), New Rectangle(48, 0, 16, 16), Color.White)
+        For y = 0 To Core.WindowSize.Height Step 64
+            Core.SpriteBatch.Draw(Me.texture, New Rectangle(Core.WindowSize.Width - 128, y, 128, 64), New Rectangle(48, 0, 16, 16), Color.White)
         Next
 
         Core.SpriteBatch.Draw(Me.objectsTexture, New Rectangle(mapOffsetX + 15, mapOffsetY + 15, CInt(mapTexture.Width / 16) * MapScreen.RasterSize * 2, CInt(mapTexture.Height / 16) * MapScreen.RasterSize * 2), New Rectangle(96, 40, 16, 16), New Color(0, 0, 0, 100))
@@ -496,33 +503,33 @@
         If drawObjects(0) = False Then
             r = New Rectangle(116, 0, 12, 12)
         End If
-        Core.SpriteBatch.Draw(Me.objectsTexture, New Rectangle(Core.windowSize.Width - 170, 100, 24, 24), r, New Color(255, 255, 255, 220))
-        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_cities"), New Vector2(Core.windowSize.Width - 137, 103), Color.Black)
-        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_cities"), New Vector2(Core.windowSize.Width - 140, 100), Color.White)
+        Core.SpriteBatch.Draw(Me.objectsTexture, New Rectangle(Core.WindowSize.Width - 170, 100, 24, 24), r, New Color(255, 255, 255, 220))
+        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_cities"), New Vector2(Core.WindowSize.Width - 137, 103), Color.Black)
+        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_cities"), New Vector2(Core.WindowSize.Width - 140, 100), Color.White)
         'Routes:
         r = New Rectangle(104, 12, 12, 12)
         If drawObjects(1) = False Then
             r = New Rectangle(116, 12, 12, 12)
         End If
-        Core.SpriteBatch.Draw(Me.objectsTexture, New Rectangle(Core.windowSize.Width - 170, 130, 24, 24), r, New Color(255, 255, 255, 220))
-        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_routes"), New Vector2(Core.windowSize.Width - 137, 133), Color.Black)
-        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_routes"), New Vector2(Core.windowSize.Width - 140, 130), Color.White)
+        Core.SpriteBatch.Draw(Me.objectsTexture, New Rectangle(Core.WindowSize.Width - 170, 130, 24, 24), r, New Color(255, 255, 255, 220))
+        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_routes"), New Vector2(Core.WindowSize.Width - 137, 133), Color.Black)
+        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_routes"), New Vector2(Core.WindowSize.Width - 140, 130), Color.White)
         'Places:
         r = New Rectangle(104, 24, 12, 12)
         If drawObjects(2) = False Then
             r = New Rectangle(116, 24, 12, 12)
         End If
-        Core.SpriteBatch.Draw(Me.objectsTexture, New Rectangle(Core.windowSize.Width - 170, 160, 24, 24), r, New Color(255, 255, 255, 220))
-        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_places"), New Vector2(Core.windowSize.Width - 137, 163), Color.Black)
-        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_places"), New Vector2(Core.windowSize.Width - 140, 160), Color.White)
+        Core.SpriteBatch.Draw(Me.objectsTexture, New Rectangle(Core.WindowSize.Width - 170, 160, 24, 24), r, New Color(255, 255, 255, 220))
+        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_places"), New Vector2(Core.WindowSize.Width - 137, 163), Color.Black)
+        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_places"), New Vector2(Core.WindowSize.Width - 140, 160), Color.White)
         'Roaming:
         r = New Rectangle(111, 64, 17, 16)
         If drawObjects(3) = False Then
             r = New Rectangle(111, 80, 17, 16)
         End If
-        Core.SpriteBatch.Draw(Me.objectsTexture, New Rectangle(Core.windowSize.Width - 170, 190, 24, 24), r, New Color(255, 255, 255, 220))
-        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_roaming"), New Vector2(Core.windowSize.Width - 137, 193), Color.Black)
-        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_roaming"), New Vector2(Core.windowSize.Width - 140, 190), Color.White)
+        Core.SpriteBatch.Draw(Me.objectsTexture, New Rectangle(Core.WindowSize.Width - 170, 190, 24, 24), r, New Color(255, 255, 255, 220))
+        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_roaming"), New Vector2(Core.WindowSize.Width - 137, 193), Color.Black)
+        Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("map_screen_roaming"), New Vector2(Core.WindowSize.Width - 140, 190), Color.White)
     End Sub
 
     Private Sub DrawCursor()
@@ -854,7 +861,7 @@
             Return New Rectangle(CInt(Me.getPosition().X + PositionOffset.X + offset.X), CInt(Me.getPosition().Y + PositionOffset.Y + offset.Y), CInt(sizeX), CInt(sizeY))
         End Function
 
-        Public Function getTexture(ByVal FullTexture As Texture2D, ByVal isSelected As Boolean)  As Texture2D
+        Public Function getTexture(ByVal FullTexture As Texture2D, ByVal isSelected As Boolean) As Texture2D
             If Me.T Is Nothing Or isSelected = True Then
                 Dim r As Rectangle
 

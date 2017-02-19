@@ -1,3 +1,4 @@
+Imports P3D.Legacy.Core.Pokemon
 Namespace Items.Mail
 
     <Item(302, "Dream Mail")>
@@ -8,7 +9,7 @@ Namespace Items.Mail
         Public Overrides ReadOnly Property Description As String = "Mail featuring a sketch of the holding Pokémon."
 
         Public Sub New()
-            _textureRectangle = New Rectangle(24, 456, 24, 24)
+            TextureRectangle = New Rectangle(24, 456, 24, 24)
         End Sub
 
     End Class

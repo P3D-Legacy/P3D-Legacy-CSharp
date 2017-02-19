@@ -3,6 +3,9 @@ Imports System.Net.Sockets
 Imports System.Net
 Imports System.Security.Cryptography
 Imports System.Text
+Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Server
 
 Namespace Servers
 
@@ -10,6 +13,7 @@ Namespace Servers
     ''' Manages all Servers connection related operations.
     ''' </summary>
     Public Class ServerConnection
+        Implements IServerConnection
 
         Private _client As TcpClient
 
@@ -24,7 +28,7 @@ Namespace Servers
         ''' <summary>
         ''' Returns the current connection status.
         ''' </summary>
-        Public ReadOnly Property Connected() As Boolean
+        Public ReadOnly Property Connected() As Boolean Implements IServerConnection.Connected
             Get
                 If _client Is Nothing Then
                     Return False
@@ -37,7 +41,7 @@ Namespace Servers
         ''' Connects to a server.
         ''' </summary>
         ''' <param name="Server">The server to connect to.</param>
-        Public Sub Connect(ByVal Server As Server)
+        Public Sub Connect(ByVal Server As Server) Implements IServerConnection.Connect
             Dim t As New Threading.Thread(AddressOf InternalConnect)
             t.IsBackground = True
             t.Start(Server)
@@ -92,7 +96,7 @@ Namespace Servers
         ''' <summary>
         ''' Aborts the threads and closes any open streams.
         ''' </summary>
-        Public Sub Abort()
+        Public Sub Abort() Implements IServerConnection.Abort
             Logger.Debug("ServerConnection.vb: Aborting threads and streams...")
             Me._ConnectionOpen = False
             JoinServerScreen.Online = False
@@ -126,7 +130,7 @@ Namespace Servers
         ''' <summary>
         ''' Disconnects the player from the server and opens the main menu.
         ''' </summary>
-        Public Sub Disconnect()
+        Public Sub Disconnect() Implements IServerConnection.Disconnect
             Me.Disconnect("", "")
         End Sub
 
@@ -135,7 +139,7 @@ Namespace Servers
         ''' </summary>
         ''' <param name="Header">The header to display on the ConnectScreen.</param>
         ''' <param name="Message">The Message to display on the ConnectScreen.</param>
-        Public Sub Disconnect(ByVal Header As String, ByVal Message As String)
+        Public Sub Disconnect(ByVal Header As String, ByVal Message As String) Implements IServerConnection.Disconnect
             If Me._ConnectionOpen = True Then
                 Logger.Debug("Disconnect; Header: " & Header & "; Message: " & Message)
 
@@ -155,7 +159,7 @@ Namespace Servers
         ''' <summary>
         ''' Start the ping thread.
         ''' </summary>
-        Public Sub StartPing()
+        Public Sub StartPing() Implements IServerConnection.StartPing
             Me.StopPing()
             Me.LastPingTime = Date.Now
 
@@ -171,7 +175,7 @@ Namespace Servers
         ''' <summary>
         ''' Stopping the ping thread.
         ''' </summary>
-        Public Sub StopPing()
+        Public Sub StopPing() Implements IServerConnection.StopPing
             Try
                 Me.PingTimer.Stop()
             Catch : End Try
@@ -183,11 +187,11 @@ Namespace Servers
         Private Sub InternalPing()
             Try
                 If DateDiff(DateInterval.Second, Me.LastPingTime, Date.Now) >= 10 Then
-                    Me.SendPackage(New Package(Package.PackageTypes.Ping, Core.ServersManager.ID, Package.ProtocolTypes.UDP))
+                    Me.SendPackage(New Package(PackageTypes.Ping, Core.ServersManager.ID, ProtocolTypes.UDP))
                     Me.LastPingTime = Date.Now
                 End If
             Catch ex As Exception
-                Debug.Print("Error while sending ping to server: " & ex.Message)
+                'Debug.Print("Error while sending ping to server: " & ex.Message)
                 Me.Disconnect("Disconnected from Server", "Error trying to ping the server.")
             End Try
         End Sub
@@ -196,20 +200,20 @@ Namespace Servers
 
 #Region "Send Data"
 
-        Public Sub SendGameData()
+        Public Sub SendGameData() Implements IServerConnection.SendGameData
             Dim p As Package = Core.ServersManager.PlayerManager.CreatePlayerDataPackage()
             Core.ServersManager.PlayerManager.ApplyLastPackage(p)
 
             Me.SendPackage(p)
         End Sub
 
-        Public Sub SendChatMessage(ByVal message As String)
+        Public Sub SendChatMessage(ByVal message As String) Implements IServerConnection.SendChatMessage
             If message.ToLower().StartsWith("/login ") = True Then
                 Dim password As String = message.Remove(0, 7)
-                Dim hashedPassword As String = BitConverter.ToString(new SHA512Managed().ComputeHash(Encoding.UTF8.GetBytes(password))).Replace("-", "").ToLower()
+                Dim hashedPassword As String = BitConverter.ToString(New SHA512Managed().ComputeHash(Encoding.UTF8.GetBytes(password))).Replace("-", "").ToLower()
                 message = "/login " + hashedPassword
-                SendPackage(New Package(Package.PackageTypes.ChatMessage, Core.ServersManager.ID, Package.ProtocolTypes.TCP, message))
-            Else If message.ToLower().StartsWith("/pm ") = True Then
+                SendPackage(New Package(PackageTypes.ChatMessage, Core.ServersManager.ID, ProtocolTypes.TCP, message))
+            ElseIf message.ToLower().StartsWith("/pm ") = True Then
                 message = message.Remove(0, 4)
                 Dim playerName As String = message
                 While Core.ServersManager.PlayerCollection.HasPlayer(playerName) = False And playerName.Contains(" ") = True
@@ -218,21 +222,21 @@ Namespace Servers
                 If playerName <> "" And Core.ServersManager.PlayerCollection.HasPlayer(playerName) = True And playerName.ToLower() <> Core.Player.Name.ToLower() Then
                     message = message.Remove(0, playerName.Length + 1)
 
-                    SendPackage(New Package(Package.PackageTypes.PrivateMessage, Core.ServersManager.ID, Package.ProtocolTypes.TCP, {playerName, message}.ToList()))
+                    SendPackage(New Package(PackageTypes.PrivateMessage, Core.ServersManager.ID, ProtocolTypes.TCP, {playerName, message}.ToList()))
                 End If
             Else
-                SendPackage(New Package(Package.PackageTypes.ChatMessage, Core.ServersManager.ID, Package.ProtocolTypes.TCP, message))
+                SendPackage(New Package(PackageTypes.ChatMessage, Core.ServersManager.ID, ProtocolTypes.TCP, message))
             End If
         End Sub
 
-        Public Sub SendGameStateMessage(ByVal message As String)
-            SendPackage(New Package(Package.PackageTypes.GamestateMessage, Core.ServersManager.ID, Package.ProtocolTypes.TCP, message))
+        Public Sub SendGameStateMessage(ByVal message As String) Implements IServerConnection.SendGameStateMessage
+            SendPackage(New Package(PackageTypes.GamestateMessage, Core.ServersManager.ID, ProtocolTypes.TCP, message))
         End Sub
 
         ''' <summary>
         ''' Send a package object to the server.
         ''' </summary>
-        Public Sub SendPackage(ByVal Package As Package)
+        Public Sub SendPackage(ByVal Package As IPackage) Implements IServerConnection.SendPackage
             If _ConnectionOpen = True And Me._client.Connected = True Then
                 Threading.ThreadPool.QueueUserWorkItem(New Threading.WaitCallback(AddressOf InternalSendPackage), Package)
             End If

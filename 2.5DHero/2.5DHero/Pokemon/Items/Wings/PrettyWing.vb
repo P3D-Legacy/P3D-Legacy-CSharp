@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.Wings
 
     <Item(260, "Pretty Wing")>
@@ -11,7 +13,7 @@ Namespace Items.Wings
         Public Overrides ReadOnly Property PokeDollarPrice As Integer = 200
 
         Public Sub New()
-            _textureRectangle = New Rectangle(432, 240, 24, 24)
+            TextureRectangle = New Rectangle(432, 240, 24, 24)
         End Sub
 
     End Class

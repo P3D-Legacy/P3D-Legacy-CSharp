@@ -1,4 +1,7 @@
-﻿Namespace BattleSystem.Moves.Fighting
+﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Pokemon
+
+Namespace BattleSystem.Moves.Fighting
 
     Public Class TripleKick
 
@@ -52,7 +55,7 @@
             '#End
         End Sub
 
-        Public Overrides Function GetTimesToAttack(own As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overloads Function GetTimesToAttack(own As Boolean, BattleScreen As BattleScreen) As Integer
             Dim r As Integer = Core.Random.Next(0, 100)
             If r < 73 Then
                 Return 3

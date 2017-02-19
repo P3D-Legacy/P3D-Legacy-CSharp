@@ -1,3 +1,5 @@
+Imports P3D.Legacy.Core.Pokemon
+
 Namespace Items.Balls
 
     <Item(2, "Ultra Ball")>
@@ -10,7 +12,7 @@ Namespace Items.Balls
         Public Overrides ReadOnly Property CatchMultiplier As Single = 2.0F
 
         Public Sub New()
-            _textureRectangle = New Rectangle(24, 0, 24, 24)
+            TextureRectangle = New Rectangle(24, 0, 24, 24)
         End Sub
 
     End Class
