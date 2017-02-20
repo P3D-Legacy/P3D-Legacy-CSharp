@@ -276,6 +276,12 @@
   <ItemGroup>
     <Folder Include="Player\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\P3D-Legacy-Shared\P3D-Legacy Shared.csproj">
+      <Project>{73ff082b-42b5-4e0c-a1a2-0b908fba1406}</Project>
+      <Name>P3D-Legacy Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

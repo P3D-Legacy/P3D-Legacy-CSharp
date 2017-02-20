@@ -1066,7 +1066,7 @@ Public Class Player
     End Sub
 
     Private Sub SavePublicVars()
-        If GameJolt.LogInScreen.UserBanned(Core.GameJoltSave.GameJoltID) = False Then
+        If API.UserBanned(Core.GameJoltSave.GameJoltID) = False Then
             Dim APICallPoints As New APICall(AddressOf SaveGameHelpers.AddGameJoltSaveCounter)
             APICallPoints.SetStorageData("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|points", Core.GameJoltSave.Points.ToString(), False)
 
@@ -1792,7 +1792,7 @@ Public Class Player
         Next
 
         If IsGameJoltSave = True Then
-            If GameJolt.LogInScreen.UserBanned(Core.GameJoltSave.GameJoltID) = False Then
+            If API.UserBanned(Core.GameJoltSave.GameJoltID) = False Then
                 Core.GameJoltSave.Points += addPoints
             End If
         Else

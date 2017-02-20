@@ -41,6 +41,7 @@ namespace P3D.Legacy.Core.GameJolt
             }
             set { _lism = value; }
         }
+
         public static bool UserBanned(string id) => LISM.UserBanned(id);
         public static string BanReasonIDForUser(string user_ID) => LISM.BanReasonIDForUser(user_ID);
         public static string GetBanReasonByID(string banReasonID) => LISM.GetBanReasonByID(banReasonID);

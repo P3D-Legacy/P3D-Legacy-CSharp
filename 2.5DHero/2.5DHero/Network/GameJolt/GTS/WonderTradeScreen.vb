@@ -174,7 +174,7 @@ Namespace GameJolt
         End Sub
 
         Public Overrides Sub Update()
-            LogInScreen.KickFromOnlineScreen(Me)
+            API.KickFromOnlineScreen(Me)
 
             Select Case Me.ScreenState
                 Case ScreenStates.Choose

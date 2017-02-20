@@ -148,7 +148,6 @@
     <Compile Include="Network\GameJolt\GTS\GTSSetupScreen.vb" />
     <Compile Include="Network\GameJolt\GTS\GTSTradeScreen.vb" />
     <Compile Include="Network\GameJolt\GTS\WonderTradeScreen.vb" />
-    <Compile Include="Network\GameJolt\LogInScreen.vb" />
     <Compile Include="Network\GameJolt\RegisterBattleScreen.vb" />
     <Compile Include="Network\MysteryEventScreen.vb" />
     <Compile Include="Network\OnlineStatus.vb" />

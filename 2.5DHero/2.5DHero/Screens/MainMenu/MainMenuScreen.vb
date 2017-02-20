@@ -560,7 +560,7 @@ Public Class MainMenuScreen
     Private Sub LoadGameJoltButton()
         If FileValidation.IsValid(False) = True And GameController.Hacker = False Then
             If API.LoggedIn = True Then
-                Core.GameJoltSave.DownloadSave(GameJolt.LogInScreen.LoadedGameJoltID, True)
+                Core.GameJoltSave.DownloadSave(API.GameJoltID, True)
             End If
 
             Me.menuIndex = 7
@@ -573,9 +573,43 @@ Public Class MainMenuScreen
     End Sub
 
     Private Sub GameJoltButton()
-        If FileValidation.IsValid(False) = True And GameController.Hacker = False Then
-            Core.SetScreen(New GameJolt.LogInScreen(Me))
+        If API.LoggedIn
+            SessionManager.Close()
+            API.LoggedIn = False
+        Else 
+            Dim apiCall As New APICall(AddressOf VerifyResult)
+            apiCall.VerifyUser(API.Username, API.Token)
         End If
+        'If FileValidation.IsValid(False) = True And GameController.Hacker = False Then
+        '    Core.SetScreen(New GameJolt.LogInScreen(Me))
+        'End If
+    End Sub
+    'TODO One for all method, doubles in CommandLineArgHandler.cs
+    Private Sub VerifyResult(result As String)
+        Dim list As List(Of API.JoltValue) = API.HandleData(result)
+            If CBool(list(0).Value) = True Then
+                API.LoggedIn = True
+
+                Dim apiCall As New APICall(AddressOf HandleUserData)
+                apiCall.FetchUserdata(API.username)
+            Else
+                API.LoggedIn = False
+            End If
+    End Sub
+    Private Sub HandleUserData(result As String)
+            Dim list As List(Of API.JoltValue) = API.HandleData(result)
+            For Each item As API.JoltValue In list
+                If item.Name = "id" Then
+                    API.GameJoltID = item.Value 'set the public shared field to the GameJolt ID.
+
+                    If GameController.UPDATEONLINEVERSION = True And GameController.IS_DEBUG_ACTIVE = True Then
+                        Dim apiCall As New APICall
+                        apiCall.SetStorageDataRestricted("ONLINEVERSION", GameController.GAMEVERSION)
+                        Logger.Debug("UPDATED ONLINE VERSION TO: " & GameController.GAMEVERSION)
+                    End If
+                    Exit For
+                End If
+            Next
     End Sub
 
 #End Region
@@ -792,8 +826,8 @@ Public Class MainMenuScreen
                     Canvas.DrawRectangle(Core.ScaleScreenRec(New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 264, 292, 528, 144)), New Microsoft.Xna.Framework.Color(255, 255, 255, 150))
                 End If
 
-                If GameJolt.LogInScreen.UserBanned(Core.GameJoltSave.GameJoltID) = True Then
-                    Dim reason As String = GameJolt.LogInScreen.GetBanReasonByID(GameJolt.LogInScreen.BanReasonIDForUser(Core.GameJoltSave.GameJoltID))
+                If API.UserBanned(Core.GameJoltSave.GameJoltID) = True Then
+                    Dim reason As String = API.GetBanReasonByID(API.BanReasonIDForUser(Core.GameJoltSave.GameJoltID))
                     Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, reason, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(reason).X / 2) + 2, 260 + 2), Microsoft.Xna.Framework.Color.Black)
                     Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, reason, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(reason).X / 2), 260), Microsoft.Xna.Framework.Color.Red)
                 End If

@@ -57,7 +57,7 @@ Namespace GameJolt
             Me.MouseVisible = True
 
             If Core.Player.IsGamejoltSave = True Then
-                Me.UserBanned = LogInScreen.UserBanned(Core.GameJoltSave.GameJoltID)
+                Me.UserBanned = API.UserBanned(Core.GameJoltSave.GameJoltID)
                 Dim APICall As New APICall(AddressOf GotPublicKeys)
                 APICall.GetKeys(False, "saveStorageV" & GamejoltSave.VERSION & "|*|*")
             End If

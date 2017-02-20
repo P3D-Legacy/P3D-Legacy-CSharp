@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 
 using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Screens;
 
 namespace P3D.Legacy.Core.GameJolt
 {
     public static class API
     {
         public const string API_VERSION = "v1_1";
-        public static string username = "";
 
-        public static string token = "";
+        public static string Username = "";
+        public static string Token = "";
+        public static string GameJoltID { get; set; }
 
         public static bool LoggedIn = false;
 
         public static Exception Exception = null;
 
         public static int APICallCount = 0;
+
         public struct JoltValue
         {
             public string Name;
@@ -63,5 +66,25 @@ namespace P3D.Legacy.Core.GameJolt
             return joltList;
         }
 
+        // TODO: Implement
+        public static bool UserBanned(string gameJoltID)
+        {
+            return false;
+        }
+
+        public static string GetBanReasonByID(string id)
+        {
+            return string.Empty;
+        }
+
+        public static string BanReasonIDForUser(string gameJoltID)
+        {
+            return string.Empty;
+        }
+
+        public static void KickFromOnlineScreen(Screen screen)
+        {
+            
+        }
     }
 }

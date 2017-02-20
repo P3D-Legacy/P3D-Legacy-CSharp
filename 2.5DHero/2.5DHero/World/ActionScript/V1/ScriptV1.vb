@@ -843,7 +843,7 @@ Public Class ScriptV1
                 Screen.Level.IsDark = Not Screen.Level.IsDark
             Case Me.Value.ToLower().StartsWith("globalhub"), Me.Value.ToLower().StartsWith("friendhub")
                 If API.LoggedIn = True And Core.Player.IsGamejoltSave = True Or GameController.IS_DEBUG_ACTIVE = True Then
-                    If GameJolt.LogInScreen.UserBanned(Core.GameJoltSave.GameJoltID) = False Then
+                    If API.UserBanned(Core.GameJoltSave.GameJoltID) = False Then
                         Core.SetScreen(New TransitionScreen(Core.CurrentScreen, New GameJolt.GTSMainScreen(Core.CurrentScreen), Color.Black, False))
                     Else
                         Screen.TextBox.Show("This GameJolt account~(" & Core.GameJoltSave.GameJoltID & ") is banned~from the GTS!", {}, False, False, Color.Red)
@@ -851,8 +851,9 @@ Public Class ScriptV1
                 Else
                     Screen.TextBox.Show("You are not using~your GameJolt profile.*Please connect to GameJolt~and switch to the GameJolt~profile to enable the GTS.*You can do this by going~back to the main menu~and choosing ""Play online"".", {}, False, False, Color.Red)
                 End If
-            Case Me.Value.ToLower().StartsWith("gamejoltlogin")
-                Core.SetScreen(New GameJolt.LogInScreen(Core.CurrentScreen))
+            ' TODO
+            'Case Me.Value.ToLower().StartsWith("gamejoltlogin")
+            '    Core.SetScreen(New GameJolt.LogInScreen(Core.CurrentScreen))
             Case Me.Value.ToLower().StartsWith("readpokemon(") = True
                 Me.Value = Me.Value.Remove(0, Me.Value.IndexOf("(") + 1)
                 Me.Value = Me.Value.Remove(Me.Value.Length - 1, 1)

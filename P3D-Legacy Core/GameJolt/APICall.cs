@@ -85,8 +85,8 @@ namespace P3D.Legacy.Core.GameJolt
         private string Token { get; set; }
         private bool LoggedIn { get; set; }
 
-        private const string CONST_GAMEID = ""; // CLASSIFIED
-        private const string CONST_GAMEKEY = ""; // CLASSIFIED
+        public static string GAMEID = ""; // CLASSIFIED
+        public static string GAMEKEY = ""; // CLASSIFIED
         private const string HOST = "http://api.gamejolt.com/api/game/";
 
         Exception Exception = null;
@@ -95,13 +95,13 @@ namespace P3D.Legacy.Core.GameJolt
         public event CallSucceededEventHandler CallSucceeded;
         public delegate void CallSucceededEventHandler(string returnData);
 
-        private string GameID => StringObfuscation.DeObfuscate(CONST_GAMEID);
-        private string GameKey => StringObfuscation.DeObfuscate(CONST_GAMEKEY);
+        private string GameID => StringObfuscation.DeObfuscate(GAMEID);
+        private string GameKey => StringObfuscation.DeObfuscate(GAMEKEY);
 
         public APICall()
         {
-            Username = API.username;
-            Token = API.token;
+            Username = API.Username;
+            Token = API.Token;
 
             LoggedIn = API.LoggedIn;
         }
@@ -109,16 +109,16 @@ namespace P3D.Legacy.Core.GameJolt
         {
             CallSub = callSub;
 
-            Username = API.username;
-            Token = API.token;
+            Username = API.Username;
+            Token = API.Token;
 
             LoggedIn = API.LoggedIn;
         }
 
         public void VerifyUser(string newUsername, string newToken)
         {
-            API.username = newUsername;
-            API.token = newToken;
+            API.Username = newUsername;
+            API.Token = newToken;
             Username = newUsername;
             Token = newToken;
 
@@ -240,7 +240,7 @@ namespace P3D.Legacy.Core.GameJolt
 
         public void SetStorageDataRestricted(string key, string data)
         {
-            string url = HOST + API.API_VERSION + "/data-store/set/" + "?game_id=" + GameID + "&key=" + key + "&restriction_username=" + API.username + "&restriction_user_token=" + API.token;
+            string url = HOST + API.API_VERSION + "/data-store/set/" + "?game_id=" + GameID + "&key=" + key + "&restriction_username=" + API.Username + "&restriction_user_token=" + API.Token;
 
             Initialize(url, RequestMethod.POST, data);
         }

@@ -2,6 +2,7 @@
 Imports System.Threading
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities.Other
+Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Sound
@@ -229,7 +230,7 @@ Public Class OverworldScreen
         Me.UpdateShowControlDelay()
 
         'If for some mysterical reason, a player with a GameJolt account is not logged in during a play session, prompt the LogInScreen.
-        GameJolt.LogInScreen.KickFromOnlineScreen(Me)
+        API.KickFromOnlineScreen(Me)
 
         Me.UpdateTitles()
     End Sub
