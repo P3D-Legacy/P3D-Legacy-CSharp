@@ -32,22 +32,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>$(SolutionDir)\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="NVorbis, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\NVorbis.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>$(SolutionDir)\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\NVorbis.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\OpenTK.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>$(SolutionDir)\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="PCLExt.FileStorage, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\P3D-Legacy\packages\PCLExt.FileStorage.1.0.5\lib\net45\PCLExt.FileStorage.dll</HintPath>
+      <HintPath>$(SolutionDir)\packages\PCLExt.FileStorage.1.0.5\lib\net45\PCLExt.FileStorage.dll</HintPath>
     </Reference>
     <Reference Include="PCLExt.FileStorage.Abstractions, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\P3D-Legacy\packages\PCLExt.FileStorage.1.0.5\lib\net45\PCLExt.FileStorage.Abstractions.dll</HintPath>
+      <HintPath>$(SolutionDir)\packages\PCLExt.FileStorage.1.0.5\lib\net45\PCLExt.FileStorage.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,7 +58,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="YamlDotNet, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\P3D-Legacy\packages\YamlDotNet.4.1.0\lib\net35\YamlDotNet.dll</HintPath>
+      <HintPath>$(SolutionDir)\packages\YamlDotNet.4.1.0\lib\net35\YamlDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -86,7 +83,6 @@
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="GameJolt\API.cs" />
     <Compile Include="GameJolt\APICall.cs" />
-    <Compile Include="GameJolt\BaseLogInScreen.cs" />
     <Compile Include="GameJolt\BaseRegisterBattleScreen.cs" />
     <Compile Include="GameJolt\GameJoltStatistics.cs" />
     <Compile Include="GameJolt\Profiles\StaffProfile.cs" />
@@ -277,17 +273,10 @@
     <Folder Include="Player\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\P3D-Legacy-Shared\P3D-Legacy Shared.csproj">
+    <ProjectReference Include="$(SolutionDir)\P3D-Legacy-Shared\P3D-Legacy Shared.csproj">
       <Project>{73ff082b-42b5-4e0c-a1a2-0b908fba1406}</Project>
       <Name>P3D-Legacy Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -171,7 +171,7 @@ namespace P3D.Legacy.Core.GameJolt.Profiles
             }
 
             //Check if user is banned.
-            bool UserBanned = BaseLogInScreen.UserBanned(ID);
+            bool UserBanned = API.UserBanned(ID);
 
             string PlayerName = Name + " (" + OT + ")";
 
@@ -407,7 +407,7 @@ namespace P3D.Legacy.Core.GameJolt.Profiles
 
         public static Texture2D GetOnlineSprite(string GameJoltID)
         {
-            if (BaseLogInScreen.UserBanned(GameJoltID) == true)
+            if (API.UserBanned(GameJoltID))
             {
                 return null;
             }
