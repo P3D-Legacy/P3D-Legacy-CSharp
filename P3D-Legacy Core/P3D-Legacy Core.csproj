@@ -99,9 +99,9 @@
     <Compile Include="PlayerStatistics.cs" />
     <Compile Include="CommandLineArgHandler.cs" />
     <Compile Include="Data\Vector3C.cs" />
-    <Compile Include="Debug\BoundingBoxRenderer.cs" />
-    <Compile Include="Debug\ForcedCrash.cs" />
-    <Compile Include="Debug\DotNetVersion.cs" />
+    <Compile Include="DebugC\BoundingBoxRenderer.cs" />
+    <Compile Include="DebugC\ForcedCrash.cs" />
+    <Compile Include="DebugC\DotNetVersion.cs" />
     <Compile Include="Dialogues\TextBox.cs" />
     <Compile Include="Dialogues\_ChooseBox.cs" />
     <Compile Include="Dialogues\PokemonImageView.cs" />
@@ -152,12 +152,12 @@
     <Compile Include="Server\Interfaces\IServersManager.cs" />
     <Compile Include="MainGameFunctions.cs" />
     <Compile Include="CoreSpriteBatch.cs" />
-    <Compile Include="Debug\DebugDisplay.cs" />
+    <Compile Include="DebugC\DebugDisplay.cs" />
     <Compile Include="Input\Controls.cs" />
     <Compile Include="Input\MouseHandler.cs" />
     <Compile Include="Input\ControllerHandler.cs" />
     <Compile Include="Input\KeyBoardHandler.cs" />
-    <Compile Include="Debug\FPSMonitor.cs" />
+    <Compile Include="DebugC\FPSMonitor.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\Texture2DExtensions.cs" />
     <Compile Include="GameJolt\SessionManager.cs" />
