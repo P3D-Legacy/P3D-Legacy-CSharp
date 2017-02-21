@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports net.Pokemon3D.Game.Servers
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Battle.BattleSystemV2
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
@@ -1296,7 +1297,7 @@ nextIndex:
             If Me.IsRemoteBattle = True Then
                 If Core.ServersManager.ServerConnection.Connected = True Then
                     Dim partnerOnServer As Boolean = False
-                    For Each p As Servers.Player In Core.ServersManager.PlayerCollection
+                    For Each p As OnlinePlayer In Core.ServersManager.PlayerCollection
                         If p.ServersID = PartnerNetworkID Then
                             partnerOnServer = True
                             Exit For

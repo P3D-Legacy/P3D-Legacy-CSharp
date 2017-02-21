@@ -106,6 +106,7 @@
     <Compile Include="Entites\Other\OverworldPokemon.vb" />
     <Compile Include="Entites\Other\OwnPlayer.vb" />
     <Compile Include="Entites\Other\Particle.vb" />
+    <Compile Include="Network\Servers\ServersManagerManagerImplementation.vb" />
     <Compile Include="Program.vb" />
     <Compile Include="Debug\ObjectDump.vb" />
     <Compile Include="Dialogues\ChooseBox.vb" />
@@ -150,16 +151,13 @@
     <Compile Include="Network\GameJolt\GTS\WonderTradeScreen.vb" />
     <Compile Include="Network\GameJolt\RegisterBattleScreen.vb" />
     <Compile Include="Network\MysteryEventScreen.vb" />
-    <Compile Include="Network\OnlineStatus.vb" />
     <Compile Include="Network\Servers\DirectTradeScreen.vb" />
     <Compile Include="Network\Servers\Package.vb" />
     <Compile Include="Network\Servers\PackageHandler.vb" />
-    <Compile Include="Network\Servers\Player.vb" />
-    <Compile Include="Network\Servers\PlayerCollection.vb" />
+    <Compile Include="Network\Servers\OnlinePlayer.vb" />
     <Compile Include="Network\Servers\PlayerManager.vb" />
     <Compile Include="Network\Servers\PVPLobbyScreen.vb" />
     <Compile Include="Network\Servers\ServerConnection.vb" />
-    <Compile Include="Network\Servers\ServersManager.vb" />
     <Compile Include="Network\Servers\StreamWriterLock.vb" />
     <Compile Include="Network\UrlEncoder.vb" />
     <Compile Include="Overworld\BackdropRenderer.vb" />

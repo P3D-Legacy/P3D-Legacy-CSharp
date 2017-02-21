@@ -152,7 +152,7 @@ Public Class JoinServerScreen
             Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Text, New Vector2(CInt(Core.ScreenSize.Width / 2) - 542 + i * 192, Core.ScreenSize.Height - 106), Microsoft.Xna.Framework.Color.Black)
         Next
 
-        Dim vS As String = "Protocol version: " & Servers.ServersManager.PROTOCOLVERSION
+        Dim vS As String = "Protocol version: " & ServersManager.PROTOCOLVERSION
         Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, vS, New Vector2(Core.ScreenSize.Width - FontManager.MiniFont.MeasureString(vS).X - 4, Core.ScreenSize.Height - FontManager.MiniFont.MeasureString(vS).Y - 1), Microsoft.Xna.Framework.Color.White)
 
         'Draw player list tooltip after everything else:
@@ -391,7 +391,7 @@ Public Class JoinServerScreen
                 Me.IP = "127.0.0.1"
                 Me.Port = "15124"
                 Me.ServerMessage = "Play on your local computer."
-                Me.ServerProtocolVersion = Servers.ServersManager.PROTOCOLVERSION
+                Me.ServerProtocolVersion = ServersManager.PROTOCOLVERSION
             Else
                 Dim t As New Threading.Thread(AddressOf StartPing)
                 t.IsBackground = True
@@ -431,7 +431,7 @@ Public Class JoinServerScreen
                 Return True
             End If
             If StartedPing = True And Pinged = True Then
-                If Me.ServerProtocolVersion = Servers.ServersManager.PROTOCOLVERSION Then
+                If Me.ServerProtocolVersion = ServersManager.PROTOCOLVERSION Then
                     If CurrentPlayersOnline < MaxPlayersOnline Then
                         Return True
                     End If
@@ -557,7 +557,7 @@ Public Class JoinServerScreen
                         If CurrentPlayersOnline >= MaxPlayersOnline Then
                             message = "The server is full."
                         End If
-                        If ServerProtocolVersion <> Servers.ServersManager.PROTOCOLVERSION Then
+                        If ServerProtocolVersion <> ServersManager.PROTOCOLVERSION Then
                             message = "Version doesn't match the server's version."
                         End If
 

@@ -316,7 +316,7 @@ namespace P3D.Legacy.Core.Resources
 
         public static void DrawLog()
         {
-            if (DisplayLog == true & History.Count > 0 & (FontManager.ChatFont != null))
+            if (DisplayLog == true && History.Count > 0 && (FontManager.ChatFont != null))
             {
                 List<string> items = new List<string>();
                 int max = History.Count - 1;
@@ -548,23 +548,23 @@ namespace P3D.Legacy.Core.Resources
 
             public override string ToString()
             {
-                if (ErrorID > -1 & ErrorID < 100)
+                if (ErrorID > -1 && ErrorID < 100)
                 {
                     ErrorType = "Assets";
                 }
-                else if (ErrorID > 99 & ErrorID < 200)
+                else if (ErrorID > 99 && ErrorID < 200)
                 {
                     ErrorType = "GameJolt";
                 }
-                else if (ErrorID > 199 & ErrorID < 300)
+                else if (ErrorID > 199 && ErrorID < 300)
                 {
                     ErrorType = "Scripts";
                 }
-                else if (ErrorID > 299 & ErrorID < 400)
+                else if (ErrorID > 299 && ErrorID < 400)
                 {
                     ErrorType = "Forced Crash";
                 }
-                else if (ErrorID > 899 & ErrorID < 1000)
+                else if (ErrorID > 899 && ErrorID < 1000)
                 {
                     ErrorType = "Misc.";
                 }

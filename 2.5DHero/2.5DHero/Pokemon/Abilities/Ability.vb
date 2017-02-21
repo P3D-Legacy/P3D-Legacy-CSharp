@@ -387,10 +387,6 @@ Public Class Ability
 
     End Class
 
-    Shared Sub New()
-        AM = New AbilityManagerImplementation()
-    End Sub
-
 
 
     Public Sub New(ByVal ID As Integer, ByVal Name As String, ByVal Description As String)

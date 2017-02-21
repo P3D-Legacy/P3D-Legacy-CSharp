@@ -2,7 +2,7 @@
 {
     public interface IServersManager
     {
-        IPlayerCollection PlayerCollection { get; }
+        PlayerCollection PlayerCollection { get; }
         IServerConnection ServerConnection { get; }
         IPlayerManager PlayerManager { get; }
         int ID { get; set; }

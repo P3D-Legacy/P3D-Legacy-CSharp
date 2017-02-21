@@ -13,6 +13,7 @@ using P3D.Legacy.Core.Entities;
 using P3D.Legacy.Core.GameJolt.Profiles;
 using P3D.Legacy.Core.Input;
 using P3D.Legacy.Core.Interfaces;
+using P3D.Legacy.Core.Network;
 using P3D.Legacy.Core.Objects;
 using P3D.Legacy.Core.Resources;
 using P3D.Legacy.Core.Resources.Sound;
@@ -41,7 +42,7 @@ namespace P3D.Legacy.Core
 
         public static GameMessage GameMessage;
 
-        public static IServersManager ServersManager;
+        public static ServersManager ServersManager;
 
         public static Screen CurrentScreen;
         public static IPlayer Player;
@@ -56,6 +57,7 @@ namespace P3D.Legacy.Core
         public static Color BackgroundColor = new Color(173, 216, 255);
 
         public static Dictionary<string, List<List<Entity>>> OffsetMaps = new Dictionary<string, List<List<Entity>>>();
+
         public static async void Initialize(GameController gameReference)
         {
             GameInstance = gameReference;
@@ -70,7 +72,6 @@ namespace P3D.Legacy.Core
                 Window.Title = GameController.GAMENAME + " " + GameController.GAMEDEVELOPMENTSTAGE + " (FORCED GRAPHICS)";
             else
                 Window.Title = GameController.GAMENAME + " " + GameController.GAMEDEVELOPMENTSTAGE;
-            Window.Title = GameController.GAMENAME + " " + GameController.GAMEDEVELOPMENTSTAGE;
 
             //GameOptions = await Options.LoadOptions();
             //KeyBindings = await Keyboard.LoadKeyboard();
@@ -94,7 +95,7 @@ namespace P3D.Legacy.Core
 
             GameMessage = new GameMessage(null, new System.Drawing.Size(0, 0), new Vector2(0, 0));
 
-            //ServersManager = new ServersManager();
+            ServersManager = new ServersManager();
 
             Sampler = new SamplerState
             {
@@ -195,7 +196,7 @@ namespace P3D.Legacy.Core
             LoadingDots.Update();
             ForcedCrash.Update();
 
-            //ServersManager.Update();
+            ServersManager.Update();
         }
 
         public static void Draw()
@@ -230,7 +231,7 @@ namespace P3D.Legacy.Core
                     DebugDisplay.Draw();
 
                 GameMessage.Draw();
-                //OnlineStatus.Draw();
+                OnlineStatus.Draw();
 
                 Logger.DrawLog();
 

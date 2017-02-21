@@ -68,19 +68,19 @@ namespace P3D.Legacy.Core
 
         public int GetFacingDirection()
         {
-            if (Yaw <= MathHelper.Pi * 0.25f | Yaw > MathHelper.Pi * 1.75f)
+            if (Yaw <= MathHelper.Pi * 0.25f || Yaw > MathHelper.Pi * 1.75f)
             {
                 return 0;
             }
-            if (Yaw <= MathHelper.Pi * 0.75f & Yaw > MathHelper.Pi * 0.25f)
+            if (Yaw <= MathHelper.Pi * 0.75f && Yaw > MathHelper.Pi * 0.25f)
             {
                 return 1;
             }
-            if (Yaw <= MathHelper.Pi * 1.25f & Yaw > MathHelper.Pi * 0.75f)
+            if (Yaw <= MathHelper.Pi * 1.25f && Yaw > MathHelper.Pi * 0.75f)
             {
                 return 2;
             }
-            if (Yaw <= MathHelper.Pi * 1.75f & Yaw > MathHelper.Pi * 1.25f)
+            if (Yaw <= MathHelper.Pi * 1.75f && Yaw > MathHelper.Pi * 1.25f)
             {
                 return 3;
             }

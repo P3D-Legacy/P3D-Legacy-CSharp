@@ -22,29 +22,28 @@ namespace P3D.Legacy.Core
                 API.Username = options.GameJoltYaml.Username;
                 API.Token = options.GameJoltYaml.Token;
 
-                APICall apiCall1 = new APICall(result1 =>
+                var apiCall1 = new APICall(result1 =>
                 {
-                    List<API.JoltValue> list1 = API.HandleData(result1);
+                    var list1 = API.HandleData(result1);
                     if (Convert.ToBoolean(list1[0].Value))
                     {
                         API.LoggedIn = true;
 
 
-                        APICall apiCall2 = new APICall(result2 =>
+                        var apiCall2 = new APICall(result2 =>
                         {
-                            List<API.JoltValue> list2 = API.HandleData(result2);
-                            foreach (API.JoltValue Item in list2)
+                            var list2 = API.HandleData(result2);
+                            foreach (var Item in list2)
                             {
                                 if (Item.Name == "id")
                                 {
                                     API.GameJoltID = Item.Value;
                                     //set the public shared field to the GameJolt ID.
 
-                                    if (GameController.UPDATEONLINEVERSION == true &
-                                        GameController.IS_DEBUG_ACTIVE == true)
+                                    if (GameController.UPDATEONLINEVERSION && GameController.IS_DEBUG_ACTIVE)
                                     {
-                                        APICall APICall = new APICall();
-                                        APICall.SetStorageDataRestricted("ONLINEVERSION", GameController.GAMEVERSION);
+                                        var apiCall = new APICall();
+                                        apiCall.SetStorageDataRestricted("ONLINEVERSION", GameController.GAMEVERSION);
                                         Logger.Debug("UPDATED ONLINE VERSION TO: " + GameController.GAMEVERSION);
                                     }
                                     break; // TODO: might not be correct. Was : Exit For

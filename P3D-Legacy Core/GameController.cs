@@ -9,6 +9,7 @@ using P3D.Legacy.Core.Entities.Other;
 using P3D.Legacy.Core.GameJolt;
 using P3D.Legacy.Core.Resources;
 using P3D.Legacy.Core.Screens;
+using P3D.Legacy.Core.Security;
 
 namespace P3D.Legacy.Core
 {
@@ -43,28 +44,31 @@ namespace P3D.Legacy.Core
         public const string DEVELOPER_NAME = "P3D Team";
 
         /// <summary>
+        /// If the game should set the GameJolt online version to the current online version.
+        /// </summary>
+        public const bool UPDATEONLINEVERSION = false;
+
+        /// <summary>
         /// If the Debug Mode is active.
         /// </summary>
-#if DEBUG || DEBUGNOCONTENT
+#if DEBUG
         public const bool IS_DEBUG_ACTIVE = true;
 #else
         public const bool IS_DEBUG_ACTIVE = false;
 #endif
 
-        /// <summary>
-        /// If the game should set the GameJolt online version to the current online version.
-        /// </summary>
-        public const bool UPDATEONLINEVERSION = false;
+
         public GraphicsDeviceManager Graphics;
 
         public FPSMonitor FPSMonitor;
         public Action<GameController> Action;
+
         public GameController(Action<GameController> action)
         {
             Action = action;
 
-            Deactivated += DGame_Deactivated;
             Activated += DGame_Activated;
+            Deactivated += DGame_Deactivated;
             Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
@@ -76,7 +80,7 @@ namespace P3D.Legacy.Core
 
             var gameHacked = File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "temp"));
             if (gameHacked)
-                Security.HackerAlerts.Activate();
+                HackerAlerts.Activate();
         }
 
         protected override void Initialize()
@@ -85,7 +89,6 @@ namespace P3D.Legacy.Core
             Action(this);
             base.Initialize();
         }
-
 
         protected override void LoadContent() { }
         protected override void UnloadContent() { }
@@ -116,8 +119,8 @@ namespace P3D.Legacy.Core
             SessionManager.Close();
 
             // TODO
-            //if (Core.ServersManager.ServerConnection.Connected)
-            //    Core.ServersManager.ServerConnection.Abort();
+            if (Core.ServersManager.ServerConnection.Connected)
+                Core.ServersManager.ServerConnection.Abort();
 
             Logger.Debug("---Exit Game---");
         }

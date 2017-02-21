@@ -89,10 +89,15 @@
     <Compile Include="GameJolt\Profiles\Emblem.cs" />
     <Compile Include="GameJolt\Profiles\GamejoltSave.cs" />
     <Compile Include="Network\DownloadTexture2D.cs" />
+    <Compile Include="Network\OnlineStatus.cs" />
     <Compile Include="Screens\BaseGTSSetupScreen.cs" />
     <Compile Include="Screens\BaseNewGameScreen.cs" />
     <Compile Include="Network\StreamWriterLock.cs" />
     <Compile Include="Pokemon\PokemonInteractions.cs" />
+    <Compile Include="Server\Chat.cs" />
+    <Compile Include="Server\PlayerCollection.cs" />
+    <Compile Include="Server\OnlinePlayer.cs" />
+    <Compile Include="Server\ServerManager.cs" />
     <Compile Include="TimeHelpers.cs" />
     <Compile Include="Objects\Animation.cs" />
     <Compile Include="Objects\LoadingDots.cs" />
@@ -148,7 +153,6 @@
     <Compile Include="Server\Enums\ProtocolTypes.cs" />
     <Compile Include="Server\Interfaces\IServerConnection.cs" />
     <Compile Include="Server\Interfaces\IPlayerManager.cs" />
-    <Compile Include="Server\Interfaces\IPlayerCollection.cs" />
     <Compile Include="Server\Interfaces\IServersManager.cs" />
     <Compile Include="MainGameFunctions.cs" />
     <Compile Include="CoreSpriteBatch.cs" />

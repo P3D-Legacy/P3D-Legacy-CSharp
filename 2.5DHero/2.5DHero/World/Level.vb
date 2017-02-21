@@ -982,10 +982,10 @@ Public Class Level
             WarpData.IsWarpBlock = False
 
             'TODO
-            'If Core.ServersManager.ServerConnection.Connected = True Then
-            ''Update network players:
-            'Core.ServersManager.PlayerManager.NeedsUpdate = True
-            'End If
+            If Core.ServersManager.ServerConnection.Connected = True Then
+            'Update network players:
+                Core.ServersManager.PlayerManager.NeedsUpdate = True
+            End If
         End If
     End Sub
 

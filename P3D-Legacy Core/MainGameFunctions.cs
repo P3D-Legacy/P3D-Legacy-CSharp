@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+
 using P3D.Legacy.Core.Entities.Other;
 using P3D.Legacy.Core.Input;
 using P3D.Legacy.Core.Resources;
@@ -109,9 +110,7 @@ namespace P3D.Legacy.Core
                 var p0 = Path.Combine(GameController.GamePath + "screenshots");
                 var p1 = Path.Combine(p0, fileName);
                 if (!Directory.Exists(p0))
-                {
                     Directory.CreateDirectory(p0);
-                }
 
                 if (!Core.GraphicsManager.IsFullScreen)
                 {
@@ -123,7 +122,7 @@ namespace P3D.Legacy.Core
                 }
                 else
                 {
-                    RenderTarget2D screenshot = new RenderTarget2D(Core.GraphicsDevice, Core.WindowSize.Width, Core.WindowSize.Height, false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8);
+                    var screenshot = new RenderTarget2D(Core.GraphicsDevice, Core.WindowSize.Width, Core.WindowSize.Height, false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8);
                     Core.GraphicsDevice.SetRenderTarget(screenshot);
 
                     Core.Draw();

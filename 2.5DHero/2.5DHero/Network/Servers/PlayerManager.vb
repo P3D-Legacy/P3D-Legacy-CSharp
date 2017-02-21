@@ -61,7 +61,7 @@ Namespace Servers
                 If Me._lastPackage Is Nothing Then
                     Return True
                 Else
-                    If Me._lastPackage.DataItems.Count <> Player.PLAYERDATAITEMSCOUNT Then
+                    If Me._lastPackage.DataItems.Count <> OnlinePlayer.PLAYERDATAITEMSCOUNT Then
                         Return True
                     End If
                 End If
@@ -153,7 +153,7 @@ Namespace Servers
                             Dim exists As Boolean = False
                             For j = 0 To Core.ServersManager.PlayerCollection.Count - 1
                                 If j <= Core.ServersManager.PlayerCollection.Count - 1 Then
-                                    Dim p As IPlayer = Core.ServersManager.PlayerCollection(j)
+                                    Dim p As BaseOnlinePlayer = Core.ServersManager.PlayerCollection(j)
                                     If p.ServersID = netPlayer.NetworkID Then
                                         exists = True
                                         Exit For
@@ -180,7 +180,7 @@ Namespace Servers
                             Dim exists As Boolean = False
                             For j = 0 To Core.ServersManager.PlayerCollection.Count - 1
                                 If j <= Core.ServersManager.PlayerCollection.Count - 1 Then
-                                    Dim p As IPlayer = Core.ServersManager.PlayerCollection(j)
+                                    Dim p As BaseOnlinePlayer = Core.ServersManager.PlayerCollection(j)
                                     If p.ServersID = netPokemon.PlayerID Then
                                         exists = True
                                         Exit For
@@ -202,7 +202,7 @@ Namespace Servers
                     For i = 0 To Core.ServersManager.PlayerCollection.Count - 1
                         If i <= Core.ServersManager.PlayerCollection.Count - 1 Then
                             'Dim p As Player = CType(Core.ServersManager.PlayerCollection(i), Player)
-                            Dim p As IPlayer = Core.ServersManager.PlayerCollection(i)
+                            Dim p As BaseOnlinePlayer = Core.ServersManager.PlayerCollection(i)
 
                             If p.Initialized = True Then
                                 If p.ServersID <> Core.ServersManager.ID Then

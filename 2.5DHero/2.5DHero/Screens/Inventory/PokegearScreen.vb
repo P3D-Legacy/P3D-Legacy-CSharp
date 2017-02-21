@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports net.Pokemon3D.Game.Servers
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.GameJolt
@@ -84,7 +85,7 @@ Namespace GameJolt
                 FunctionList.Add("Minimap")
             End If
 
-            If PlayerStatistics.CountStatistics() > 0 Then
+            If PlayerStatistics.StatisticsCount > 0 Then
                 FunctionList.Add("Statistics")
             End If
 
@@ -605,7 +606,7 @@ Namespace GameJolt
             UserSprite = UserEmblem.SpriteTexture
             UserName = UserEmblem.Username
             UserOrigin = "GJ"
-            For Each p As Servers.Player In Core.ServersManager.PlayerCollection
+            For Each p As OnlinePlayer In Core.ServersManager.PlayerCollection
                 If p.GameJoltId <> "" Then
                     If UserEmblem.GameJoltID = p.GameJoltId Then
                         UserOrigin &= "|Server"
@@ -792,7 +793,7 @@ Namespace GameJolt
             UserSprite = UserEmblem.SpriteTexture
             UserName = UserEmblem.Username
             UserOrigin = "GJ"
-            For Each p As Servers.Player In Core.ServersManager.PlayerCollection
+            For Each p As OnlinePlayer In Core.ServersManager.PlayerCollection
                 If p.GameJoltId <> "" Then
                     If UserEmblem.GameJoltID = p.GameJoltId Then
                         UserOrigin &= "|Server"
@@ -843,7 +844,7 @@ Namespace GameJolt
         Private Sub FillLocalList()
             LocalList.Clear()
             If ConnectScreen.Connected = True Then
-                For Each p As Servers.Player In Core.ServersManager.PlayerCollection
+                For Each p As OnlinePlayer In Core.ServersManager.PlayerCollection
                     If p.ServersID <> Core.ServersManager.ID Then
                         Dim t As Texture2D
                         Dim tPath As String = NetworkPlayer.GetTexturePath(p.Skin)
@@ -1034,7 +1035,7 @@ Namespace GameJolt
             End If
 
             If ConnectScreen.Connected = True Then
-                For Each p As Servers.Player In Core.ServersManager.PlayerCollection
+                For Each p As OnlinePlayer In Core.ServersManager.PlayerCollection
                     If p.Name = UserName Then
                         sameServer = True
                     End If
@@ -1114,7 +1115,7 @@ Namespace GameJolt
                 End If
 
                 If ConnectScreen.Connected = True Then
-                    For Each p As Servers.Player In Core.ServersManager.PlayerCollection
+                    For Each p As OnlinePlayer In Core.ServersManager.PlayerCollection
                         If p.Name = UserName Then
                             sameServer = True
                         End If
@@ -2004,7 +2005,7 @@ Namespace GameJolt
             Dim startPos As Vector2 = GetStartPosition()
 
             Dim playerExists As Boolean = False
-            For Each p As Servers.Player In Core.ServersManager.PlayerCollection
+            For Each p As OnlinePlayer In Core.ServersManager.PlayerCollection
                 If p.ServersID = TradeRequestNetworkID Then
                     playerExists = True
                     Exit For
@@ -2014,7 +2015,7 @@ Namespace GameJolt
                 CloseTradeRequest()
             Else
                 If TradeRequestTexture Is Nothing Then
-                    For Each p As Servers.Player In Core.ServersManager.PlayerCollection
+                    For Each p As OnlinePlayer In Core.ServersManager.PlayerCollection
                         If p.ServersID = TradeRequestNetworkID Then
                             Dim t As Texture2D
                             Dim tPath As String = NetworkPlayer.GetTexturePath(p.Skin)
@@ -2135,7 +2136,7 @@ Namespace GameJolt
             Dim startPos As Vector2 = GetStartPosition()
 
             Dim playerExists As Boolean = False
-            For Each p As Servers.Player In Core.ServersManager.PlayerCollection
+            For Each p As OnlinePlayer In Core.ServersManager.PlayerCollection
                 If p.ServersID = BattleRequestNetworkID Then
                     playerExists = True
                     Exit For
@@ -2145,7 +2146,7 @@ Namespace GameJolt
                 CloseBattleRequest()
             Else
                 If BattleRequestTexture Is Nothing Then
-                    For Each p As Servers.Player In Core.ServersManager.PlayerCollection
+                    For Each p As OnlinePlayer In Core.ServersManager.PlayerCollection
                         If p.ServersID = BattleRequestNetworkID Then
                             Dim t As Texture2D
                             Dim tPath As String = NetworkPlayer.GetTexturePath(p.Skin)

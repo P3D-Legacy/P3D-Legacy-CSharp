@@ -599,7 +599,7 @@ namespace P3D.Legacy.Core.Entities
                 }
                 else
                 {
-                    if (e.Position.X == Position.X & e.Position.Y == Position.Y & e.Position.Z == Position.Z)
+                    if (e.Position.X == Position.X && e.Position.Y == Position.Y && e.Position.Z == Position.Z)
                     {
                         return e;
                     }

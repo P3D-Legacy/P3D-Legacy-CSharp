@@ -73,7 +73,7 @@ Namespace Servers
 
         Private Shared Sub HandleChatMessage(ByVal p As Package)
             Dim GameJoltID As String = ""
-            Dim Player As Player = Core.ServersManager.PlayerCollection.GetPlayer(p.Origin)
+            Dim Player As OnlinePlayer = Core.ServersManager.PlayerCollection.GetPlayer(p.Origin)
 
             If Not Player Is Nothing Then
                 GameJoltID = Player.GameJoltID
@@ -97,7 +97,7 @@ Namespace Servers
             Else
                 'Someone else sent a PM
                 Dim GJID As String = ""
-                Dim Player As Player = Core.ServersManager.PlayerCollection.GetPlayer(p.Origin)
+                Dim Player As OnlinePlayer = Core.ServersManager.PlayerCollection.GetPlayer(p.Origin)
 
                 If Not Player Is Nothing Then
                     GJID = Player.GameJoltId
@@ -119,7 +119,7 @@ Namespace Servers
 
         Private Shared Sub HandleCreatePlayer(ByVal p As Package)
             If Core.ServersManager.PlayerCollection.HasPlayer(CInt(p.DataItems(0))) = False Then
-                Dim newPlayer As New Player()
+                Dim newPlayer As New OnlinePlayer()
                 newPlayer.ServersID = CInt(p.DataItems(0))
                 Core.ServersManager.PlayerCollection.Add(newPlayer)
                 Core.ServersManager.PlayerManager.NeedsUpdate = True

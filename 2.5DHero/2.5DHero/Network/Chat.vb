@@ -1,8 +1,10 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Server
 
 Public Class Chat
+    Inherits BaseChat
 
     Public Const NEWMESSAGEDELAY As Single = 35.0F
 
@@ -38,28 +40,7 @@ Public Class Chat
         Return l
     End Function
 
-    Private Shared _serverColor As Color = Color.Orange
-    Private Shared _friendColor As Color = Color.LightGreen
-    Private Shared _ownColor As Color = New Color(39, 206, 249)
     Private Shared _pmColor As Color = Color.Violet
-
-    Public Shared ReadOnly Property ServerColor() As Color
-        Get
-            Return Chat._serverColor
-        End Get
-    End Property
-
-    Public Shared ReadOnly Property FriendColor() As Color
-        Get
-            Return Chat._friendColor
-        End Get
-    End Property
-
-    Public Shared ReadOnly Property OwnColor() As Color
-        Get
-            Return Chat._ownColor
-        End Get
-    End Property
 
     Public Class ChatMessage
 

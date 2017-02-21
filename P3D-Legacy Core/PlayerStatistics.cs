@@ -10,11 +10,13 @@ namespace P3D.Legacy.Core
 {
     public static class PlayerStatistics
     {
-        private static Dictionary<string, int> Statistics = new Dictionary<string, int>();
+        public static int StatisticsCount => Statistics.Count;
+        private static Dictionary<string, int> Statistics { get; } = new Dictionary<string, int>();
+
         public static void Load(string data)
         {
             Statistics.Clear();
-            foreach (string line in data.SplitAtNewline())
+            foreach (var line in data.SplitAtNewline())
             {
                 if (line.Contains(","))
                 {
@@ -39,14 +41,10 @@ namespace P3D.Legacy.Core
                 Statistics.Add(statName, currentValue + addition);
             }
             else
-            {
                 Statistics.Add(statName, addition);
-            }
 
             if (API.LoggedIn)
-            {
                 GameJoltStatistics.Track(statName, addition);
-            }
         }
 
         public static string GetData()
@@ -57,14 +55,11 @@ namespace P3D.Legacy.Core
             for (var i = 0; i <= Statistics.Count - 1; i++)
             {
                 if (!string.IsNullOrEmpty(s))
-                {
                     s += Constants.vbNewLine;
-                }
+
                 s += keyArr[i] + "," + valArr[i];
             }
             return s;
         }
-
-        public static int CountStatistics() => Statistics.Count;
     }
 }

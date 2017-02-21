@@ -25,8 +25,7 @@ namespace P3D.Legacy.Core
                 }
             }
 
-            TimeSpan reSpan = new TimeSpan(hours, minutes, seconds);
-            return reSpan;
+            return new TimeSpan(hours, minutes, seconds);
         }
 
         /// <summary>

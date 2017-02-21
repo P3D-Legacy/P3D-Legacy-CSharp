@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports net.Pokemon3D.Game.Servers
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Input
@@ -70,7 +71,7 @@ Public Class DirectTradeScreen
     End Sub
 
     Private Sub DownloadOnlineSprite()
-        Dim p As Servers.Player = Core.ServersManager.PlayerCollection.GetPlayer(PartnerNetworkID)
+        Dim p As OnlinePlayer = Core.ServersManager.PlayerCollection.GetPlayer(PartnerNetworkID)
         If Not p Is Nothing Then
             If p.GameJoltId <> "" Then
                 Emblem.GetOnlineSprite(p.GameJoltId)
@@ -143,8 +144,8 @@ Public Class DirectTradeScreen
         'Trade Side:
         Dim t As Texture2D = Nothing
 
-        Dim tempPlayer As Servers.Player = Nothing
-        For Each p As Servers.Player In Core.ServersManager.PlayerCollection
+        Dim tempPlayer As OnlinePlayer = Nothing
+        For Each p As OnlinePlayer In Core.ServersManager.PlayerCollection
             If p.ServersID = PartnerNetworkID Then
                 Dim tPath As String = NetworkPlayer.GetTexturePath(p.Skin)
                 If TextureManager.TextureExist(tPath) = True Then
@@ -221,7 +222,7 @@ Public Class DirectTradeScreen
         If ScreenState = ScreenStates.Idle Then
             If ConnectScreen.Connected = True Then
                 Dim partnerOnServer As Boolean = False
-                For Each p As Servers.Player In Core.ServersManager.PlayerCollection
+                For Each p As OnlinePlayer In Core.ServersManager.PlayerCollection
                     If p.ServersID = PartnerNetworkID Then
                         partnerOnServer = True
                         Exit For
@@ -427,8 +428,8 @@ Public Class DirectTradeScreen
             Case 1
                 Core.SpriteBatch.Draw(Me.OfferPokemon.GetTexture(False), New Rectangle(CInt(Core.windowSize.Width / 2 - 128), CInt(Core.windowSize.Height / 2 - 128), 256, 256), Color.White)
 
-                Dim p As Servers.Player = Nothing
-                For Each pp As Servers.Player In Core.ServersManager.PlayerCollection
+                Dim p As OnlinePlayer = Nothing
+                For Each pp As OnlinePlayer In Core.ServersManager.PlayerCollection
                     If pp.ServersID = PartnerNetworkID Then
                         p = pp
                         Exit For
@@ -445,8 +446,8 @@ Public Class DirectTradeScreen
             Case 4
                 Core.SpriteBatch.Draw(TradePokemon.GetTexture(True), New Rectangle(CInt(Core.windowSize.Width / 2 - 128), CInt(Core.windowSize.Height / 2 - 128), 256, 256), Color.White)
 
-                Dim p As Servers.Player = Nothing
-                For Each pp As Servers.Player In Core.ServersManager.PlayerCollection
+                Dim p As OnlinePlayer = Nothing
+                For Each pp As OnlinePlayer In Core.ServersManager.PlayerCollection
                     If pp.ServersID = PartnerNetworkID Then
                         p = pp
                         Exit For

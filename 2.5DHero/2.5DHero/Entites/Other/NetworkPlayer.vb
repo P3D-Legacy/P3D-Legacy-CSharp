@@ -8,19 +8,30 @@ Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Models
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.Server
 
 Public Class NetworkPlayer
     Inherits BaseNetworkPlayer
+
+    Private Class NetworkPlayerManagerImplementation
+        Inherits NetworkPlayerManager
+
+        Public Overrides Sub ScreenRegionChanged()
+            If Not Core.CurrentScreen Is Nothing AndAlso Not Screen.Level Is Nothing Then
+                For Each netPlayer As NetworkPlayer In Screen.Level.NetworkPlayers
+                    netPlayer.LastName = ""
+                Next
+            End If
+        End Sub
+
+    End Class
+
+
 
     Shared ReadOnly FallbackSkins() As String = {"0", "1", "2", "5", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "32", "49", "61", "63", "oldhatman", "PinkShirtGirl", "bugcatcher"}
     Shared FallBack As New Dictionary(Of Integer, String)
 
     Public Name As String = ""
-
-    ''' <summary>
-    ''' The Network ID of the player
-    ''' </summary>
-    Public Property NetworkId As Integer
 
     Public faceRotation As Integer
     Public MapFile As String = ""
@@ -297,7 +308,7 @@ Public Class NetworkPlayer
         Return True
     End Function
 
-    Public Sub ApplyPlayerData(ByVal p As IPlayer)
+    Public Overrides Sub ApplyPlayerData(ByVal p As BaseOnlinePlayer)
         Try
             Me.NetworkId = p.ServersID
 
@@ -349,14 +360,6 @@ Public Class NetworkPlayer
         Data(3) = Me.Texture
 
         'Basic.SetScreen(New GameJolt.PokegearScreen(Basic.currentScreen, GameJolt.PokegearScreen.EntryModes.DisplayUser, Data))
-    End Sub
-
-    Public Shared Sub ScreenRegionChanged()
-        If Not Core.CurrentScreen Is Nothing AndAlso Not Screen.Level Is Nothing Then
-            For Each netPlayer As NetworkPlayer In Screen.Level.NetworkPlayers
-                netPlayer.LastName = ""
-            Next
-        End If
     End Sub
 
     Shared SpriteTextStorage As New Dictionary(Of String, Texture2D)

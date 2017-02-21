@@ -5,11 +5,11 @@ Imports P3D.Legacy.Core.Interfaces
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Models
 Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Server
 
 Public Class NetworkPokemon
     Inherits BaseNetworkPokemon
 
-    Public PlayerID As Integer = 0
     Public LevelFile As String = ""
     Public PokemonTexture As String = ""
     Public faceRotation As Integer = 0
@@ -158,7 +158,7 @@ Public Class NetworkPokemon
         Next
     End Sub
 
-    Public Sub ApplyPlayerData(ByVal p As IPlayer)
+    Public Sub ApplyPlayerData(ByVal p As BaseOnlinePlayer)
         Try
             Me.PlayerID = p.ServersID
 
