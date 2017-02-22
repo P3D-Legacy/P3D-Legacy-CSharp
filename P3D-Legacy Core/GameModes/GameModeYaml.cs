@@ -20,12 +20,12 @@ namespace P3D.Legacy.Core.GameModes
 
         public static SerializerBuilder SerializerBuilder { get; } = new SerializerBuilder().EmitDefaults()
             .WithTypeConverter(new Vector3Converter()).WithTypeConverter(new ColorConverter())
-            .WithTypeConverter(new LocalizationFolderLocalConverter()).WithTypeConverter(new ContentFolderLocalConverter())
+            .WithTypeConverter(new LocalizationFolderLocalConverter()).WithTypeConverter(new ContentFolderLocalConverter()).WithTypeConverter(new MapsFolderLocalConverter()).WithTypeConverter(new ScriptsFolderLocalConverter())
             .WithTypeConverter(new GameRuleListConverter());
 
         public static DeserializerBuilder DeserializerBuilder { get; } = new DeserializerBuilder().IgnoreUnmatchedProperties()
             .WithTypeConverter(new Vector3Converter()).WithTypeConverter(new ColorConverter())
-            .WithTypeConverter(new LocalizationFolderLocalConverter()).WithTypeConverter(new ContentFolderLocalConverter())
+            .WithTypeConverter(new LocalizationFolderLocalConverter()).WithTypeConverter(new ContentFolderLocalConverter()).WithTypeConverter(new MapsFolderLocalConverter()).WithTypeConverter(new ScriptsFolderLocalConverter())
             .WithTypeConverter(new GameRuleListConverter());
 
 
@@ -36,12 +36,12 @@ namespace P3D.Legacy.Core.GameModes
             Version = GameController.GAMEVERSION,
             Author = "The P3D Team",
 
-            MapPath = StorageInfo.MapsFolder,
-            ScriptPath = StorageInfo.ScriptsFolder,
-            PokeFilePath = StorageInfo.ScriptsFolder,
-            PokemonDataPath = StorageInfo.ScriptsFolder,
+            MapFolder = StorageInfo.MapFolder,
+            ScriptFolder = StorageInfo.ScriptFolder,
+            PokeFolder = StorageInfo.PokeFolder,
+            PokemonDataFolder = StorageInfo.PokemonDataFolder,
             ContentFolder = StorageInfo.ContentFolder,
-            LocalizationsFolder = StorageInfo.LocalizationFolder,
+            LocalizationFolder = StorageInfo.LocalizationFolder,
 
             GameRules =
             {
@@ -149,22 +149,22 @@ namespace P3D.Legacy.Core.GameModes
         /// <summary>
         /// The MapPath used from this GameMode to load maps from.
         /// </summary>
-        public ContentFolder MapPath { get; set; } = StorageInfo.MapsFolder;
+        public MapsFolder MapFolder { get; set; } = StorageInfo.MapFolder;
 
         /// <summary>
         /// The ScriptPath from this GameMode to load scripts from.
         /// </summary>
-        public ContentFolder ScriptPath { get; set; } = StorageInfo.ScriptsFolder;
+        public ScriptsFolder ScriptFolder { get; set; } = StorageInfo.ScriptFolder;
 
         /// <summary>
         /// The .poke file directory from this GameMode.
         /// </summary>
-        public ContentFolder PokeFilePath { get; set; } = StorageInfo.ContentFolder;
+        public PokeFolder PokeFolder { get; set; } = StorageInfo.PokeFolder;
 
         /// <summary>
         /// The Pokemon Data path to load Pokemon data from.
         /// </summary>
-        public ContentFolder PokemonDataPath { get; set; } = StorageInfo.ContentFolder;
+        public PokemonDataFolder PokemonDataFolder { get; set; } = StorageInfo.PokemonDataFolder;
 
         /// <summary>
         /// The Content path to load images, sounds and music from.
@@ -174,7 +174,7 @@ namespace P3D.Legacy.Core.GameModes
         /// <summary>
         /// The Localizations path to load additional tokens from. Tokens that are already existing get overritten.
         /// </summary>
-        public LocalizationFolder LocalizationsFolder { get; set; } = StorageInfo.LocalizationFolder;
+        public LocalizationFolder LocalizationFolder { get; set; } = StorageInfo.LocalizationFolder;
 
 
         /// <summary>

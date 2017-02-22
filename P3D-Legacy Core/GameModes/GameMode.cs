@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -25,12 +24,12 @@ namespace P3D.Legacy.Core.GameModes
                 gameModeYaml.Version,
                 gameModeYaml.Author,
 
-                gameModeYaml.MapPath,
-                "",//gameModeYaml.ScriptPath,
-                "",//gameModeYaml.PokeFilePath,
-                "",//gameModeYaml.PokemonDataPath,
+                gameModeYaml.MapFolder,
+                gameModeYaml.ScriptFolder,
+                gameModeYaml.PokeFolder,
+                gameModeYaml.PokemonDataFolder,
                 gameModeYaml.ContentFolder,
-                gameModeYaml.LocalizationsFolder,
+                gameModeYaml.LocalizationFolder,
 
                 gameModeYaml.GameRules,
 
@@ -58,12 +57,12 @@ namespace P3D.Legacy.Core.GameModes
                 Version = gameMode.Version,
                 Author = gameMode.Author,
 
-                MapPath = gameMode.MapsFolder,//gameMode.MapPath,
-                ScriptPath = StorageInfo.ContentFolder,//gameMode.ScriptPath,
-                PokeFilePath = StorageInfo.ContentFolder,//gameMode.PokeFilePath,
-                PokemonDataPath = StorageInfo.ContentFolder,//gameMode.PokemonDataPath,
+                MapFolder = gameMode.MapFolder,
+                ScriptFolder = gameMode.ScriptFolder,
+                PokeFolder = gameMode.PokeFolder,
+                PokemonDataFolder = gameMode.PokemonDataFolder,
                 ContentFolder = gameMode.ContentFolder,
-                LocalizationsFolder = gameMode.LocalizationsFolder,
+                LocalizationFolder = gameMode.LocalizationFolder,
 
                 GameRules = gameMode.GameRules,
 
@@ -102,15 +101,6 @@ namespace P3D.Legacy.Core.GameModes
         }
 
 
-        public static readonly string DefaultContentPath = System.IO.Path.Combine("Content");
-        public static readonly string DefaultScriptPath = System.IO.Path.Combine("Scripts");
-        public static readonly string DefaultPokeFilePath = System.IO.Path.Combine("maps", "poke");
-        public static readonly string DefaultPokemonDataPath = System.IO.Path.Combine("Content", "Pokemon", "Data");
-
-
-        public bool IsDefaultGamemode => Name == "Pokemon 3D";
-
-
         /// <summary>
         /// Create a new GameMode.
         /// </summary>
@@ -136,19 +126,19 @@ namespace P3D.Legacy.Core.GameModes
         /// <param name="skinColors">The skin colors for the new GameMode. Must be the same amount as SkinFiles and SkinNames.</param>
         /// <param name="skinFiles">The skin files for the new GameMode. Must be the same amount as SkinColors and SkinNames.</param>
         /// <param name="skinNames">The skin names for the new GameMode. Must be the same amount as SkinFiles and SkinColors.</param>
-        private GameMode(string name, string description, string version, string author, ContentFolder mapPath, string scriptPath, string pokeFilePath, string pokemonDataPath, ContentFolder contentPath, LocalizationFolder localizationsPath, GameRuleList gameRules,
+        private GameMode(string name, string description, string version, string author, MapsFolder mapFolder, ScriptsFolder scriptFolder, PokeFolder pokeFolder, PokemonDataFolder pokemonDataFolder, ContentFolder contentFolder, LocalizationFolder localizationsFolder, GameRuleList gameRules,
             string startMap, Vector3 startPosition, float startRotation, string startLocationName, string startDialogue, Color startColor, int[] pokemonRange, string introMusic, List<Color> skinColors, List<string> skinFiles, List<string> skinNames)
         {
             Name = name;
             Description = description;
             Version = version;
             Author = author;
-            MapsFolder = mapPath;
-            _scriptPath = scriptPath;
-            _pokeFilePath = pokeFilePath;
-            _pokemonDataPath = pokemonDataPath;
-            ContentFolder = contentPath;
-            LocalizationsFolder = localizationsPath;
+            MapFolder = mapFolder;
+            ScriptFolder = scriptFolder;
+            PokeFolder = pokeFolder;
+            PokemonDataFolder = pokemonDataFolder;
+            ContentFolder = contentFolder;
+            LocalizationFolder = localizationsFolder;
             GameRules = gameRules;
 
             StartMap = startMap;
@@ -164,11 +154,10 @@ namespace P3D.Legacy.Core.GameModes
             SkinNames = skinNames;
         }
 
-
-
-
+        
         public class GameRuleList : IEnumerable<KeyValuePair<string, GameRuleList.GameRuleObject>>
         {
+            // Check if all those casts affect performance
             public abstract class GameRuleObject
             {
                 public static implicit operator GameRuleObject(string value) => new GameRuleString(value);
@@ -186,21 +175,59 @@ namespace P3D.Legacy.Core.GameModes
 
                 public static bool operator ==(GameRuleObject gameRuleObject, string value) => ((GameRuleString) gameRuleObject)?.ValueString == value;
                 public static bool operator !=(GameRuleObject gameRuleObject, string value) => !(gameRuleObject == value);
-                // TODO: Epsilon
-                public static bool operator ==(GameRuleObject gameRuleObject, double value) => ((GameRuleDouble) gameRuleObject)?.ValueDouble == value;
-                public static bool operator !=(GameRuleObject gameRuleObject, double value) => !(gameRuleObject == value);
+                public static bool operator ==(string value, GameRuleObject gameRuleObject) => gameRuleObject == value;
+                public static bool operator !=(string value, GameRuleObject gameRuleObject) => gameRuleObject != value;
 
-                public static bool operator ==(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger) gameRuleObject)?.ValueInt == value;
-                public static bool operator !=(GameRuleObject gameRuleObject, int value) => !(gameRuleObject == value);
 
                 public static bool operator ==(GameRuleObject gameRuleObject, bool value) => ((GameRuleBoolean) gameRuleObject)?.ValueBool == value;
                 public static bool operator !=(GameRuleObject gameRuleObject, bool value) => !(gameRuleObject == value);
+                public static bool operator ==(bool value, GameRuleObject gameRuleObject) => gameRuleObject == value;
+                public static bool operator !=(bool value, GameRuleObject gameRuleObject) => gameRuleObject != value;
 
+
+                public static bool operator ==(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger)gameRuleObject)?.ValueInt == value;
+                public static bool operator !=(GameRuleObject gameRuleObject, int value) => !(gameRuleObject == value);
+                public static bool operator ==(int value, GameRuleObject gameRuleObject) => gameRuleObject == value;
+                public static bool operator !=(int value, GameRuleObject gameRuleObject) => gameRuleObject != value;
+                public static int operator +(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger)gameRuleObject)?.ValueInt + value ?? 0;
+                public static int operator -(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger)gameRuleObject)?.ValueInt - value ?? 0;
+                public static int operator +(int value, GameRuleObject gameRuleObject) => value + ((GameRuleInteger)gameRuleObject)?.ValueInt ?? 0;
+                public static int operator -(int value, GameRuleObject gameRuleObject) => value - ((GameRuleInteger)gameRuleObject)?.ValueInt ?? 0;
+                public static int operator *(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger)gameRuleObject)?.ValueInt * value ?? 0;
+                public static int operator /(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger)gameRuleObject)?.ValueInt / value ?? 0;
+                public static int operator *(int value, GameRuleObject gameRuleObject) => value * ((GameRuleInteger)gameRuleObject)?.ValueInt ?? 0;
+                public static int operator /(int value, GameRuleObject gameRuleObject) => value / ((GameRuleInteger)gameRuleObject)?.ValueInt ?? 0;
+                public static bool operator >(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger)gameRuleObject)?.ValueInt > value;
+                public static bool operator <(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger)gameRuleObject)?.ValueInt < value;
+                public static bool operator >(int value, GameRuleObject gameRuleObject) => value > ((GameRuleInteger)gameRuleObject)?.ValueInt;
+                public static bool operator <(int value, GameRuleObject gameRuleObject) => value < ((GameRuleInteger)gameRuleObject)?.ValueInt;
+                public static bool operator >=(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger)gameRuleObject)?.ValueInt >= value;
+                public static bool operator <=(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger)gameRuleObject)?.ValueInt <= value;
+                public static bool operator >=(int value, GameRuleObject gameRuleObject) => value >= ((GameRuleInteger)gameRuleObject)?.ValueInt;
+                public static bool operator <=(int value, GameRuleObject gameRuleObject) => value <= ((GameRuleInteger)gameRuleObject)?.ValueInt;
+                
+                // TODO: Epsilon
+                public static bool operator ==(GameRuleObject gameRuleObject, double value) => ((GameRuleDouble) gameRuleObject)?.ValueDouble == value;
+                public static bool operator !=(GameRuleObject gameRuleObject, double value) => !(gameRuleObject == value);
+                public static bool operator ==(double value, GameRuleObject gameRuleObject) => gameRuleObject == value;
+                public static bool operator !=(double value, GameRuleObject gameRuleObject) => gameRuleObject != value;
+                public static double operator +(GameRuleObject gameRuleObject, double value) => ((GameRuleDouble) gameRuleObject)?.ValueDouble + value ?? 0.0d;
+                public static double operator -(GameRuleObject gameRuleObject, double value) => ((GameRuleDouble) gameRuleObject)?.ValueDouble - value ?? 0.0d;
+                public static double operator +(double value, GameRuleObject gameRuleObject) => value + ((GameRuleDouble) gameRuleObject)?.ValueDouble ?? 0.0d;
+                public static double operator -(double value, GameRuleObject gameRuleObject) => value - ((GameRuleDouble) gameRuleObject)?.ValueDouble ?? 0.0d;
+                public static double operator *(GameRuleObject gameRuleObject, double value) => ((GameRuleDouble) gameRuleObject)?.ValueDouble * value ?? 0.0d;
+                public static double operator /(GameRuleObject gameRuleObject, double value) => ((GameRuleDouble) gameRuleObject)?.ValueDouble / value ?? 0.0d;
+                public static double operator *(double value, GameRuleObject gameRuleObject) => value * ((GameRuleDouble) gameRuleObject)?.ValueDouble ?? 0.0d;
+                public static double operator /(double value, GameRuleObject gameRuleObject) => value / ((GameRuleDouble) gameRuleObject)?.ValueDouble ?? 0.0d;
                 public static bool operator >(GameRuleObject gameRuleObject, double value) => ((GameRuleDouble) gameRuleObject)?.ValueDouble > value;
                 public static bool operator <(GameRuleObject gameRuleObject, double value) => ((GameRuleDouble) gameRuleObject)?.ValueDouble < value;
+                public static bool operator >(double value, GameRuleObject gameRuleObject) => value > ((GameRuleDouble) gameRuleObject)?.ValueDouble;
+                public static bool operator <(double value, GameRuleObject gameRuleObject) => value < ((GameRuleDouble) gameRuleObject)?.ValueDouble;
+                public static bool operator >=(GameRuleObject gameRuleObject, double value) => ((GameRuleDouble) gameRuleObject)?.ValueDouble >= value;
+                public static bool operator <=(GameRuleObject gameRuleObject, double value) => ((GameRuleDouble) gameRuleObject)?.ValueDouble <= value;
+                public static bool operator >=(double value, GameRuleObject gameRuleObject) => value >= ((GameRuleDouble) gameRuleObject)?.ValueDouble;
+                public static bool operator <=(double value, GameRuleObject gameRuleObject) => value <= ((GameRuleDouble) gameRuleObject)?.ValueDouble;
 
-                public static bool operator >(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger) gameRuleObject)?.ValueInt > value;
-                public static bool operator <(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger) gameRuleObject)?.ValueInt < value;
 
 
                 public abstract override string ToString();
@@ -210,30 +237,21 @@ namespace P3D.Legacy.Core.GameModes
                 {
                     if (ReferenceEquals(null, obj)) return false;
                     if (ReferenceEquals(this, obj)) return true;
-                    //if (obj.GetType() != GetType()) return false;
                     return Equals((GameRuleObject)obj);
                 }
                 protected bool Equals(GameRuleObject other)
                 {
                     if (this is GameRuleString && other is GameRuleString)
-                    {
                         return Equals(((GameRuleString)this).ValueString, ((GameRuleString)other).ValueString);
-                    }
 
                     if (this is GameRuleDouble && other is GameRuleDouble)
-                    {
                         return Equals(((GameRuleDouble) this).ValueDouble, ((GameRuleDouble) other).ValueDouble);
-                    }
 
                     if (this is GameRuleInteger && other is GameRuleInteger)
-                    {
                         return Equals(((GameRuleInteger)this).ValueInt, ((GameRuleInteger)other).ValueInt);
-                    }
 
                     if (this is GameRuleBoolean && other is GameRuleBoolean)
-                    {
                         return Equals(((GameRuleBoolean)this).ValueBool, ((GameRuleBoolean)other).ValueBool);
-                    }
 
                     return false;
                 }
@@ -247,14 +265,6 @@ namespace P3D.Legacy.Core.GameModes
 
                 public override string ToString() => ValueString;
             }
-            public class GameRuleDouble : GameRuleObject
-            {
-                public double ValueDouble { get; set; }
-
-                public GameRuleDouble(double value) { ValueDouble = value; }
-
-                public override string ToString() => ValueDouble.ToString(CultureInfo.InvariantCulture);
-            }
             public class GameRuleInteger : GameRuleObject
             {
                 public int ValueInt { get; set; }
@@ -262,6 +272,14 @@ namespace P3D.Legacy.Core.GameModes
                 public GameRuleInteger(int value) { ValueInt = value; }
 
                 public override string ToString() => ValueInt.ToString(CultureInfo.InvariantCulture);
+            }
+            public class GameRuleDouble : GameRuleObject
+            {
+                public double ValueDouble { get; set; }
+
+                public GameRuleDouble(double value) { ValueDouble = value; }
+
+                public override string ToString() => ValueDouble.ToString(CultureInfo.InvariantCulture);
             }
             public class GameRuleBoolean : GameRuleObject
             {

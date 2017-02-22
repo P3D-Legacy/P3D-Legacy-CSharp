@@ -171,7 +171,7 @@ namespace P3D.Legacy.Core.Resources.Sound
             if (!_muted)
             {
                 string soundfile = "Cries\\" + number + ".xnb";
-                if (GameModeManager.ContentFileExists("Sounds\\" + soundfile))
+                if (GameModeManager.ContentFileExistsAsync("Sounds\\" + soundfile).Result)
                 {
                     AddSound("Cries\\" + number, false);
 

@@ -37,11 +37,11 @@ namespace P3D.Legacy.Core.GameModes.YamlConverters
             if (bool.TryParse(value, out bool b))
                 return new GameRuleBoolean(b);
 
-            if (double.TryParse(value, out double d))
-                return new GameRuleDouble(d);
-
             if (int.TryParse(value, out int i))
                 return new GameRuleInteger(i);
+
+            if (double.TryParse(value, out double d))
+                return new GameRuleDouble(d);
 
             return new GameRuleString(value);
         }

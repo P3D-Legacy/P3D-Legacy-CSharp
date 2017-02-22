@@ -986,7 +986,7 @@ namespace P3D.Legacy.Core.Pokemon
         {
             SpecialReactionList.Clear();
 
-            var file = GameModeManager.GetContentFile("Data\\interactions.dat").Result;
+            var file = GameModeManager.GetContentFileAsync("Data\\interactions.dat").Result;
             FileValidation.CheckFileValid(file, false, "PokemonInteractions.vb");
 
             string[] data = file.ReadAllTextAsync().Result.Split(new [] {Environment.NewLine}, StringSplitOptions.None);

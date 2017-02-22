@@ -123,7 +123,7 @@ nextScript:
                     Logger.Debug("Start script (ID: " & Input & ")")
                     l.ScriptName = "Type: Script; Input: " & Input
 
-                    Dim path As String = GameModeManager.GetScriptPath(Input & ".dat")
+                    Dim path As String = GameModeManager.GetScriptFileAsync(Input & ".dat").Result.Path
                     FileValidation.CheckFileValid(path, False, "ActionScript.vb")
 
                     If System.IO.File.Exists(path) = True Then

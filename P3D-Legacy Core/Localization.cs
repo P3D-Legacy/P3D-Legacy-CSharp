@@ -29,7 +29,7 @@ namespace P3D.Legacy.Core
 
             if (GameModeManager.GameModeCount > 0)
             {
-                var gameModeLocalizationPath = GameModeManager.ActiveGameMode.LocalizationsFolder;
+                var gameModeLocalizationPath = GameModeManager.ActiveGameMode.LocalizationFolder;
                 if (gameModeLocalizationPath != StorageInfo.LocalizationFolder)
                     LoadTokenFile(gameModeLocalizationPath, true); // -- Load GameMode Translation.
             }
@@ -55,7 +55,7 @@ namespace P3D.Legacy.Core
 
             if (GameModeManager.GameModeCount > 0)
             {
-                var gameModeLocalizationPath = GameModeManager.ActiveGameMode.LocalizationsFolder;
+                var gameModeLocalizationPath = GameModeManager.ActiveGameMode.LocalizationFolder;
                 if (gameModeLocalizationPath != StorageInfo.LocalizationFolder)
                     LoadTokenFile(gameModeLocalizationPath, true);
             }

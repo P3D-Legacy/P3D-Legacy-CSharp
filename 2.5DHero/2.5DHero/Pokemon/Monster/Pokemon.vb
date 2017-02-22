@@ -189,7 +189,8 @@ Public Class Pokemon
     ''' Checks if a requested Pokémon data file exists.
     ''' </summary>
     Public Shared Function PokemonDataExists(ByVal Number As Integer) As Boolean
-        Return System.IO.File.Exists(GameModeManager.GetPokemonDataFilePath(Number.ToString() & ".dat"))
+        ' TODO
+        Return System.IO.File.Exists(GameModeManager.GetPokemonDataFileAsync(Number.ToString() & ".dat").Result.Path)
     End Function
 
     ''' <summary>

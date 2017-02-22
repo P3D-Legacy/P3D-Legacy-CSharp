@@ -23,7 +23,7 @@ Public Class Trainer
     Public Sub New(ByVal TrainerFile As String)
         Me.TrainerFile = TrainerFile
 
-        Dim path As String = GameModeManager.GetScriptPath("Trainer\" & TrainerFile & ".trainer")
+        Dim path As String = GameModeManager.GetScriptFileAsync("Trainer\" & TrainerFile & ".trainer").Result.Path
         FileValidation.CheckFileValid(path, False, "Trainer.vb")
 
         Dim Data() As String = System.IO.File.ReadAllLines(path)

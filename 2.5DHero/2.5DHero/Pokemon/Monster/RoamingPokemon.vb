@@ -40,7 +40,7 @@ Public Class RoamingPokemon
                 End If
 
                 If CInt(data(2)) = worldID Or worldID = -1 Then
-                    Dim regionsFile As String = GameModeManager.GetScriptPath("worldmap\roaming_regions.dat")
+                    Dim regionsFile As String = GameModeManager.GetScriptFileAsync("worldmap\roaming_regions.dat").Result.Path
                     FileValidation.CheckFileValid(regionsFile, False, "RoamingPokemon.vb")
 
                     Dim worldList As List(Of String) = System.IO.File.ReadAllLines(regionsFile).ToList()

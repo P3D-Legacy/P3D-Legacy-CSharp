@@ -99,7 +99,7 @@ Public Class LevelLoader
             sessionMapsLoaded.Add(levelPath)
         End If
 
-        Dim levelFile = GameModeManager.GetMapFile(levelPath).Result
+        Dim levelFile = GameModeManager.GetMapFileAsync(levelPath).Result
         levelPath = levelFile.Path
         Logger.Debug("Loading map: " & levelPath)
         ' TODO
@@ -482,7 +482,7 @@ Public Class LevelLoader
         Dim structureKey As String = MapOffset.X.ToString() & "|" & MapOffset.Y.ToString() & "|" & MapOffset.Z.ToString() & "|" & MapName
 
         If tempStructureList.ContainsKey(structureKey) = False Then
-            Dim filepath As String = GameModeManager.GetMapFile(MapName).Result.Path
+            Dim filepath As String = GameModeManager.GetMapFileAsync(MapName).Result.Path
             'TODO
             'FileValidation.CheckFileValid(filepath, False, "LevelLoader.vb/StructureSpawner")
 

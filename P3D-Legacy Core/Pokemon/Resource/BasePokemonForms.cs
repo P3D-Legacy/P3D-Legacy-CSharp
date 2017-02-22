@@ -135,7 +135,8 @@ namespace P3D.Legacy.Core.Pokemon.Resource
         /// <param name="AdditionalData">The additional data of the Pokémon.</param>
         public static string GetPokemonDataFile(int Number, string AdditionalData)
         {
-            string FileName = GameModeManager.GetPokemonDataFilePath(Number.ToString() + ".dat");
+            // TODO
+            string FileName = GameModeManager.GetPokemonDataFileAsync(Number.ToString() + ".dat").Result.Path;
 
             string Addition = "";
 
@@ -155,7 +156,8 @@ namespace P3D.Legacy.Core.Pokemon.Resource
             if (System.IO.File.Exists(FileName) == false)
             {
                 Number = 10;
-                FileName = GameModeManager.GetPokemonDataFilePath(Number.ToString() + ".dat");
+                // TODO
+                FileName = GameModeManager.GetPokemonDataFileAsync(Number + ".dat").Result.Path;
             }
 
             return FileName;

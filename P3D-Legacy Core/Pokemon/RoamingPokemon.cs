@@ -53,7 +53,7 @@ namespace P3D.Legacy.Core.Pokemon
 
                     if (Convert.ToInt32(data[2]) == worldID || worldID == -1)
                     {
-                        string regionsFile = GameModeManager.GetScriptPath("worldmap\\roaming_regions.dat");
+                        string regionsFile = GameModeManager.GetScriptFileAsync("worldmap\\roaming_regions.dat").Result.Path;
                         // TODO
                         //Security.FileValidation.CheckFileValid(regionsFile, false, "RoamingPokemon.vb");
 

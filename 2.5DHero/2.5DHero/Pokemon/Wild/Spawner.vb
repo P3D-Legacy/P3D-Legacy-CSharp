@@ -33,7 +33,7 @@ Public Class Spawner
             pokeFile = InputPokeFile
         End If
 
-        Dim pokeFilePath As String = GameModeManager.GetPokeFilePath(pokeFile)
+        Dim pokeFilePath As String = GameModeManager.GetPokeFileAsync(pokeFile).Result.Path
 
         If System.IO.File.Exists(pokeFilePath) = True Then
             FileValidation.CheckFileValid(pokeFilePath, False, "Spawner.vb")

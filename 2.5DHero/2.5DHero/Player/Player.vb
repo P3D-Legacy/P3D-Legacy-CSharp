@@ -471,7 +471,7 @@ Public Class Player
             ContentPackManager.Load(GameController.GamePath & "\ContentPacks\" & s & "\exceptions.dat")
         Next
 
-        Await GameModeManager.CreateDefaultGameMode()
+        Await GameModeManager.CreateDefaultGameModeAsync()
 
         ScriptStorage.Clear()
         ScriptBlock.TriggeredScriptBlock = False

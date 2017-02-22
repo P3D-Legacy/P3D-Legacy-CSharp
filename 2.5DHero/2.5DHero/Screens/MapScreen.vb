@@ -97,7 +97,7 @@ Public Class MapScreen
         Dim TempPoke As New List(Of Roaming)
         Dim RoamingPokeName As New List(Of String)
 
-        Dim path As String = GameModeManager.GetScriptPath("worldmap\" & Me.currentRegion & ".dat")
+        Dim path As String = GameModeManager.GetScriptFileAsync("worldmap\" & Me.currentRegion & ".dat").Result.Path
         FileValidation.CheckFileValid(path, False, "MapScreen.vb")
 
         Dim InputData() As String = System.IO.File.ReadAllLines(path)

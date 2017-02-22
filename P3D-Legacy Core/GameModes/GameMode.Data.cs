@@ -4,19 +4,12 @@ using Microsoft.Xna.Framework;
 
 using P3D.Legacy.Core.Storage;
 
-using PCLExt.FileStorage;
-
 // IO:
 namespace P3D.Legacy.Core.GameModes
 {
     public partial class GameMode
     {
-        /// <summary>
-        /// The name of the directory this GameMode is placed in.
-        /// </summary>
-        public IFolder Path => StorageInfo.GameModesFolder.CreateFolderAsync(Name, CreationCollisionOption.OpenIfExists).Result;
-
-
+        public bool IsDefaultGamemode => Name == "Pokemon 3D";
 
         #region "GameMode"
 
@@ -43,37 +36,22 @@ namespace P3D.Legacy.Core.GameModes
         /// <summary>
         /// The MapPath used from this GameMode to load maps from.
         /// </summary>
-        public ContentFolder MapsFolder { get; set; } = StorageInfo.MapsFolder;
+        public MapsFolder MapFolder { get; set; } = StorageInfo.MapFolder;
 
         /// <summary>
         /// The ScriptPath from this GameMode to load scripts from.
         /// </summary>
-        public string ScriptPath
-        {
-            get { return _scriptPath.Replace("$Mode", "\\GameModes\\" + Name); }
-            set { _scriptPath = value; }
-        }
-        private string _scriptPath = string.Empty;
+        public ScriptsFolder ScriptFolder { get; set; } = StorageInfo.ScriptFolder;
 
         /// <summary>
         /// The .poke file directory from this GameMode.
         /// </summary>
-        public string PokeFilePath
-        {
-            get { return _pokeFilePath.Replace("$Mode", "\\GameModes\\" + Name); }
-            set { _pokeFilePath = value; }
-        }
-        private string _pokeFilePath = string.Empty;
+        public PokeFolder PokeFolder { get; set; } = StorageInfo.PokeFolder;
 
         /// <summary>
         /// The Pokemon Data path to load Pokemon data from.
         /// </summary>
-        public string PokemonDataPath
-        {
-            get { return _pokemonDataPath.Replace("$Mode", "\\GameModes\\" + Name); }
-            set { _pokemonDataPath = value; }
-        }
-        private string _pokemonDataPath = string.Empty;
+        public PokemonDataFolder PokemonDataFolder { get; set; } = StorageInfo.PokemonDataFolder;
 
         /// <summary>
         /// The Content path to load images, sounds and music from.
@@ -83,7 +61,7 @@ namespace P3D.Legacy.Core.GameModes
         /// <summary>
         /// The Localizations path to load additional tokens from. Tokens that are already existing get overritten.
         /// </summary>
-        public LocalizationFolder LocalizationsFolder { get; set; } = StorageInfo.LocalizationFolder;
+        public LocalizationFolder LocalizationFolder { get; set; } = StorageInfo.LocalizationFolder;
 
         /// <summary>
         /// The GameRules that apply to this GameMode.

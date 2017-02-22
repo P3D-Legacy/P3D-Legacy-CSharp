@@ -111,7 +111,7 @@ namespace P3D.Legacy.Core
 
         public static async void LoadContent()
         {
-            await GameModeManager.LoadGameModes();
+            await GameModeManager.LoadGameModesAsync();
             Logger.Debug("Loaded game modes.");
 
             FontManager.LoadFonts();

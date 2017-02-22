@@ -947,7 +947,7 @@ Public Class Level
             World.Initialize(Screen.Level.EnvironmentType, Screen.Level.WeatherType)
 
             'If this map is on the restplaces list, set the player's last restplace to this map.
-            Dim restplaces As List(Of String) = GameModeManager.GetMapFile("restplaces.dat").Result.ReadAllTextAsync().Result.Split(Environment.NewLine).ToList()
+            Dim restplaces As List(Of String) = GameModeManager.GetMapFileAsync("restplaces.dat").Result.ReadAllTextAsync().Result.Split(Environment.NewLine).ToList()
 
             For Each line As String In restplaces
                 Dim place As String = line.GetSplit(0, "|")

@@ -705,7 +705,7 @@ Public Class PokemonInteractions
     Public Shared Sub Load()
         SpecialReactionList.Clear()
 
-        Dim path As IFile = GameModeManager.GetContentFile("Data\interactions.dat").Result
+        Dim path As IFile = GameModeManager.GetContentFileAsync("Data\interactions.dat").Result
         FileValidation.CheckFileValid(path, False, "PokemonInteractions.vb")
 
         Dim data() As String = System.IO.File.ReadAllLines(path.Path)
