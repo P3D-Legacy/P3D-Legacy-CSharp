@@ -54,7 +54,8 @@ namespace P3D.Legacy.Core.Pokemon
                     if (Convert.ToInt32(data[2]) == worldID || worldID == -1)
                     {
                         string regionsFile = GameModeManager.GetScriptPath("worldmap\\roaming_regions.dat");
-                        Security.FileValidation.CheckFileValid(regionsFile, false, "RoamingPokemon.vb");
+                        // TODO
+                        //Security.FileValidation.CheckFileValid(regionsFile, false, "RoamingPokemon.vb");
 
                         List<string> worldList = System.IO.File.ReadAllLines(regionsFile).ToList();
                         List<string> levelList = new List<string>();

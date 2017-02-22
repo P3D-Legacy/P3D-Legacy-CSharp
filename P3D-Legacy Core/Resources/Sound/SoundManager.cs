@@ -101,7 +101,7 @@ namespace P3D.Legacy.Core.Resources.Sound
 
         private static bool TryAddGameModeSound(string name)
         {
-            var soundfile = GameController.GamePath + GameModeManager.ActiveGameMode.ContentPath + "Sounds\\" + name + ".xnb";
+            var soundfile = GameController.GamePath + GameModeManager.ActiveGameMode.ContentFolder + "Sounds\\" + name + ".xnb";
             return File.Exists(soundfile) && AddSound(name, false);
         }
 

@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 
 using P3D.Legacy.Core.Data;
 using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Storage;
 
+using PCLExt.FileStorage;
+
+// IO:
 namespace P3D.Legacy.Core
 {
     public static class Localization
@@ -22,13 +25,13 @@ namespace P3D.Legacy.Core
 
             Logger.Debug($"Loaded language [{Language.Name}]");
 
-            LoadTokenFile(GameMode.DefaultLocalizationsPath, false);
+            LoadTokenFile(StorageInfo.LocalizationFolder, false); // -- Load Game Translation.
 
             if (GameModeManager.GameModeCount > 0)
             {
-                var gameModeLocalizationPath = GameModeManager.ActiveGameMode.LocalizationsPath;
-                if (gameModeLocalizationPath != GameMode.DefaultLocalizationsPath)
-                    LoadTokenFile(gameModeLocalizationPath, true);
+                var gameModeLocalizationPath = GameModeManager.ActiveGameMode.LocalizationsFolder;
+                if (gameModeLocalizationPath != StorageInfo.LocalizationFolder)
+                    LoadTokenFile(gameModeLocalizationPath, true); // -- Load GameMode Translation.
             }
         }
 
@@ -52,29 +55,28 @@ namespace P3D.Legacy.Core
 
             if (GameModeManager.GameModeCount > 0)
             {
-                var gameModeLocalizationPath = GameModeManager.ActiveGameMode.LocalizationsPath;
-                if (gameModeLocalizationPath != GameMode.DefaultLocalizationsPath)
+                var gameModeLocalizationPath = GameModeManager.ActiveGameMode.LocalizationsFolder;
+                if (gameModeLocalizationPath != StorageInfo.LocalizationFolder)
                     LoadTokenFile(gameModeLocalizationPath, true);
             }
 
             Logger.Debug("---Reloaded GameMode Tokens---");
         }
 
-        private static void LoadTokenFile(string path, bool isGameModeFile)
+        private static void LoadTokenFile(ILocalizationFolder localizationFolder, bool isGameModeFile)
         {
-            var fullpath = Path.Combine(GameController.GamePath, path);
+            var defaultLanguage = new CultureInfo("en");
 
-            if (Directory.GetFiles(fullpath).Length > 0)
+            if (localizationFolder.GetFilesAsync().Result.Count > 0)
             {
-                var datPath = Path.Combine(fullpath, "Tokens_" + Language.Name + ".dat");
+                if (!localizationFolder.CheckTranslationExistsAsync(Language).Result)
+                    Language = defaultLanguage;
 
-                if (!File.Exists(datPath))
-                    Language = new CultureInfo("en");
-
-                if (File.Exists(datPath))
                 {
-                    var tokensFile = File.ReadAllLines(datPath);
-                    foreach (var tokenLine in tokensFile)
+                    var translationFile = localizationFolder.GetTranslationFileAsync(Language).Result;
+                    var data = translationFile.ReadAllTextAsync()
+                        .Result.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                    foreach (var tokenLine in data)
                     {
                         if (tokenLine.Contains(","))
                         {
@@ -85,19 +87,23 @@ namespace P3D.Legacy.Core
                             if (tokenLine.Length > tokenName.Length + 1)
                                 tokenContent = tokenLine.Substring(splitIdx + 1, tokenLine.Length - splitIdx - 1);
 
-                            if (LocalizationTokens.ContainsKey(tokenName) == false)
-                                LocalizationTokens.Add(tokenName, new Token(tokenName, tokenContent, Language, isGameModeFile));
+                            if (!LocalizationTokens.ContainsKey(tokenName))
+                                LocalizationTokens.Add(tokenName,
+                                    new Token(tokenName, tokenContent, Language, isGameModeFile));
                         }
                     }
                 }
 
-                if (Language.Name != "en")
+
+                // -- Load default definitions, the current language may not have everything translated             
+                if (Equals(Language, defaultLanguage))
                 {
-                    var defPath = Path.Combine(fullpath, "Tokens_en.dat");
-                    if (File.Exists(defPath))
+                    if (localizationFolder.CheckTranslationExistsAsync(defaultLanguage).Result)
                     {
-                        var fallbackTokensFile = File.ReadAllLines(defPath);
-                        foreach (var tokenLine in fallbackTokensFile)
+                        var translationFile = localizationFolder.GetTranslationFileAsync(defaultLanguage).Result;
+                        var data = translationFile.ReadAllTextAsync().Result.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+                        foreach (var tokenLine in data)
                         {
                             if (tokenLine.Contains(","))
                             {
@@ -109,7 +115,7 @@ namespace P3D.Legacy.Core
                                     tokenContent = tokenLine.Substring(splitIdx + 1, tokenLine.Length - splitIdx - 1);
 
                                 if (!LocalizationTokens.ContainsKey(tokenName))
-                                    LocalizationTokens.Add(tokenName, new Token(tokenName, tokenContent, new CultureInfo("en"), isGameModeFile));
+                                    LocalizationTokens.Add(tokenName, new Token(tokenName, tokenContent, defaultLanguage, isGameModeFile));
                             }
                         }
                     }

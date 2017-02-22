@@ -44,7 +44,8 @@ namespace P3D.Legacy.Core.Pokemon
         private static BasePokemon GetPredeterminedPokemon(int ID, int level, int pokemon_class)
         {
             string path = GameController.GamePath + "\\Content\\Pokemon\\Data\\frontier\\" + pokemon_class.ToString() + ".dat";
-            Security.FileValidation.CheckFileValid(path, false, "FrontierSpawner.vb");
+            // TODO:
+            //Security.FileValidation.CheckFileValid(path, false, "FrontierSpawner.vb");
 
             List<string> data = System.IO.File.ReadAllLines(path).ToList();
 

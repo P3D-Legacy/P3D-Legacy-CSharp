@@ -12,6 +12,7 @@ Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Security
 Imports P3D.Legacy.Core.World
+Imports PCLExt.FileStorage
 
 Namespace GameJolt
 
@@ -1309,7 +1310,8 @@ Namespace GameJolt
         Public Shared Sub CallID(ByVal ID As String, ByVal checkRegistered As Boolean, ByVal checkLocation As Boolean)
             Dim reg() As String = Core.Player.RegisterData.Split(CChar(","))
 
-            FileValidation.CheckFileValid(GameController.GamePath & "\Scripts\phone\contacts.dat", False, "PokegearScreen.vb")
+            'TODO
+            'FileValidation.CheckFileValid(GameController.GamePath & "\Scripts\phone\contacts.dat", False, "PokegearScreen.vb")
             Dim contactData() As String = System.IO.File.ReadAllLines(GameController.GamePath & "\Scripts\phone\contacts.dat")
 
             Dim tempContacs As New List(Of Contact)
@@ -1914,7 +1916,7 @@ Namespace GameJolt
         Private Sub InitializeRadio()
             Me.InitializedRadio = True
 
-            Dim radioData() As String = System.IO.File.ReadAllLines(GameModeManager.GetContentFilePath("Data\channels.dat"))
+            Dim radioData() As String = GameModeManager.GetContentFile("Data\channels.dat").Result.ReadAllTextAsync().Result.Split(Environment.NewLine)
             For Each line As String In radioData
                 If line.StartsWith("{") = True And line.EndsWith("}") = True Then
                     line = line.Remove(line.Length - 1, 1).Remove(0, 1)
@@ -1933,7 +1935,7 @@ Namespace GameJolt
         Public Shared Function StationCanPlay(ByVal station As RadioStation) As Boolean
             Dim stations As New List(Of IRadioStation)
 
-            Dim file As String = GameModeManager.GetContentFilePath("Data\channels.dat")
+            Dim file As IFile = GameModeManager.GetContentFile("Data\channels.dat")
             FileValidation.CheckFileValid(file, False, "PokegearScreen.vb")
 
             Dim radioData() As String = System.IO.File.ReadAllLines(file)

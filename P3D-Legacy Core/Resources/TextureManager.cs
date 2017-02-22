@@ -79,6 +79,7 @@ namespace P3D.Legacy.Core.Resources
         /// <param name="texturePath">The texturepath to load a texture from.</param>
         public static Texture2D GetTexture(string name, Rectangle r, string texturePath)
         {
+            // -- This is too slow in my opition.
             var tSource = ContentPackManager.GetTextureReplacement(Path.Combine(texturePath, name), r);
             var cContent = ContentPackManager.GetContentManager(tSource.TexturePath, ".xnb,.png");
             var resolution = ContentPackManager.GetTextureResolution(Path.Combine(texturePath, name));

@@ -9,6 +9,7 @@ Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.World
+Imports PCLExt.FileStorage
 
 ''' <summary>
 ''' A class that manages the collection of entities to represent a map.
@@ -946,7 +947,7 @@ Public Class Level
             World.Initialize(Screen.Level.EnvironmentType, Screen.Level.WeatherType)
 
             'If this map is on the restplaces list, set the player's last restplace to this map.
-            Dim restplaces As List(Of String) = System.IO.File.ReadAllLines(GameModeManager.GetMapPath("restplaces.dat")).ToList()
+            Dim restplaces As List(Of String) = GameModeManager.GetMapFile("restplaces.dat").Result.ReadAllTextAsync().Result.Split(Environment.NewLine).ToList()
 
             For Each line As String In restplaces
                 Dim place As String = line.GetSplit(0, "|")

@@ -754,7 +754,7 @@ Namespace BattleSystem
                     End Select
                 End If
 
-                If File.Exists(GameController.GamePath & "\maps\battle\" & levelfile) = False And File.Exists(GameController.GamePath & GameModeManager.ActiveGameMode.MapPath & "battle\" & levelfile) = False Then
+                If File.Exists(GameController.GamePath & "\maps\battle\" & levelfile) = False And File.Exists(GameModeManager.ActiveGameMode.MapsFolder.Path & "battle\" & levelfile) = False Then
                     Select Case Me.defaultMapType
                         Case 0
                             levelfile = cRegion & "0.dat"
@@ -787,7 +787,7 @@ Namespace BattleSystem
                 End If
             End If
 
-            If File.Exists(GameController.GamePath & "\maps\battle\" & levelfile) = False And File.Exists(GameController.GamePath & GameModeManager.ActiveGameMode.MapPath & "battle\" & levelfile) = False Then
+            If File.Exists(GameController.GamePath & "\maps\battle\" & levelfile) = False And File.Exists(GameModeManager.ActiveGameMode.MapsFolder.Path & "battle\" & levelfile) = False Then
                 Select Case Me.defaultMapType
                     Case 0
                         levelfile = "battle0.dat"

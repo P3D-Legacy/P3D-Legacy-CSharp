@@ -4,6 +4,7 @@ Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Data
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
+Imports P3D.Legacy.Core.GameModes
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Objects
 Imports P3D.Legacy.Core.Resources
@@ -12,6 +13,8 @@ Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Security
 Imports P3D.Legacy.Core.Settings
+Imports P3D.Legacy.Core.Storage
+Imports PCLExt.FileStorage
 
 Public Class MainMenuScreen
 
@@ -121,26 +124,13 @@ Public Class MainMenuScreen
         Languages.Clear()
         LanguageNames.Clear()
 
-        For Each file As String In System.IO.Directory.GetFiles(GameController.GamePath & "\Content\Localization\")
-            If file.EndsWith(".dat") = True Then
-                Dim content() As String = System.IO.File.ReadAllLines(file)
-                file = System.IO.Path.GetFileNameWithoutExtension(file)
+        Dim languageFiles = StorageInfo.LocalizationFolder.GetTranslationFilesAsync().Result
+        For Each localizationFile As ILocalizationFile In languageFiles
+            Dim data = localizationFile.ReadAllTextAsync().Result.Split(Environment.NewLine)
+            Dim languageName = data(0).GetSplit(1)
 
-                If file.StartsWith("Tokens_") = True Then
-                    Dim TokenName As String = file.Remove(0, 7)
-                    Dim LanguageName As String = ""
-
-                    For Each line As String In content
-                        If line.StartsWith("language_name,") = True Then
-                            LanguageName = content(0).GetSplit(1)
-
-                            Languages.Add(New CultureInfo(TokenName))
-                            LanguageNames.Add(LanguageName)
-                            Exit For
-                        End If
-                    Next
-                End If
-            End If
+            Languages.Add(localizationFile.Language)
+            LanguageNames.Add(languageName)
         Next
     End Sub
 
@@ -1714,7 +1704,7 @@ Public Class MainMenuScreen
             Dim dispDescription As String = GameMode.Description
             Dim dispVersion As String = GameMode.Version
             Dim dispAuthor As String = GameMode.Author
-            Dim dispContentPath As String = GameMode.ContentPath
+            Dim dispContentPath As String = GameMode.ContentFolder
 
             Me.tempGameModesDisplay = Localization.GetString("gamemode_menu_name") & ": " & dispName & vbNewLine &
                 Localization.GetString("gamemode_menu_version") & ": " & dispVersion & vbNewLine &

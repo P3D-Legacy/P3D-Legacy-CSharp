@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
 
-using P3D.Legacy.Core.Input;
 using P3D.Legacy.Core.Resources;
 using P3D.Legacy.Core.Resources.Sound;
 using P3D.Legacy.Core.Settings.Converters;

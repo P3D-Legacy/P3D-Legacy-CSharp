@@ -1,6 +1,7 @@
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Security
+Imports PCLExt.FileStorage
 
 ''' <summary>
 ''' This class handles all actions regarding badge loading and displaying.
@@ -95,7 +96,7 @@ Public Class Badge
     Public Shared Sub Load()
         Badges.Clear()
 
-        Dim file As String = GameModeManager.GetContentFilePath("Data\badges.dat")
+        Dim file As IFile = GameModeManager.GetContentFile("Data\badges.dat").Result
         FileValidation.CheckFileValid(file, False, "Badge.vb")
         Dim data() As String = System.IO.File.ReadAllLines(file)
         For Each line As String In data

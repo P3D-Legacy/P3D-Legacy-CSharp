@@ -55,7 +55,8 @@ namespace P3D.Legacy.Core.Battle
             this.TrainerFile = TrainerFile;
 
             string path = GameModeManager.GetScriptPath("Trainer\\" + TrainerFile + ".trainer");
-            FileValidation.CheckFileValid(path, false, "Trainer.vb");
+            // TODO:
+            //FileValidation.CheckFileValid(path, false, "Trainer.vb");
 
             string[] Data = System.IO.File.ReadAllLines(path);
 

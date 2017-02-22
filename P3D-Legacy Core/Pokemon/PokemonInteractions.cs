@@ -12,6 +12,7 @@ using P3D.Legacy.Core.Resources.Sound;
 using P3D.Legacy.Core.Screens;
 using P3D.Legacy.Core.Security;
 using P3D.Legacy.Core.World;
+using PCLExt.FileStorage;
 
 namespace P3D.Legacy.Core.Pokemon
 {
@@ -985,10 +986,10 @@ namespace P3D.Legacy.Core.Pokemon
         {
             SpecialReactionList.Clear();
 
-            string path = GameModeManager.GetContentFilePath("Data\\interactions.dat");
-            FileValidation.CheckFileValid(path, false, "PokemonInteractions.vb");
+            var file = GameModeManager.GetContentFile("Data\\interactions.dat").Result;
+            FileValidation.CheckFileValid(file, false, "PokemonInteractions.vb");
 
-            string[] data = System.IO.File.ReadAllLines(path);
+            string[] data = file.ReadAllTextAsync().Result.Split(new [] {Environment.NewLine}, StringSplitOptions.None);
 
             foreach (string line in data)
             {

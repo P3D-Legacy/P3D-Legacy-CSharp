@@ -6,6 +6,7 @@ Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Security
 Imports P3D.Legacy.Core.World
+Imports PCLExt.FileStorage
 
 Public Class SmashRock
 
@@ -141,7 +142,7 @@ Public Class SmashRock
 
     Public Shared Sub Load()
         ItemContainerlist.Clear()
-        Dim File As String = GameModeManager.GetContentFilePath("Data\smashrockitems.dat")
+        Dim File As IFile = GameModeManager.GetContentFile("Data\smashrockitems.dat").Result
         If System.IO.File.Exists(File) = True Then
             FileValidation.CheckFileValid(File, False, "SmashRock.vb")
             Dim data() As String = System.IO.File.ReadAllLines(File)

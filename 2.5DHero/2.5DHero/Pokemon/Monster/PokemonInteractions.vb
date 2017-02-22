@@ -7,6 +7,7 @@ Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Security
 Imports P3D.Legacy.Core.World
+Imports PCLExt.FileStorage
 
 Public Class PokemonInteractions
 
@@ -704,7 +705,7 @@ Public Class PokemonInteractions
     Public Shared Sub Load()
         SpecialReactionList.Clear()
 
-        Dim path As String = GameModeManager.GetContentFilePath("Data\interactions.dat")
+        Dim path As IFile = GameModeManager.GetContentFile("Data\interactions.dat").Result
         FileValidation.CheckFileValid(path, False, "PokemonInteractions.vb")
 
         Dim data() As String = System.IO.File.ReadAllLines(path)

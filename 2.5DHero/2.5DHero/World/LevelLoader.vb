@@ -8,6 +8,7 @@ Imports P3D.Legacy.Core.Resources.Models
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Security
 Imports P3D.Legacy.Core.World
+Imports PCLExt.FileStorage
 
 Public Class LevelLoader
     Inherits BaseLevelLoader
@@ -98,9 +99,11 @@ Public Class LevelLoader
             sessionMapsLoaded.Add(levelPath)
         End If
 
-        levelPath = GameModeManager.GetMapPath(levelPath)
-        Logger.Debug("Loading map: " & levelPath.Remove(0, GameController.GamePath.Length))
-        FileValidation.CheckFileValid(levelPath, False, "LevelLoader.vb")
+        Dim levelFile = GameModeManager.GetMapFile(levelPath).Result
+        levelPath = levelFile.Path
+        Logger.Debug("Loading map: " & levelPath)
+        ' TODO
+        'FileValidation.CheckFileValid(levelPath, False, "LevelLoader.vb")
 
         If IO.File.Exists(levelPath) = False Then
             Logger.Log(Logger.LogTypes.ErrorMessage, "LevelLoader.vb: Error accessing map file """ & levelPath & """. File not found.")
@@ -113,7 +116,9 @@ Public Class LevelLoader
             Exit Sub
         End If
 
-        Dim Data As List(Of String) = IO.File.ReadAllLines(levelPath).ToList()
+        'TODO
+        'Dim Data As List(Of String) = IO.File.ReadAllLines(levelPath).ToList()
+        Dim Data As List(Of String) = levelFile.ReadAllTextAsync().Result.Split(Environment.NewLine).ToList()
         Dim Tags As New Dictionary(Of String, Object)
 
         Me.Offset = offset
@@ -477,8 +482,9 @@ Public Class LevelLoader
         Dim structureKey As String = MapOffset.X.ToString() & "|" & MapOffset.Y.ToString() & "|" & MapOffset.Z.ToString() & "|" & MapName
 
         If tempStructureList.ContainsKey(structureKey) = False Then
-            Dim filepath As String = GameModeManager.GetMapPath(MapName)
-            FileValidation.CheckFileValid(filepath, False, "LevelLoader.vb/StructureSpawner")
+            Dim filepath As String = GameModeManager.GetMapFile(MapName).Result.Path
+            'TODO
+            'FileValidation.CheckFileValid(filepath, False, "LevelLoader.vb/StructureSpawner")
 
             If IO.File.Exists(filepath) = False Then
                 Logger.Log(Logger.LogTypes.ErrorMessage, "LevelLoader.vb: Error loading structure from """ & filepath & """. File not found.")

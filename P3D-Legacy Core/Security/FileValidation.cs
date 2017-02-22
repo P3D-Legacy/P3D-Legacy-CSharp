@@ -6,6 +6,8 @@ using System.Security.Cryptography;
 using System.Text;
 
 using P3D.Legacy.Core.Resources;
+using PCLExt.FileStorage;
+using FileAccess = System.IO.FileAccess;
 
 namespace P3D.Legacy.Core.Security
 {
@@ -117,8 +119,10 @@ namespace P3D.Legacy.Core.Security
         }
         
         private static Dictionary<string, ValidationStorage> FileDictionary { get; } = new Dictionary<string, ValidationStorage>();
-        public static void CheckFileValid(string file, bool relativePath, string origin)
+        public static void CheckFileValid(string file, bool relativePath, string origin) { }
+        public static void CheckFileValid(IFile file, bool relativePath, string origin)
         {
+            /*
             string validationResult = ValidateFile(file, relativePath);
             if (!string.IsNullOrEmpty(validationResult))
             {
@@ -132,10 +136,13 @@ namespace P3D.Legacy.Core.Security
 
                 throw ex;
             }
+            */
         }
-
-        private static string ValidateFile(string file, bool relativePath)
+        private static string ValidateFile(IFile file, bool relativePath)
         {
+            return string.Empty;
+
+            /*
             if (Core.Player.IsGamejoltSave && !GameController.IS_DEBUG_ACTIVE)
             {
                 string filePath = file.Replace("/", "\\");
@@ -158,6 +165,7 @@ namespace P3D.Legacy.Core.Security
                 }
             }
             return "";
+            */
         }
 
         private static string GetMd5FromFile(string file)

@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Data
+Imports P3D.Legacy.Core.GameModes
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
@@ -488,7 +489,7 @@ Public Class NewGameScreen
             "saveCreated|" & GameController.GAMEDEVELOPMENTSTAGE & " " & GameController.GAMEVERSION & vbNewLine &
             "LastPokemonPosition|999,999,999" & vbNewLine &
             "DaycareSteps|0" & vbNewLine &
-            "GameMode|" & GameModeManager.ActiveGameMode.DirectoryName & vbNewLine &
+            "GameMode|" & GameModeManager.ActiveGameMode.Name & vbNewLine &
             "PokeFiles|" & vbNewLine &
             "VisitedMaps|yourroom.dat" & vbNewLine &
             "TempSurfSkin|Hilbert" & vbNewLine &

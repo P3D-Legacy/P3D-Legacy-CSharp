@@ -4,6 +4,8 @@ using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 
 using P3D.Legacy.Core.Data;
+using P3D.Legacy.Core.Storage;
+using PCLExt.FileStorage;
 
 namespace P3D.Legacy.Core.Resources
 {
@@ -18,11 +20,11 @@ namespace P3D.Legacy.Core.Resources
             FontList.Clear();
             //because the pack manager will hoover up replacements from packs and mods already we just load every font name contained in our base files
             var p0 = Path.Combine(GameController.GamePath, "Content", "Fonts", "BMP");
-            foreach (string s in Directory.GetFiles(p0))
+            foreach (string file in Directory.GetFiles(p0))
             {
-                if (s.EndsWith(".xnb"))
+                if (file.EndsWith(".xnb"))
                 {
-                    string name = Path.GetFileNameWithoutExtension(s);
+                    string name = Path.GetFileNameWithoutExtension(file);
                     if (!FontList.ContainsKey(name.ToLower()))
                     {
                         var p1 = Path.Combine("Fonts", "BMP", name);
@@ -37,11 +39,11 @@ namespace P3D.Legacy.Core.Resources
                 var p1 = Path.Combine(GameController.GamePath, "ContentPacks", c, "Content", "Fonts", "BMP");
                 if (Directory.Exists(p1))
                 {
-                    foreach (string s in Directory.GetFiles(p1))
+                    foreach (var file in Directory.GetFiles(p1))
                     {
-                        if (s.EndsWith(".xnb"))
+                        if (file.EndsWith(".xnb"))
                         {
-                            string name = Path.GetFileNameWithoutExtension(s);
+                            var name = Path.GetFileNameWithoutExtension(file);
                             if (!FontList.ContainsKey(name.ToLower()))
                             {
                                 var p2 = Path.Combine("Fonts", "BMP", name);
@@ -53,25 +55,24 @@ namespace P3D.Legacy.Core.Resources
                 }
             }
             //if there's a game mode loaded, look in that too for additional fonts
-            if (GameModeManager.ActiveGameMode.Name != "Kolben")
+            if (!GameModeManager.ActiveGameMode.IsDefaultGamemode)
             {
-                if (GameModeManager.ActiveGameMode.ContentPath != "Content")
+                if (!Equals(GameModeManager.ActiveGameMode.ContentFolder, StorageInfo.ContentFolder))
                 {
-                    var p1 = Path.Combine(GameController.GamePath, GameModeManager.ActiveGameMode.ContentPath, "Fonts", "BMP");
-                    if (Directory.Exists(p1))
+                    var p1 = GameModeManager.ActiveGameMode.ContentFolder
+                        .CreateFolderAsync("Fonts", CreationCollisionOption.OpenIfExists).Result
+                        .CreateFolderAsync("BMP", CreationCollisionOption.OpenIfExists).Result;
+
+                    foreach (var file in p1.GetFilesAsync().Result)
                     {
-                        foreach (string s in Directory.GetFiles(p1))
+                        if (file.Name.EndsWith(".xnb"))
                         {
-                            if (s.EndsWith(".xnb"))
+                            var name = Path.GetFileNameWithoutExtension(file.Name);
+                            if (!FontList.ContainsKey(name.ToLower()))
                             {
-                                string name = s.Substring(0, s.Length - 4);
-                                name = name.Substring(p1.Length);
-                                if (FontList.ContainsKey(name.ToLower()) == false)
-                                {
-                                    var p2 = Path.Combine("Fonts", "BMP", name);
-                                    SpriteFont font = ContentPackManager.GetContentManager(p2, ".xnb").Load<SpriteFont>(p2);
-                                    FontList.Add(name.ToLower(), new FontContainer(name, font));
-                                }
+                                var p2 = Path.Combine("Fonts", "BMP", name);
+                                var font = ContentPackManager.GetContentManager(p2, ".xnb").Load<SpriteFont>(p2);
+                                FontList.Add(name.ToLower(), new FontContainer(name, font));
                             }
                         }
                     }

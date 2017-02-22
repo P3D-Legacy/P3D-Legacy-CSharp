@@ -4,6 +4,7 @@ Imports System.Net
 Imports System.Security.Cryptography
 Imports System.Text
 Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Server
 

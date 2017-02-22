@@ -471,8 +471,7 @@ Public Class Player
             ContentPackManager.Load(GameController.GamePath & "\ContentPacks\" & s & "\exceptions.dat")
         Next
 
-        GameModeManager.CreateGameModesFolder()
-        GameModeManager.CreateKolbenMode()
+        GameModeManager.CreateDefaultGameMode()
 
         ScriptStorage.Clear()
         ScriptBlock.TriggeredScriptBlock = False

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 
@@ -8,9 +8,9 @@ using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 
-namespace P3D.Legacy.Core.Settings.Converters
+namespace P3D.Legacy.Core.GameModes.YamlConverters
 {
-    public class Vector2Converter : IYamlTypeConverter
+    public class Vector3Converter : IYamlTypeConverter
     {
         private static readonly char[] delimiter = new[] { ' ' };
 
@@ -23,22 +23,22 @@ namespace P3D.Legacy.Core.Settings.Converters
         }
 
 
-        public bool Accepts(Type type) => type == typeof(Vector2);
+        public bool Accepts(Type type) => type == typeof(Vector3);
 
         public object ReadYaml(IParser parser, Type type)
         {
             var value = ((Scalar) parser.Current).Value;
             var values = value.Split(delimiter, StringSplitOptions.RemoveEmptyEntries).Select(val => new { val, number = ToSingle(val) }).Where(val => val.number != null).Select(val => val.number.Value).ToArray();
-            if (values.Length != 2) values = new float[] { 0.0f, 0.0f };
+            if (values.Length != 3) values = new float[] { 0.0f, 0.0f, 0.0f };
 
             parser.MoveNext();
-            return new Vector2(values[0], values[1]);
+            return new Vector3(values[0], values[1], values[2]);
         }
 
         public void WriteYaml(IEmitter emitter, object value, Type type)
         {
-            var vector2 = (Vector2) value;
-            emitter.Emit(new Scalar(null, null, $"{vector2.X.ToString(CultureInfo.InvariantCulture)} {vector2.Y.ToString(CultureInfo.InvariantCulture)}", ScalarStyle.Plain, true, false));
+            var vector3 = (Vector3) value;
+            emitter.Emit(new Scalar(null, null, $"{vector3.X.ToString(CultureInfo.InvariantCulture)} {vector3.Y.ToString(CultureInfo.InvariantCulture)} {vector3.Z.ToString(CultureInfo.InvariantCulture)}", ScalarStyle.Plain, true, false));
         }
     }
 }

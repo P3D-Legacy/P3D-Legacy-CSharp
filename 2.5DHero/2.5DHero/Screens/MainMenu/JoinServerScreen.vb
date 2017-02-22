@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Net.Sockets
 Imports System.Net
 Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Objects
 Imports P3D.Legacy.Core.Resources

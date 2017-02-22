@@ -165,8 +165,8 @@ namespace P3D.Legacy.Core.Resources.Sound
 
         private static bool TryAddGameModeMusic(string Name)
         {
-            string musicfileXNB = GameController.GamePath + GameModeManager.ActiveGameMode.ContentPath + "Songs\\" + Name + ".xnb";
-            string musicfileMP3 = GameController.GamePath + GameModeManager.ActiveGameMode.ContentPath + "Songs\\" + Name + ".mp3";
+            string musicfileXNB = GameController.GamePath + GameModeManager.ActiveGameMode.ContentFolder + "Songs\\" + Name + ".xnb";
+            string musicfileMP3 = GameController.GamePath + GameModeManager.ActiveGameMode.ContentFolder + "Songs\\" + Name + ".mp3";
             if (File.Exists(musicfileXNB) || File.Exists(musicfileMP3))
             {
                 return AddSong(Name, false);

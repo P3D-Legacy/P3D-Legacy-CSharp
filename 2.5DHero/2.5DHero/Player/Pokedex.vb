@@ -2,6 +2,7 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Security
+Imports PCLExt.FileStorage
 
 Public Class Pokedex
     Inherits BasePokedex
@@ -16,7 +17,7 @@ Public Class Pokedex
     Public Shared Sub Load()
         Core.Player.Pokedexes.Clear()
 
-        Dim path As String = GameModeManager.GetContentFilePath("Data\pokedex.dat")
+        Dim path As IFile = GameModeManager.GetContentFile("Data\pokedex.dat").Result
         FileValidation.CheckFileValid(path, False, "Pokedex.vb")
 
         Dim lines() As String = System.IO.File.ReadAllLines(path)

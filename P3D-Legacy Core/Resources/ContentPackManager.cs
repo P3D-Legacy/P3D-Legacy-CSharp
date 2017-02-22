@@ -8,7 +8,10 @@ using Microsoft.Xna.Framework.Content;
 
 using P3D.Legacy.Core.Data;
 using P3D.Legacy.Core.Extensions;
+using P3D.Legacy.Core.GameModes;
 using P3D.Legacy.Core.Resources.Sound;
+using P3D.Legacy.Core.Storage;
+using PCLExt.FileStorage;
 
 namespace P3D.Legacy.Core.Resources
 {
@@ -105,11 +108,10 @@ namespace P3D.Legacy.Core.Resources
             }
 
             GameMode gameMode = GameModeManager.ActiveGameMode;
-            if (gameMode.ContentPath != "Content" && !string.IsNullOrEmpty(gameMode.ContentPath))
+            if (!Equals(gameMode.ContentFolder, StorageInfo.ContentFolder))
             {
-                var gameModePath = Path.Combine(GameController.GamePath, gameMode.ContentPath);
-                if (fileEndings.Split(Convert.ToChar(",")).Any(fileEnding => File.Exists(gameModePath + file + fileEnding)))
-                    return new ContentManager(Core.GameInstance.Services, gameMode.ContentPath.Remove(0, 1));
+                if (fileEndings.Split(Convert.ToChar(",")).Any(fileEnding => gameMode.ContentFolder.CheckExistsAsync(file + fileEnding).Result == ExistenceCheckResult.FileExists))
+                    return new ContentManager(Core.GameInstance.Services, gameMode.ContentFolder.Path);
             }
 
             return new ContentManager(Core.GameInstance.Services, "Content");

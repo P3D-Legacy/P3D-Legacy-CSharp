@@ -27,7 +27,7 @@ namespace P3D.Legacy.Core.Pokemon
 
             if (GameModeManager.ActiveGameMode.IsDefaultGamemode == false)
             {
-                foreach (string file in System.IO.Directory.GetFiles(GameController.GamePath + "\\" + GameModeManager.ActiveGameMode.ContentPath + "\\" + PATH, "*.dat"))
+                foreach (string file in System.IO.Directory.GetFiles(GameController.GamePath + "\\" + GameModeManager.ActiveGameMode.ContentFolder + "\\" + PATH, "*.dat"))
                 {
                     LoadMove(file);
                 }

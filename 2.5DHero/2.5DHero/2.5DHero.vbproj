@@ -44,11 +44,18 @@
     <Content Include="Pokemon\Items\_itemList.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="packages.config" />
     <Reference Include="OpenTK">
       <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\DesktopGL\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="PCLExt.FileStorage, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PCLExt.FileStorage.1.0.5\lib\net45\PCLExt.FileStorage.dll</HintPath>
+    </Reference>
+    <Reference Include="PCLExt.FileStorage.Abstractions, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PCLExt.FileStorage.1.0.5\lib\net45\PCLExt.FileStorage.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -158,7 +165,6 @@
     <Compile Include="Network\Servers\PlayerManager.vb" />
     <Compile Include="Network\Servers\PVPLobbyScreen.vb" />
     <Compile Include="Network\Servers\ServerConnection.vb" />
-    <Compile Include="Network\Servers\StreamWriterLock.vb" />
     <Compile Include="Network\UrlEncoder.vb" />
     <Compile Include="Overworld\BackdropRenderer.vb" />
     <Compile Include="Overworld\Minimap.vb" />

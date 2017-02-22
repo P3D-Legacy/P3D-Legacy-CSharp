@@ -6,6 +6,7 @@ using System.Threading;
 using Microsoft.Xna.Framework.Graphics;
 
 using P3D.Legacy.Core.Data;
+using P3D.Legacy.Core.GameModes;
 using P3D.Legacy.Core.Resources;
 using P3D.Legacy.Core.Screens;
 using P3D.Legacy.Core.Security;

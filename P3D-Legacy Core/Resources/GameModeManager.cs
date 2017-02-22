@@ -1,117 +1,104 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
-using P3D.Legacy.Core.Data;
+using P3D.Legacy.Core.GameModes;
+using P3D.Legacy.Core.Storage;
+
+using PCLExt.FileStorage;
 
 namespace P3D.Legacy.Core.Resources
 {
     public static class GameModeManager
     {
         private static List<GameMode> GameModeList { get; } = new List<GameMode>();
-        private static int _gameModePointer;
-
-        public static bool Initialized;
-
-        /// <summary>
-        /// Loads (or reloads) the list of GameModes. The pointer also gets reset.
-        /// </summary>
-        public static void LoadGameModes()
-        {
-            GameModeList.Clear();
-            _gameModePointer = 0;
-
-            CreateKolbenMode();
-
-            var p0 = Path.Combine(GameController.GamePath, "GameModes");
-            foreach (var gameModeFolder in Directory.GetDirectories(p0))
-            {
-                var p1 = Path.Combine(gameModeFolder, "GameMode.dat");
-                if (File.Exists(p1))
-                    AddGameMode(gameModeFolder);
-            }
-
-            SetGameModePointer("Kolben");
-            Initialized = true;
-        }
-
-        public static GameMode GetGameMode(string gameModeDirectory) => GameModeList.FirstOrDefault(gameMode => gameMode.DirectoryName == gameModeDirectory);
-
-        /// <summary>
-        /// Creates the GameModes directory.
-        /// </summary>
-        public static void CreateGameModesFolder()
-        {
-            var p0 = Path.Combine(GameController.GamePath, "GameModes");
-            if (!Directory.Exists(p0))
-                Directory.CreateDirectory(p0);
-        }
-
-        /// <summary>
-        /// Sets the GameModePointer to a new item.
-        /// </summary>
-        /// <param name="gameModeDirectoryName">The directory resembeling the new GameMode.</param>
-        public static void SetGameModePointer(string gameModeDirectoryName)
-        {
-            for (var i = 0; i <= GameModeList.Count - 1; i++)
-            {
-                GameMode gameMode = GameModeList[i];
-                if (gameMode.DirectoryName == gameModeDirectoryName)
-                {
-                    _gameModePointer = i;
-                    Logger.Debug("---Set pointer to \"" + gameModeDirectoryName + "\"!---");
-                    return;
-                }
-            }
-            Logger.Debug("Couldn't find the GameMode \"" + gameModeDirectoryName + "\"!");
-        }
+        private static int GameModePointer { get; set; }
 
         /// <summary>
         /// Returns the amount of loaded GameModes.
         /// </summary>
         public static int GameModeCount => GameModeList.Count;
+        public static bool Initialized { get; set; }
+
+        /// <summary>
+        /// Loads (or reloads) the list of GameModes. The pointer also gets reset.
+        /// </summary>
+        public static async Task LoadGameModes()
+        {
+            GameModeList.Clear();
+            GameModePointer = 0;
+
+            CreateDefaultGameMode();
+
+            foreach (var folder in await StorageInfo.GameModesFolder.GetFoldersAsync())
+                if (await folder.CheckExistsAsync(GameModeYaml.GameModeFilename) == ExistenceCheckResult.FileExists)
+                    await AddGameMode(folder.Name);
+
+            SetGameModePointer("Pokemon 3D");
+            Initialized = true;
+        }
+
+        public static GameMode GetGameMode(string gameModeDirectory) => GameModeList.FirstOrDefault(gameMode => gameMode.Name == gameModeDirectory);
+
+        /// <summary>
+        /// Sets the GameModePointer to a new item.
+        /// </summary>
+        /// <param name="gameModeName">The Name resembeling the new GameMode.</param>
+        public static void SetGameModePointer(string gameModeName)
+        {
+            for (var i = 0; i <= GameModeList.Count - 1; i++)
+                if (GameModeList[i].Name == gameModeName)
+                {
+                    GameModePointer = i;
+                    Logger.Debug("---Set pointer to \"" + gameModeName + "\"!---");
+                    return;
+                }
+
+            Logger.Debug("Couldn't find the GameMode \"" + gameModeName + "\"!");
+        }
 
         /// <summary>
         /// Checks if a GameMode exists.
         /// </summary>
-        public static bool GameModeExists(string gameModePath) => GameModeList.Any(gameMode => gameMode.DirectoryName == gameModePath);
+        public static bool GameModeExists(string gameModePath) => GameModeList.Any(gameMode => gameMode.Name == gameModePath);
 
         /// <summary>
         /// Adds a GameMode to the list.
         /// </summary>
         /// <param name="path">The path of the GameMode directory.</param>
-        private static void AddGameMode(string path)
+        private static async Task AddGameMode(string path)
         {
-            GameMode newGameMode = new GameMode(Path.Combine(path, "GameMode.dat"));
-            if (newGameMode.IsValid)
+            var newGameMode = GameMode.ParseYaml(await GameModeYaml.LoadGameModeYaml(path));//new GameMode(Path.Combine(path, "GameMode.dat"));
+            if (newGameMode != null)
                 GameModeList.Add(newGameMode);
         }
 
         /// <summary>
-        /// Creates the default Kolben GameMode.
+        /// Creates the default GameMode.
         /// </summary>
-        public static void CreateKolbenMode()
+        public static async void CreateDefaultGameMode()
         {
-            var p0 = Path.Combine(GameController.GamePath, "GameModes", "Kolben");
+            var defaultGameModeYaml = GameModeYaml.Default;
 
+            IFolder gameModeFolder;
             bool doCreateKolbenMode = false;
-            if (Directory.Exists(p0))
-                Directory.Delete(p0, true);
 
-            if (!Directory.Exists(p0))
+            if (await StorageInfo.GameModesFolder.CheckExistsAsync(defaultGameModeYaml.Name) == ExistenceCheckResult.NotFound)
             {
                 doCreateKolbenMode = true;
-                Directory.CreateDirectory(p0);
             }
+            gameModeFolder = await StorageInfo.GameModesFolder.CreateFolderAsync(defaultGameModeYaml.Name, CreationCollisionOption.OpenIfExists);
 
-            var p1 = Path.Combine(p0, "GameMode.dat");
-            if (!doCreateKolbenMode && !File.Exists(p1))
+            if (await gameModeFolder.CheckExistsAsync(GameModeYaml.GameModeFilename) == ExistenceCheckResult.NotFound)
+            {
                 doCreateKolbenMode = true;
+            }
 
             if (doCreateKolbenMode)
             {
-                GameMode kolbenMode = GameMode.GetKolbenGameMode();
-                kolbenMode.SaveToFile(p1);
+                GameMode kolbenMode = GameMode.ParseYaml(GameModeYaml.Default);
+                GameModeYaml.SaveGameModeYaml(GameMode.CreateYaml(kolbenMode));
             }
         }
 
@@ -120,7 +107,7 @@ namespace P3D.Legacy.Core.Resources
         /// <summary>
         /// Returns the currently active GameMode.
         /// </summary>
-        public static GameMode ActiveGameMode => GameModeList.Count - 1 >= _gameModePointer ? GameModeList[_gameModePointer] : null;
+        public static GameMode ActiveGameMode => GameModeList.Count - 1 >= GameModePointer ? GameModeList[GameModePointer] : null;
 
         /// <summary>
         /// Returns the GameRules of the currently active GameMode.
@@ -147,21 +134,15 @@ namespace P3D.Legacy.Core.Resources
         /// Returns the correct map path to load a map from.
         /// </summary>
         /// <param name="levelfile">The levelfile containing the map.</param>
-        public static string GetMapPath(string levelFile)
+        public static async Task<IFile> GetMapFile(string levelFile)
         {
-            var p0 = Path.Combine(GameController.GamePath, GameMode.DefaultMapPath, levelFile);
             if (ActiveGameMode.IsDefaultGamemode)
-                return p0;
+                return await StorageInfo.MapsFolder.GetFileAsync(levelFile);
 
-            var p1 = Path.Combine(GameController.GamePath, ActiveGameMode.MapPath, levelFile);
-            if (File.Exists(p1))
-                return p1;
+            if (await ActiveGameMode.MapsFolder.CheckExistsAsync(levelFile) == ExistenceCheckResult.FileExists)
+                return await ActiveGameMode.MapsFolder.GetFileAsync(levelFile);
 
-            var p2 = Path.Combine(GameController.GamePath, GameMode.DefaultMapPath, levelFile);
-            if (p2 != p1)
-                Logger.Log(Logger.LogTypes.Message, "Map file: \"" + ActiveGameMode.MapPath + levelFile + "\" does not exist in the GameMode. The game tries to load the normal file at \"\\maps\\" + levelFile + "\".");
-
-            return p2;
+            return await StorageInfo.MapsFolder.GetFileAsync(levelFile);
         }
 
         /// <summary>
@@ -227,59 +208,37 @@ namespace P3D.Legacy.Core.Resources
             return p0;
         }
 
-        public static string GetLocalizationsPath(string tokensFile)
-        {
-            var p1 = Path.Combine(GameController.GamePath, ActiveGameMode.LocalizationsPath, tokensFile);
-            if (File.Exists(p1))
-                return p1;
-
-            return Path.Combine(GameController.GamePath, GameMode.DefaultLocalizationsPath, tokensFile);
-        }
-
         /// <summary>
         /// Returns the correct Content file path to load content from.
         /// </summary>
         /// <param name="contentFile">The stub file path to the Content file.</param>
-        public static string GetContentFilePath(string contentFile)
+        public static async Task<IFile> GetContentFile(string contentFile)
         {
-            var p1 = Path.Combine(GameController.GamePath, GameMode.DefaultContentPath, contentFile);
             if (ActiveGameMode.IsDefaultGamemode)
-                return p1;
+                return await StorageInfo.ContentFolder.GetFileAsync(contentFile);
 
-            var p2 = Path.Combine(GameController.GamePath, ActiveGameMode.ContentPath, contentFile);
-            if (File.Exists(p2))
-                return p2;
+            if (await ActiveGameMode.ContentFolder.CheckExistsAsync(contentFile) == ExistenceCheckResult.FileExists)
+                return await ActiveGameMode.ContentFolder.GetFileAsync(contentFile);
 
-            return p1;
+            return await StorageInfo.ContentFolder.GetFileAsync(contentFile);
         }
 
         /// <summary>
         /// Checks if a map file exists either in the active GameMode or the default GameMode.
         /// </summary>
         /// <param name="levelFile">The map file to look for.</param>
-        public static bool MapFileExists(string levelFile)
+        public static async Task<bool> MapFileExists(string levelFile)
         {
-            var path = Path.Combine(GameController.GamePath, ActiveGameMode.MapPath, levelFile);
-            var defaultPath = Path.Combine(GameController.GamePath, GameMode.DefaultMapPath, levelFile);
-            if (ActiveGameMode.IsDefaultGamemode)
-                path = defaultPath;
-
-            return File.Exists(path) || File.Exists(defaultPath);
+            var path = await ActiveGameMode.MapsFolder.CheckExistsAsync(levelFile) == ExistenceCheckResult.FileExists;
+            var defaultPath = await StorageInfo.MapsFolder.CheckExistsAsync(levelFile) == ExistenceCheckResult.FileExists;
+            return ActiveGameMode.IsDefaultGamemode ? defaultPath : path || defaultPath;
         }
 
         /// <summary>
         /// Checks if a Content file exists either in the active GameMode or the default GameMode.
         /// </summary>
         /// <param name="contentFile">The Content file to look for.</param>
-        public static bool ContentFileExists(string contentFile)
-        {
-            var path = Path.Combine(GameController.GamePath, ActiveGameMode.ContentPath, contentFile);
-            var defaultPath = Path.Combine(GameController.GamePath, GameMode.DefaultContentPath, contentFile);
-            if (ActiveGameMode.IsDefaultGamemode)
-                path = defaultPath;
-
-            return File.Exists(path) || File.Exists(defaultPath);
-        }
+        public static bool ContentFileExists(string contentFile) => ActiveGameMode.ContentFolder.CheckExistsAsync(contentFile).Result == ExistenceCheckResult.FileExists || StorageInfo.ContentFolder.CheckExistsAsync(contentFile).Result == ExistenceCheckResult.FileExists;
 
         #endregion
 
