@@ -1704,7 +1704,7 @@ Public Class MainMenuScreen
             Dim dispDescription As String = GameMode.Description
             Dim dispVersion As String = GameMode.Version
             Dim dispAuthor As String = GameMode.Author
-            Dim dispContentPath As String = GameMode.ContentFolder
+            Dim dispContentPath As String = GameMode.ContentFolder.Path
 
             Me.tempGameModesDisplay = Localization.GetString("gamemode_menu_name") & ": " & dispName & vbNewLine &
                 Localization.GetString("gamemode_menu_version") & ": " & dispVersion & vbNewLine &

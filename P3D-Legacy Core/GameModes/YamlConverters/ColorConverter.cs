@@ -12,7 +12,6 @@ namespace P3D.Legacy.Core.GameModes.YamlConverters
     public class ColorConverter : IYamlTypeConverter
     {
         private static readonly char[] delimiter = new[] { ' ' };
-
         public static byte? ToByte(string value)
         {
             byte n;

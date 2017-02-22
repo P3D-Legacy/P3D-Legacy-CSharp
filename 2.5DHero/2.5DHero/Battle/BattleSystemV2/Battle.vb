@@ -6572,7 +6572,7 @@ Namespace BattleSystem
                 For i = 0 To expPokemon.Count - 1
                     Dim PokeIndex As Integer = expPokemon(i)
 
-                    If Core.Player.Pokemons(PokeIndex).Level < CInt(GameModeManager.GetGameRuleValue("MaxLevel", "100")) Then
+                    If Core.Player.Pokemons(PokeIndex).Level < GameModeManager.GetActiveGameRuleValueOrDefault("MaxLevel", 100) Then
                         Dim EXP As Integer = BattleCalculation.GainExp(Core.Player.Pokemons(PokeIndex), BattleScreen, expPokemon)
                         BattleScreen.BattleQuery.Add(New TextQueryObject(Core.Player.Pokemons(PokeIndex).GetDisplayName() & " gained " & EXP & " experience points."))
 

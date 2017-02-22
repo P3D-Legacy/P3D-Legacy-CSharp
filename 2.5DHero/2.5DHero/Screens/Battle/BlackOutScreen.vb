@@ -24,7 +24,7 @@ Public Class BlackOutScreen
         Me.BattleScreen = BattleScreen
         Me.Identification = Identifications.BlackOutScreen
 
-        Me.IsGameOver = CBool(GameModeManager.GetGameRuleValue("GameOverAt0Pokemon", "0"))
+        Me.IsGameOver = GameModeManager.GetActiveGameRuleValueOrDefault("GameOverAt0Pokemon", False)
 
         FromBattle = True
     End Sub
@@ -33,7 +33,7 @@ Public Class BlackOutScreen
         Me.PreScreen = currentScreen
         Me.Identification = Identifications.BlackOutScreen
 
-        Me.IsGameOver = CBool(GameModeManager.GetGameRuleValue("GameOverAt0Pokemon", "0"))
+        Me.IsGameOver = GameModeManager.GetActiveGameRuleValueOrDefault("GameOverAt0Pokemon", False)
 
         FromBattle = False
     End Sub

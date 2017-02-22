@@ -253,7 +253,7 @@ Namespace ScriptVersion2
                     Return p.Experience - p.NeedExperience(p.Level)
                 Case "generatefrontier"
                     Dim level As Integer = int(argument.GetSplit(0))
-                    level = level.Clamp(1, CInt(GameModeManager.GetGameRuleValue("MaxLevel", "100")))
+                    level = level.Clamp(1, GameModeManager.GetActiveGameRuleValueOrDefault("MaxLevel", 100))
                     Dim pokemon_class As Integer = int(argument.GetSplit(1))
                     Dim IDPreset As List(Of Integer) = Nothing
 

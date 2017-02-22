@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
+using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
 
-using P3D.Legacy.Core.Extensions;
 using P3D.Legacy.Core.Storage;
 
 using PCLExt.FileStorage;
@@ -15,6 +15,8 @@ namespace P3D.Legacy.Core.GameModes
 {
     public partial class GameMode
     {
+        public static string Pokemon3DGameModeName = "Pokemon 3D";
+
         public static GameMode ParseYaml(GameModeYaml gameModeYaml)
         {
             return new GameMode(
@@ -46,39 +48,7 @@ namespace P3D.Legacy.Core.GameModes
                 gameModeYaml.SkinColors,
                 gameModeYaml.SkinFiles,
                 gameModeYaml.SkinNames);
-
-            /*
-            Name = gameModeYaml.Name;
-            Description = gameModeYaml.Description;
-            Version = gameModeYaml.Version;
-            Author = gameModeYaml.Author;
-
-            MapPath = gameModeYaml.MapPath;
-            ScriptPath = gameModeYaml.ScriptPath;
-            PokeFilePath = gameModeYaml.PokeFilePath;
-            PokemonDataPath = gameModeYaml.PokemonDataPath;
-            ContentFolder = gameModeYaml.ContentFolder;
-            LocalizationsFolder = gameModeYaml.LocalizationsFolder;
-
-            GameRules = gameModeYaml.GameRules;
-
-            StartMap = gameModeYaml.StartMap;
-            StartPosition = gameModeYaml.StartPosition;
-            StartRotation = gameModeYaml.StartRotation;
-            StartLocationName = gameModeYaml.StartLocationName;
-            StartDialogue = gameModeYaml.StartDialogue;
-            StartColor = gameModeYaml.StartColor;
-
-            PokemonAppear = gameModeYaml.PokemonAppear;
-
-            IntroMusic = gameModeYaml.IntroMusic;
-
-            SkinColors = gameModeYaml.SkinColors;
-            SkinFiles = gameModeYaml.SkinFiles;
-            SkinNames = gameModeYaml.SkinNames;
-            */
         }
-
         public static GameModeYaml CreateYaml(GameMode gameMode)
         {
             return new GameModeYaml()
@@ -88,7 +58,7 @@ namespace P3D.Legacy.Core.GameModes
                 Version = gameMode.Version,
                 Author = gameMode.Author,
 
-                MapPath = StorageInfo.ContentFolder,//gameMode.MapPath,
+                MapPath = gameMode.MapsFolder,//gameMode.MapPath,
                 ScriptPath = StorageInfo.ContentFolder,//gameMode.ScriptPath,
                 PokeFilePath = StorageInfo.ContentFolder,//gameMode.PokeFilePath,
                 PokemonDataPath = StorageInfo.ContentFolder,//gameMode.PokemonDataPath,
@@ -114,9 +84,25 @@ namespace P3D.Legacy.Core.GameModes
             };
         }
 
+        public static GameMode LoadPokemon3D() => ParseYaml(GameModeYaml.Pokemon3D);
+
+        public static async Task<GameMode> Load(string name) => ParseYaml(await GameModeYaml.LoadGameModeYaml(name));
+        public static async Task Save(GameMode gameMode) => await GameModeYaml.SaveGameModeYaml(CreateYaml(gameMode));
+        public static async Task<bool> Exists(string name)
+        {
+            if (await StorageInfo.GameModesFolder.CheckExistsAsync(name) == ExistenceCheckResult.NotFound)
+                return false;
+
+            var gameModeFolder = await StorageInfo.GameModesFolder.CreateFolderAsync(name, CreationCollisionOption.OpenIfExists);
+
+            if (await gameModeFolder.CheckExistsAsync(GameModeYaml.GameModeFilename) == ExistenceCheckResult.NotFound)
+                return false;
+
+            return true;
+        }
+
 
         public static readonly string DefaultContentPath = System.IO.Path.Combine("Content");
-        public static readonly string DefaultMapPath = System.IO.Path.Combine("maps");
         public static readonly string DefaultScriptPath = System.IO.Path.Combine("Scripts");
         public static readonly string DefaultPokeFilePath = System.IO.Path.Combine("maps", "poke");
         public static readonly string DefaultPokemonDataPath = System.IO.Path.Combine("Content", "Pokemon", "Data");
@@ -145,14 +131,13 @@ namespace P3D.Legacy.Core.GameModes
         /// <param name="startLocationName">The start location name for the new GameMode.</param>
         /// <param name="startDialogue"></param>
         /// <param name="startColor"></param>
-        /// <param name="pokemonAppear">The Pokémon that appear on the new game screen for the new GameMode.</param>
+        /// <param name="pokemonRange">The Pokémon that appear on the new game screen for the new GameMode.</param>
         /// <param name="introMusic">The intro music that plays on the new game screen for the new GameMode.</param>
         /// <param name="skinColors">The skin colors for the new GameMode. Must be the same amount as SkinFiles and SkinNames.</param>
         /// <param name="skinFiles">The skin files for the new GameMode. Must be the same amount as SkinColors and SkinNames.</param>
         /// <param name="skinNames">The skin names for the new GameMode. Must be the same amount as SkinFiles and SkinColors.</param>
-        private GameMode(string name, string description, string version, string author, IFolder mapPath, string scriptPath, string pokeFilePath, string pokemonDataPath, IFolder contentPath, ILocalizationFolder localizationsPath,
-            List<GameRule> gameRules, string startMap, Vector3 startPosition, float startRotation, string startLocationName, string startDialogue, Color startColor, int[] pokemonRange, string introMusic, List<Color> skinColors,
-            List<string> skinFiles, List<string> skinNames)
+        private GameMode(string name, string description, string version, string author, ContentFolder mapPath, string scriptPath, string pokeFilePath, string pokemonDataPath, ContentFolder contentPath, LocalizationFolder localizationsPath, GameRuleList gameRules,
+            string startMap, Vector3 startPosition, float startRotation, string startLocationName, string startDialogue, Color startColor, int[] pokemonRange, string introMusic, List<Color> skinColors, List<string> skinFiles, List<string> skinNames)
         {
             Name = name;
             Description = description;
@@ -180,31 +165,142 @@ namespace P3D.Legacy.Core.GameModes
         }
 
 
-        
 
-  
-        public class GameRule
+
+        public class GameRuleList : IEnumerable<KeyValuePair<string, GameRuleList.GameRuleObject>>
         {
-            /// <summary>
-            /// The name of this GameRule.
-            /// </summary>
-            public string RuleName { get; }
-
-            /// <summary>
-            /// The Value of this GameRule.
-            /// </summary>
-            public string RuleValue { get; }
-
-            /// <summary>
-            /// Creates a new GameRule.
-            /// </summary>
-            /// <param name="name">The name of the game rule.</param>
-            /// <param name="value">The value of the game rule.</param>
-            public GameRule(string name, string value)
+            public abstract class GameRuleObject
             {
-                RuleName = name;
-                RuleValue = value;
+                public static implicit operator GameRuleObject(string value) => new GameRuleString(value);
+                public static implicit operator string(GameRuleObject value) => (value as GameRuleString)?.ValueString ?? value.ToString();
+
+                public static implicit operator GameRuleObject(double value) => new GameRuleDouble(value);
+                public static implicit operator double(GameRuleObject value) => (value as GameRuleDouble)?.ValueDouble ?? 0.0d;
+
+                public static implicit operator GameRuleObject(int value) => new GameRuleInteger(value);
+                public static implicit operator int(GameRuleObject value) => (value as GameRuleInteger)?.ValueInt ?? 0;
+
+                public static implicit operator GameRuleObject(bool value) => new GameRuleBoolean(value);
+                public static implicit operator bool(GameRuleObject value) => (value as GameRuleBoolean)?.ValueBool ?? false;
+
+
+                public static bool operator ==(GameRuleObject gameRuleObject, string value) => ((GameRuleString) gameRuleObject)?.ValueString == value;
+                public static bool operator !=(GameRuleObject gameRuleObject, string value) => !(gameRuleObject == value);
+                // TODO: Epsilon
+                public static bool operator ==(GameRuleObject gameRuleObject, double value) => ((GameRuleDouble) gameRuleObject)?.ValueDouble == value;
+                public static bool operator !=(GameRuleObject gameRuleObject, double value) => !(gameRuleObject == value);
+
+                public static bool operator ==(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger) gameRuleObject)?.ValueInt == value;
+                public static bool operator !=(GameRuleObject gameRuleObject, int value) => !(gameRuleObject == value);
+
+                public static bool operator ==(GameRuleObject gameRuleObject, bool value) => ((GameRuleBoolean) gameRuleObject)?.ValueBool == value;
+                public static bool operator !=(GameRuleObject gameRuleObject, bool value) => !(gameRuleObject == value);
+
+                public static bool operator >(GameRuleObject gameRuleObject, double value) => ((GameRuleDouble) gameRuleObject)?.ValueDouble > value;
+                public static bool operator <(GameRuleObject gameRuleObject, double value) => ((GameRuleDouble) gameRuleObject)?.ValueDouble < value;
+
+                public static bool operator >(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger) gameRuleObject)?.ValueInt > value;
+                public static bool operator <(GameRuleObject gameRuleObject, int value) => ((GameRuleInteger) gameRuleObject)?.ValueInt < value;
+
+
+                public abstract override string ToString();
+
+
+                public override bool Equals(object obj)
+                {
+                    if (ReferenceEquals(null, obj)) return false;
+                    if (ReferenceEquals(this, obj)) return true;
+                    //if (obj.GetType() != GetType()) return false;
+                    return Equals((GameRuleObject)obj);
+                }
+                protected bool Equals(GameRuleObject other)
+                {
+                    if (this is GameRuleString && other is GameRuleString)
+                    {
+                        return Equals(((GameRuleString)this).ValueString, ((GameRuleString)other).ValueString);
+                    }
+
+                    if (this is GameRuleDouble && other is GameRuleDouble)
+                    {
+                        return Equals(((GameRuleDouble) this).ValueDouble, ((GameRuleDouble) other).ValueDouble);
+                    }
+
+                    if (this is GameRuleInteger && other is GameRuleInteger)
+                    {
+                        return Equals(((GameRuleInteger)this).ValueInt, ((GameRuleInteger)other).ValueInt);
+                    }
+
+                    if (this is GameRuleBoolean && other is GameRuleBoolean)
+                    {
+                        return Equals(((GameRuleBoolean)this).ValueBool, ((GameRuleBoolean)other).ValueBool);
+                    }
+
+                    return false;
+                }
+                public override int GetHashCode() => ToString().GetHashCode();
             }
+            public class GameRuleString : GameRuleObject
+            {
+                public string ValueString { get; set; }
+
+                public GameRuleString(string value) { ValueString = value; }
+
+                public override string ToString() => ValueString;
+            }
+            public class GameRuleDouble : GameRuleObject
+            {
+                public double ValueDouble { get; set; }
+
+                public GameRuleDouble(double value) { ValueDouble = value; }
+
+                public override string ToString() => ValueDouble.ToString(CultureInfo.InvariantCulture);
+            }
+            public class GameRuleInteger : GameRuleObject
+            {
+                public int ValueInt { get; set; }
+
+                public GameRuleInteger(int value) { ValueInt = value; }
+
+                public override string ToString() => ValueInt.ToString(CultureInfo.InvariantCulture);
+            }
+            public class GameRuleBoolean : GameRuleObject
+            {
+                public bool ValueBool { get; set; }
+
+                public GameRuleBoolean(bool value) { ValueBool = value; }
+
+                public override string ToString() => ValueBool.ToString(CultureInfo.InvariantCulture);
+            }
+
+
+            private Dictionary<string, GameRuleObject> GameRuleDictionary { get; } = new Dictionary<string, GameRuleObject>();
+
+            public int Count => GameRuleDictionary.Count;
+
+            public T GetValue<T>(string ruleName) where T : GameRuleObject => (T) GameRuleDictionary[ruleName];
+            public T GetValueOrDefault<T>(string ruleName, T defaultValue) where T : GameRuleObject
+            {
+                if (GameRuleDictionary.TryGetValue(ruleName, out GameRuleObject value))
+                    return (T) value;
+
+                GameRuleDictionary.Add(ruleName, defaultValue);
+                return defaultValue;
+            }
+
+            public void Add(string ruleName, string ruleValue) => GameRuleDictionary.Add(ruleName, ruleValue);
+            public void Add(string ruleName, int ruleValue) => GameRuleDictionary.Add(ruleName, ruleValue);
+            public void Add(string ruleName, bool ruleValue) => GameRuleDictionary.Add(ruleName, ruleValue);
+            public void Add(string ruleName, GameRuleObject ruleValue) => GameRuleDictionary.Add(ruleName, ruleValue);
+
+            public void Remove(string ruleName) => GameRuleDictionary.Remove(ruleName);
+
+            public bool Contains(string ruleName) => GameRuleDictionary.ContainsKey(ruleName);
+
+            public void Clear() => GameRuleDictionary.Clear();
+
+
+            public IEnumerator<KeyValuePair<string, GameRuleObject>> GetEnumerator() => GameRuleDictionary.GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator() => GameRuleDictionary.GetEnumerator();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,8 @@ using P3D.Legacy.Core.GameModes;
 using P3D.Legacy.Core.Storage;
 
 using PCLExt.FileStorage;
+
+using GameRuleObject = P3D.Legacy.Core.GameModes.GameMode.GameRuleList.GameRuleObject;
 
 namespace P3D.Legacy.Core.Resources
 {
@@ -19,7 +22,14 @@ namespace P3D.Legacy.Core.Resources
         /// Returns the amount of loaded GameModes.
         /// </summary>
         public static int GameModeCount => GameModeList.Count;
+
         public static bool Initialized { get; set; }
+
+        /// <summary>
+        /// Returns the currently active GameMode.
+        /// </summary>
+        public static GameMode ActiveGameMode => GameModeList.Count - 1 >= GameModePointer ? GameModeList[GameModePointer] : null;
+
 
         /// <summary>
         /// Loads (or reloads) the list of GameModes. The pointer also gets reset.
@@ -29,7 +39,7 @@ namespace P3D.Legacy.Core.Resources
             GameModeList.Clear();
             GameModePointer = 0;
 
-            CreateDefaultGameMode();
+            await CreateDefaultGameMode();
 
             foreach (var folder in await StorageInfo.GameModesFolder.GetFoldersAsync())
                 if (await folder.CheckExistsAsync(GameModeYaml.GameModeFilename) == ExistenceCheckResult.FileExists)
@@ -66,10 +76,10 @@ namespace P3D.Legacy.Core.Resources
         /// <summary>
         /// Adds a GameMode to the list.
         /// </summary>
-        /// <param name="path">The path of the GameMode directory.</param>
-        private static async Task AddGameMode(string path)
+        /// <param name="name">The name of the GameMode directory.</param>
+        private static async Task AddGameMode(string name)
         {
-            var newGameMode = GameMode.ParseYaml(await GameModeYaml.LoadGameModeYaml(path));//new GameMode(Path.Combine(path, "GameMode.dat"));
+            var newGameMode = await GameMode.Load(name);
             if (newGameMode != null)
                 GameModeList.Add(newGameMode);
         }
@@ -77,63 +87,32 @@ namespace P3D.Legacy.Core.Resources
         /// <summary>
         /// Creates the default GameMode.
         /// </summary>
-        public static async void CreateDefaultGameMode()
+        public static async Task CreateDefaultGameMode()
         {
-            var defaultGameModeYaml = GameModeYaml.Default;
-
-            IFolder gameModeFolder;
-            bool doCreateKolbenMode = false;
-
-            if (await StorageInfo.GameModesFolder.CheckExistsAsync(defaultGameModeYaml.Name) == ExistenceCheckResult.NotFound)
-            {
-                doCreateKolbenMode = true;
-            }
-            gameModeFolder = await StorageInfo.GameModesFolder.CreateFolderAsync(defaultGameModeYaml.Name, CreationCollisionOption.OpenIfExists);
-
-            if (await gameModeFolder.CheckExistsAsync(GameModeYaml.GameModeFilename) == ExistenceCheckResult.NotFound)
-            {
-                doCreateKolbenMode = true;
-            }
-
-            if (doCreateKolbenMode)
-            {
-                GameMode kolbenMode = GameMode.ParseYaml(GameModeYaml.Default);
-                GameModeYaml.SaveGameModeYaml(GameMode.CreateYaml(kolbenMode));
-            }
+            if (!await GameMode.Exists(GameMode.Pokemon3DGameModeName))
+                await GameMode.Save(GameMode.LoadPokemon3D());
         }
 
         #region "Shared GameModeFunctions"
 
         /// <summary>
-        /// Returns the currently active GameMode.
-        /// </summary>
-        public static GameMode ActiveGameMode => GameModeList.Count - 1 >= GameModePointer ? GameModeList[GameModePointer] : null;
-
-        /// <summary>
         /// Returns the GameRules of the currently active GameMode.
         /// </summary>
-        public static List<GameMode.GameRule> GetGameRules() => ActiveGameMode.GameRules;
+        public static GameMode.GameRuleList GetActiveGameRules() => ActiveGameMode.GameRules;
 
         /// <summary>
         /// Returns the Value of a chosen GameRule from the currently active GameMode.
         /// </summary>
         /// <param name="ruleName">The RuleName to search for.</param>
-        public static string GetGameRuleValue(string ruleName, string defaultValue)
-        {
-            start:
-            var rules = GetGameRules();
-            foreach (var rule in rules)
-                if (rule.RuleName.ToLower() == ruleName.ToLower())
-                    return rule.RuleValue;
+        /// <param name="defaultValue"></param>
+        public static GameRuleObject GetActiveGameRuleValueOrDefault(string ruleName, GameRuleObject defaultValue) => GetActiveGameRules().GetValueOrDefault(ruleName, defaultValue);
+        //public static string GetActiveGameRuleValueOrDefault(string ruleName, string defaultValue) => GetActiveGameRules().GetValueOrDefault(ruleName, defaultValue);
 
-            ActiveGameMode.GameRules.Add(new GameMode.GameRule(ruleName, defaultValue));
-            goto start;
-        }
 
         /// <summary>
         /// Returns the correct map path to load a map from.
         /// </summary>
-        /// <param name="levelfile">The levelfile containing the map.</param>
+        /// <param name="levelFile">The levelfile containing the map.</param>
         public static async Task<IFile> GetMapFile(string levelFile)
         {
             if (ActiveGameMode.IsDefaultGamemode)
@@ -223,6 +202,7 @@ namespace P3D.Legacy.Core.Resources
             return await StorageInfo.ContentFolder.GetFileAsync(contentFile);
         }
 
+
         /// <summary>
         /// Checks if a map file exists either in the active GameMode or the default GameMode.
         /// </summary>
@@ -238,7 +218,8 @@ namespace P3D.Legacy.Core.Resources
         /// Checks if a Content file exists either in the active GameMode or the default GameMode.
         /// </summary>
         /// <param name="contentFile">The Content file to look for.</param>
-        public static bool ContentFileExists(string contentFile) => ActiveGameMode.ContentFolder.CheckExistsAsync(contentFile).Result == ExistenceCheckResult.FileExists || StorageInfo.ContentFolder.CheckExistsAsync(contentFile).Result == ExistenceCheckResult.FileExists;
+        public static bool ContentFileExists(string contentFile)
+            => ActiveGameMode.ContentFolder.CheckExistsAsync(contentFile).Result == ExistenceCheckResult.FileExists || StorageInfo.ContentFolder.CheckExistsAsync(contentFile).Result == ExistenceCheckResult.FileExists;
 
         #endregion
 

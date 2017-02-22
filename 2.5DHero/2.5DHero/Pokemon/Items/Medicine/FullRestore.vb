@@ -20,7 +20,7 @@ Namespace Items.Medicine
         End Sub
 
         Public Overrides Sub Use()
-            If CBool(GameModeManager.GetGameRuleValue("CanUseHealItem", "1")) = False Then
+            If GameModeManager.GetActiveGameRuleValueOrDefault("CanUseHealItem", True) = False Then
                 Screen.TextBox.Show("Cannot use heal items.", {}, False, False)
                 Exit Sub
             End If

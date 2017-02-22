@@ -105,7 +105,7 @@ Namespace BattleSystem
 
                     Dim NeedExp As Integer = NextLvExp - currentExp
 
-                    If p.Level = CInt(GameModeManager.GetGameRuleValue("MaxLevel", "100")) Then
+                    If p.Level = CInt(GameModeManager.GetActiveGameRuleValueOrDefault("MaxLevel", 100)) Then
                         NextLvExp = 0
                     Else
                         Dim barPercentage As Integer = CInt((currentExp / NextLvExp) * 100)
@@ -966,7 +966,7 @@ Namespace BattleSystem
                 If Item.IsBall = True Then
                     Core.Player.Inventory.RemoveItem(itemID, 1)
                     If TempBattleScreen.IsTrainerBattle = False Then
-                        If BattleScreen.CanCatch = True Or CBool(GameModeManager.GetGameRuleValue("OnlyCaptureFirst", "0")) = True And Core.Player.PokeFiles.Contains(BattleScreen.TempPokeFile) = True Then
+                        If BattleScreen.CanCatch = True Or GameModeManager.GetActiveGameRuleValueOrDefault("OnlyCaptureFirst", False) = True And Core.Player.PokeFiles.Contains(BattleScreen.TempPokeFile) = True Then
                             TempBattleScreen.BattleQuery.Clear()
                             TempBattleScreen.BattleQuery.Add(TempBattleScreen.FocusBattle())
                             TempBattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))

@@ -195,7 +195,7 @@ Public Class Trainer
                     End If
                     Level += addLevel
 
-                    Dim maxLevel As Integer = CInt(GameModeManager.GetGameRuleValue("MaxLevel", "100"))
+                    Dim maxLevel As Integer = GameModeManager.GetActiveGameRuleValueOrDefault("MaxLevel", 100)
 
                     If Level > maxLevel Then
                         Level = maxLevel

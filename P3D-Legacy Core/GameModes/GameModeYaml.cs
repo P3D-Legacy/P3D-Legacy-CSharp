@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
 using P3D.Legacy.Core.GameModes.YamlConverters;
-
+using P3D.Legacy.Core.Resources;
 using P3D.Legacy.Core.Storage;
 
 using PCLExt.FileStorage;
@@ -18,10 +18,18 @@ namespace P3D.Legacy.Core.GameModes
     {
         public const string GameModeFilename = "GameMode.yml";
 
-        public static SerializerBuilder SerializerBuilder { get; } = new SerializerBuilder().EmitDefaults().WithTypeConverter(new Vector3Converter()).WithTypeConverter(new ColorConverter()).WithTypeConverter(new ILocalizationFolderLocalConverter()).WithTypeConverter(new IFolderLocalConverter());
-        public static DeserializerBuilder DeserializerBuilder { get; } = new DeserializerBuilder().IgnoreUnmatchedProperties().WithTypeConverter(new Vector3Converter()).WithTypeConverter(new ColorConverter()).WithTypeConverter(new ILocalizationFolderLocalConverter()).WithTypeConverter(new IFolderLocalConverter());
+        public static SerializerBuilder SerializerBuilder { get; } = new SerializerBuilder().EmitDefaults()
+            .WithTypeConverter(new Vector3Converter()).WithTypeConverter(new ColorConverter())
+            .WithTypeConverter(new LocalizationFolderLocalConverter()).WithTypeConverter(new ContentFolderLocalConverter())
+            .WithTypeConverter(new GameRuleListConverter());
 
-        public static GameModeYaml Default => new GameModeYaml
+        public static DeserializerBuilder DeserializerBuilder { get; } = new DeserializerBuilder().IgnoreUnmatchedProperties()
+            .WithTypeConverter(new Vector3Converter()).WithTypeConverter(new ColorConverter())
+            .WithTypeConverter(new LocalizationFolderLocalConverter()).WithTypeConverter(new ContentFolderLocalConverter())
+            .WithTypeConverter(new GameRuleListConverter());
+
+
+        public static GameModeYaml Pokemon3D => new GameModeYaml
         {
             Name = "Pokemon 3D",
             Description = "The standard game mode.",
@@ -37,16 +45,16 @@ namespace P3D.Legacy.Core.GameModes
 
             GameRules =
             {
-                new GameMode.GameRule("MaxLevel", "100"),
-                new GameMode.GameRule("OnlyCaptureFirst", "0"),
-                new GameMode.GameRule("ForceRename", "0"),
-                new GameMode.GameRule("DeathInsteadOfFaint", "0"),
-                new GameMode.GameRule("CanUseHealItems", "1"),
-                new GameMode.GameRule("Difficulty", "0"),
-                new GameMode.GameRule("LockDifficulty", "0"),
-                new GameMode.GameRule("GameOverAt0Pokemon", "0"),
-                new GameMode.GameRule("CanGetAchievements", "1"),
-                new GameMode.GameRule("ShowFollowPokemon", "1")
+                {"MaxLevel", 100},
+                { "OnlyCaptureFirst", false},
+                { "ForceRename", false},
+                { "DeathInsteadOfFaint", false},
+                { "CanUseHealItems", true},
+                { "Difficulty", 0},
+                { "LockDifficulty", false},
+                { "GameOverAt0Pokemon", false},
+                { "CanGetAchievements", true},
+                { "ShowFollowPokemon", true}
             },
             
             StartMap = "yourroom.dat",
@@ -90,7 +98,7 @@ namespace P3D.Legacy.Core.GameModes
 
         };
 
-        public static async void SaveGameModeYaml(GameModeYaml gameModeYaml)
+        public static async Task SaveGameModeYaml(GameModeYaml gameModeYaml)
         {
             var serializer = SerializerBuilder.Build();
             var gameModeFolder = await StorageInfo.GameModesFolder.CreateFolderAsync(gameModeYaml.Name, CreationCollisionOption.OpenIfExists);
@@ -104,12 +112,16 @@ namespace P3D.Legacy.Core.GameModes
             {
                 var gameModeFolder = await StorageInfo.GameModesFolder.CreateFolderAsync(gameModeName, CreationCollisionOption.OpenIfExists);
                 var gameModeFile = await gameModeFolder.GetFileAsync(GameModeFilename);
-                var deserialized = deserializer.Deserialize<GameModeYaml>(await gameModeFile.ReadAllTextAsync());
-                return deserialized ?? Default;
+                var data = await gameModeFile.ReadAllTextAsync();
+                var deserialized = deserializer.Deserialize<GameModeYaml>(data);
+                return deserialized ?? Pokemon3D;
             }
-            catch (YamlException) { return Default; }
+            catch (YamlException)
+            {
+                Logger.Log(Logger.LogTypes.Warning, $"Error while trying to deserialize GameMode {gameModeName}");
+                return Pokemon3D;
+            }
         }
-
 
 
 
@@ -137,38 +149,38 @@ namespace P3D.Legacy.Core.GameModes
         /// <summary>
         /// The MapPath used from this GameMode to load maps from.
         /// </summary>
-        public IFolder MapPath { get; set; } = StorageInfo.MapsFolder;
+        public ContentFolder MapPath { get; set; } = StorageInfo.MapsFolder;
 
         /// <summary>
         /// The ScriptPath from this GameMode to load scripts from.
         /// </summary>
-        public IFolder ScriptPath { get; set; } = StorageInfo.ScriptsFolder;
+        public ContentFolder ScriptPath { get; set; } = StorageInfo.ScriptsFolder;
 
         /// <summary>
         /// The .poke file directory from this GameMode.
         /// </summary>
-        public IFolder PokeFilePath { get; set; } = StorageInfo.ContentFolder;
+        public ContentFolder PokeFilePath { get; set; } = StorageInfo.ContentFolder;
 
         /// <summary>
         /// The Pokemon Data path to load Pokemon data from.
         /// </summary>
-        public IFolder PokemonDataPath { get; set; } = StorageInfo.ContentFolder;
+        public ContentFolder PokemonDataPath { get; set; } = StorageInfo.ContentFolder;
 
         /// <summary>
         /// The Content path to load images, sounds and music from.
         /// </summary>
-        public IFolder ContentFolder { get; set; } = StorageInfo.ContentFolder;
+        public ContentFolder ContentFolder { get; set; } = StorageInfo.ContentFolder;
 
         /// <summary>
         /// The Localizations path to load additional tokens from. Tokens that are already existing get overritten.
         /// </summary>
-        public ILocalizationFolder LocalizationsFolder { get; set; } = StorageInfo.LocalizationFolder;
+        public LocalizationFolder LocalizationsFolder { get; set; } = StorageInfo.LocalizationFolder;
 
 
         /// <summary>
         /// The GameRules that apply to this GameMode.
         /// </summary>
-        public List<GameMode.GameRule> GameRules { get; set; } = new List<GameMode.GameRule>();
+        public GameMode.GameRuleList GameRules { get; set; } = new GameMode.GameRuleList();
 
 
         /// <summary>

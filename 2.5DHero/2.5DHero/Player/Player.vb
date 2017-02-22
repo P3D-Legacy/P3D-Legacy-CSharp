@@ -466,12 +466,12 @@ Public Class Player
 
 #Region "Load"
 
-    Public Sub LoadGame(ByVal filePrefix As String) Implements IPlayer.LoadGame
+    Public Async Sub LoadGame(ByVal filePrefix As String) Implements IPlayer.LoadGame
         For Each s As String In Core.GameOptions.ContentPackNames
             ContentPackManager.Load(GameController.GamePath & "\ContentPacks\" & s & "\exceptions.dat")
         Next
 
-        GameModeManager.CreateDefaultGameMode()
+        Await GameModeManager.CreateDefaultGameMode()
 
         ScriptStorage.Clear()
         ScriptBlock.TriggeredScriptBlock = False

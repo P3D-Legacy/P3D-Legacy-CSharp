@@ -1211,7 +1211,7 @@ namespace P3D.Legacy.Core.Pokemon
         public static void CheckForRandomPickup()
         {
             //Checks if the first Pokémon in the party is following the player:
-            if (Screen.Level.ShowOverworldPokemon == true && Convert.ToBoolean(GameModeManager.GetGameRuleValue("ShowFollowPokemon", "1")) == true)
+            if (Screen.Level.ShowOverworldPokemon == true && GameModeManager.GetActiveGameRuleValueOrDefault("ShowFollowPokemon", true) == true)
             {
                 //Checks if the player has a Pokémon:
                 if (Core.Player.Pokemons.Count > 0 && Screen.Level.Surfing == false && Screen.Level.Riding == false && Screen.Level.ShowOverworldPokemon == true && (Core.Player.GetWalkPokemon() != null))

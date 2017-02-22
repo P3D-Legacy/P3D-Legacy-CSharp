@@ -484,7 +484,7 @@ Public Class NewGameScreen
             "RepelSteps|0" & vbNewLine &
             "LastSavePlace|yourroom.dat" & vbNewLine &
             "LastSavePlacePosition|1,0.1,3" & vbNewLine &
-            "Difficulty|" & GameModeManager.GetGameRuleValue("Difficulty", "0") & vbNewLine &
+            "Difficulty|" & GameModeManager.GetActiveGameRuleValueOrDefault("Difficulty", 0).ToString() & vbNewLine &
             "BattleStyle|0" & vbNewLine &
             "saveCreated|" & GameController.GAMEDEVELOPMENTSTAGE & " " & GameController.GAMEVERSION & vbNewLine &
             "LastPokemonPosition|999,999,999" & vbNewLine &

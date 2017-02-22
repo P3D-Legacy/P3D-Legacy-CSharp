@@ -176,7 +176,7 @@ Public Class NameObjectScreen
     End Sub
 
     Public Overrides Sub Update()
-        If CBool(GameModeManager.GetGameRuleValue("ForceRename", "0")) = True Then
+        If GameModeManager.GetActiveGameRuleValueOrDefault("ForceRename", False) = True Then
             Me._askedRename = True
             Me._canChooseNo = False
         End If

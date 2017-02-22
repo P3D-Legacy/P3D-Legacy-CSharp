@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Media;
 
 using P3D.Legacy.Core.Resources;
 using P3D.Legacy.Core.Resources.Sound;
-using P3D.Legacy.Core.Settings.Converters;
+using P3D.Legacy.Core.Settings.YamlConverters;
 using P3D.Legacy.Core.Storage;
 
 using PCLExt.FileStorage;

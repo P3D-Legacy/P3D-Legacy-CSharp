@@ -130,7 +130,7 @@ Public Class OptionScreen
             Case 1
                 Me.ControlList.Add(New ScrollBar(New Vector2(100, 200), 400, "Textspeed", Me.TextSpeed, 1, 3, AddressOf ChangeTextspeed))
 
-                If CBool(GameModeManager.GetGameRuleValue("LockDifficulty", "0")) = False Then
+                If GameModeManager.GetActiveGameRuleValueOrDefault("LockDifficulty", False) = False Then
                     Dim d As New Dictionary(Of Integer, String)
                     d.Add(0, "Easy")
                     d.Add(1, "Hard")

@@ -480,7 +480,7 @@ Public Class Pokemon
                 Case "nickname"
                     Me.NickName = tagValue
                 Case "level"
-                    Me.Level = CInt(tagValue).Clamp(1, CInt(GameModeManager.GetGameRuleValue("MaxLevel", "100")))
+                    Me.Level = CInt(tagValue).Clamp(1, GameModeManager.GetActiveGameRuleValueOrDefault("MaxLevel", 100))
                 Case "ot"
                     Me.OT = tagValue
                 Case "ability"

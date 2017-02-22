@@ -91,8 +91,10 @@
     <Compile Include="GameModes\GameMode.cs" />
     <Compile Include="GameModes\GameModeYaml.cs" />
     <Compile Include="GameModes\YamlConverters\ColorConverter.cs" />
-    <Compile Include="GameModes\YamlConverters\IFolderConverter.cs" />
-    <Compile Include="GameModes\YamlConverters\ILocalizationFolderLocalConverter.cs" />
+    <Compile Include="GameModes\YamlConverters\GameRuleListConverter.cs" />
+    <Compile Include="GameModes\YamlConverters\GameRuleObjectConverter.cs" />
+    <Compile Include="GameModes\YamlConverters\ContentFolderLocalConverter.cs" />
+    <Compile Include="GameModes\YamlConverters\LocalizationFolderLocalConverter.cs" />
     <Compile Include="GameModes\YamlConverters\Vector3Converter.cs" />
     <Compile Include="Network\DownloadTexture2D.cs" />
     <Compile Include="Network\OnlineStatus.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="Server\PlayerCollection.cs" />
     <Compile Include="Server\BaseOnlinePlayer.cs" />
     <Compile Include="Server\ServerManager.cs" />
+    <Compile Include="Storage\ContentFolder.cs" />
     <Compile Include="TimeHelpers.cs" />
     <Compile Include="Objects\Animation.cs" />
     <Compile Include="Objects\LoadingDots.cs" />
@@ -194,8 +197,8 @@
     <Compile Include="Screens\GUI\Canvas.cs" />
     <Compile Include="Dialogues\IChooseBox.cs" />
     <Compile Include="Server\Server.cs" />
-    <Compile Include="Settings\Converters\Vector2Converter.cs" />
-    <Compile Include="Settings\Converters\CultureInfoConverter.cs" />
+    <Compile Include="Settings\YamlConverters\Vector2Converter.cs" />
+    <Compile Include="Settings\YamlConverters\CultureInfoConverter.cs" />
     <Compile Include="Settings\Keyboard.cs" />
     <Compile Include="Settings\Options.cs" />
     <Compile Include="Storage\ILocalizationFile.cs" />

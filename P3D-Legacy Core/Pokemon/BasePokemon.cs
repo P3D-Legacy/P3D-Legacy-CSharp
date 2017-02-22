@@ -944,7 +944,7 @@ namespace P3D.Legacy.Core.Pokemon
             {
                 LevelUp(LearnRandomAttack);
             }
-            Level = Level.Clamp(1, Convert.ToInt32(GameModeManager.GetGameRuleValue("MaxLevel", "100")));
+            Level = Level.Clamp(1, GameModeManager.GetActiveGameRuleValueOrDefault("MaxLevel", 100));
         }
 
         /// <summary>

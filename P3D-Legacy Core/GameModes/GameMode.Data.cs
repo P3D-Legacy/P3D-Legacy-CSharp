@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 
-using P3D.Legacy.Core.Resources;
 using P3D.Legacy.Core.Storage;
 
 using PCLExt.FileStorage;
@@ -13,6 +11,7 @@ namespace P3D.Legacy.Core.GameModes
 {
     public partial class GameMode
     {
+        /// <summary>
         /// The name of the directory this GameMode is placed in.
         /// </summary>
         public IFolder Path => StorageInfo.GameModesFolder.CreateFolderAsync(Name, CreationCollisionOption.OpenIfExists).Result;
@@ -44,7 +43,7 @@ namespace P3D.Legacy.Core.GameModes
         /// <summary>
         /// The MapPath used from this GameMode to load maps from.
         /// </summary>
-        public IFolder MapsFolder { get; set; } = StorageInfo.MapsFolder;
+        public ContentFolder MapsFolder { get; set; } = StorageInfo.MapsFolder;
 
         /// <summary>
         /// The ScriptPath from this GameMode to load scripts from.
@@ -79,17 +78,18 @@ namespace P3D.Legacy.Core.GameModes
         /// <summary>
         /// The Content path to load images, sounds and music from.
         /// </summary>
-        public IFolder ContentFolder { get; set; } = StorageInfo.ContentFolder;
+        public ContentFolder ContentFolder { get; set; } = StorageInfo.ContentFolder;
 
         /// <summary>
         /// The Localizations path to load additional tokens from. Tokens that are already existing get overritten.
         /// </summary>
-        public ILocalizationFolder LocalizationsFolder { get; set; } = StorageInfo.LocalizationFolder;
+        public LocalizationFolder LocalizationsFolder { get; set; } = StorageInfo.LocalizationFolder;
 
         /// <summary>
         /// The GameRules that apply to this GameMode.
         /// </summary>
-        public List<GameRule> GameRules { get; } = new List<GameRule>();
+        //public List<GameRule> GameRules { get; } = new List<GameRule>();
+        public GameRuleList GameRules { get; } = new GameRuleList();
 
         #endregion
 

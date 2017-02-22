@@ -13,7 +13,6 @@ namespace P3D.Legacy.Core.GameModes.YamlConverters
     public class Vector3Converter : IYamlTypeConverter
     {
         private static readonly char[] delimiter = new[] { ' ' };
-
         public static float? ToSingle(string value)
         {
             float n;

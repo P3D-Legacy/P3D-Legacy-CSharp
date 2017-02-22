@@ -98,7 +98,7 @@ Public Class Badge
 
         Dim file As IFile = GameModeManager.GetContentFile("Data\badges.dat").Result
         FileValidation.CheckFileValid(file, False, "Badge.vb")
-        Dim data() As String = System.IO.File.ReadAllLines(file)
+        Dim data() As String = System.IO.File.ReadAllLines(file.Path)
         For Each line As String In data
             If line.Contains("|") = True Then
                 Badges.Add(New BadgeDeclaration(line))

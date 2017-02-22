@@ -143,9 +143,9 @@ Public Class SmashRock
     Public Shared Sub Load()
         ItemContainerlist.Clear()
         Dim File As IFile = GameModeManager.GetContentFile("Data\smashrockitems.dat").Result
-        If System.IO.File.Exists(File) = True Then
+        If System.IO.File.Exists(File.Path) = True Then
             FileValidation.CheckFileValid(File, False, "SmashRock.vb")
-            Dim data() As String = System.IO.File.ReadAllLines(File)
+            Dim data() As String = System.IO.File.ReadAllLines(File.Path)
             For Each line As String In data
                 Dim Linedata() As String = line.Split(CChar("|"))
                 Dim Mapfile As String = Linedata(0)

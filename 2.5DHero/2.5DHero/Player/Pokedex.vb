@@ -20,7 +20,7 @@ Public Class Pokedex
         Dim path As IFile = GameModeManager.GetContentFile("Data\pokedex.dat").Result
         FileValidation.CheckFileValid(path, False, "Pokedex.vb")
 
-        Dim lines() As String = System.IO.File.ReadAllLines(path)
+        Dim lines() As String = System.IO.File.ReadAllLines(path.Path)
         For Each PokedexData As String In lines
             Core.Player.Pokedexes.Add(New Pokedex(PokedexData))
         Next

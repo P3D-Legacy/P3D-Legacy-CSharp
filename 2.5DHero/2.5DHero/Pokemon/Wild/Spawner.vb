@@ -162,8 +162,8 @@ Public Class Spawner
                     addLevel = CInt(Math.Floor(level / 5))
                 End If
                 level += addLevel
-                If level > CInt(GameModeManager.GetGameRuleValue("MaxLevel", "100")) Then
-                    level = CInt(GameModeManager.GetGameRuleValue("MaxLevel", "100"))
+                If level > GameModeManager.GetActiveGameRuleValueOrDefault("MaxLevel", 100) Then
+                    level = GameModeManager.GetActiveGameRuleValueOrDefault("MaxLevel", 100)
                 End If
 
                 Dim p As Pokemon = Pokemon.GetPokemonByID(Pokemons(i))
