@@ -609,9 +609,9 @@ Namespace GameJolt
                 Dim noMorePokemon As Boolean = False
 
                 Dim fileList As New List(Of Integer)
-                Dim d As List(Of String) = System.IO.Directory.GetFiles(GameController.GamePath & "\Content\Pokemon\Data\").ToList()
+                Dim d As List(Of String) = Directory.GetFiles(GameController.GamePath & "\Content\Pokemon\Data\").ToList()
                 For Each file As String In d
-                    Dim fileName As String = System.IO.Path.GetFileNameWithoutExtension(file)
+                    Dim fileName As String = Path.GetFileNameWithoutExtension(file)
                     If IsNumeric(fileName) = True Then
                         If CInt(fileName) > 0 And CInt(fileName) <= Pokedex.POKEMONCOUNT Then
                             If GTSMainScreen.GTSPokemon.Contains(CInt(fileName)) = True Then

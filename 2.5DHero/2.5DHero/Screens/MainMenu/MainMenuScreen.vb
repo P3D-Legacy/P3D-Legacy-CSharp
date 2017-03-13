@@ -1,7 +1,6 @@
 ﻿Imports System.Drawing
 Imports System.Globalization
 Imports P3D.Legacy.Core
-Imports P3D.Legacy.Core.Data
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.GameModes
@@ -14,6 +13,7 @@ Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Security
 Imports P3D.Legacy.Core.Settings
 Imports P3D.Legacy.Core.Storage
+Imports P3D.Legacy.Shared.Data
 Imports PCLExt.FileStorage
 
 Public Class MainMenuScreen
@@ -40,7 +40,7 @@ Public Class MainMenuScreen
 
     Dim Languages As New List(Of CultureInfo)
     Dim LanguageNames As New List(Of String)
-    Dim currentLanguage As CultureInfo = New CultureInfo("en")
+    Dim currentLanguage As CultureInfo = new CultureInfo("en")
 
     Dim PackNames As New List(Of String)
     Dim EnabledPackNames As New List(Of String)
@@ -64,7 +64,7 @@ Public Class MainMenuScreen
         Me.CanBePaused = False
         Me.MouseVisible = True
         Me.CanChat = False
-        Me.currentLanguage = Localization.Language
+        Me.currentLanguage = P3D.Legacy.Core.Localization.Language
 
         Screen.TextBox.Showing = False
         Screen.PokemonImageView.Showing = False
@@ -125,7 +125,7 @@ Public Class MainMenuScreen
         LanguageNames.Clear()
 
         Dim languageFiles = StorageInfo.LocalizationFolder.GetTranslationFilesAsync().Result
-        For Each localizationFile As ILocalizationFile In languageFiles
+        For Each localizationFile In languageFiles
             Dim data = localizationFile.ReadAllTextAsync().Result.Split(Environment.NewLine)
             Dim languageName = data(0).GetSplit(1)
 
@@ -331,13 +331,13 @@ Public Class MainMenuScreen
             Dim Text As String = ""
             Select Case i
                 Case 0
-                    Text = Localization.GetString("main_menu_continue")
+                    Text = P3D.Legacy.Core.Localization.GetString("main_menu_continue")
                 Case 1
-                    Text = Localization.GetString("main_menu_load_game")
+                    Text = P3D.Legacy.Core.Localization.GetString("main_menu_load_game")
                 Case 2
-                    Text = Localization.GetString("main_menu_new_game")
+                    Text = P3D.Legacy.Core.Localization.GetString("main_menu_new_game")
                 Case 3
-                    Text = Localization.GetString("main_menu_quit_game")
+                    Text = P3D.Legacy.Core.Localization.GetString("main_menu_quit_game")
                 Case 7
                     Text = "Play online"
             End Select
@@ -684,11 +684,11 @@ Public Class MainMenuScreen
                 End If
             Next
 
-            Me.tempLoadDisplay = Localization.GetString("load_menu_name") & ": " & dispName & vbNewLine &
-                Localization.GetString("load_menu_gamemode") & ": " & dispGameMode & vbNewLine &
-                Localization.GetString("load_menu_badges") & ": " & dispBadges & vbNewLine &
-                Localization.GetString("load_menu_location") & ": " & Localization.GetString("Places_" & dispLocation) & vbNewLine &
-                Localization.GetString("load_menu_time") & ": " & dispPlayTime
+            Me.tempLoadDisplay = P3D.Legacy.Core.Localization.GetString("load_menu_name") & ": " & dispName & vbNewLine &
+                P3D.Legacy.Core.Localization.GetString("load_menu_gamemode") & ": " & dispGameMode & vbNewLine &
+                P3D.Legacy.Core.Localization.GetString("load_menu_badges") & ": " & dispBadges & vbNewLine &
+                P3D.Legacy.Core.Localization.GetString("load_menu_location") & ": " & P3D.Legacy.Core.Localization.GetString("Places_" & dispLocation) & vbNewLine &
+                P3D.Legacy.Core.Localization.GetString("load_menu_time") & ": " & dispPlayTime
         End If
 
         Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, tempLoadDisplay, New Vector2(CInt(Core.ScreenSize.Width / 2) - 252, 416), Microsoft.Xna.Framework.Color.Black)
@@ -697,11 +697,11 @@ Public Class MainMenuScreen
             Dim Text As String = ""
             Select Case i
                 Case 0
-                    Text = Localization.GetString("load_menu_load")
+                    Text = P3D.Legacy.Core.Localization.GetString("load_menu_load")
                 Case 1
-                    Text = Localization.GetString("load_menu_delete")
+                    Text = P3D.Legacy.Core.Localization.GetString("load_menu_delete")
                 Case 2
-                    Text = Localization.GetString("load_menu_back")
+                    Text = P3D.Legacy.Core.Localization.GetString("load_menu_back")
             End Select
 
             If i = loadMenuIndex(1) Then
@@ -985,9 +985,9 @@ Public Class MainMenuScreen
             Dim Text As String = ""
             Select Case i
                 Case 0
-                    Text = Localization.GetString("language_menu_apply")
+                    Text = P3D.Legacy.Core.Localization.GetString("language_menu_apply")
                 Case 1
-                    Text = Localization.GetString("language_menu_back")
+                    Text = P3D.Legacy.Core.Localization.GetString("language_menu_back")
             End Select
 
             If i = languageMenuIndex(1) Then
@@ -1029,7 +1029,7 @@ Public Class MainMenuScreen
                                 Options.SaveOptions(Core.GameOptions)
                                 Me.menuIndex = 0
                             Case 1
-                                Localization.Load(currentLanguage)
+                                P3D.Legacy.Core.Localization.Load(currentLanguage)
                                 Me.menuIndex = 0
                         End Select
                     End If
@@ -1049,7 +1049,7 @@ Public Class MainMenuScreen
         languageMenuIndex(2) = CInt(MathHelper.Clamp(languageMenuIndex(2), 0, Languages.Count - 4))
 
         If languageMenuIndex(0) <> currentIndex Then
-            Localization.Load(Languages(languageMenuIndex(0)))
+            P3D.Legacy.Core.Localization.Load(Languages(languageMenuIndex(0)))
         End If
 
         If Controls.Right(True, True, False) = True Then
@@ -1068,7 +1068,7 @@ Public Class MainMenuScreen
                     Options.SaveOptions(Core.GameOptions)
                     Me.menuIndex = 0
                 Case 1
-                    Localization.Load(currentLanguage)
+                    P3D.Legacy.Core.Localization.Load(currentLanguage)
                     Me.menuIndex = 0
             End Select
         End If
@@ -1112,7 +1112,7 @@ Public Class MainMenuScreen
                 Dim textColor As Microsoft.Xna.Framework.Color = Microsoft.Xna.Framework.Color.Gray
 
                 If EnabledPackNames.Contains(Name) = True Then
-                    Name &= " (" & Localization.GetString("pack_menu_enabled") & ")"
+                    Name &= " (" & P3D.Legacy.Core.Localization.GetString("pack_menu_enabled") & ")"
                     textColor = Microsoft.Xna.Framework.Color.Black
                 End If
 
@@ -1131,9 +1131,9 @@ Public Class MainMenuScreen
             Dim Text As String = ""
             Select Case i
                 Case 0
-                    Text = Localization.GetString("pack_menu_apply")
+                    Text = P3D.Legacy.Core.Localization.GetString("pack_menu_apply")
                 Case 1
-                    Text = Localization.GetString("pack_menu_back")
+                    Text = P3D.Legacy.Core.Localization.GetString("pack_menu_back")
             End Select
 
             If i = packsMenuIndex(1) Then
@@ -1149,17 +1149,17 @@ Public Class MainMenuScreen
             Dim Text As String = ""
             Select Case i
                 Case 2
-                    Text = Localization.GetString("pack_menu_up")
+                    Text = P3D.Legacy.Core.Localization.GetString("pack_menu_up")
                 Case 3
-                    Text = Localization.GetString("pack_menu_down")
+                    Text = P3D.Legacy.Core.Localization.GetString("pack_menu_down")
                 Case 4
                     If isSelectedEnabled = True Then
-                        Text = Localization.GetString("pack_menu_toggle_off")
+                        Text = P3D.Legacy.Core.Localization.GetString("pack_menu_toggle_off")
                     Else
-                        Text = Localization.GetString("pack_menu_toggle_on")
+                        Text = P3D.Legacy.Core.Localization.GetString("pack_menu_toggle_on")
                     End If
                 Case 5
-                    Text = Localization.GetString("pack_menu_information")
+                    Text = P3D.Legacy.Core.Localization.GetString("pack_menu_information")
             End Select
 
             If i = packsMenuIndex(1) Then
@@ -1290,15 +1290,16 @@ Public Class MainMenuScreen
         PInfoSlpash = Nothing
         PInfoContent = ""
 
-        Try
+        ' TODO TRY
+        'Try
             If System.IO.File.Exists(GameController.GamePath & "\ContentPacks\" & packName & "\splash.png") = True Then
                 Using stream As System.IO.Stream = System.IO.File.Open(GameController.GamePath & "\ContentPacks\" & packName & "\splash.png", IO.FileMode.OpenOrCreate)
                     PInfoSlpash = Texture2D.FromStream(Core.GraphicsDevice, stream)
                 End Using
             End If
-        Catch ex As Exception
-            Logger.Log(Logger.LogTypes.ErrorMessage, "MainMenuScreen.vb/ButtonPackInformation: An error occurred trying to load the splash image at """ & GameController.GamePath & "\ContentPacks\" & packName & "\splash.png" & """. This could have been caused by an invalid file header. (Exception: " & ex.Message & ")")
-        End Try
+        'Catch ex As Exception
+        '    Logger.Log(Logger.LogTypes.ErrorMessage, "MainMenuScreen.vb/ButtonPackInformation: An error occurred trying to load the splash image at """ & GameController.GamePath & "\ContentPacks\" & packName & "\splash.png" & """. This could have been caused by an invalid file header. (Exception: " & ex.Message & ")")
+        'End Try
 
         Dim contentPackPath As String = GameController.GamePath & "\ContentPacks\" & packName & "\"
         If System.IO.Directory.Exists(contentPackPath & "Songs") = True Then
@@ -1318,7 +1319,7 @@ Public Class MainMenuScreen
             Next
 
             If hasMP3 = True Or hasWMA = True And hasXNB = True Then
-                PInfoContent = Localization.GetString("pack_menu_songs")
+                PInfoContent = P3D.Legacy.Core.Localization.GetString("pack_menu_songs")
             End If
         End If
         If System.IO.Directory.Exists(contentPackPath & "Sounds") = True Then
@@ -1342,7 +1343,7 @@ Public Class MainMenuScreen
                     PInfoContent &= ", "
                 End If
 
-                PInfoContent &= Localization.GetString("pack_menu_sounds")
+                PInfoContent &= P3D.Legacy.Core.Localization.GetString("pack_menu_sounds")
             End If
         End If
 
@@ -1365,7 +1366,7 @@ Public Class MainMenuScreen
                         PInfoContent &= ", "
                     End If
 
-                    PInfoContent &= Localization.GetString("pack_menu_textures")
+                    PInfoContent &= P3D.Legacy.Core.Localization.GetString("pack_menu_textures")
                     Exit For
                 End If
             End If
@@ -1406,10 +1407,10 @@ Public Class MainMenuScreen
         Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
 
         Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 256, 160, 480, 64), True)
-        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Localization.GetString("pack_menu_name") & ": " & PInfoName, New Vector2(CInt(Core.ScreenSize.Width / 2) - CInt(FontManager.InGameFont.MeasureString(Localization.GetString("pack_menu_name") & ": " & PInfoName).X / 2), 195), Microsoft.Xna.Framework.Color.Black)
+        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, P3D.Legacy.Core.Localization.GetString("pack_menu_name") & ": " & PInfoName, New Vector2(CInt(Core.ScreenSize.Width / 2) - CInt(FontManager.InGameFont.MeasureString(P3D.Legacy.Core.Localization.GetString("pack_menu_name") & ": " & PInfoName).X / 2), 195), Microsoft.Xna.Framework.Color.Black)
 
         Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 256, 288, 480, 224), True)
-        Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, Localization.GetString("pack_menu_version") & ": " & PInfoVersion & vbNewLine & Localization.GetString("pack_menu_by") & ": " & PInfoAuthor & vbNewLine & Localization.GetString("pack_menu_content") & ": " & PInfoContent & vbNewLine & Localization.GetString("pack_menu_description") & ": " & PInfoDescription.Replace("<br>", vbNewLine), New Vector2(CInt(Core.ScreenSize.Width / 2) - 220, 323), Microsoft.Xna.Framework.Color.Black)
+        Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, P3D.Legacy.Core.Localization.GetString("pack_menu_version") & ": " & PInfoVersion & vbNewLine & P3D.Legacy.Core.Localization.GetString("pack_menu_by") & ": " & PInfoAuthor & vbNewLine & P3D.Legacy.Core.Localization.GetString("pack_menu_content") & ": " & PInfoContent & vbNewLine & P3D.Legacy.Core.Localization.GetString("pack_menu_description") & ": " & PInfoDescription.Replace("<br>", vbNewLine), New Vector2(CInt(Core.ScreenSize.Width / 2) - 220, 323), Microsoft.Xna.Framework.Color.Black)
 
         For i = 0 To 1
             If i = packInfoIndex Then
@@ -1418,17 +1419,17 @@ Public Class MainMenuScreen
                 CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
             End If
 
-            Dim Text As String = Localization.GetString("pack_menu_back")
+            Dim Text As String = P3D.Legacy.Core.Localization.GetString("pack_menu_back")
 
             Select Case i
                 Case 0
                     If isEnabled = True Then
-                        Text = Localization.GetString("pack_menu_toggle_off")
+                        Text = P3D.Legacy.Core.Localization.GetString("pack_menu_toggle_off")
                     Else
-                        Text = Localization.GetString("pack_menu_toggle_on")
+                        Text = P3D.Legacy.Core.Localization.GetString("pack_menu_toggle_on")
                     End If
                 Case 1
-                    Text = Localization.GetString("pack_menu_back")
+                    Text = P3D.Legacy.Core.Localization.GetString("pack_menu_back")
             End Select
 
             Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 + (200 * i), 550, 128, 64), True)
@@ -1546,15 +1547,15 @@ Public Class MainMenuScreen
 
         Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2 - 352), 172, 704, 96), Microsoft.Xna.Framework.Color.White, True)
 
-        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, Localization.GetString("delete_menu_delete_confirm"), New Vector2(CInt(Core.ScreenSize.Width / 2) - CInt(FontManager.InGameFont.MeasureString(Localization.GetString("delete_menu_delete_confirm")).X / 2), 200), Microsoft.Xna.Framework.Color.Black)
+        Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, P3D.Legacy.Core.Localization.GetString("delete_menu_delete_confirm"), New Vector2(CInt(Core.ScreenSize.Width / 2) - CInt(FontManager.InGameFont.MeasureString(P3D.Legacy.Core.Localization.GetString("delete_menu_delete_confirm")).X / 2), 200), Microsoft.Xna.Framework.Color.Black)
 
         Core.SpriteBatch.DrawInterfaceString(FontManager.InGameFont, """" & SaveNames(loadMenuIndex(0)) & """ ?", New Vector2(CInt(Core.ScreenSize.Width / 2) - CInt(FontManager.InGameFont.MeasureString("""" & SaveNames(loadMenuIndex(0)) & """ ?").X / 2), 240), Microsoft.Xna.Framework.Color.Black)
 
         For i = 0 To 1
-            Dim Text As String = Localization.GetString("delete_menu_delete")
+            Dim Text As String = P3D.Legacy.Core.Localization.GetString("delete_menu_delete")
 
             If i = 1 Then
-                Text = Localization.GetString("delete_menu_cancel")
+                Text = P3D.Legacy.Core.Localization.GetString("delete_menu_cancel")
             End If
 
             If i = deleteIndex Then
@@ -1706,11 +1707,11 @@ Public Class MainMenuScreen
             Dim dispAuthor As String = GameMode.Author
             Dim dispContentPath As String = GameMode.ContentFolder.Path
 
-            Me.tempGameModesDisplay = Localization.GetString("gamemode_menu_name") & ": " & dispName & vbNewLine &
-                Localization.GetString("gamemode_menu_version") & ": " & dispVersion & vbNewLine &
-                Localization.GetString("gamemode_menu_author") & ": " & dispAuthor & vbNewLine &
-                Localization.GetString("gamemode_menu_contentpath") & ": " & dispContentPath & vbNewLine &
-                Localization.GetString("gamemode_menu_description") & ": " & dispDescription
+            Me.tempGameModesDisplay = P3D.Legacy.Core.Localization.GetString("gamemode_menu_name") & ": " & dispName & vbNewLine &
+                P3D.Legacy.Core.Localization.GetString("gamemode_menu_version") & ": " & dispVersion & vbNewLine &
+                P3D.Legacy.Core.Localization.GetString("gamemode_menu_author") & ": " & dispAuthor & vbNewLine &
+                P3D.Legacy.Core.Localization.GetString("gamemode_menu_contentpath") & ": " & dispContentPath & vbNewLine &
+                P3D.Legacy.Core.Localization.GetString("gamemode_menu_description") & ": " & dispDescription
         End If
 
         Core.SpriteBatch.DrawInterfaceString(FontManager.MiniFont, tempGameModesDisplay, New Vector2(CInt(Core.ScreenSize.Width / 2) - 252, 416), Microsoft.Xna.Framework.Color.Black)
@@ -1722,13 +1723,13 @@ Public Class MainMenuScreen
                 CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
             End If
 
-            Dim Text As String = Localization.GetString("gamemode_menu_back")
+            Dim Text As String = P3D.Legacy.Core.Localization.GetString("gamemode_menu_back")
 
             Select Case i
                 Case 0
-                    Text = Localization.GetString("gamemode_menu_create")
+                    Text = P3D.Legacy.Core.Localization.GetString("gamemode_menu_create")
                 Case 1
-                    Text = Localization.GetString("gamemode_menu_back")
+                    Text = P3D.Legacy.Core.Localization.GetString("gamemode_menu_back")
             End Select
 
             Canvas.DrawImageBorder(CanvasTexture, 2, New Microsoft.Xna.Framework.Rectangle(CInt(Core.ScreenSize.Width / 2) - 180 + (200 * i), 550, 128, 64), True)
@@ -1807,16 +1808,17 @@ Public Class MainMenuScreen
         End If
 
         If GameModeSplash Is Nothing Then
-            Try
+            ' TODO TRY
+            'Try
                 Dim fileName As String = GameController.GamePath & "\GameModes\" & ModeNames(gameModeMenuIndex(0)) & "\GameMode.png"
                 If System.IO.File.Exists(fileName) = True Then
                     Using stream As System.IO.Stream = System.IO.File.Open(fileName, IO.FileMode.OpenOrCreate)
                         GameModeSplash = Texture2D.FromStream(Core.GraphicsDevice, stream)
                     End Using
                 End If
-            Catch ex As Exception
-                Logger.Log(Logger.LogTypes.ErrorMessage, "MainMenuScreen.vb/UpdateNewGameMenu: An error occurred trying to load the splash image at """ & GameController.GamePath & "\GameModes\" & ModeNames(gameModeMenuIndex(0)) & "\GameMode.png"". This could have been caused by an invalid file header. (Exception: " & ex.Message & ")")
-            End Try
+            'Catch ex As Exception
+            '    Logger.Log(Logger.LogTypes.ErrorMessage, "MainMenuScreen.vb/UpdateNewGameMenu: An error occurred trying to load the splash image at """ & GameController.GamePath & "\GameModes\" & ModeNames(gameModeMenuIndex(0)) & "\GameMode.png"". This could have been caused by an invalid file header. (Exception: " & ex.Message & ")")
+            'End Try
         End If
 
         If Controls.Dismiss() = True Then

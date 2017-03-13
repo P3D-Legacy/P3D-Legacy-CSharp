@@ -39,6 +39,7 @@ namespace P3D.Legacy.Core.Security
             string[] paths = { "Content", "maps", "Scripts" };
             string[] includeExt = { ".dat", ".poke", ".lua", ".trainer" };
 
+            // TODO
             if (Runvalidation)
             {
                 Logger.Log(Logger.LogTypes.Debug, "FileValidation.vb: WARNING! FILE VALIDATION IS RUNNING!");

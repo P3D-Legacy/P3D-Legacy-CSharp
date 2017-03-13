@@ -109,9 +109,9 @@ namespace P3D.Legacy.Core
             SetScreen(Screen.CreateSplashScreen((GameInstance)));
         }
 
-        public static async void LoadContent()
+        public static void LoadContent()
         {
-            await GameModeManager.LoadGameModesAsync();
+            GameModeManager.LoadGameModesAsync().Wait();
             Logger.Debug("Loaded game modes.");
 
             FontManager.LoadFonts();
@@ -137,7 +137,7 @@ namespace P3D.Legacy.Core
             };
             Logger.Debug("Gamemessage initialized.");
 
-            GameOptions = await Options.LoadOptions();
+            GameOptions = Options.LoadOptions().Result;
 
             var p0 = Path.Combine(GameController.GamePath + "Temp");
             if (Directory.Exists(p0))

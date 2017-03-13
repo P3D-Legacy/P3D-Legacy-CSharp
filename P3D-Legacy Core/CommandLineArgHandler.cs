@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+
 using P3D.Legacy.Core.GameJolt;
 using P3D.Legacy.Core.Resources;
 using P3D.Legacy.Shared;
@@ -17,8 +17,8 @@ namespace P3D.Legacy.Core
 
             if (options.GameJoltYaml != null)
             {
-                APICall.GAMEID = options.GameJoltYaml.GameId;
-                APICall.GAMEKEY = options.GameJoltYaml.GameKey;
+                API.GameID = options.GameJoltYaml.GameId;
+                API.GameKey = options.GameJoltYaml.GameKey;
                 API.Username = options.GameJoltYaml.Username;
                 API.Token = options.GameJoltYaml.Token;
 

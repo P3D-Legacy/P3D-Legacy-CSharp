@@ -176,7 +176,8 @@ Public Class Chat
         If GameController.IS_DEBUG_ACTIVE = True Or (Core.Player.IsGameJoltSave = False And Core.Player.SandBoxMode = True) Then
             Select Case text(0).ToString().ToLower()
                 Case "@"
-                    Try
+                    ' TODO TRY
+                    'Try
                         Dim s As Screen = Core.CurrentScreen
                         While Not s.PreScreen Is Nothing And s.Identification <> Screen.Identifications.OverworldScreen
                             s = s.PreScreen
@@ -191,15 +192,16 @@ Public Class Chat
                         Else
                             Return "Invalid script environment."
                         End If
-                    Catch ex As Exception
-                        Return "Invalid script: """ & text & """"
-                    End Try
+                    'Catch ex As Exception
+                    '    Return "Invalid script: """ & text & """"
+                    'End Try
                 Case "<"
-                    Try
+                    ' TODO TRY
+                    'Try
                         Return text & ": " & ScriptVersion2.ScriptComparer.EvaluateConstruct(text).ToString()
-                    Catch ex As Exception
-                        Return "Invalid construct: """ & text & """"
-                    End Try
+                    'Catch ex As Exception
+                    '    Return "Invalid construct: """ & text & """"
+                    'End Try
                 Case "#"
                     Return text.Remove(0, 1)
             End Select

@@ -12,6 +12,7 @@ Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Server
+Imports PCLExt.FileStorage
 
 Namespace BattleSystem
 
@@ -754,7 +755,8 @@ Namespace BattleSystem
                     End Select
                 End If
 
-                If File.Exists(GameController.GamePath & "\maps\battle\" & levelfile) = False And File.Exists(GameModeManager.ActiveGameMode.MapFolder.Path & "battle\" & levelfile) = False Then
+                dim t0 = GameModeManager.ActiveGameMode.MapFolder.CheckExistsAsync(Path.Combine("battle", levelfile)).Result = ExistenceCheckResult.FileExists
+                If File.Exists(GameController.GamePath & "\maps\battle\" & levelfile) = False And t0 = False Then
                     Select Case Me.defaultMapType
                         Case 0
                             levelfile = cRegion & "0.dat"
@@ -787,7 +789,8 @@ Namespace BattleSystem
                 End If
             End If
 
-            If File.Exists(GameController.GamePath & "\maps\battle\" & levelfile) = False And File.Exists(GameModeManager.ActiveGameMode.MapFolder.Path & "battle\" & levelfile) = False Then
+            Dim t1 = GameModeManager.ActiveGameMode.MapFolder.CheckExistsAsync(Path.Combine("battle",levelfile)).Result = ExistenceCheckResult.FileExists
+            If File.Exists(GameController.GamePath & "\maps\battle\" & levelfile) = False And t1 = False Then
                 Select Case Me.defaultMapType
                     Case 0
                         levelfile = "battle0.dat"

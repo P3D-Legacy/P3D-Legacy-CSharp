@@ -8,6 +8,7 @@ Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Security
+Imports PCLExt.FileStorage
 
 Public Class NPC
     Inherits BaseNPC
@@ -347,10 +348,10 @@ Public Class NPC
                                 Dim InSightMusic As String = "nomusic"
 
                                 If Me.IsTrainer = True Then
-                                    Dim trainerFilePath As String = GameModeManager.GetScriptFileAsync(Me.AdditionalValue & ".dat").Result.Path
-                                    FileValidation.CheckFileValid(trainerFilePath, False, "NPC.vb")
+                                    Dim trainerFile = GameModeManager.GetScriptFileAsync(Me.AdditionalValue & ".dat").Result
+                                    FileValidation.CheckFileValid(trainerFile, False, "NPC.vb")
 
-                                    Dim trainerContent() As String = System.IO.File.ReadAllLines(trainerFilePath)
+                                    Dim trainerContent() = trainerFile.ReadAllTextAsync().Result.SplitAtNewline()
                                     For Each line As String In trainerContent
                                         If line.StartsWith("@Trainer:") = True Then
                                             Dim trainerID As String = line.GetSplit(1, ":")

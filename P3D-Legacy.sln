@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26206.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "2.5DHero", "2.5DHero\2.5DHero\2.5DHero.vbproj", "{2AAF65BE-C81D-4663-ABF4-E2E09B16E12F}"
 EndProject
@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3D-Legacy Shared", "P3D-Legacy-Shared\P3D-Legacy Shared.csproj", "{73FF082B-42B5-4E0C-A1A2-0B908FBA1406}"
 EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		DebugNoContent|Any CPU = DebugNoContent|Any CPU

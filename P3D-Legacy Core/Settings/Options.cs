@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,26 +37,26 @@ namespace P3D.Legacy.Core.Settings
 
         public static async void SaveOptions(Options options)
         {
-            var serializer = Options.SerializerBuilder.Build();
+            var serializer = SerializerBuilder.Build();
             await StorageInfo.OptionsFile.WriteAllTextAsync(serializer.Serialize(options));
         }
         public static async Task<Options> LoadOptions()
         {
-            var deserializer = Options.DeserializerBuilder.Build();
+            var deserializer = DeserializerBuilder.Build();
             try
             {
                 var deserialized = deserializer.Deserialize<Options>(await StorageInfo.OptionsFile.ReadAllTextAsync());
                 if (deserialized == null)
                 {
-                    SaveOptions(Options.Default);
-                    deserialized = Options.Default;
+                    SaveOptions(Default);
+                    deserialized = Default;
                 }
                 deserialized.Parse();
                 return deserialized;
             }
             catch (YamlException)
             {
-                SaveOptions(Options.Default);
+                SaveOptions(Default);
                 var deserialized = deserializer.Deserialize<Options>(await StorageInfo.OptionsFile.ReadAllTextAsync());
                 deserialized.Parse();
                 return deserialized;
@@ -96,7 +95,7 @@ namespace P3D.Legacy.Core.Settings
 
 
 
-        public void Parse()
+        public async Task Parse()
         {
             if (WindowSize.X == 0 && WindowSize.Y == 0)
                 WindowSize = new Vector2(1200, 680);
@@ -114,17 +113,21 @@ namespace P3D.Legacy.Core.Settings
             ContentPackManager.CreateContentPackFolder();
             if (ContentPackNames.Any())
             {
-                foreach (var c in ContentPackNames)
+                var contentPackNames = new List<string>(ContentPackNames);
+                foreach (var contentPack in ContentPackNames)
                 {
-                    if (Directory.Exists(GameController.GamePath + "\\ContentPacks\\" + c) == false)
-                    {
-                        List<string> cList = ContentPackNames.ToList();
-                        cList.Remove(c);
-                        ContentPackNames = cList.ToArray();
-                    }
+                    if (await StorageInfo.ContentPacksFolder.CheckExistsAsync(contentPack) != ExistenceCheckResult.FolderExists)
+                        contentPackNames.Remove(contentPack);
                     else
-                        ContentPackManager.Load(GameController.GamePath + "\\ContentPacks\\" + c + "\\exceptions.dat");
+                    {
+                        var contentPackFolder = await StorageInfo.ContentPacksFolder.GetFolderAsync(contentPack);
+                        var contentPackException = await contentPackFolder.CreateFileAsync("exceptions.dat", CreationCollisionOption.OpenIfExists);
+                        // TODO: Check
+                        ContentPackManager.Load(contentPackException.Path);
+                    }
+
                 }
+                ContentPackNames = contentPackNames.ToArray();
             }
 
             Core.GraphicsManager.PreferMultiSampling = PreferMultiSampling;

@@ -176,12 +176,13 @@ Public Class OwnPlayer
                 lastTexture = SkinName
                 Core.Player.Skin = SkinName
 
-                Try
+                ' TODO TRY
+                'Try
                     Dim t As Texture2D = TextureManager.GetTexture(Me.Texture, r, 1)
                     Textures(0) = t
-                Catch
-                    Logger.Log(Logger.LogTypes.Warning, "OwnPlayer.vb: Error assigning a new texture to the player.")
-                End Try
+                'Catch
+                '    Logger.Log(Logger.LogTypes.Warning, "OwnPlayer.vb: Error assigning a new texture to the player.")
+                'End Try
             End If
         End If
     End Sub

@@ -155,6 +155,7 @@ namespace P3D.Legacy.Core
         /// <summary>
         /// The path to the game folder.
         /// </summary>
+        /// TODO: REMOVE!
         public static string GamePath => AppDomain.CurrentDomain.BaseDirectory;
 
 

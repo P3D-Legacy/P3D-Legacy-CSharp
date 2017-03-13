@@ -30,25 +30,25 @@ namespace P3D.Legacy.Core.Settings
 
         public static async void SaveKeyboard(Keyboard options)
         {
-            var serializer = Keyboard.SerializerBuilder.Build();
+            var serializer = SerializerBuilder.Build();
             await StorageInfo.KeyboardFile.WriteAllTextAsync(serializer.Serialize(options));
         }
         public static async Task<Keyboard> LoadKeyboard()
         {
-            var deserializer = Keyboard.DeserializerBuilder.Build();
+            var deserializer = DeserializerBuilder.Build();
             try
             {
                 var deserialized = deserializer.Deserialize<Keyboard>(await StorageInfo.KeyboardFile.ReadAllTextAsync());
                 if (deserialized == null)
                 {
-                    SaveKeyboard(Keyboard.Default);
-                    deserialized = Keyboard.Default;
+                    SaveKeyboard(Default);
+                    deserialized = Default;
                 }
                 return deserialized;
             }
             catch (YamlException)
             {
-                SaveKeyboard(Keyboard.Default);
+                SaveKeyboard(Default);
                 var deserialized = deserializer.Deserialize<Keyboard>(await StorageInfo.KeyboardFile.ReadAllTextAsync());
                 return deserialized;
             }

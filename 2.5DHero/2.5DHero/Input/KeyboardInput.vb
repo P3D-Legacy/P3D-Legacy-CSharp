@@ -418,11 +418,12 @@ Public Class KeyboardInput
         ''' </summary>
         Public Sub Copy()
             If Me._selectionLength > 0 Then
-                Try
+                ' TODO TRY
+                'Try
                     System.Windows.Forms.Clipboard.SetText(Me.SelectedText)
-                Catch ex As Exception
-                    Logger.Log(Logger.LogTypes.Message, "KeyboardInput.vb: An error occurred while copying text to the clipboard.")
-                End Try
+                'Catch ex As Exception
+                '    Logger.Log(Logger.LogTypes.Message, "KeyboardInput.vb: An error occurred while copying text to the clipboard.")
+                'End Try
             End If
         End Sub
 
@@ -431,13 +432,14 @@ Public Class KeyboardInput
         ''' </summary>
         Public Sub Cut()
             If Me._selectionLength > 0 Then
-                Try
+                ' TODO TRY
+                'Try
                     System.Windows.Forms.Clipboard.SetText(Me.SelectedText)
                     Me._text = Me._text.Remove(Me._selectionStart, Me._selectionLength)
                     Me.Deselect()
-                Catch ex As Exception
-                    Logger.Log(Logger.LogTypes.Message, "KeyboardInput.vb: An error occurred while copying text to the clipboard.")
-                End Try
+                'Catch ex As Exception
+                '    Logger.Log(Logger.LogTypes.Message, "KeyboardInput.vb: An error occurred while copying text to the clipboard.")
+                'End Try
             End If
         End Sub
 

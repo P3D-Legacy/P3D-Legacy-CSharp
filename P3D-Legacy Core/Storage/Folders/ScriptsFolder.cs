@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 using PCLExt.FileStorage;
 
-namespace P3D.Legacy.Core.Storage
+namespace P3D.Legacy.Core.Storage.Folders
 {
     public class ScriptsFolder : IFolder
     {

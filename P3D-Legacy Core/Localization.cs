@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-using P3D.Legacy.Core.Data;
 using P3D.Legacy.Core.Resources;
 using P3D.Legacy.Core.Storage;
-
+using P3D.Legacy.Core.Storage.Folders;
 using PCLExt.FileStorage;
 
 // IO:
@@ -14,6 +13,22 @@ namespace P3D.Legacy.Core
 {
     public static class Localization
     {
+        public class Token
+        {
+            public string TokenName { get; }
+            public string TokenContent { get; }
+            public CultureInfo Language { get; }
+            public bool IsGameModeToken { get; }
+
+            public Token(string name, string content, CultureInfo language, bool isGameModeToken)
+            {
+                TokenName = name;
+                TokenContent = content;
+                Language = language;
+                IsGameModeToken = isGameModeToken;
+            }
+        }
+
         public static CultureInfo Language = new CultureInfo("en");
 
         public static Dictionary<string, Token> LocalizationTokens { get; } = new Dictionary<string, Token>();

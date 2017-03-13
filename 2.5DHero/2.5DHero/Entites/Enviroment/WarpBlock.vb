@@ -2,6 +2,7 @@
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
+Imports PCLExt.FileStorage
 
 Public Class WarpBlock
 
@@ -38,7 +39,8 @@ Public Class WarpBlock
                 End If
             End If
 
-            If System.IO.File.Exists(GameModeManager.ActiveGameMode.MapFolder.Path & destination) = True Or System.IO.File.Exists(GameController.GamePath & "\maps\" & destination) = True Then
+            Dim t0 = GameModeManager.ActiveGameMode.MapFolder.CheckExistsAsync(destination).Result = ExistenceCheckResult.FileExists
+            If t0 = True Or System.IO.File.Exists(GameController.GamePath & "\maps\" & destination) = True Then
                 If MapViewMode = False Then
                     Screen.Level.WarpData.WarpDestination = Me.AdditionalValue.GetSplit(0)
                     Screen.Level.WarpData.WarpPosition = New Vector3(CSng(Me.AdditionalValue.GetSplit(1)), CSng(Me.AdditionalValue.GetSplit(2).Replace(".", GameController.DecSeparator)), CSng(Me.AdditionalValue.GetSplit(3)))
@@ -56,7 +58,7 @@ Public Class WarpBlock
                     Screen.Camera.Position = New Vector3(CSng(Me.AdditionalValue.GetSplit(1)), CSng(Me.AdditionalValue.GetSplit(2).Replace(".", GameController.DecSeparator)), CSng(Me.AdditionalValue.GetSplit(3)))
                 End If
             Else
-                CallError("Map file """ & GameModeManager.ActiveGameMode.MapFolder.Path & destination & """ does not exist.")
+                CallError("Map file """ & Path.Combine(GameModeManager.ActiveGameMode.MapFolder.Path, destination) & """ does not exist.")
             End If
         End If
 

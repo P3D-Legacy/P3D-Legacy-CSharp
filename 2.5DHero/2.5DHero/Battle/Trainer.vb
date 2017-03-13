@@ -5,6 +5,7 @@ Imports P3D.Legacy.Core.Battle
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Security
+Imports PCLExt.FileStorage
 
 Public Class Trainer
     Inherits BaseTrainer
@@ -23,10 +24,10 @@ Public Class Trainer
     Public Sub New(ByVal TrainerFile As String)
         Me.TrainerFile = TrainerFile
 
-        Dim path As String = GameModeManager.GetScriptFileAsync("Trainer\" & TrainerFile & ".trainer").Result.Path
-        FileValidation.CheckFileValid(path, False, "Trainer.vb")
+        Dim file = GameModeManager.GetScriptFileAsync("Trainer\" & TrainerFile & ".trainer").Result
+        FileValidation.CheckFileValid(file, False, "Trainer.vb")
 
-        Dim Data() As String = System.IO.File.ReadAllLines(path)
+        Dim Data() As String = file.ReadAllTextAsync().Result.SplitAtNewline()
 
         If Data(0) = "[TRAINER FORMAT]" Then
             LoadTrainer(Data)

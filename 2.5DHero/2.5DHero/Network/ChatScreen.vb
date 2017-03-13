@@ -165,17 +165,19 @@ Public Class ChatScreen
 
     Private Sub Copy()
         If Me.SelectionLength > 0 Then
-            Try
+            ' TODO TRY
+            'Try
                 System.Windows.Forms.Clipboard.SetText(Me.currentText.Substring(Me.SelectionStart, Me.SelectionLength))
-            Catch ex As Exception
-                Logger.Log(Logger.LogTypes.Warning, "ChatScreen.vb: An error occurred while copying text to the clipboard (""" & Me.currentText.Substring(Me.SelectionStart, Me.SelectionLength) & """).")
-            End Try
+            'Catch ex As Exception
+            '    Logger.Log(Logger.LogTypes.Warning, "ChatScreen.vb: An error occurred while copying text to the clipboard (""" & Me.currentText.Substring(Me.SelectionStart, Me.SelectionLength) & """).")
+            'End Try
         End If
     End Sub
 
     Private Sub Cut()
         If Me.SelectionLength > 0 Then
-            Try
+            ' TODO TRY
+            'Try
                 Dim DefaultSelection As Integer = Selection
                 System.Windows.Forms.Clipboard.SetText(Me.currentText.Substring(Me.SelectionStart, Me.SelectionLength))
                 currentText = currentText.Remove(SelectionStart, SelectionLength)
@@ -184,9 +186,9 @@ Public Class ChatScreen
                 End If
                 SelectionStart = 0
                 SelectionLength = 0
-            Catch ex As Exception
-                Logger.Log(Logger.LogTypes.Warning, "ChatScreen.vb: An error occurred while cutting text to the clipboard (""" & Me.currentText.Substring(Me.SelectionStart, Me.SelectionLength) & """).")
-            End Try
+            'Catch ex As Exception
+            '    Logger.Log(Logger.LogTypes.Warning, "ChatScreen.vb: An error occurred while cutting text to the clipboard (""" & Me.currentText.Substring(Me.SelectionStart, Me.SelectionLength) & """).")
+            'End Try
         End If
     End Sub
 

@@ -146,7 +146,8 @@ Public Class LevelLoader
             Dim line As String = Data(i)
             Tags.Clear()
             If line.Contains("{") = True And line.Contains("}") = True Then
-                Try
+                ' TODO TRY
+                'Try
                     Dim TagType As TagTypes = TagTypes.None
                     line = line.Remove(0, line.IndexOf("{") + 2)
 
@@ -165,9 +166,9 @@ Public Class LevelLoader
 
                         Data.InsertRange(i + 1, newLines)
                     End If
-                Catch ex As Exception
-                    Logger.Log(Logger.LogTypes.Warning, "LevelLoader.vb: Failed to load map object! (Index: " & countLines & ") from mapfile: " & levelPath & "; Error message: " & ex.Message)
-                End Try
+                'Catch ex As Exception
+                '    Logger.Log(Logger.LogTypes.Warning, "LevelLoader.vb: Failed to load map object! (Index: " & countLines & ") from mapfile: " & levelPath & "; Error message: " & ex.Message)
+                'End Try
             End If
         Next
 

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using P3D.Legacy.Core.Storage.Files;
+
 using PCLExt.FileStorage;
 
-namespace P3D.Legacy.Core.Storage
+namespace P3D.Legacy.Core.Storage.Folders
 {
     public class LocalizationFolder : ILocalizationFolder
     {
