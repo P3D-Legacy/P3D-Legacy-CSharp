@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Interfaces
 Imports P3D.Legacy.Core.Pokemon
 
@@ -9,16 +10,6 @@ Public Class PlayerInventory
 
     Inherits List(Of ItemContainer)
     Implements IPlayerInventory
-
-    Public Property Count As Integer Implements IPlayerInventory.Count
-        Get
-            Return _count
-        End Get
-        Set
-            _count = Value
-        End Set
-    End Property
-    Private _count As Integer
 
     ''' <summary>
     ''' Returns a character that represents the item's pocket icon.
@@ -134,9 +125,9 @@ Public Class PlayerInventory
     Public Function GetMessageReceive(ByVal Item As Item, ByVal Amount As Integer) As String Implements IPlayerInventory.GetMessageReceive
         Dim Message As String = ""
         If Amount = 1 Then
-            Message = Core.Player.Name & " stored it in the~" & Core.Player.Inventory.GetItemPocketChar(Item) & Item.ItemType.ToString() & " pocket."
+            Message = Core.Player.Name & " stored it in the~" & Core.Player.Inventory.GetItemPocketChar(Item) & Item.ItemType.ToString(CultureInfo.InvariantCulture) & " pocket."
         Else
-            Message = Core.Player.Name & " stored them~in the " & Core.Player.Inventory.GetItemPocketChar(Item) & Item.ItemType.ToString() & " pocket."
+            Message = Core.Player.Name & " stored them~in the " & Core.Player.Inventory.GetItemPocketChar(Item) & Item.ItemType.ToString(CultureInfo.InvariantCulture) & " pocket."
         End If
         Return Message
     End Function

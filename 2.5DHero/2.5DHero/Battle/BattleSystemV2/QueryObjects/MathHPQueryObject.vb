@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Screens.GUI
@@ -151,24 +152,20 @@ Namespace BattleSystem
 
         Public Shared Shadows Function FromString(ByVal input As String) As QueryObject
             Dim d() As String = input.Split(CChar("|"))
-            Return New MathHPQueryObject(CInt(d(0)), CInt(d(1)), CInt(d(2)), New Vector2(CSng(STSE(d(3))), CSng(STSE(d(4)))))
+            Return New MathHPQueryObject(CInt(d(0)), CInt(d(1)), CInt(d(2)), New Vector2(Single.Parse(STSE(d(3)), NumberFormatInfo.InvariantInfo), Single.Parse(STSE(d(4)), NumberFormatInfo.InvariantInfo)))
         End Function
 
         Public Overrides Function ToString() As String
-            Dim s As String = Me.Current.ToString() & "|" &
-                Me.Max.ToString() & "|" &
-                Me.Damage.ToString() & "|" &
-                SEST(Me._position.X.ToString()) & "|" & SEST(Me._position.Y.ToString())
+            Dim s As String = Me.Current.ToString(CultureInfo.InvariantCulture) & "|" &
+                Me.Max.ToString(CultureInfo.InvariantCulture) & "|" &
+                Me.Damage.ToString(CultureInfo.InvariantCulture) & "|" &
+                Me._position.X.ToString(CultureInfo.InvariantCulture) & "|" & Me._position.Y.ToString(CultureInfo.InvariantCulture)
 
             Return "{MATHHP|" & s & "}"
         End Function
 
         Private Shared Function STSE(ByVal s As String) As String
-            Return s.Replace(".", GameController.DecSeparator)
-        End Function
-
-        Private Shared Function SEST(ByVal s As String) As String
-            Return s.Replace(GameController.DecSeparator, ".")
+            Return s
         End Function
 
     End Class

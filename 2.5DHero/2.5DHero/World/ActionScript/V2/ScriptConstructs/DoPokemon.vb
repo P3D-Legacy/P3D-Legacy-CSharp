@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
@@ -86,7 +87,7 @@ Namespace ScriptVersion2
                 Case "friendship"
                     Dim index As Integer = int(argument.GetSplit(0))
 
-                    Return Core.Player.Pokemons(index).Friendship.ToString()
+                    Return Core.Player.Pokemons(index).Friendship.ToString(CultureInfo.InvariantCulture)
                 Case "itemname", "item"
                     Dim index As Integer = int(argument.GetSplit(0))
                     If Core.Player.Pokemons(index).Item Is Nothing Then
@@ -133,7 +134,7 @@ Namespace ScriptVersion2
                 Case "nature"
                     Dim index As Integer = int(argument.GetSplit(0))
 
-                    Return Core.Player.Pokemons(index).Nature.ToString()
+                    Return Core.Player.Pokemons(index).Nature.ToString(CultureInfo.InvariantCulture)
                 Case "ownpokemon"
                     Dim index As Integer = int(argument.GetSplit(0))
 
@@ -356,7 +357,7 @@ Namespace ScriptVersion2
 
                     Return "INVALID ARGUMENT"
                 Case "randomot"
-                    Dim n As String = Core.Random.Next(0, 100000).ToString()
+                    Dim n As String = Core.Random.Next(0, 100000).ToString(CultureInfo.InvariantCulture)
                     While n.Length < 5
                         n = "0" & n
                     End While
@@ -364,7 +365,7 @@ Namespace ScriptVersion2
                 Case "status"
                     Dim index As Integer = int(argument)
 
-                    Return Core.Player.Pokemons(index).Status.ToString()
+                    Return Core.Player.Pokemons(index).Status.ToString(CultureInfo.InvariantCulture)
                 Case "canevolve"
                     Dim args() As String = argument.Split(CChar(","))
                     Dim triggerStr As String = "level"

@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Battle
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
@@ -59,7 +60,7 @@ Public Class PokemonScreenV2
         'Name:
         Core.SpriteBatch.DrawString(FontManager.MiniFont, poke.GetDisplayName(), Me.OffsetVector(New Vector2(topLeft.X + 108, topLeft.Y + 134)), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
         'Level:
-        Core.SpriteBatch.DrawString(FontManager.MiniFont, "Lv. " & poke.Level.ToString(), Me.OffsetVector(New Vector2(topLeft.X + 44, topLeft.Y + 188)), Color.White)
+        Core.SpriteBatch.DrawString(FontManager.MiniFont, "Lv. " & poke.Level.ToString(CultureInfo.InvariantCulture), Me.OffsetVector(New Vector2(topLeft.X + 44, topLeft.Y + 188)), Color.White)
 
         'Item:
         If poke.Item IsNot Nothing Then

@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
@@ -321,7 +322,7 @@ Public Class Script
             Select Case data(0)
                 Case SeparatorChar
                     If stringDeclaration = True Then
-                        cArg &= data(0).ToString()
+                        cArg &= data(0).ToString(CultureInfo.InvariantCulture)
                     Else
                         arguments.Add(cArg)
                         cArg = ""
@@ -340,7 +341,7 @@ Public Class Script
                         End If
                     End If
                 Case Else
-                    cArg &= data(0).ToString()
+                    cArg &= data(0).ToString(CultureInfo.InvariantCulture)
             End Select
 
             data = data.Remove(0, 1)

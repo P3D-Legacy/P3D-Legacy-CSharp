@@ -7,25 +7,31 @@ using PCLExt.FileStorage;
 
 namespace P3D.Legacy.Core.Storage.Files
 {
-    public class LocalizationFile : ILocalizationFile
+    /*
+    public interface ILocalizationFile : IFile
     {
-        private const string Prefix = "Translation_";
-        private const string FileExtension = ".dat";
+        CultureInfo Language { get; }
+    }
+    */
+    // TODO: Replace with LocalizationFile later
+    public class TokensFile : IFile //: ILocalizationFile
+    {
+        public const string Prefix = "Tokens_";
+        public const string FileExtension = ".dat";
 
         private IFile _file;
-
         public string Name => _file.Name;
         public string Path => _file.Path;
 
         public CultureInfo Language { get; }
 
-        public LocalizationFile(IFile file)
+        public TokensFile(IFile file)
         {
             _file = file;
 
             Language = new CultureInfo(Name.Replace(Prefix, "").Replace(FileExtension, ""));
         }
-        public LocalizationFile(IFile file, CultureInfo language) { _file = file; Language = language; }
+        public TokensFile(IFile file, CultureInfo language) { _file = file; Language = language; }
 
         public Task CopyAsync(string newPath, NameCollisionOption collisionOption = NameCollisionOption.ReplaceExisting, CancellationToken cancellationToken = default(CancellationToken)) => _file.CopyAsync(newPath, collisionOption, cancellationToken);
         public Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken)) => _file.DeleteAsync(cancellationToken);

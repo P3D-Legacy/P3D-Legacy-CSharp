@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
 
 Namespace BattleSystem.Moves.Normal
@@ -102,7 +103,7 @@ Namespace BattleSystem.Moves.Normal
                     p.Type1 = SelectedType
                     p.Type2 = New Element(Element.Types.Blank)
 
-                    BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " transformed into the " & SelectedType.Type.ToString() & " type!"))
+                    BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " transformed into the " & SelectedType.Type.ToString(CultureInfo.InvariantCulture) & " type!"))
                 Else
                     BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
                 End If

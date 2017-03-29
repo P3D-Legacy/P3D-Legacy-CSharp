@@ -56,8 +56,8 @@ Public Class SignBlock
         End If
     End Sub
 
-    Public Overrides Sub Render()
-        Me.Draw(Me.Model, Textures, True)
+    Public Overrides Sub Render(effect As BasicEffect)
+        Me.Draw(effect, Me.Model, Textures, True)
     End Sub
 
 End Class

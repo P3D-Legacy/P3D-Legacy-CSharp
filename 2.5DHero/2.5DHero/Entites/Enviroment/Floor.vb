@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Models
@@ -51,7 +52,7 @@ Public Class Floor
         Me.CreatedWorld = False
     End Sub
 
-    Public Overrides Sub Render()
+    Public Overrides Sub Render(effect As BasicEffect)
         If changedWeatherTexture = False Then
             changedWeatherTexture = True
             If (Screen.Level.World.CurrentWeather = WeatherEnum.Snow Or Screen.Level.World.CurrentWeather = WeatherEnum.Blizzard) = True And Me.hasSnow = True Then
@@ -62,7 +63,7 @@ Public Class Floor
             End If
         End If
 
-        Me.Draw(Me.Model, Textures, False)
+        Me.Draw(effect, Me.Model, Textures, False)
     End Sub
 
     Private Shared FloorDictionary As New Dictionary(Of String, Entity)

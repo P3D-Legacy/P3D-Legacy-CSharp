@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
@@ -32,7 +33,7 @@ Public Class BattlePokemonInfoScreen
 
         Me.mainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
 
-        Logger.Debug(currentScreen.Identification.ToString())
+        Logger.Debug(currentScreen.Identification.ToString(CultureInfo.InvariantCulture))
     End Sub
 
     Public Overrides Sub Update()

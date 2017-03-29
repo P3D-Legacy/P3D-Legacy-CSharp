@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Security
 
@@ -31,7 +32,7 @@ Public Class FrontierSpawner
     End Function
 
     Private Shared Function GetPredeterminedPokemon(ByVal ID As Integer, ByVal level As Integer, ByVal pokemon_class As Integer) As Pokemon
-        Dim path As String = GameController.GamePath & "\Content\Pokemon\Data\frontier\" & pokemon_class.ToString() & ".dat"
+        Dim path As String = GameController.GamePath & "\Content\Pokemon\Data\frontier\" & pokemon_class.ToString(NumberFormatInfo.InvariantInfo) & ".dat"
         FileValidation.CheckFileValid(path, False, "FrontierSpawner.vb")
 
         Dim data As List(Of String) = System.IO.File.ReadAllLines(path).ToList()
@@ -39,7 +40,7 @@ Public Class FrontierSpawner
         For Each line As String In data
             Dim lData() As String = line.Split(CChar("|"))
             Dim InputIDs() As String = lData(0).Split(CChar(","))
-            If InputIDs.Contains(ID.ToString()) = True Then
+            If InputIDs.Contains(ID.ToString(NumberFormatInfo.InvariantInfo)) = True Then
                 Dim OutputID As Integer = CInt(lData(1))
                 Dim Moveset As New List(Of Integer)
                 For Each move As String In lData(2).Split(CChar(","))

@@ -42,7 +42,12 @@ namespace P3D.Legacy.Core.Debug
                     }
                 }
 
-                string s = GameController.GAMENAME + " " + GameController.GAMEDEVELOPMENTSTAGE + " " + GameController.GAMEVERSION + " / FPS: " + Math.Round((double) Core.GameInstance.FPSMonitor.Value, 0) + isDebugString + Constants.vbNewLine + Screen.Camera.Position.ToString() + thirdPersonString + Constants.vbNewLine + Screen.Camera.Yaw + "; " + Screen.Camera.Pitch + Constants.vbNewLine + "E: " + DrawnVertices + "/" + MaxVertices + Constants.vbNewLine + "C: " + MaxDistance + " A: " + ActionscriptActive;
+                string s = GameController.GAMENAME + " " + GameController.GAMEDEVELOPMENTSTAGE + " " + GameController.GAMEVERSION + " / FPS: " + Math.Round((double) Core.GameInstance.FPSMonitor.Value, 0) + isDebugString + Environment.NewLine +
+                    Screen.Camera.Position + thirdPersonString + Environment.NewLine +
+                    Screen.Camera.Yaw + "; " + Screen.Camera.Pitch + Environment.NewLine +
+                    "E: " + DrawnVertices + "/" + MaxVertices + Environment.NewLine +
+                    "C: " + MaxDistance + " A: " + ActionscriptActive + Environment.NewLine +
+                    "MaxDistance: " + MaxDistance + " MaxVertices: " + MaxVertices + " DrawnVertices: " + DrawnVertices;
 
                 if (Core.GameOptions.ContentPackNames.Any())
                 {
@@ -56,7 +61,7 @@ namespace P3D.Legacy.Core.Debug
                         contentPackString += ContentPackName;
                     }
                     contentPackString = "Loaded ContentPacks: " + contentPackString;
-                    s += Constants.vbNewLine + contentPackString;
+                    s += Environment.NewLine + contentPackString;
                 }
 
                 Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, s, new Vector2(7, 7), Color.Black);

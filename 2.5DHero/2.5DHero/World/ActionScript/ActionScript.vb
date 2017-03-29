@@ -1,7 +1,9 @@
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Security
+Imports PCLExt.FileStorage
 
 Public Class ActionScript
 
@@ -123,19 +125,17 @@ nextScript:
                     Logger.Debug("Start script (ID: " & Input & ")")
                     l.ScriptName = "Type: Script; Input: " & Input
 
-                    Dim path As String = GameModeManager.GetScriptFileAsync(Input & ".dat").Result.Path
-                    FileValidation.CheckFileValid(path, False, "ActionScript.vb")
+                    Dim file = GameModeManager.GetScriptFileAsync(Input & ".dat").Result
+                    FileValidation.CheckFileValid(file, False, "ActionScript.vb")
 
-                    If System.IO.File.Exists(path) = True Then
-
-                        Dim Data As String = System.IO.File.ReadAllText(path)
-
+                    Dim Data As String = file.ReadAllTextAsync().Result
+                    If String.IsNullOrEmpty(Data) = False Then
                         Data = Data.Replace(vbNewLine, "^")
                         Dim ScriptData() As String = Data.Split(CChar("^"))
 
                         AddScriptLines(ScriptData)
                     Else
-                        Logger.Log(Logger.LogTypes.ErrorMessage, "ActionScript.vb: The script file """ & path & """ doesn't exist!")
+                        Logger.Log(Logger.LogTypes.ErrorMessage, "ActionScript.vb: The script file """ & file.Path & """ doesn't exist!")
                     End If
                 Case 1 'Display text
                     Logger.Debug("Start Script (Text: " & Input & ")")
@@ -448,7 +448,7 @@ nextScript:
         If dteDate.IsDaylightSavingTime = True Then
             dteDate = DateAdd(DateInterval.Hour, -1, dteDate)
         End If
-        TimeToUnix = DateDiff(DateInterval.Second, #1/1/1970#, dteDate).ToString()
+        TimeToUnix = DateDiff(DateInterval.Second, #1/1/1970#, dteDate).ToString(NumberFormatInfo.InvariantInfo)
     End Function
 
     Public Shared Sub RegisterID(ByVal i As String)

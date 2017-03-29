@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Screens
 
@@ -37,7 +38,7 @@ Public Class RotationTile
 
                         Dim s As String = "version=2" & vbNewLine &
                        "@player.move(0)" & vbNewLine &
-                       "@player.turnto(" & Me.RotateTo.ToString() & ")" & vbNewLine &
+                       "@player.turnto(" & Me.RotateTo.ToString(CultureInfo.InvariantCulture) & ")" & vbNewLine &
                        "@player.move(" & steps & ")" & vbNewLine &
                        ":end"
 
@@ -88,8 +89,8 @@ theend:
         Return steps
     End Function
 
-    Public Overrides Sub Render()
-        Me.Draw(Me.Model, Textures, False)
+    Public Overrides Sub Render(effect As BasicEffect)
+        Me.Draw(effect, Me.Model, Textures, False)
     End Sub
 
     Public Overrides Function LetPlayerMove() As Boolean

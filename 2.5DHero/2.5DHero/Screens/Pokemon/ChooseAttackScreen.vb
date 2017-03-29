@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
@@ -88,7 +89,7 @@ Public Class ChooseAttackScreen
                 Dim i As Integer = 0
                 Dim n As String = ""
                 For i = 0 To fullText.Length - 1
-                    Dim c As Char = CChar(fullText(i).ToString().Replace("’", "'"))
+                    Dim c As Char = CChar(fullText(i).ToString(CultureInfo.InvariantCulture).Replace("’", "'"))
 
                     If c = CChar(" ") Then
                         If FontManager.MiniFont.MeasureString(n & c).X > 170 Then
@@ -104,12 +105,12 @@ Public Class ChooseAttackScreen
                     End If
                 Next
 
-                Dim power As String = A.Power.ToString()
+                Dim power As String = A.Power.ToString(CultureInfo.InvariantCulture)
                 If power = "0" Then
                     power = "-"
                 End If
 
-                Dim acc As String = A.Accuracy.ToString()
+                Dim acc As String = A.Accuracy.ToString(CultureInfo.InvariantCulture)
                 If acc = "0" Then
                     acc = "-"
                 End If

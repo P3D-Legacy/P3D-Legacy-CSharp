@@ -1,5 +1,5 @@
 using System;
-
+using System.Globalization;
 using P3D.Legacy.Core.Resources;
 
 namespace P3D.Legacy.Core.Debug
@@ -32,13 +32,13 @@ namespace P3D.Legacy.Core.Debug
                             if (string.IsNullOrEmpty(install))
                             {
                                 //no install info, ust be later
-                                output += versionKeyName + "  " + name + Constants.vbNewLine;
+                                output += versionKeyName + "  " + name + Environment.NewLine;
                             }
                             else
                             {
                                 if (!string.IsNullOrEmpty(sp) && install == "1")
                                 {
-                                    output += versionKeyName + "  " + name + "  SP" + sp + Constants.vbNewLine;
+                                    output += versionKeyName + "  " + name + "  SP" + sp + Environment.NewLine;
                                 }
                             }
                             if (!string.IsNullOrEmpty(name))
@@ -57,17 +57,17 @@ namespace P3D.Legacy.Core.Debug
                                 if (string.IsNullOrEmpty(install))
                                 {
                                     //no install info, ust be later
-                                    output += versionKeyName + "  " + name + Constants.vbNewLine;
+                                    output += versionKeyName + "  " + name + Environment.NewLine;
                                 }
                                 else
                                 {
                                     if (!string.IsNullOrEmpty(sp) && install == "1")
                                     {
-                                        output += "  " + subKeyName + "  " + name + "  SP" + sp + Constants.vbNewLine;
+                                        output += "  " + subKeyName + "  " + name + "  SP" + sp + Environment.NewLine;
                                     }
                                     else if (install == "1")
                                     {
-                                        output += "  " + subKeyName + "  " + name + Constants.vbNewLine;
+                                        output += "  " + subKeyName + "  " + name + Environment.NewLine;
                                     }
                                 }
                             }

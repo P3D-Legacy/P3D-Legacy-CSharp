@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Input
@@ -8,6 +9,7 @@ Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Security
+Imports PCLExt.FileStorage
 
 Public Class PokedexSelectScreen
 
@@ -91,7 +93,7 @@ Public Class PokedexSelectScreen
                 Core.SpriteBatch.Draw(Me.texture, New Microsoft.Xna.Framework.Rectangle(100 + 64 * 6, 100 + i * 96, 64, 64), New Microsoft.Xna.Framework.Rectangle(16, 16, 16, 16), Microsoft.Xna.Framework.Color.White, 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
 
                 Core.SpriteBatch.DrawString(FontManager.MainFont, p.Name, New Vector2(120, 116 + i * 96), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
-                Core.SpriteBatch.DrawString(FontManager.MainFont, Me.Profiles(i).Obtained.ToString(), New Vector2(460, 116 + i * 96), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, Me.Profiles(i).Obtained.ToString(NumberFormatInfo.InvariantInfo), New Vector2(460, 116 + i * 96), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
 
                 If Me.Profiles(i).Obtained >= Me.Profiles(i).Pokedex.Count Then
                     Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\pokedexhabitat", New Microsoft.Xna.Framework.Rectangle(160, 160, 10, 10), ""), New Microsoft.Xna.Framework.Rectangle(430, 122 + i * 96, 20, 20), Microsoft.Xna.Framework.Color.White)
@@ -186,8 +188,10 @@ Public Class PokedexHabitatScreen
 
         For Each file As String In System.IO.Directory.GetFiles(GameModeManager.ActiveGameMode.PokeFolder.Path, "*.*", IO.SearchOption.AllDirectories)
             If file.EndsWith(".poke") = True Then
+                ' TODO: Fix
+                dim ifile = FileSystem.Current.GetFileFromPathAsync(file).Result
                 Dim fileName As String = file.Remove(0, (GameModeManager.ActiveGameMode.PokeFolder.Path & "\").Length - 1)
-                Dim newHabitat As New PokedexScreen.Habitat(file)
+                Dim newHabitat As New PokedexScreen.Habitat(ifile)
                 Dim exists As Boolean = False
                 For Each h As PokedexScreen.Habitat In Me.HabitatList
                     If h.Name.ToLower() = newHabitat.Name.ToLower() Then
@@ -197,7 +201,7 @@ Public Class PokedexHabitatScreen
                     End If
                 Next
                 If exists = False AndAlso Core.Player.PokeFiles.Contains(fileName) = True Then
-                    HabitatList.Add(New PokedexScreen.Habitat(file))
+                    HabitatList.Add(New PokedexScreen.Habitat(ifile))
                 End If
             End If
         Next
@@ -227,7 +231,7 @@ Public Class PokedexHabitatScreen
                 Core.SpriteBatch.Draw(HabitatList(i).Texture, New Microsoft.Xna.Framework.Rectangle(120, 108 + p * 96, 64, 48), Microsoft.Xna.Framework.Color.White)
                 Core.SpriteBatch.DrawString(FontManager.MainFont, HabitatList(i).Name, New Vector2(200, 116 + p * 96), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
 
-                Dim t As String = HabitatList(i).PokemonCaught.ToString() & "/" & HabitatList(i).PokemonList.Count
+                Dim t As String = HabitatList(i).PokemonCaught.ToString(NumberFormatInfo.InvariantInfo) & "/" & HabitatList(i).PokemonList.Count
                 Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(680 - CSng((FontManager.MainFont.MeasureString(t).X * 1.25F) / 2.0F), 116 + p * 96), Microsoft.Xna.Framework.Color.Black, 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
 
                 Dim progressTexture As Texture2D = Me.HabitatList(i).ProgressTexture
@@ -559,9 +563,9 @@ Public Class PokedexScreen
 
                         Dim no As String = "000"
                         If CHabitat Is Nothing Then
-                            no = Profile.Pokedex.GetPlace(p.Number).ToString()
+                            no = Profile.Pokedex.GetPlace(p.Number).ToString(NumberFormatInfo.InvariantInfo)
                         Else
-                            no = p.Number.ToString()
+                            no = p.Number.ToString(NumberFormatInfo.InvariantInfo)
                         End If
                         While no.Length < 3
                             no = "0" & no
@@ -638,9 +642,9 @@ Public Class PokedexScreen
 
         Dim no As String = "000"
         If CHabitat Is Nothing Then
-            no = Profile.Pokedex.GetPlace(p.Number).ToString()
+            no = Profile.Pokedex.GetPlace(p.Number).ToString(NumberFormatInfo.InvariantInfo)
         Else
-            no = p.Number.ToString()
+            no = p.Number.ToString(NumberFormatInfo.InvariantInfo)
         End If
         While no.Length < 3
             no = "0" & no
@@ -830,7 +834,7 @@ Public Class PokedexScreen
     Private Sub SelectMenu1(ByVal s As SelectMenu)
         Select Case s.SelectedItem.ToLower()
             Case "order"
-                Me.menu = New SelectMenu({"Type", "Reverse: " & Me.ReverseOrder.ToString(), "Back"}.ToList(), 0, AddressOf SelectMenuOrder, 2)
+                Me.menu = New SelectMenu({"Type", "Reverse: " & Me.ReverseOrder.ToString(NumberFormatInfo.InvariantInfo), "Back"}.ToList(), 0, AddressOf SelectMenuOrder, 2)
             Case "filter"
                 Me.menu = New SelectMenu({"Name", "Type1", "Type2", "Clear", "Back"}.ToList(), 0, AddressOf SelectMenuFilter, 4)
             Case "reset"
@@ -909,9 +913,9 @@ Public Class PokedexScreen
         Select Case s.SelectedItem.ToLower()
             Case "type"
                 Me.menu = New SelectMenu({"Numeric", "A-Z", "Weight", "Height", "Back"}.ToList(), 0, AddressOf SelectMenuOrderType, 4)
-            Case "reverse: " & Me.ReverseOrder.ToString().ToLower()
+            Case "reverse: " & Me.ReverseOrder.ToString(NumberFormatInfo.InvariantInfo).ToLower()
                 Me.ReverseOrder = Not Me.ReverseOrder
-                Me.menu = New SelectMenu({"Type", "Reverse: " & Me.ReverseOrder.ToString(), "Back"}.ToList(), 0, AddressOf SelectMenuOrder, 2)
+                Me.menu = New SelectMenu({"Type", "Reverse: " & Me.ReverseOrder.ToString(NumberFormatInfo.InvariantInfo), "Back"}.ToList(), 0, AddressOf SelectMenuOrder, 2)
                 Me.SetList()
             Case "back"
                 Me.menu = New SelectMenu({"Order", "Filter", "Reset", "Back"}.ToList(), 0, AddressOf SelectMenu1, 3)
@@ -933,7 +937,7 @@ Public Class PokedexScreen
                 Me.Order = OrderType.Height
                 Me.SetList()
             Case "back"
-                Me.menu = New SelectMenu({"Type", "Reverse: " & Me.ReverseOrder.ToString(), "Back"}.ToList(), 0, AddressOf SelectMenuOrder, 2)
+                Me.menu = New SelectMenu({"Type", "Reverse: " & Me.ReverseOrder.ToString(NumberFormatInfo.InvariantInfo), "Back"}.ToList(), 0, AddressOf SelectMenuOrder, 2)
         End Select
     End Sub
 
@@ -1062,7 +1066,7 @@ Public Class PokedexScreen
 
         Dim MergeData() As String = {} 'Temp data storage if needs to merge.
 
-        Public File As String = ""
+        Public File As IFile
         Public Name As String = ""
         Public HabitatType As HabitatTypes = HabitatType.Grassland
 
@@ -1072,9 +1076,9 @@ Public Class PokedexScreen
         Public PokemonCaught As Integer = 0
         Public PokemonSeen As Integer = 0
 
-        Public Sub New(ByVal file As String)
+        Public Sub New(ByVal file As IFile)
             FileValidation.CheckFileValid(file, False, "PokedexScreen.vb")
-            Dim data() As String = System.IO.File.ReadAllLines(file)
+            Dim data() As String = file.ReadAllTextAsync.Result.SplitAtNewline()
             Me.MergeData = data
             Me.File = file
 
@@ -1138,7 +1142,7 @@ Public Class PokedexScreen
 
             If Me.Name = "" Then
                 Me.Name = System.IO.Path.GetFileNameWithoutExtension(file)
-                Me.Name = Me.Name(0).ToString().ToUpper() & Me.Name.Remove(0, 1)
+                Me.Name = Me.Name(0).ToString(NumberFormatInfo.InvariantInfo).ToUpper() & Me.Name.Remove(0, 1)
             End If
         End Sub
 
@@ -1546,29 +1550,29 @@ Public Class PokedexViewScreen
             Next
 
             If Not EvolutionLine.Devolution Is Nothing Then
-                connections.Add("-1_0|" & EvolutionLine.Devolution.PokemonID.ToString() & "-" & EvolutionLine.PokemonID.ToString())
+                connections.Add("-1_0|" & EvolutionLine.Devolution.PokemonID.ToString(NumberFormatInfo.InvariantInfo) & "-" & EvolutionLine.PokemonID.ToString(NumberFormatInfo.InvariantInfo))
                 levels(-1) += 1
 
                 For Each evolution As EvolutionLinePokemon In EvolutionLine.Devolution.Evolutions
-                    connections.Add("-1_0|" & EvolutionLine.Devolution.PokemonID.ToString() & "-" & evolution.PokemonID.ToString())
+                    connections.Add("-1_0|" & EvolutionLine.Devolution.PokemonID.ToString(NumberFormatInfo.InvariantInfo) & "-" & evolution.PokemonID.ToString(NumberFormatInfo.InvariantInfo))
                     levels(0) += 1
                     For Each eevolution As EvolutionLinePokemon In evolution.Evolutions
-                        connections.Add("0_1|" & evolution.PokemonID.ToString() & "-" & eevolution.PokemonID.ToString())
+                        connections.Add("0_1|" & evolution.PokemonID.ToString(NumberFormatInfo.InvariantInfo) & "-" & eevolution.PokemonID.ToString(NumberFormatInfo.InvariantInfo))
                         levels(1) += 1
                     Next
                 Next
 
                 If Not EvolutionLine.Devolution.Devolution Is Nothing Then
-                    connections.Add("-2_-1|" & EvolutionLine.Devolution.Devolution.PokemonID.ToString() & "-" & EvolutionLine.Devolution.PokemonID.ToString())
+                    connections.Add("-2_-1|" & EvolutionLine.Devolution.Devolution.PokemonID.ToString(NumberFormatInfo.InvariantInfo) & "-" & EvolutionLine.Devolution.PokemonID.ToString(NumberFormatInfo.InvariantInfo))
                     levels(-2) += 1
                 End If
             End If
 
             For Each evolution As EvolutionLinePokemon In EvolutionLine.Evolutions
-                connections.Add("0_1|" & EvolutionLine.PokemonID.ToString() & "-" & evolution.PokemonID.ToString())
+                connections.Add("0_1|" & EvolutionLine.PokemonID.ToString(NumberFormatInfo.InvariantInfo) & "-" & evolution.PokemonID.ToString(NumberFormatInfo.InvariantInfo))
                 levels(1) += 1
                 For Each eevolution As EvolutionLinePokemon In evolution.Evolutions
-                    connections.Add("1_2|" & evolution.PokemonID.ToString() & "-" & eevolution.PokemonID.ToString())
+                    connections.Add("1_2|" & evolution.PokemonID.ToString(NumberFormatInfo.InvariantInfo) & "-" & eevolution.PokemonID.ToString(NumberFormatInfo.InvariantInfo))
                     levels(2) += 1
                 Next
             Next

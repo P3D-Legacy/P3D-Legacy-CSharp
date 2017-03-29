@@ -98,7 +98,7 @@ namespace P3D.Legacy.Core.World
                 Screen.Level.LevelFile = levelPath;
 
                 Core.Player.LastSavePlace = Screen.Level.LevelFile;
-                Core.Player.LastSavePlacePosition = Player.Temp.LastPosition.X + "," + Player.Temp.LastPosition.Y.ToString().Replace(GameController.DecSeparator, ".") + "," + Player.Temp.LastPosition.Z;
+                Core.Player.LastSavePlacePosition = Player.Temp.LastPosition.X + "," + Player.Temp.LastPosition.Y.ToString(NumberFormatInfo.InvariantInfo).Replace(GameController.DecSeparator, ".") + "," + Player.Temp.LastPosition.Z;
 
                 Screen.Level.Entities.Clear();
                 Screen.Level.Floors.Clear();
@@ -579,7 +579,7 @@ namespace P3D.Legacy.Core.World
                 addNpc = Convert.ToBoolean(GetTag(tags, "AddNPC"));
             }
 
-            string structureKey = mapOffset.X.ToString() + "|" + mapOffset.Y.ToString() + "|" + mapOffset.Z.ToString() +
+            string structureKey = mapOffset.X.ToString(NumberFormatInfo.InvariantInfo) + "|" + mapOffset.Y.ToString(NumberFormatInfo.InvariantInfo) + "|" + mapOffset.Z.ToString(NumberFormatInfo.InvariantInfo) +
                                   "|" + mapName;
 
             if (_tempStructureList.ContainsKey(structureKey) == false)
@@ -708,9 +708,9 @@ namespace P3D.Legacy.Core.World
                 {
                     line = line.Replace(positionString,
                         "{\"position\"{intarr[" +
-                        Convert.ToInt32(newPosition.X).ToString().Replace(GameController.DecSeparator, ".") + "," +
-                        Convert.ToInt32(newPosition.Y).ToString().Replace(GameController.DecSeparator, ".") + "," +
-                        Convert.ToInt32(newPosition.Z).ToString().Replace(GameController.DecSeparator, ".") + "]}}");
+                        Convert.ToInt32(newPosition.X).ToString(NumberFormatInfo.InvariantInfo).Replace(GameController.DecSeparator, ".") + "," +
+                        Convert.ToInt32(newPosition.Y).ToString(NumberFormatInfo.InvariantInfo).Replace(GameController.DecSeparator, ".") + "," +
+                        Convert.ToInt32(newPosition.Z).ToString(NumberFormatInfo.InvariantInfo).Replace(GameController.DecSeparator, ".") + "]}}");
                 }
             }
 
@@ -994,7 +994,7 @@ namespace P3D.Legacy.Core.World
                         {
                             if (seasonToggle.Contains(",") == false)
                             {
-                                if (seasonToggle.ToLower() != BaseWorld.CurrentSeason.ToString().ToLower())
+                                if (seasonToggle.ToLower() != BaseWorld.CurrentSeason.ToString(NumberFormatInfo.InvariantInfo).ToLower())
                                 {
                                     doAdd = false;
                                 }
@@ -1002,7 +1002,7 @@ namespace P3D.Legacy.Core.World
                             else
                             {
                                 string[] seasons = seasonToggle.ToLower().Split(Convert.ToChar(","));
-                                if (seasons.Contains(BaseWorld.CurrentSeason.ToString().ToLower()) == false)
+                                if (seasons.Contains(BaseWorld.CurrentSeason.ToString(NumberFormatInfo.InvariantInfo).ToLower()) == false)
                                 {
                                     doAdd = false;
                                 }
@@ -1226,7 +1226,7 @@ namespace P3D.Legacy.Core.World
 
         private void LoadBerries()
         {
-            string[] data = Core.Player.BerryData.Replace("}" + Constants.vbNewLine, "}").Split(Convert.ToChar("}"));
+            string[] data = Core.Player.BerryData.Replace("}" + Environment.NewLine, "}").Split(Convert.ToChar("}"));
             for (var i = 0; i < data.Length; i++)
             {
                 if (data[i].Contains("{"))

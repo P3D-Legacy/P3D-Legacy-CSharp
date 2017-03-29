@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports net.Pokemon3D.Game.Servers
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities.Other
@@ -455,7 +456,7 @@ Namespace GameJolt
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, ownE.Username, New Vector2(CInt(startPos.X + 265), CInt(startPos.Y + 45)), Microsoft.Xna.Framework.Color.Black)
 
                 If OwnRank > -1 Then
-                    Core.SpriteBatch.DrawString(FontManager.MiniFont, "Rank " & OwnRank.ToString(), New Vector2(CInt(startPos.X + 380), CInt(startPos.Y + 45)), Microsoft.Xna.Framework.Color.Black)
+                    Core.SpriteBatch.DrawString(FontManager.MiniFont, "Rank " & OwnRank.ToString(NumberFormatInfo.InvariantInfo), New Vector2(CInt(startPos.X + 380), CInt(startPos.Y + 45)), Microsoft.Xna.Framework.Color.Black)
                 End If
 
                 If UserBanned = False Then
@@ -482,7 +483,7 @@ Namespace GameJolt
 
                                         Core.SpriteBatch.Draw(e.SpriteTexture, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X + 50), CInt(startPos.Y + 80 + i * 35), 32, 32), New Microsoft.Xna.Framework.Rectangle(0, frameSize.Height * 2, frameSize.Width, frameSize.Height), Microsoft.Xna.Framework.Color.White)
                                         Core.SpriteBatch.DrawString(FontManager.MiniFont, e.Username, New Vector2(CInt(startPos.X + 90), CInt(startPos.Y + 85 + i * 35)), Microsoft.Xna.Framework.Color.Black)
-                                        Core.SpriteBatch.DrawString(FontManager.MiniFont, "Rank " & (index + 1).ToString() & " (" & e.Points.ToString() & ")", New Vector2(CInt(startPos.X + 380), CInt(startPos.Y + 85 + i * 35)), Microsoft.Xna.Framework.Color.Black)
+                                        Core.SpriteBatch.DrawString(FontManager.MiniFont, "Rank " & (index + 1).ToString(NumberFormatInfo.InvariantInfo) & " (" & e.Points.ToString(NumberFormatInfo.InvariantInfo) & ")", New Vector2(CInt(startPos.X + 380), CInt(startPos.Y + 85 + i * 35)), Microsoft.Xna.Framework.Color.Black)
                                     Else
                                         If e.startedLoading = False Then
                                             e.StartLoading(e.Username)
@@ -649,7 +650,7 @@ Namespace GameJolt
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, ownE.Username, New Vector2(CInt(startPos.X + 265), CInt(startPos.Y + 45)), Microsoft.Xna.Framework.Color.Black)
 
                 If OwnRank > -1 Then
-                    Core.SpriteBatch.DrawString(FontManager.MiniFont, "Rank " & OwnRank.ToString(), New Vector2(CInt(startPos.X + 380), CInt(startPos.Y + 45)), Microsoft.Xna.Framework.Color.Black)
+                    Core.SpriteBatch.DrawString(FontManager.MiniFont, "Rank " & OwnRank.ToString(NumberFormatInfo.InvariantInfo), New Vector2(CInt(startPos.X + 380), CInt(startPos.Y + 45)), Microsoft.Xna.Framework.Color.Black)
                 End If
 
                 If UserBanned = False Then
@@ -676,7 +677,7 @@ Namespace GameJolt
 
                                         Core.SpriteBatch.Draw(e.SpriteTexture, New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X + 50), CInt(startPos.Y + 80 + i * 35), 32, 32), New Microsoft.Xna.Framework.Rectangle(0, frameSize.Height * 2, frameSize.Width, frameSize.Height), Microsoft.Xna.Framework.Color.White)
                                         Core.SpriteBatch.DrawString(FontManager.MiniFont, e.Username, New Vector2(CInt(startPos.X + 90), CInt(startPos.Y + 85 + i * 35)), Microsoft.Xna.Framework.Color.Black)
-                                        Core.SpriteBatch.DrawString(FontManager.MiniFont, "Level " & Emblem.GetPlayerLevel(e.Points) & " (" & e.Points.ToString() & ")", New Vector2(CInt(startPos.X + 380), CInt(startPos.Y + 85 + i * 35)), Microsoft.Xna.Framework.Color.Black)
+                                        Core.SpriteBatch.DrawString(FontManager.MiniFont, "Level " & Emblem.GetPlayerLevel(e.Points) & " (" & e.Points.ToString(NumberFormatInfo.InvariantInfo) & ")", New Vector2(CInt(startPos.X + 380), CInt(startPos.Y + 85 + i * 35)), Microsoft.Xna.Framework.Color.Black)
                                     Else
                                         If e.startedLoading = False Then
                                             e.StartLoading(e.Username)
@@ -1617,19 +1618,19 @@ Namespace GameJolt
 
                 If data(0).Contains("-") = True Then
                     Dim channelData() As String = data(0).Split(CChar("-"))
-                    Me.ChannelMin = CDec(channelData(0).Replace(".", GameController.DecSeparator))
-                    Me.ChannelMax = CDec(channelData(1).Replace(".", GameController.DecSeparator))
+                    Me.ChannelMin = CDec(channelData(0))
+                    Me.ChannelMax = CDec(channelData(1))
                 Else
-                    Me.ChannelMin = CDec(data(0).Replace(".", GameController.DecSeparator))
+                    Me.ChannelMin = CDec(data(0))
                     Me.ChannelMax = Me.ChannelMin
                 End If
 
                 If data(1).Contains("-") = True Then
                     Dim channelData() As String = data(1).Split(CChar("-"))
-                    Me.OverwriteMin = CDec(channelData(0).Replace(".", GameController.DecSeparator))
-                    Me.OverwriteMax = CDec(channelData(1).Replace(".", GameController.DecSeparator))
+                    Me.OverwriteMin = CDec(channelData(0))
+                    Me.OverwriteMax = CDec(channelData(1))
                 Else
-                    Me.OverwriteMin = CDec(data(1).Replace(".", GameController.DecSeparator))
+                    Me.OverwriteMin = CDec(data(1))
                     Me.OverwriteMax = Me.OverwriteMin
                 End If
 
@@ -1718,7 +1719,7 @@ Namespace GameJolt
                             levelName = levelName.Remove(0, levelName.LastIndexOf("\") + 1)
                         End If
                         levelName = levelName.Remove(levelName.Length - 4, 4)
-                        levelName = levelName(0).ToString().ToUpper() & levelName.Remove(0, 1)
+                        levelName = levelName(0).ToString(NumberFormatInfo.InvariantInfo).ToUpper() & levelName.Remove(0, 1)
                         levelName = levelName.Substring(0, 5) & " " & levelName.Remove(0, 5)
 
                         If Not p Is Nothing Then
@@ -1782,7 +1783,7 @@ Namespace GameJolt
 
         Private Sub DrawRadio()
             Dim startPos As Vector2 = GetStartPosition()
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "Tuning: " & Me.RadioCursor.ToString(), New Vector2(startPos.X + 100, startPos.Y + 50), Microsoft.Xna.Framework.Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "Tuning: " & Me.RadioCursor.ToString(NumberFormatInfo.InvariantInfo), New Vector2(startPos.X + 100, startPos.Y + 50), Microsoft.Xna.Framework.Color.Black)
 
             Canvas.DrawRectangle(New Microsoft.Xna.Framework.Rectangle(CInt(startPos.X + 90), CInt(startPos.Y + 110), 420, 5), Microsoft.Xna.Framework.Color.Black)
 
@@ -1935,10 +1936,10 @@ Namespace GameJolt
         Public Shared Function StationCanPlay(ByVal station As RadioStation) As Boolean
             Dim stations As New List(Of IRadioStation)
 
-            Dim file As IFile = GameModeManager.GetContentFileAsync("Data\channels.dat")
+            Dim file = GameModeManager.GetContentFileAsync("Data\channels.dat").Result
             FileValidation.CheckFileValid(file, False, "PokegearScreen.vb")
 
-            Dim radioData() As String = System.IO.File.ReadAllLines(file)
+            Dim radioData() As String = file.ReadAllTextAsync().Result.SplitAtNewline()
             For Each line As String In radioData
                 If line.StartsWith("{") = True And line.EndsWith("}") = True Then
                     line = line.Remove(line.Length - 1, 1).Remove(0, 1)

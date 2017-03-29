@@ -1,3 +1,4 @@
+Imports System.Globalization
 Imports System.Runtime.CompilerServices
 Imports P3D.Legacy.Core
 
@@ -199,12 +200,12 @@ Module Extensions
             If fulltext.Contains(" ") = False Then
                 Dim newText As String = ""
                 While fulltext.Length > 0
-                    If (font.MeasureString(newText & fulltext(0).ToString()).X * scale) > width Then
+                    If (font.MeasureString(newText & fulltext(0).ToString(NumberFormatInfo.InvariantInfo)).X * scale) > width Then
                         newText &= vbNewLine
-                        newText &= fulltext(0).ToString()
+                        newText &= fulltext(0).ToString(NumberFormatInfo.InvariantInfo)
                         fulltext.Remove(0, 1)
                     Else
-                        newText &= fulltext(0).ToString()
+                        newText &= fulltext(0).ToString(NumberFormatInfo.InvariantInfo)
                         fulltext.Remove(0, 1)
                     End If
                 End While
@@ -407,13 +408,8 @@ Module Extensions
     End Function
 
     <Extension()>
-    Public Function ReplaceDecSeparator(ByVal s As String) As String
-        Return s.Replace(GameController.DecSeparator, ".")
-    End Function
-
-    <Extension()>
     Public Function InsertDecSeparator(ByVal s As String) As String
-        Return s.Replace(".", GameController.DecSeparator)
+        Return s
     End Function
 
     ''' <summary>

@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Data
 Imports P3D.Legacy.Core.GameModes
@@ -8,6 +9,8 @@ Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.Storage
+Imports PCLExt.FileStorage
 
 Public Class NewGameScreen
     Inherits BaseNewGameScreen
@@ -397,15 +400,15 @@ Public Class NewGameScreen
         Dim exclude() As String = {"\", "/", ":", "*", "?", """", "<", ">", "|", ",", "."}
         Dim s As String = ""
         For Each c As Char In t
-            If exclude.Contains(c.ToString()) = True Then
+            If exclude.Contains(c.ToString(NumberFormatInfo.InvariantInfo)) = True Then
                 c = CChar(" ")
             End If
-            s &= c.ToString()
+            s &= c.ToString(NumberFormatInfo.InvariantInfo)
         Next
         Return s
     End Function
 
-    Private Sub CreateGame()
+    Private Async Sub CreateGame()
         Dim folderPath As String = Name
         Dim folderPrefix As Integer = 0
 
@@ -417,7 +420,7 @@ Public Class NewGameScreen
 
         While System.IO.Directory.Exists(savePath & folderPath) = True
             If folderPath <> Name Then
-                folderPath = folderPath.Remove(folderPath.Length - folderPrefix.ToString().Length, folderPrefix.ToString().Length)
+                folderPath = folderPath.Remove(folderPath.Length - folderPrefix.ToString(NumberFormatInfo.InvariantInfo).Length, folderPrefix.ToString(NumberFormatInfo.InvariantInfo).Length)
             End If
 
             folderPath &= folderPrefix
@@ -425,28 +428,10 @@ Public Class NewGameScreen
             folderPrefix += 1
         End While
 
-        If System.IO.Directory.Exists(GameController.GamePath & "\Save") = False Then
-            System.IO.Directory.CreateDirectory(GameController.GamePath & "\Save")
-        End If
-
-        System.IO.Directory.CreateDirectory(savePath & folderPath)
-
-        System.IO.File.WriteAllText(savePath & folderPath & "\Player.dat", GetPlayerData())
-        System.IO.File.WriteAllText(savePath & folderPath & "\Pokedex.dat", "")
-        System.IO.File.WriteAllText(savePath & folderPath & "\Items.dat", "")
-        System.IO.File.WriteAllText(savePath & folderPath & "\Register.dat", "")
-        System.IO.File.WriteAllText(savePath & folderPath & "\Berries.dat", GetBerryData())
-        System.IO.File.WriteAllText(savePath & folderPath & "\Apricorns.dat", "")
-        System.IO.File.WriteAllText(savePath & folderPath & "\Daycare.dat", "")
-        System.IO.File.WriteAllText(savePath & folderPath & "\Party.dat", "")
-        System.IO.File.WriteAllText(savePath & folderPath & "\ItemData.dat", "")
-        System.IO.File.WriteAllText(savePath & folderPath & "\Options.dat", GetOptionsData())
-        System.IO.File.WriteAllText(savePath & folderPath & "\Box.dat", "")
-        System.IO.File.WriteAllText(savePath & folderPath & "\NPC.dat", "")
-        System.IO.File.WriteAllText(savePath & folderPath & "\HallOfFame.dat", "")
-        System.IO.File.WriteAllText(savePath & folderPath & "\SecretBase.dat", "")
-        System.IO.File.WriteAllText(savePath & folderPath & "\RoamingPokemon.dat", "")
-        System.IO.File.WriteAllText(savePath & folderPath & "\Statistics.dat", "")
+        Dim playerFolder = Await StorageInfo.SaveFolder.GetUserSaveFolder(folderPath)
+        Await playerFolder.PlayerFile.WriteAllTextAsync(GetPlayerData())
+        Await playerFolder.BerriesFile.WriteAllTextAsync(GetBerryData())
+        Await playerFolder.OptionsFile.WriteAllTextAsync(GetOptionsData())
 
         Core.Player.IsGamejoltSave = False
         Core.Player.LoadGame(folderPath)
@@ -454,15 +439,15 @@ Public Class NewGameScreen
     End Sub
 
     Private Function GetPlayerData() As String
-        Dim ot As String = Core.Random.Next(0, 65256).ToString()
+        Dim ot As String = Core.Random.Next(0, 65256).ToString(NumberFormatInfo.InvariantInfo)
         While ot.Length < 5
             ot = "0" & ot
         End While
 
         Dim s As String = "Name|" & Name & vbNewLine &
-            "Position|" & Me.startPosition.X.ToString().Replace(GameController.DecSeparator, ".") & "," & Me.startPosition.Y.ToString().Replace(GameController.DecSeparator, ".") & "," & Me.startPosition.Z.ToString().Replace(GameController.DecSeparator, ".") & vbNewLine &
+            "Position|" & Me.startPosition.X.ToString(NumberFormatInfo.InvariantInfo) & "," & Me.startPosition.Y.ToString(NumberFormatInfo.InvariantInfo) & "," & Me.startPosition.Z.ToString(NumberFormatInfo.InvariantInfo) & vbNewLine &
             "MapFile|" & Me.startMap & vbNewLine &
-            "Rotation|" & Me.startYaw.ToString() & vbNewLine &
+            "Rotation|" & Me.startYaw.ToString(NumberFormatInfo.InvariantInfo) & vbNewLine &
             "RivalName|???" & vbNewLine &
             "Money|3000" & vbNewLine &
             "Badges|0" & vbNewLine &

@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core.Screens
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core.Screens
 
 Namespace ScriptVersion2
 
@@ -18,15 +19,15 @@ Namespace ScriptVersion2
                 Case "isfixed"
                     Return ReturnBoolean(c.Fixed)
                 Case "x"
-                    Return c.ThirdPersonOffset.X.ToString().ReplaceDecSeparator()
+                    Return c.ThirdPersonOffset.X.ToString(CultureInfo.InvariantCulture)
                 Case "y"
-                    Return c.ThirdPersonOffset.Y.ToString().ReplaceDecSeparator()
+                    Return c.ThirdPersonOffset.Y.ToString(CultureInfo.InvariantCulture)
                 Case "z"
-                    Return c.ThirdPersonOffset.Z.ToString().ReplaceDecSeparator()
+                    Return c.ThirdPersonOffset.Z.ToString(CultureInfo.InvariantCulture)
                 Case "yaw"
-                    Return c.Yaw.ToString().ReplaceDecSeparator()
+                    Return c.Yaw.ToString(CultureInfo.InvariantCulture)
                 Case "pitch"
-                    Return c.Pitch.ToString().ReplaceDecSeparator()
+                    Return c.Pitch.ToString(CultureInfo.InvariantCulture)
                 Case "thirdperson"
                     Return ReturnBoolean(c.ThirdPerson)
             End Select

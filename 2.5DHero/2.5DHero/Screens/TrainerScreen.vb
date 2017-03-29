@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
@@ -22,10 +23,10 @@ Public Class TrainerScreen
 
         Me.mainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
 
-        If Screen.Level.Surfing = True Then
+        If Screen.Level.IsSurfing = True Then
             Me.charTexture = TextureManager.GetTexture("Textures\NPC\" & Core.Player.TempSurfSkin)
         Else
-            If Screen.Level.Riding = True Then
+            If Screen.Level.IsRiding = True Then
                 Me.charTexture = TextureManager.GetTexture("Textures\NPC\" & Core.Player.TempRideSkin)
             Else
                 Me.charTexture = Screen.Level.OwnPlayer.Texture
@@ -115,7 +116,7 @@ Public Class TrainerScreen
             End If
 
             Dim EmblemName As String = Core.GameJoltSave.EmblemS
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Current Emblem: """ & EmblemName(0).ToString().ToUpper() & EmblemName.Substring(1, EmblemName.Length - 1) & """ (" & CStr(Core.GameJoltSave.AchievedEmblems.IndexOf(EmblemName) + 1) & "/" & Core.GameJoltSave.AchievedEmblems.Count & ") - use arrow keys to change.", New Vector2(80, 333), Microsoft.Xna.Framework.Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Current Emblem: """ & EmblemName(0).ToString(CultureInfo.InvariantCulture).ToUpper() & EmblemName.Substring(1, EmblemName.Length - 1) & """ (" & CStr(Core.GameJoltSave.AchievedEmblems.IndexOf(EmblemName) + 1) & "/" & Core.GameJoltSave.AchievedEmblems.Count & ") - use arrow keys to change.", New Vector2(80, 333), Microsoft.Xna.Framework.Color.Black)
 
             Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("trainer_screen_money") & ": " & vbNewLine & vbNewLine & Localization.GetString("trainer_screen_pokedex") & ": " & vbNewLine & vbNewLine & Localization.GetString("trainer_screen_time") & ": ", New Vector2(610, 220), Microsoft.Xna.Framework.Color.Black)
             With Core.Player
@@ -132,7 +133,7 @@ Public Class TrainerScreen
             End If
 
             With Core.Player
-                Core.SpriteBatch.DrawString(FontManager.TextFont, .Name & " /" & .OT & vbNewLine & vbNewLine & displayPoints.ToString() & vbNewLine & vbNewLine & "$" & .Money & vbNewLine & vbNewLine & Pokedex.CountEntries(Core.Player.PokedexData, {2, 3}) & " /" & Pokedex.CountEntries(Core.Player.PokedexData, {1, 2, 3}) & vbNewLine & vbNewLine & TimeHelpers.GetDisplayTime(TimeHelpers.GetCurrentPlayTime(), True), New Vector2(258, 220), Microsoft.Xna.Framework.Color.DarkBlue, 0.0F, Vector2.Zero, 1.4F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.TextFont, .Name & " /" & .OT & vbNewLine & vbNewLine & displayPoints.ToString(CultureInfo.InvariantCulture) & vbNewLine & vbNewLine & "$" & .Money & vbNewLine & vbNewLine & Pokedex.CountEntries(Core.Player.PokedexData, {2, 3}) & " /" & Pokedex.CountEntries(Core.Player.PokedexData, {1, 2, 3}) & vbNewLine & vbNewLine & TimeHelpers.GetDisplayTime(TimeHelpers.GetCurrentPlayTime(), True), New Vector2(258, 220), Microsoft.Xna.Framework.Color.DarkBlue, 0.0F, Vector2.Zero, 1.4F, SpriteEffects.None, 0.0F)
             End With
             Core.SpriteBatch.Draw(charTexture, New Microsoft.Xna.Framework.Rectangle(601, 126, 256, 256), Microsoft.Xna.Framework.Color.White)
         End If

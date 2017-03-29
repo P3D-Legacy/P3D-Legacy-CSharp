@@ -84,7 +84,7 @@ Public Class Water
     End Function
 
     Public Overrides Sub WalkOntoFunction()
-        If Screen.Level.Surfing = True Then
+        If Screen.Level.IsSurfing = True Then
             Dim canSurf As Boolean = False
 
             For Each Entity As Entity In Screen.Level.Entities
@@ -110,7 +110,7 @@ Public Class Water
 
     Private Sub Surf()
         If Screen.Camera.Turning = False Then
-            If Screen.Level.Surfing = False Then
+            If Screen.Level.IsSurfing = False Then
                 If Badge.CanUseHMMove(Badge.HMMoves.Surf) = True Or GameController.IS_DEBUG_ACTIVE = True Or Core.Player.SandBoxMode = True Then
                     If Screen.ChooseBox.Showing = False Then
                         Dim canSurf As Boolean = False
@@ -132,7 +132,7 @@ Public Class Water
                             Next
                         End If
 
-                        If Screen.Level.Riding = True Then
+                        If Screen.Level.IsRiding = True Then
                             canSurf = False
                         End If
 
@@ -230,7 +230,7 @@ Public Class Water
     Public Overrides Sub ResultFunction(ByVal Result As Integer)
         If Result = 0 Then
             Screen.TextBox.Show(Core.Player.Pokemons(Core.Player.SurfPokemon).GetDisplayName() & " used~Surf!", {Me})
-            Screen.Level.Surfing = True
+            Screen.Level.IsSurfing = True
             Screen.Camera.Move(1)
             PlayerStatistics.Track("Surf used", 1)
 
@@ -256,10 +256,10 @@ Public Class Water
         End If
     End Sub
 
-    Public Overrides Sub Render()
+    Public Overrides Sub Render(effect As BasicEffect)
         Dim setRasterizerState As Boolean = Me.Model.ID <> 0
 
-        Me.Draw(Me.Model, Textures, setRasterizerState)
+        Me.Draw(effect, Me.Model, Textures, setRasterizerState)
     End Sub
 
 End Class

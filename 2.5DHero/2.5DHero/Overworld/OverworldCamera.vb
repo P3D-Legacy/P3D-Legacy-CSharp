@@ -386,7 +386,7 @@ Public Class OverworldCamera
         If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen AndAlso CType(Core.CurrentScreen, OverworldScreen).ActionScript.IsReady = False Then
             Speed = 0.04F
         Else
-            If Screen.Level.Riding = True Then
+            If Screen.Level.IsRiding = True Then
                 Speed = 0.08F
             Else
                 If Core.Player.IsRunning() = True Then
@@ -531,7 +531,7 @@ Public Class OverworldCamera
         If Core.GameOptions.ViewBobbing = False Then
             Return 0.0F
         End If
-        If Screen.Level.Riding = True Then
+        If Screen.Level.IsRiding = True Then
             Return CSng(Math.Sin(_bobbingTemp) * 0.012)
         Else
             If Core.Player.IsRunning() = True Then
@@ -561,7 +561,7 @@ Public Class OverworldCamera
                 Position.Z = Position.Z.ToInteger()
 
                 'If surfing, the player is set to Y = 0.0
-                If Screen.Level.Surfing = True Then
+                If Screen.Level.IsSurfing = True Then
                     Position.Y = CSng(Math.Floor(Position.Y))
                 End If
 
@@ -583,7 +583,7 @@ Public Class OverworldCamera
                 LastStepPosition = Position
             End If
 
-            If Screen.Level.Surfing = False And _thirdPerson = False And _cameraFocusType = CameraFocusTypes.Player Then
+            If Screen.Level.IsSurfing = False And _thirdPerson = False And _cameraFocusType = CameraFocusTypes.Player Then
                 _bobbingTemp += 0.25F
             End If
         End If
@@ -603,7 +603,7 @@ Public Class OverworldCamera
             End If
         End If
 
-        If Screen.Level.Surfing = True Then
+        If Screen.Level.IsSurfing = True Then
             Screen.Level.OwnPlayer.Opacity = 1.0F
         End If
 
@@ -740,7 +740,7 @@ Public Class OverworldCamera
                 End If
             Else
                 'Walked against something, set player transparent
-                If Screen.Level.Surfing = False Then
+                If Screen.Level.IsSurfing = False Then
                     If _thirdPerson = True Then
                         If _didWalkAgainst = True Then
                             Screen.Level.OwnPlayer.Opacity = 0.5F
@@ -787,7 +787,7 @@ Public Class OverworldCamera
                 If Entity.BoundingBox.Contains(New Vector3(newPosition.X, newPosition.Y - 1, newPosition.Z)) = ContainmentType.Contains Then
                     Entity.WalkOntoFunction()
                 End If
-                If Screen.Level.Surfing = True Then
+                If Screen.Level.IsSurfing = True Then
                     If Entity.BoundingBox.Contains(newPosition) = ContainmentType.Contains Then
                         If Entity.Collision = True Then
                             Entity.WalkAgainstFunction()
@@ -800,8 +800,8 @@ Public Class OverworldCamera
         End If
 
         If cannotWalk = False And setSurfFalse = True Then
-            If Screen.Level.Surfing = True Then
-                Screen.Level.Surfing = False
+            If Screen.Level.IsSurfing = True Then
+                Screen.Level.IsSurfing = False
                 Screen.Level.OwnPlayer.SetTexture(Core.Player.TempSurfSkin, True)
                 Core.Player.Skin = Core.Player.TempSurfSkin
 

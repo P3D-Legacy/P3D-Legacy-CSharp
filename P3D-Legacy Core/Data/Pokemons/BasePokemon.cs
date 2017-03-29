@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -881,7 +882,7 @@ namespace P3D.Legacy.Core.Pokemon
 
             string s = "";
             for (var x = 0; x <= 10; x++)
-                s += chars[Core.Random.Next(0, chars.Length)].ToString();
+                s += chars[Core.Random.Next(0, chars.Length)].ToString(NumberFormatInfo.InvariantInfo);
 
             IndividualValue = s;
         }

@@ -1,4 +1,5 @@
 Imports System.Drawing
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
@@ -701,7 +702,7 @@ Public Class StorageSystemScreen
                 For i = 0 To 29
                     If b.Pokemon.Keys.Contains(i) = True Then
                         hasPokemon = True
-                        newData.Add(b.index.ToString() & "," & i.ToString() & "," & b.Pokemon(i).PokemonData)
+                        newData.Add(b.index.ToString(NumberFormatInfo.InvariantInfo) & "," & i.ToString(NumberFormatInfo.InvariantInfo) & "," & b.Pokemon(i).PokemonData)
                     End If
                 Next
                 If hasPokemon = False Then
@@ -718,7 +719,7 @@ Public Class StorageSystemScreen
             For i = 0 To newBoxes - 1
                 Dim newBoxID As Integer = boxes.Count - 1 + i
 
-                newData.Add("BOX|" & newBoxID.ToString() & "|BOX " & (newBoxID + 1).ToString() & "|" & Core.Random.Next(0, 19).ToString())
+                newData.Add("BOX|" & newBoxID.ToString(NumberFormatInfo.InvariantInfo) & "|BOX " & (newBoxID + 1).ToString(NumberFormatInfo.InvariantInfo) & "|" & Core.Random.Next(0, 19).ToString(NumberFormatInfo.InvariantInfo))
             Next
         End If
 
@@ -727,7 +728,7 @@ Public Class StorageSystemScreen
 
         For i = 0 To 29
             If battleBox.Pokemon.Keys.Contains(i) = True Then
-                newData.Add(CStr(boxes.Count - 1 + addedBoxes) & "," & i.ToString() & "," & battleBox.Pokemon(i).PokemonData)
+                newData.Add(CStr(boxes.Count - 1 + addedBoxes) & "," & i.ToString(NumberFormatInfo.InvariantInfo) & "," & battleBox.Pokemon(i).PokemonData)
             End If
         Next
 
@@ -1129,7 +1130,7 @@ Public Class StorageSystemScreen
                 TextureManager.GetTexture("GUI\Box\BattleBox", New Microsoft.Xna.Framework.Rectangle(0, 0, 1, 1), "").GetData(cArr)
                 Canvas.DrawScrollBar(New Vector2(80, 36), Me.Boxes.Count, 1, boxIndex, New Size(600, 14), True, New Microsoft.Xna.Framework.Color(0, 0, 0, 0), cArr(0))
             Else
-                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Box\" & b.Background.ToString()), New Microsoft.Xna.Framework.Rectangle(80, 50, 600, 100), Microsoft.Xna.Framework.Color.White)
+                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Box\" & b.Background.ToString(NumberFormatInfo.InvariantInfo)), New Microsoft.Xna.Framework.Rectangle(80, 50, 600, 100), Microsoft.Xna.Framework.Color.White)
 
                 Dim cArr(0) As Microsoft.Xna.Framework.Color
                 TextureManager.GetTexture("GUI\Box\" & b.Background, New Microsoft.Xna.Framework.Rectangle(0, 0, 1, 1), "").GetData(cArr)
@@ -1470,7 +1471,7 @@ Public Class StorageSystemScreen
                             Return False
                         End If
                     Case FilterTypes.Gender
-                        If p.Gender.ToString().ToLower() <> f.FilterValue.ToLower() Then
+                        If p.Gender.ToString(NumberFormatInfo.InvariantInfo).ToLower() <> f.FilterValue.ToLower() Then
                             Return False
                         End If
                     Case FilterTypes.HeldItem
@@ -1491,7 +1492,7 @@ Public Class StorageSystemScreen
                             Return False
                         End If
                     Case FilterTypes.Nature
-                        If p.Nature.ToString().ToLower() <> f.FilterValue.ToLower() Then
+                        If p.Nature.ToString(NumberFormatInfo.InvariantInfo).ToLower() <> f.FilterValue.ToLower() Then
                             Return False
                         End If
                     Case FilterTypes.Pokémon
@@ -1658,7 +1659,7 @@ Public Class StorageSystemScreen
 
         Public Sub New(ByVal index As Integer)
             Me.index = index
-            Me.Name = "BOX " & (index + 1).ToString()
+            Me.Name = "BOX " & (index + 1).ToString(NumberFormatInfo.InvariantInfo)
             Me.Background = index
         End Sub
 
@@ -1800,7 +1801,7 @@ Public Class StorageSystemScreen
             End If
         Next
         For Each line As String In Data
-            If line.StartsWith(BattleBoxID.ToString() & ",") = True And line.EndsWith("}") = True Then
+            If line.StartsWith(BattleBoxID.ToString(NumberFormatInfo.InvariantInfo) & ",") = True And line.EndsWith("}") = True Then
                 Dim pokemonData As String = line.Remove(0, line.IndexOf("{"))
                 PokemonList.Add(Pokemon.GetPokemonByData(pokemonData))
             End If
@@ -2000,7 +2001,7 @@ Public Class StorageSystemFilterScreen
 
     Private Function GetFilterText(ByVal filterTypeString As String) As String
         For Each f As StorageSystemScreen.Filter In Me.Filters
-            If f.FilterType.ToString().ToLower() = filterTypeString.ToLower() Then
+            If f.FilterType.ToString(NumberFormatInfo.InvariantInfo).ToLower() = filterTypeString.ToLower() Then
                 Return f.FilterValue
             End If
         Next
@@ -2097,10 +2098,10 @@ Public Class StorageSystemFilterScreen
         Dim s As String = ""
         Dim s1 As String = ""
         For Each f As StorageSystemScreen.Filter In Me.CalculatedFilters
-            s &= f.FilterType.ToString() & "|" & f.FilterValue
+            s &= f.FilterType.ToString(NumberFormatInfo.InvariantInfo) & "|" & f.FilterValue
         Next
         For Each f As StorageSystemScreen.Filter In Me.Filters
-            s1 &= f.FilterType.ToString() & "|" & f.FilterValue
+            s1 &= f.FilterType.ToString(NumberFormatInfo.InvariantInfo) & "|" & f.FilterValue
         Next
 
         If s1 <> s Then
@@ -2143,8 +2144,8 @@ Public Class StorageSystemFilterScreen
         Dim letters As New List(Of String)
 
         For Each p As Pokemon In l
-            If letters.Contains(p.GetName()(0).ToString().ToUpper()) = False Then
-                letters.Add(p.GetName()(0).ToString().ToUpper())
+            If letters.Contains(p.GetName()(0).ToString(NumberFormatInfo.InvariantInfo).ToUpper()) = False Then
+                letters.Add(p.GetName()(0).ToString(NumberFormatInfo.InvariantInfo).ToUpper())
             End If
         Next
 
@@ -2176,7 +2177,7 @@ Public Class StorageSystemFilterScreen
                 Dim l As List(Of Pokemon) = Me._storageSystemScreen.GetPokemonList(True, False)
 
                 For Each p As Pokemon In l
-                    If p.GetName(0).ToString().ToUpper() = chosenLetter And pokemonList.Contains(p.GetName()) = False Then
+                    If p.GetName(0).ToString(NumberFormatInfo.InvariantInfo).ToUpper() = chosenLetter And pokemonList.Contains(p.GetName()) = False Then
                         pokemonList.Add(p.GetName)
                     End If
                 Next
@@ -2213,8 +2214,8 @@ Public Class StorageSystemFilterScreen
         Dim types As New List(Of String)
 
         For Each p As Pokemon In l
-            If types.Contains(p.Type1.Type.ToString()) = False Then
-                types.Add(p.Type1.Type.ToString())
+            If types.Contains(p.Type1.Type.ToString(NumberFormatInfo.InvariantInfo)) = False Then
+                types.Add(p.Type1.Type.ToString(NumberFormatInfo.InvariantInfo))
             End If
         Next
 
@@ -2260,8 +2261,8 @@ Public Class StorageSystemFilterScreen
         Dim types As New List(Of String)
 
         For Each p As Pokemon In l
-            If types.Contains(p.Type2.Type.ToString()) = False Then
-                types.Add(p.Type2.Type.ToString())
+            If types.Contains(p.Type2.Type.ToString(NumberFormatInfo.InvariantInfo)) = False Then
+                types.Add(p.Type2.Type.ToString(NumberFormatInfo.InvariantInfo))
             End If
         Next
 
@@ -2308,8 +2309,8 @@ Public Class StorageSystemFilterScreen
 
         For Each p As Pokemon In l
             For Each a As BattleSystem.Attack In p.Attacks
-                If letters.Contains(a.Name(0).ToString().ToUpper()) = False Then
-                    letters.Add(a.Name(0).ToString().ToUpper())
+                If letters.Contains(a.Name(0).ToString(NumberFormatInfo.InvariantInfo).ToUpper()) = False Then
+                    letters.Add(a.Name(0).ToString(NumberFormatInfo.InvariantInfo).ToUpper())
                 End If
             Next
         Next
@@ -2343,7 +2344,7 @@ Public Class StorageSystemFilterScreen
 
                 For Each p As Pokemon In l
                     For Each a As BattleSystem.Attack In p.Attacks
-                        If a.Name(0).ToString().ToUpper() = chosenLetter And attackList.Contains(a.Name) = False Then
+                        If a.Name(0).ToString(NumberFormatInfo.InvariantInfo).ToUpper() = chosenLetter And attackList.Contains(a.Name) = False Then
                             attackList.Add(a.Name)
                         End If
                     Next
@@ -2381,8 +2382,8 @@ Public Class StorageSystemFilterScreen
         Dim letters As New List(Of String)
 
         For Each p As Pokemon In l
-            If letters.Contains(p.Ability.Name(0).ToString().ToUpper()) = False Then
-                letters.Add(p.Ability.Name(0).ToString().ToUpper())
+            If letters.Contains(p.Ability.Name(0).ToString(NumberFormatInfo.InvariantInfo).ToUpper()) = False Then
+                letters.Add(p.Ability.Name(0).ToString(NumberFormatInfo.InvariantInfo).ToUpper())
             End If
         Next
 
@@ -2414,7 +2415,7 @@ Public Class StorageSystemFilterScreen
                 Dim l As List(Of Pokemon) = Me._storageSystemScreen.GetPokemonList(True, False)
 
                 For Each p As Pokemon In l
-                    If p.Ability.Name(0).ToString().ToUpper() = chosenLetter And abilityList.Contains(p.Ability.Name) = False Then
+                    If p.Ability.Name(0).ToString(NumberFormatInfo.InvariantInfo).ToUpper() = chosenLetter And abilityList.Contains(p.Ability.Name) = False Then
                         abilityList.Add(p.Ability.Name)
                     End If
                 Next
@@ -2451,8 +2452,8 @@ Public Class StorageSystemFilterScreen
         Dim natures As New List(Of String)
 
         For Each p As Pokemon In l
-            If natures.Contains(p.Nature.ToString()) = False Then
-                natures.Add(p.Nature.ToString())
+            If natures.Contains(p.Nature.ToString(NumberFormatInfo.InvariantInfo)) = False Then
+                natures.Add(p.Nature.ToString(NumberFormatInfo.InvariantInfo))
             End If
         Next
 
@@ -2498,8 +2499,8 @@ Public Class StorageSystemFilterScreen
         Dim genders As New List(Of String)
 
         For Each p As Pokemon In l
-            If genders.Contains(p.Gender.ToString()) = False Then
-                genders.Add(p.Gender.ToString())
+            If genders.Contains(p.Gender.ToString(NumberFormatInfo.InvariantInfo)) = False Then
+                genders.Add(p.Gender.ToString(NumberFormatInfo.InvariantInfo))
             End If
         Next
 

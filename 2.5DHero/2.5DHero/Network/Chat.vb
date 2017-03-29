@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Server
@@ -174,7 +175,7 @@ Public Class Chat
 
     Private Shared Function RunCommand(ByVal text As String, ByVal testForScript As Boolean) As String
         If GameController.IS_DEBUG_ACTIVE = True Or (Core.Player.IsGameJoltSave = False And Core.Player.SandBoxMode = True) Then
-            Select Case text(0).ToString().ToLower()
+            Select Case text(0).ToString(CultureInfo.InvariantCulture).ToLower()
                 Case "@"
                     ' TODO TRY
                     'Try

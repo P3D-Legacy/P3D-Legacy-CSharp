@@ -1,4 +1,5 @@
-﻿Imports net.Pokemon3D.Game.Servers
+﻿Imports System.Globalization
+Imports net.Pokemon3D.Game.Servers
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.GameJolt.Profiles
@@ -61,9 +62,9 @@ Public Class DirectTradeScreen
         ScreenState = ScreenStates.Idle
 
         If isHost = False Then
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeJoin, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeJoin, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString(CultureInfo.InvariantCulture)))
         Else
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeRequest, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeRequest, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString(CultureInfo.InvariantCulture)))
         End If
 
         Me.menuItems = {"Trade", "Choose Pokémon", "Cancel Trade"}.ToList()
@@ -309,7 +310,7 @@ Public Class DirectTradeScreen
     End Sub
 
     Private Sub QuitTrade()
-        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeQuit, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeQuit, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString(CultureInfo.InvariantCulture)))
         Core.SetScreen(Me.PreScreen)
     End Sub
 
@@ -318,7 +319,7 @@ Public Class DirectTradeScreen
     Private Sub StartTrade()
         If Not Me.OfferPokemon Is Nothing And Not TradePokemon Is Nothing Then
             Me.CanChat = False
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeStart, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeStart, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString(CultureInfo.InvariantCulture)))
             If ReceivedTradeOffer = True Then
                 InitializeTrade()
             Else
@@ -334,7 +335,7 @@ Public Class DirectTradeScreen
             SentTradeOffer = False
             ReceivedTradeOffer = False
             Me.CanChat = True
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeOffer, Core.ServersManager.ID, ProtocolTypes.TCP, {PartnerNetworkID.ToString(), Me.OfferPokemon.GetSaveData()}.ToList()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.TradeOffer, Core.ServersManager.ID, ProtocolTypes.TCP, {PartnerNetworkID.ToString(CultureInfo.InvariantCulture), Me.OfferPokemon.GetSaveData()}.ToList()))
         End If
     End Sub
 
@@ -523,7 +524,7 @@ Public Class DirectTradeScreen
         MusicManager.PlayMusic("gts", True)
 
         If Core.Player.Pokemons(Core.Player.Pokemons.Count - 1).CanEVolve(EvolutionCondition.EvolutionTrigger.Trading, "") = True Then
-            Core.SetScreen(New EvolutionScreen(Me, {Core.Player.Pokemons.Count - 1}.ToList(), offeredPokemonID.ToString(), EvolutionCondition.EvolutionTrigger.Trading))
+            Core.SetScreen(New EvolutionScreen(Me, {Core.Player.Pokemons.Count - 1}.ToList(), offeredPokemonID.ToString(CultureInfo.InvariantCulture), EvolutionCondition.EvolutionTrigger.Trading))
         End If
         Me.CanChat = True
     End Sub

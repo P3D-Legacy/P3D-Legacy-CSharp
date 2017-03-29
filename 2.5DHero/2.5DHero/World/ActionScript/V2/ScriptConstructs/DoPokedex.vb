@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 
 Namespace ScriptVersion2
 
@@ -14,11 +15,11 @@ Namespace ScriptVersion2
 
             Select Case command.ToLower()
                 Case "caught"
-                    Return Pokedex.CountEntries(Core.Player.PokedexData, {2, 3}).ToString()
+                    Return Pokedex.CountEntries(Core.Player.PokedexData, {2, 3}).ToString(CultureInfo.InvariantCulture)
                 Case "shiny"
-                    Return Pokedex.CountEntries(Core.Player.PokedexData, {3}).ToString()
+                    Return Pokedex.CountEntries(Core.Player.PokedexData, {3}).ToString(CultureInfo.InvariantCulture)
                 Case "seen"
-                    Return Pokedex.CountEntries(Core.Player.PokedexData, {1}).ToString()
+                    Return Pokedex.CountEntries(Core.Player.PokedexData, {1}).ToString(CultureInfo.InvariantCulture)
                 Case "dexcaught"
                     Dim dexIndex As Integer = int(argument)
                     Return Core.Player.Pokedexes(dexIndex).Obtained

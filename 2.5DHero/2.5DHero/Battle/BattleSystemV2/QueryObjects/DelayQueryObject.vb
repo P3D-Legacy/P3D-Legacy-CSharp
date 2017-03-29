@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem
+﻿Imports System.Globalization
+
+Namespace BattleSystem
 
     Public Class DelayQueryObject
 
@@ -36,7 +38,7 @@
         End Function
 
         Public Overrides Function ToString() As String
-            Return "{DELAY|" & Me._delay.ToString() & "}"
+            Return "{DELAY|" & Me._delay.ToString(CultureInfo.InvariantCulture) & "}"
         End Function
 
     End Class

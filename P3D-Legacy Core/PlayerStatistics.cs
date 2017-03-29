@@ -55,7 +55,7 @@ namespace P3D.Legacy.Core
             for (var i = 0; i <= Statistics.Count - 1; i++)
             {
                 if (!string.IsNullOrEmpty(s))
-                    s += Constants.vbNewLine;
+                    s += Environment.NewLine;
 
                 s += keyArr[i] + "," + valArr[i];
             }

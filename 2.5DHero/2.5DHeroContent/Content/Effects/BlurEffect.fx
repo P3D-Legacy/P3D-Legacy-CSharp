@@ -1,4 +1,13 @@
-﻿//------------------------------------------- Defines -------------------------------------------
+﻿#if OPENGL
+	#define SV_POSITION POSITION
+	#define VS_SHADERMODEL vs_3_0
+	#define PS_SHADERMODEL ps_3_0
+#else
+	#define VS_SHADERMODEL vs_4_0_level_9_1
+	#define PS_SHADERMODEL ps_4_0_level_9_1
+#endif
+
+//------------------------------------------- Defines -------------------------------------------
 
 #define Pi 3.14159265
 
@@ -203,8 +212,8 @@ technique Simple
 
 	pass Pass0
 	{
-		VertexShader = compile vs_2_0 SimpleVertexShader();
-		PixelShader = compile ps_2_0 SimplePixelShader();
+		VertexShader = compile VS_SHADERMODEL SimpleVertexShader();
+		PixelShader = compile PS_SHADERMODEL SimplePixelShader();
 	}
 }
 
@@ -212,8 +221,8 @@ technique Spotlight
 {
 	pass Pass0
 	{
-		VertexShader = compile vs_2_0 SimpleVertexShader();
-		PixelShader = compile ps_2_0 SpotlightPixelShader();
+		VertexShader = compile VS_SHADERMODEL SimpleVertexShader();
+		PixelShader = compile PS_SHADERMODEL SpotlightPixelShader();
 	}
 }
 
@@ -221,7 +230,7 @@ technique Greyscale
 {
 	pass Pass0
 	{
-		PixelShader = compile ps_2_0 GrayscalePixelShader();
+		PixelShader = compile PS_SHADERMODEL GrayscalePixelShader();
 	}
 }
 
@@ -229,7 +238,7 @@ technique GaussianBlur
 {
 	pass Pass0
 	{
-		PixelShader = compile ps_2_0 GaussianPixelShader();
+		PixelShader = compile PS_SHADERMODEL GaussianPixelShader();
 	}
 }
 
@@ -237,7 +246,7 @@ technique TexturedLight
 {
 	pass Pass0
 	{
-		VertexShader = compile vs_2_0 SimpleVertexShader();
-		PixelShader = compile ps_2_0 TexturedSpotlightPixelShader();
+		VertexShader = compile VS_SHADERMODEL SimpleVertexShader();
+		PixelShader = compile PS_SHADERMODEL TexturedSpotlightPixelShader();
 	}
 }

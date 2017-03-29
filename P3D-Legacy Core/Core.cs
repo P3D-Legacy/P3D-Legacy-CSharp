@@ -21,7 +21,7 @@ using P3D.Legacy.Core.Screens;
 using P3D.Legacy.Core.Screens.GUI;
 using P3D.Legacy.Core.Server;
 using P3D.Legacy.Core.Settings;
-
+using P3D.Legacy.Shared.Extensions;
 using Keyboard = P3D.Legacy.Core.Settings.Keyboard;
 
 namespace P3D.Legacy.Core
@@ -58,7 +58,7 @@ namespace P3D.Legacy.Core
 
         public static Dictionary<string, List<List<Entity>>> OffsetMaps = new Dictionary<string, List<List<Entity>>>();
 
-        public static async void Initialize(GameController gameReference)
+        public static void Initialize(GameController gameReference)
         {
             GameInstance = gameReference;
 
@@ -77,6 +77,8 @@ namespace P3D.Legacy.Core
             //KeyBindings = await Keyboard.LoadKeyboard();
             GameOptions = Options.LoadOptions().Result;
             KeyBindings = Keyboard.LoadKeyboard().Result;
+            //GameOptions = AsyncExtensions.RunSync(Options.LoadOptions);   
+            //KeyBindings = AsyncExtensions.RunSync(Keyboard.LoadKeyboard);
 
             GraphicsManager.PreferredBackBufferWidth = Convert.ToInt32(GameOptions.WindowSize.X);
             GraphicsManager.PreferredBackBufferHeight = Convert.ToInt32(GameOptions.WindowSize.Y);
@@ -109,7 +111,7 @@ namespace P3D.Legacy.Core
             SetScreen(Screen.CreateSplashScreen((GameInstance)));
         }
 
-        public static void LoadContent()
+        public static async void LoadContent()
         {
             GameModeManager.LoadGameModesAsync().Wait();
             Logger.Debug("Loaded game modes.");
@@ -227,7 +229,7 @@ namespace P3D.Legacy.Core
                 //        BaseChatScreen.DrawNewMessages();
                 //}
 
-                if (GameOptions.ShowDebug > 0)
+                if (GameOptions.ShowDebug)
                     DebugDisplay.Draw();
 
                 GameMessage.Draw();

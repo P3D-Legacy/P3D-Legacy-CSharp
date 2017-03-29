@@ -1,97 +1,171 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using P3D.Legacy.Core.Debug;
 using P3D.Legacy.Core.Entities;
+using P3D.Legacy.Core.Resources.Models.Blocks;
 using P3D.Legacy.Core.Screens;
 
 namespace P3D.Legacy.Core.Resources.Models
 {
-    public class BaseModel
+    public abstract class BaseModel
     {
-        public static List<VertexPositionNormalTexture> vertexData = new List<VertexPositionNormalTexture>();
+        public abstract int ID { get; }
+        public abstract VertexBuffer VertexBuffer { get; }
 
-        public VertexBuffer vertexBuffer;
+        public Texture2D Texture { get; set; }
+        public Matrix World { get; set; }
 
-        public int ID = 0;
-        public void Setup()
+        //public BaseModel() { }
+
+        public abstract void Draw(BasicEffect effect, Entity entity, Texture2D[] textures);
+
+        public static FloorModel FloorModel => new FloorModel();
+        public static BlockModel BlockModel => new BlockModel();
+        public static BillModel BillModel => new BillModel();
+
+        public static BaseModel GetModelByID(int id)
         {
-            vertexBuffer = new VertexBuffer(Core.GraphicsDevice, typeof(VertexPositionNormalTexture), vertexData.Count, BufferUsage.WriteOnly);
-            vertexBuffer.SetData(vertexData.ToArray());
+            switch (id)
+            {
+                case 0:
+                    return new FloorModel();
+                case 1:
+                    return new BlockModel();
+                case 2:
+                    return new SlideModel();
+                case 3:
+                    return new BillModel();
+                case 4:
+                    return new SignModel();
+                case 5:
+                    return new CornerModel();
+                case 6:
+                    return new InsideCornerModel();
+                case 7:
+                    return new StepModel();
+                case 8:
+                    return new InsideStepModel();
+                case 9:
+                    return new CliffModel();
+                case 10:
+                    return new CliffInsideModel();
+                case 11:
+                    return new CliffCornerModel();
+                case 12:
+                    return new CubeModel();
+                case 13:
+                    return new CrossModel();
+                case 14:
+                    return new DoubleFloorModel();
+                case 15:
+                    return new PyramidModel();
+                case 16:
+                    return new StairsModel();
+                default:
+                    return new BlockModel();
+            }
+        }
+    }
+    public abstract class BaseModel<T> : BaseModel
+    {
+        protected static List<BaseModel<T>> Models { get; } = new List<BaseModel<T>>();
+
+        protected BaseModel() { Models.Add(this); }
+
+
+        public static List<VertexPositionNormalTexture> VertexData { get; } = new List<VertexPositionNormalTexture>();
+        private static VertexBuffer SVertexBuffer { get; set; }
+
+        protected static List<int> IndexData { get; } = new List<int>();
+        private static IndexBuffer SIndexBuffer { get; set; }
+
+        protected static void SetupVb()
+        {
+            SVertexBuffer = new VertexBuffer(Core.GraphicsDevice, typeof(VertexPositionNormalTexture), VertexData.Count, BufferUsage.WriteOnly);
+            SVertexBuffer.SetData(VertexData.ToArray());
+            VertexData.Clear();
+        }
+        protected static void SetupIb()
+        {
+            SIndexBuffer = new IndexBuffer(Core.GraphicsDevice, typeof(int), IndexData.Count, BufferUsage.WriteOnly);
+            SIndexBuffer.SetData(IndexData.ToArray());
+            //VertexData.Clear();
         }
 
-        public void Draw(Entity Entity, Texture2D[] Textures)
+        public sealed override VertexBuffer VertexBuffer => SVertexBuffer;
+
+        public override void Draw(BasicEffect effect, Entity entity, Texture2D[] textures)
         {
-            Vector3 effectDiffuseColor = Screen.Effect.DiffuseColor;
+            Vector3 effectDiffuseColor = effect.DiffuseColor;
 
-            Screen.Effect.World = Entity.World;
-            Screen.Effect.TextureEnabled = true;
-            Screen.Effect.Alpha = Entity.Opacity;
+            effect.World = entity.World;
+            effect.TextureEnabled = true;
+            effect.Alpha = entity.Opacity;
 
-            Screen.Effect.DiffuseColor = effectDiffuseColor * Entity.Shader;
+            effect.DiffuseColor = effectDiffuseColor * entity.Shader;
 
             if (Screen.Level.IsDark)
-            {
-                Screen.Effect.DiffuseColor *= new Vector3(0.5f, 0.5f, 0.5f);
-            }
+                effect.DiffuseColor *= new Vector3(0.5f, 0.5f, 0.5f);
 
-            Core.GraphicsDevice.SetVertexBuffer(vertexBuffer);
+            Core.GraphicsDevice.SetVertexBuffer(VertexBuffer);
 
-            if (Convert.ToInt32(vertexBuffer.VertexCount / 3) > Entity.TextureIndex.Length)
+            if (VertexBuffer.VertexCount / 3 > entity.TextureIndex.Length)
             {
-                int[] newTextureIndex = new int[Convert.ToInt32(vertexBuffer.VertexCount / 3) + 1];
-                for (var i = 0; i <= Convert.ToInt32(vertexBuffer.VertexCount / 3); i++)
+                int[] newTextureIndex = new int[VertexBuffer.VertexCount / 3 + 1];
+                for (var i = 0; i <= VertexBuffer.VertexCount / 3; i++)
                 {
-                    if (Entity.TextureIndex.Length - 1 >= i)
+                    if (entity.TextureIndex.Length - 1 >= i)
                     {
-                        newTextureIndex[i] = Entity.TextureIndex[i];
+                        newTextureIndex[i] = entity.TextureIndex[i];
                     }
                     else
                     {
                         newTextureIndex[i] = 0;
                     }
                 }
-                Entity.TextureIndex = newTextureIndex;
+                entity.TextureIndex = newTextureIndex;
             }
 
             bool isEqual = true;
-            if (Entity.HasEqualTextures == -1)
+            if (entity.HasEqualTextures == -1)
             {
-                Entity.HasEqualTextures = 1;
-                int contains = Entity.TextureIndex[0];
-                for (var index = 1; index <= Entity.TextureIndex.Length - 1; index++)
+                entity.HasEqualTextures = 1;
+                int contains = entity.TextureIndex[0];
+                for (var index = 1; index <= entity.TextureIndex.Length - 1; index++)
                 {
-                    if (contains != Entity.TextureIndex[index])
+                    if (contains != entity.TextureIndex[index])
                     {
-                        Entity.HasEqualTextures = 0;
+                        entity.HasEqualTextures = 0;
                         break; // TODO: might not be correct. Was : Exit For
                     }
                 }
             }
-            if (Entity.HasEqualTextures == 0)
+            if (entity.HasEqualTextures == 0)
             {
                 isEqual = false;
             }
 
             if (isEqual)
             {
-                if (Entity.TextureIndex[0] > -1)
+                if (entity.TextureIndex[0] > -1)
                 {
-                    ApplyTexture(Textures[Entity.TextureIndex[0]]);
+                    ApplyTexture(effect, textures[entity.TextureIndex[0]]);
 
-                    Core.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, Convert.ToInt32(vertexBuffer.VertexCount / 3));
+                    Core.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, VertexBuffer.VertexCount / 3);
 
-                    DebugDisplay.DrawnVertices += Convert.ToInt32(vertexBuffer.VertexCount / 3);
+                    DebugDisplay.DrawnVertices += VertexBuffer.VertexCount / 3;
                 }
             }
             else
             {
-                for (var i = 0; i <= vertexBuffer.VertexCount - 1; i += 3)
+                for (var i = 0; i <= VertexBuffer.VertexCount - 1; i += 3)
                 {
-                    if (Entity.TextureIndex[Convert.ToInt32(i / 3)] > -1)
+                    if (entity.TextureIndex[i / 3] > -1)
                     {
-                        ApplyTexture(Textures[Entity.TextureIndex[Convert.ToInt32(i / 3)]]);
+                        ApplyTexture(effect, textures[entity.TextureIndex[i / 3]]);
 
                         Core.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, i, 1);
                         DebugDisplay.DrawnVertices += 1;
@@ -100,75 +174,118 @@ namespace P3D.Legacy.Core.Resources.Models
             }
 
             Screen.Effect.DiffuseColor = effectDiffuseColor;
-            if (DebugDisplay.MaxDistance < Entity.CameraDistance)
-                DebugDisplay.MaxDistance = Convert.ToInt32(Entity.CameraDistance);
+            if (DebugDisplay.MaxDistance < entity.CameraDistance)
+                DebugDisplay.MaxDistance = (int) entity.CameraDistance;
         }
 
-        private void ApplyTexture(Texture2D texture)
+        /*
+        public override void Draw(BasicEffect effect, Entity entity, Texture2D[] textures)
         {
-            Screen.Effect.Texture = texture;
-            Screen.Effect.CurrentTechnique.Passes[0].Apply();
-        }
+            Vector3 effectDiffuseColor = effect.DiffuseColor;
 
-        public static FloorModel FloorModel = new FloorModel();
-        public static BlockModel BlockModel = new BlockModel();
-        public static SlideModel SlideModel = new SlideModel();
-        public static BillModel BillModel = new BillModel();
-        public static SignModel SignModel = new SignModel();
-        public static CornerModel CornerModel = new CornerModel();
-        public static InsideCornerModel InsideCornerModel = new InsideCornerModel();
-        public static StepModel StepModel = new StepModel();
-        public static InsideStepModel InsideStepModel = new InsideStepModel();
-        public static CliffModel CliffModel = new CliffModel();
-        public static CliffInsideModel CliffInsideModel = new CliffInsideModel();
-        public static CliffCornerModel CliffCornerModel = new CliffCornerModel();
-        public static CubeModel CubeModel = new CubeModel();
-        public static CrossModel CrossModel = new CrossModel();
-        public static DoubleFloorModel DoubleFloorModel = new DoubleFloorModel();
-        public static PyramidModel PyramidModel = new PyramidModel();
+            effect.World = entity.World;
+            effect.TextureEnabled = true;
+            effect.Alpha = entity.Opacity;
 
-        public static StairsModel StairsModel = new StairsModel();
-        public static BaseModel getModelbyID(int ID)
-        {
-            switch (ID)
+            effect.DiffuseColor = effectDiffuseColor * entity.Shader;
+
+            if (Screen.Level.IsDark)
+                effect.DiffuseColor *= new Vector3(0.5f);
+
+            Core.GraphicsDevice.SetVertexBuffer(VertexBuffer);
+
+
+            if (VertexBuffer.VertexCount / 3 > entity.TextureIndex.Length)
             {
-                case 0:
-                    return FloorModel;
-                case 1:
-                    return BlockModel;
-                case 2:
-                    return SlideModel;
-                case 3:
-                    return BillModel;
-                case 4:
-                    return SignModel;
-                case 5:
-                    return CornerModel;
-                case 6:
-                    return InsideCornerModel;
-                case 7:
-                    return StepModel;
-                case 8:
-                    return InsideStepModel;
-                case 9:
-                    return CliffModel;
-                case 10:
-                    return CliffInsideModel;
-                case 11:
-                    return CliffCornerModel;
-                case 12:
-                    return CubeModel;
-                case 13:
-                    return CrossModel;
-                case 14:
-                    return DoubleFloorModel;
-                case 15:
-                    return PyramidModel;
-                case 16:
-                    return StairsModel;
-                default:
-                    return BlockModel;
+                int[] newTextureIndex = new int[VertexBuffer.VertexCount / 3 + 1];
+                for (var i = 0; i <= VertexBuffer.VertexCount / 3; i++)
+                {
+                    if (entity.TextureIndex.Length - 1 >= i)
+                        newTextureIndex[i] = entity.TextureIndex[i];
+                    else
+                        newTextureIndex[i] = 0;
+                }
+                entity.TextureIndex = newTextureIndex;
             }
+
+            //
+            //for (var i = 0; i < entity.TextureIndex.Length; i++)
+            //{
+            //    if (entity.TextureIndex[i] > -1)
+            //    {
+            //        ApplyTexture(textures[entity.TextureIndex[i]]);
+            //
+            //        Core.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, i * 3, 3);
+            //        DebugDisplay.DrawnVertices += 1;
+            //    }
+            //}
+            //return;
+            //
+
+
+            bool isEqual = true;
+            if (entity.HasEqualTextures == -1)
+            {
+                entity.HasEqualTextures = 1;
+                int contains = entity.TextureIndex[0];
+                for (var index = 1; index <= entity.TextureIndex.Length - 1; index++)
+                {
+                    if (contains != entity.TextureIndex[index])
+                    {
+                        entity.HasEqualTextures = 0;
+                        break; // TODO: might not be correct. Was : Exit For
+                    }
+                }
+            }
+            if (entity.HasEqualTextures == 0)
+                isEqual = false;
+
+            if (isEqual)
+            {
+                if (entity.TextureIndex[0] > -1)
+                {
+                    ApplyTexture(textures[entity.TextureIndex[0]]);
+
+                    Core.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, VertexBuffer.VertexCount / 3);
+                    DebugDisplay.DrawnVertices += VertexBuffer.VertexCount / 3;
+                }
+            }
+            else
+            {
+                for (var i = 0; i < entity.TextureIndex.Length; i++)
+                {
+                    if (entity.TextureIndex[i] > -1)
+                    {
+                        ApplyTexture(textures[entity.TextureIndex[i]]);
+
+                        Core.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, VertexBuffer.VertexCount / 3, 1);
+                        DebugDisplay.DrawnVertices += 1;
+                    }
+                }
+
+
+                for (var i = 0; i <= VertexBuffer.VertexCount - 1; i += 3)
+                {
+                    if (entity.TextureIndex[i / 3] > -1)
+                    {
+                        ApplyTexture(textures[entity.TextureIndex[i / 3]]);
+
+                        Core.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, i, 1);
+                        DebugDisplay.DrawnVertices += 1;
+                    }
+                }
+            }
+
+            effect.DiffuseColor = effectDiffuseColor;
+            if (DebugDisplay.MaxDistance < entity.CameraDistance)
+                DebugDisplay.MaxDistance = (int) entity.CameraDistance;
+        }
+        */
+
+        protected void ApplyTexture(BasicEffect effect, Texture2D texture)
+        {
+            effect.Texture = texture;
+            effect.CurrentTechnique.Passes[0].Apply();
         }
     }
 }

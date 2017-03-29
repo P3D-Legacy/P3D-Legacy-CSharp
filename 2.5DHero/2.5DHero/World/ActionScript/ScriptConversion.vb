@@ -1,3 +1,4 @@
+Imports System.Globalization
 Imports P3D.Legacy.Core.Resources
 
 ''' <summary>
@@ -62,7 +63,7 @@ Public Class ScriptConversion
             tokens.RemoveAt(0)
 
             If IsNumber(token) = True Then
-                cNumber &= token.ToString()
+                cNumber &= token.ToString(NumberFormatInfo.InvariantInfo)
             ElseIf cNumber.Length > 0 Then
                 stack.Insert(0, InternalToDouble(cNumber))
                 cNumber = ""
@@ -83,7 +84,7 @@ Public Class ScriptConversion
 
                     Dim result As Double = 0
 
-                    Select Case token.ToString()
+                    Select Case token.ToString(NumberFormatInfo.InvariantInfo)
                         Case "+"
                             result = v1 + v2
                         Case "-"
@@ -92,7 +93,7 @@ Public Class ScriptConversion
                             result = v1 * v2
                         Case "/"
                             If v2 = 0 Then
-                                Logger.Log(Logger.LogTypes.Warning, "Script.vb: Cannot evaluate """ & input.ToString() & """ as an arithmetic expression.")
+                                Logger.Log(Logger.LogTypes.Warning, "Script.vb: Cannot evaluate """ & input.ToString(NumberFormatInfo.InvariantInfo) & """ as an arithmetic expression.")
                                 hasError = True
                                 Return 0
                             Else
@@ -106,7 +107,7 @@ Public Class ScriptConversion
 
                     stack.Insert(0, result)
                 Else
-                    Logger.Log(Logger.LogTypes.Warning, "Script.vb: Cannot evaluate """ & input.ToString() & """ as an arithmetic expression.")
+                    Logger.Log(Logger.LogTypes.Warning, "Script.vb: Cannot evaluate """ & input.ToString(NumberFormatInfo.InvariantInfo) & """ as an arithmetic expression.")
                     hasError = True
                     Return 0
                 End If
@@ -116,7 +117,7 @@ Public Class ScriptConversion
         If stack.Count = 1 Then
             Return stack(0)
         Else
-            Logger.Log(Logger.LogTypes.Warning, "Script.vb: Cannot evaluate """ & input.ToString() & """ as an arithmetic expression.")
+            Logger.Log(Logger.LogTypes.Warning, "Script.vb: Cannot evaluate """ & input.ToString(NumberFormatInfo.InvariantInfo) & """ as an arithmetic expression.")
             hasError = True
             Return 0
         End If
@@ -143,14 +144,14 @@ Public Class ScriptConversion
 
             'Token is a number:
             If IsNumber(token) = True Then
-                cNumber &= token.ToString()
+                cNumber &= token.ToString(NumberFormatInfo.InvariantInfo)
             ElseIf cNumber.Length > 0 Then
-                output &= cNumber.ToString() & " " 'Add to the output
+                output &= cNumber.ToString(NumberFormatInfo.InvariantInfo) & " " 'Add to the output
                 cNumber = ""
             End If
 
             If cNumber.Length > 0 And tokens.Count = 0 Then
-                output &= cNumber.ToString() & " "
+                output &= cNumber.ToString(NumberFormatInfo.InvariantInfo) & " "
                 cNumber = ""
             End If
 
@@ -159,7 +160,7 @@ Public Class ScriptConversion
                 Dim o1 As Char = token
 
                 While stack.Count > 0 AndAlso IsOperator(stack(0)) = True AndAlso ((GetAssociativity(o1) = Associativity.Left And GetPrecedence(o1) <= GetPrecedence(stack(0))) Or (GetAssociativity(o1) = Associativity.Right And GetPrecedence(o1) < GetPrecedence(stack(0))))
-                    output &= stack(0).ToString() & " "
+                    output &= stack(0).ToString(NumberFormatInfo.InvariantInfo) & " "
                     stack.RemoveAt(0)
                 End While
 
@@ -177,12 +178,12 @@ Public Class ScriptConversion
                             stack.RemoveAt(0)
                             Exit While
                         Else
-                            output &= stack(0).ToString() & " "
+                            output &= stack(0).ToString(NumberFormatInfo.InvariantInfo) & " "
                             stack.RemoveAt(0)
                         End If
                     End While
                 Else
-                    Logger.Log(Logger.LogTypes.Warning, "Script.vb: Cannot convert """ & input.ToString() & """ to an arithmetic expression.")
+                    Logger.Log(Logger.LogTypes.Warning, "Script.vb: Cannot convert """ & input.ToString(NumberFormatInfo.InvariantInfo) & """ to an arithmetic expression.")
                     hasError = True
                     Return "0"
                 End If
@@ -191,11 +192,11 @@ Public Class ScriptConversion
 
         While stack.Count > 0
             If stack(0) = "("c Or stack(0) = ")"c Then
-                Logger.Log(Logger.LogTypes.Warning, "Script.vb: Cannot convert """ & input.ToString() & """ to an arithmetic expression.")
+                Logger.Log(Logger.LogTypes.Warning, "Script.vb: Cannot convert """ & input.ToString(NumberFormatInfo.InvariantInfo) & """ to an arithmetic expression.")
                 hasError = True
                 Return "0"
             Else
-                output &= stack(0).ToString() & " "
+                output &= stack(0).ToString(NumberFormatInfo.InvariantInfo) & " "
                 stack.RemoveAt(0)
             End If
         End While
@@ -253,10 +254,10 @@ Public Class ScriptConversion
     ''' Tries to convert a single number into a <see cref="Double"/>.
     ''' </summary>
     Private Shared Function InternalToDouble(ByVal expression As String, Optional ByRef hasError As Boolean = False) As Double
-        expression = expression.Replace(".", My.Application.Culture.NumberFormat.NumberDecimalSeparator)
+        expression = expression.Replace(".", NumberFormatInfo.InvariantInfo.NumberDecimalSeparator)
 
         If IsNumeric(expression) = True Then
-            Return System.Convert.ToDouble(expression)
+            Return Double.Parse(expression, NumberFormatInfo.InvariantInfo)
         Else
             If expression.ToLower() = "false" Then
                 Return 0

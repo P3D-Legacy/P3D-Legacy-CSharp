@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Input
@@ -86,10 +87,10 @@ Public Class StatisticsScreen
             Core.SpriteBatch.DrawString(FontManager.MainFont, name, New Vector2(150 + ItemIDX, 160 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
 
             If GJStatistics.ContainsKey(Me.Statistics.Keys(i)) = True Then
-                Core.SpriteBatch.DrawString(FontManager.MainFont, GJStatistics(Me.Statistics.Keys(i)).ToString(), New Vector2(Core.WindowSize.Width - 418, 178 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 0.8F, SpriteEffects.None, 0.0F)
-                Core.SpriteBatch.DrawString(FontManager.MainFont, value.ToString(), New Vector2(Core.WindowSize.Width - 420, 150 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, GJStatistics(Me.Statistics.Keys(i)).ToString(CultureInfo.InvariantCulture), New Vector2(Core.WindowSize.Width - 418, 178 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 0.8F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, value.ToString(CultureInfo.InvariantCulture), New Vector2(Core.WindowSize.Width - 420, 150 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
             Else
-                Core.SpriteBatch.DrawString(FontManager.MainFont, value.ToString(), New Vector2(Core.WindowSize.Width - 420, 160 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
+                Core.SpriteBatch.DrawString(FontManager.MainFont, value.ToString(CultureInfo.InvariantCulture), New Vector2(Core.WindowSize.Width - 420, 160 + i * 50 + Scroll), Color.White, 0.0F, Vector2.Zero, 1.2F, SpriteEffects.None, 0.0F)
             End If
 
             Canvas.DrawRectangle(New Rectangle(130, 200 + i * 50 + Scroll, Core.WindowSize.Width - 360, 1), Color.White)

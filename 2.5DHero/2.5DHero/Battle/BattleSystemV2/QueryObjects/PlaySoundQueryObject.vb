@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Resources.Sound
 
 Namespace BattleSystem
@@ -56,11 +57,11 @@ Namespace BattleSystem
         Public Shared Shadows Function FromString(ByVal input As String) As QueryObject
             Dim d() As String = input.Split(CChar("|"))
 
-            Return New PlaySoundQueryObject(d(0), CBool(d(1)), CSng(d(2).Replace(".", GameController.DecSeparator)))
+            Return New PlaySoundQueryObject(d(0), CBool(d(1)), Single.Parse(d(2), NumberFormatInfo.InvariantInfo))
         End Function
 
         Public Overrides Function ToString() As String
-            Return "{SOUND|" & Me._sound & "|" & Me._isPokemonSound.ToNumberString() & "|" & Me._delay.ToString().Replace(GameController.DecSeparator, ".") & "}"
+            Return "{SOUND|" & Me._sound & "|" & Me._isPokemonSound.ToNumberString() & "|" & Me._delay.ToString(CultureInfo.InvariantCulture) & "}"
         End Function
 
     End Class

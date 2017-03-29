@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
@@ -176,7 +177,7 @@ Public Class InputScreen
             b.Draw(New Vector2(CSng((Core.windowSize.Width / 2) - ((13 * 64) / 2)), 200), Me.ButtonSelector)
         Next
 
-        Core.SpriteBatch.DrawString(FontManager.MainFont, "Chars left: " & (MaxChars - Me.CurrentText.Length).ToString(), New Vector2(CInt((Core.windowSize.Width / 2) + 180), 477), Color.Gray)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, "Chars left: " & (MaxChars - Me.CurrentText.Length).ToString(CultureInfo.InvariantCulture), New Vector2(CInt((Core.windowSize.Width / 2) + 180), 477), Color.Gray)
 
         Dim d As New Dictionary(Of Buttons, String)
         d.Add(Microsoft.Xna.Framework.Input.Buttons.A, "Enter")
@@ -270,8 +271,8 @@ Public Class InputScreen
             Dim newText As String = ""
 
             For Each c As Char In Me.CurrentText
-                If chars.Contains(c.ToString().ToLower()) Then
-                    newText &= c.ToString()
+                If chars.Contains(c.ToString(CultureInfo.InvariantCulture).ToLower()) Then
+                    newText &= c.ToString(CultureInfo.InvariantCulture)
                 End If
             Next
             Me.CurrentText = newText

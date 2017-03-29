@@ -1,4 +1,5 @@
 Imports System.Drawing
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
@@ -481,12 +482,12 @@ Public Class ChatScreen
         If Controls.CtrlPressed() = True Then
             Dim jumpIndex As Integer = 1
             If left = True Then
-                While Me.Selection - jumpIndex >= 0 AndAlso jumpStops.Contains(Me.currentText(Me.Selection - jumpIndex).ToString()) = False Or jumpIndex = 1
+                While Me.Selection - jumpIndex >= 0 AndAlso jumpStops.Contains(Me.currentText(Me.Selection - jumpIndex).ToString(CultureInfo.InvariantCulture)) = False Or jumpIndex = 1
                     jumpIndex += 1
                 End While
                 Return jumpIndex - 1
             Else
-                While Me.Selection + jumpIndex <= Me.currentText.Length - 1 AndAlso jumpStops.Contains(Me.currentText(Me.Selection + jumpIndex).ToString()) = False Or jumpIndex = 1
+                While Me.Selection + jumpIndex <= Me.currentText.Length - 1 AndAlso jumpStops.Contains(Me.currentText(Me.Selection + jumpIndex).ToString(CultureInfo.InvariantCulture)) = False Or jumpIndex = 1
                     jumpIndex += 1
                 End While
                 Return jumpIndex

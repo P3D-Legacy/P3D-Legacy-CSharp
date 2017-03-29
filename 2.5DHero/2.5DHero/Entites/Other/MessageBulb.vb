@@ -85,8 +85,8 @@ Public Class MessageBulb
         MyBase.UpdateEntity()
     End Sub
 
-    Public Overrides Sub Render()
-        Me.Draw(Me.Model, Me.Textures, True)
+    Public Overrides Sub Render(effect As BasicEffect)
+        Me.Draw(effect, Me.Model, Me.Textures, True)
     End Sub
 
 End Class

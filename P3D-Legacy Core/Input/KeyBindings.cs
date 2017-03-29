@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
@@ -56,12 +57,12 @@ namespace P3D.Legacy.Core.Input
                             if (TryConvertKeyboardInput(key, KeyBoardHandler.KeyDown(Keys.LeftShift) || KeyBoardHandler.KeyDown(Keys.RightShift), out c))
                             {
                                 if (_holdDelay <= 0f && _holdKey == key)
-                                    text += c.ToString();
+                                    text += c.ToString(NumberFormatInfo.InvariantInfo);
                                 else
                                 {
                                     if (KeyBoardHandler.KeyPressed(key))
                                     {
-                                        text += c.ToString();
+                                        text += c.ToString(NumberFormatInfo.InvariantInfo);
 
                                         _holdKey = key;
                                         _holdDelay = 3f;

@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Input
@@ -286,10 +287,10 @@ Namespace GameJolt
         Private Sub PerformTradeStep2(ByVal result As String)
             Dim list As List(Of API.JoltValue) = API.HandleData(result)
 
-            If list(1).Value = Me.WonderTradeID.ToString() Then
+            If list(1).Value = Me.WonderTradeID.ToString(CultureInfo.InvariantCulture) Then
                 Logger.Debug("Step 2 success")
                 Dim APICall As New APICall(AddressOf PerformTradeStep3)
-                APICall.SetStorageData("GTS_WONDERTRADE_TRADEID", (Me.WonderTradeID + 1).ToString(), False)
+                APICall.SetStorageData("GTS_WONDERTRADE_TRADEID", (Me.WonderTradeID + 1).ToString(CultureInfo.InvariantCulture), False)
             Else
                 Me.ScreenState = ScreenStates.Stopped
                 Me.DisconnectMessage = "Trade not successful. Press any key to exit."
@@ -416,7 +417,7 @@ Namespace GameJolt
             MusicManager.PlayMusic("gts", True)
 
             If Core.Player.Pokemons(Core.Player.Pokemons.Count - 1).CanEVolve(EvolutionCondition.EvolutionTrigger.Trading, "") = True Then
-                Core.SetScreen(New EvolutionScreen(Me, {Core.Player.Pokemons.Count - 1}.ToList(), Me.SelectedPokemon.Number.ToString(), EvolutionCondition.EvolutionTrigger.Trading))
+                Core.SetScreen(New EvolutionScreen(Me, {Core.Player.Pokemons.Count - 1}.ToList(), Me.SelectedPokemon.Number.ToString(CultureInfo.InvariantCulture), EvolutionCondition.EvolutionTrigger.Trading))
             End If
 
             Me.CanChat = True

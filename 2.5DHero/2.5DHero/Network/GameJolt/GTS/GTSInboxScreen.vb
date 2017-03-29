@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
@@ -267,7 +268,7 @@ Namespace GameJolt
                 End If
 
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, "Level: " & D.Pokemon.Level & vbNewLine & vbNewLine &
-                                             "Gender: " & D.Pokemon.Gender.ToString() & vbNewLine & vbNewLine &
+                                             "Gender: " & D.Pokemon.Gender.ToString(CultureInfo.InvariantCulture) & vbNewLine & vbNewLine &
                                              "OT: " & D.Pokemon.CatchTrainerName & "/" & D.Pokemon.OT & vbNewLine & vbNewLine &
                                              "Item: " & ItemString & vbNewLine & vbNewLine &
                                              "Message: " & vbNewLine & D.Message, New Vector2(830, 200), Microsoft.Xna.Framework.Color.Black)
@@ -370,7 +371,7 @@ Namespace GameJolt
         Public Pokemon As Pokemon = Nothing
 
         Public Sub New(ByVal FromUserID As String, ByVal ToUserID As String, ByVal RequestID As String, ByVal RequestLevel As String, ByVal RequestItemID As String, ByVal RequestGender As String, ByVal PokemonData As String, ByVal GameMode As String, ByVal Message As String, ByVal SecurityArea As SecurityCode, ByVal ActionSwitch As ActionSwitches, ByVal TradeID As String)
-            Me.New(FromUserID & "|" & ToUserID & "|" & RequestID & "|" & RequestLevel & "|" & RequestItemID & "|" & RequestGender & "|" & PokemonData & "|" & GameMode & "|" & Message & "|" & SecurityArea.ToString() & "|" & ActionSwitch.ToString() & "|" & TradeID)
+            Me.New(FromUserID & "|" & ToUserID & "|" & RequestID & "|" & RequestLevel & "|" & RequestItemID & "|" & RequestGender & "|" & PokemonData & "|" & GameMode & "|" & Message & "|" & SecurityArea.ToString(CultureInfo.InvariantCulture) & "|" & ActionSwitch.ToString(CultureInfo.InvariantCulture) & "|" & TradeID)
         End Sub
 
         Public Sub New(ByVal Data As String)
@@ -416,7 +417,7 @@ Namespace GameJolt
                 PokemonNumber = Me.Pokemon.Number
             End If
 
-            Me.Key = "GTSTradeV" & GTSMainScreen.GTSVersion & "|" & arr(10) & "|" & arr(0) & "|" & arr(1) & "|" & PokemonNumber.ToString() & "|" & arr(2) & "|Pokemon 3D|" & arr(9) & "|" & TradeID
+            Me.Key = "GTSTradeV" & GTSMainScreen.GTSVersion & "|" & arr(10) & "|" & arr(0) & "|" & arr(1) & "|" & PokemonNumber.ToString(CultureInfo.InvariantCulture) & "|" & arr(2) & "|Pokemon 3D|" & arr(9) & "|" & TradeID
         End Sub
 
     End Class

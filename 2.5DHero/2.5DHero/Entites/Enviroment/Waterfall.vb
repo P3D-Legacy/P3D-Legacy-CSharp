@@ -158,8 +158,8 @@ Public Class Waterfall
         End If
     End Sub
 
-    Public Overrides Sub Render()
-        Me.Draw(Me.Model, Textures, False)
+    Public Overrides Sub Render(effect As BasicEffect)
+        Me.Draw(effect, Me.Model, Textures, False)
     End Sub
 
     Private Function ReturnWaterFallPokemonName() As Pokemon
@@ -193,7 +193,7 @@ Public Class Waterfall
             Dim s As String = ""
 
             Dim Steps As Integer = 0
-            If Screen.Level.Surfing = False Then
+            If Screen.Level.IsSurfing = False Then
                 Steps = 1
             End If
 
@@ -243,7 +243,7 @@ Public Class Waterfall
             End If
 
             Dim Steps As Integer = 1
-            If Screen.Level.Surfing = False Then
+            If Screen.Level.IsSurfing = False Then
                 Steps = 0
             End If
 

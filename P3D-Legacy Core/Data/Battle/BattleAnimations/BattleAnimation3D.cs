@@ -110,11 +110,11 @@ namespace P3D.Legacy.Core.Battle.BattleAnimations
             //Insert code in Inherits class here.
         }
 
-        public override void Render()
+        public override void Render(BasicEffect effect)
         {
             if (this.startDelay <= 0f)
             {
-                Draw(this.Model, this.Textures, true);
+                Draw(effect, this.Model, this.Textures, true);
             }
         }
 

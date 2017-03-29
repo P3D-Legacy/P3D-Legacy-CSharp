@@ -127,7 +127,7 @@ namespace P3D.Legacy.Core.GameModes
         /// <param name="skinColors">The skin colors for the new GameMode. Must be the same amount as SkinFiles and SkinNames.</param>
         /// <param name="skinFiles">The skin files for the new GameMode. Must be the same amount as SkinColors and SkinNames.</param>
         /// <param name="skinNames">The skin names for the new GameMode. Must be the same amount as SkinFiles and SkinColors.</param>
-        private GameMode(string name, string description, string version, string author, MapsFolder mapFolder, ScriptsFolder scriptFolder, PokeFolder pokeFolder, PokemonDataFolder pokemonDataFolder, ContentFolder contentFolder, LocalizationFolder localizationsFolder, GameRuleList gameRules,
+        private GameMode(string name, string description, string version, string author, MapsFolder mapFolder, ScriptsFolder scriptFolder, PokeFolder pokeFolder, PokemonDataFolder pokemonDataFolder, ContentFolder contentFolder, TokensFolder localizationsFolder, GameRuleList gameRules,
             string startMap, Vector3 startPosition, float startRotation, string startLocationName, string startDialogue, Color startColor, int[] pokemonRange, string introMusic, List<Color> skinColors, List<string> skinFiles, List<string> skinNames)
         {
             Name = name;

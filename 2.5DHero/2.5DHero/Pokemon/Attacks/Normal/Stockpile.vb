@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core.Pokemon
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core.Pokemon
 
 Namespace BattleSystem.Moves.Normal
 
@@ -74,7 +75,7 @@ Namespace BattleSystem.Moves.Normal
                 Else
                     BattleScreen.FieldEffects.OppStockpileCount += 1
                 End If
-                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " stockpiled " & (stockpiled + 1).ToString() & "!"))
+                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " stockpiled " & (stockpiled + 1).ToString(CultureInfo.InvariantCulture) & "!"))
 
                 BattleScreen.Battle.RaiseStat(own, own, BattleScreen, "Defense", 1, "", "move:stockpile")
                 BattleScreen.Battle.RaiseStat(own, own, BattleScreen, "Special Defense", 1, "", "move:stockpile")

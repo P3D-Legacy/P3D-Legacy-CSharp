@@ -1,4 +1,5 @@
-﻿Imports net.Pokemon3D.Game.Servers
+﻿Imports System.Globalization
+Imports net.Pokemon3D.Game.Servers
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.GameJolt.Profiles
@@ -70,9 +71,9 @@ Public Class PVPLobbyScreen
         ScreenState = ScreenStates.Idle
 
         If isHost = False Then
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleJoin, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleJoin, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString(CultureInfo.InvariantCulture)))
         Else
-            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleRequest, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+            Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleRequest, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString(CultureInfo.InvariantCulture)))
         End If
 
         Me.menuItems = {"Start Battle!", "Choose Team", "Quit"}.ToList()
@@ -306,7 +307,7 @@ Public Class PVPLobbyScreen
     Private Sub LeadPickedStart(ByVal index As Integer)
         BattleSystem.BattleScreen.OwnLeadIndex = index
         Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleOffer,
-                Core.ServersManager.ID, ProtocolTypes.TCP, {PartnerNetworkID.ToString(), CStr(index)}.ToList()))
+                Core.ServersManager.ID, ProtocolTypes.TCP, {PartnerNetworkID.ToString(CultureInfo.InvariantCulture), CStr(index)}.ToList()))
         If ReceivedBattleOffer = True Then
             InitializeBattle()
         Else
@@ -315,7 +316,7 @@ Public Class PVPLobbyScreen
     End Sub
 
     Private Sub QuitBattle()
-        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleQuit, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString()))
+        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleQuit, Core.ServersManager.ID, ProtocolTypes.TCP, PartnerNetworkID.ToString(CultureInfo.InvariantCulture)))
         Core.SetScreen(Me.PreScreen)
     End Sub
 
@@ -460,7 +461,7 @@ Public Class PVPLobbyScreen
             End If
         Next
 
-        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleOffer, Core.ServersManager.ID, ProtocolTypes.TCP, {PartnerNetworkID.ToString(), sendPokemonData}.ToList()))
+        Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleOffer, Core.ServersManager.ID, ProtocolTypes.TCP, {PartnerNetworkID.ToString(CultureInfo.InvariantCulture), sendPokemonData}.ToList()))
         ScreenState = ScreenStates.Idle
     End Sub
 
@@ -491,11 +492,11 @@ Public Class PVPLobbyScreen
                 Dim tempData As String = ""
                 Dim cData As String = data
                 While cData.Length > 0
-                    If cData(0).ToString() = "|" AndAlso tempData(tempData.Length - 1).ToString() = "}" Then
+                    If cData(0).ToString(CultureInfo.InvariantCulture) = "|" AndAlso tempData(tempData.Length - 1).ToString(CultureInfo.InvariantCulture) = "}" Then
                         OppTeam.Add(Pokemon.GetPokemonByData(tempData))
                         tempData = ""
                     Else
-                        tempData &= cData(0).ToString()
+                        tempData &= cData(0).ToString(CultureInfo.InvariantCulture)
                     End If
                     cData = cData.Remove(0, 1)
                 End While
@@ -743,7 +744,7 @@ Public Class PVPLobbyScreen
                 End If
             Next
 
-            Dim pokeLeft As String = countOwnPokemon.ToString & " VS " & countOppPokemon.ToString()
+            Dim pokeLeft As String = countOwnPokemon.ToString & " VS " & countOppPokemon.ToString(CultureInfo.InvariantCulture)
             Core.SpriteBatch.DrawString(FontManager.MainFont, pokeLeft, New Vector2(Core.WindowSize.Width / 2.0F - FontManager.MainFont.MeasureString(pokeLeft).X * 2.0F, 240), Color.White, 0.0F, Vector2.Zero, 4.0F, SpriteEffects.None, 0.0F)
 
             'Opp Side:

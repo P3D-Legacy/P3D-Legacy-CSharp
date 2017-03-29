@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 
 Public Class HistoryScreen
 
@@ -11,27 +12,27 @@ Public Class HistoryScreen
 
             Dim dateString As String = ""
             With My.Computer.Clock.LocalTime
-                Dim hour As String = .Hour.ToString()
+                Dim hour As String = .Hour.ToString(CultureInfo.InvariantCulture)
                 If hour.Length = 1 Then
                     hour = "0" & hour
                 End If
-                Dim minute As String = .Minute.ToString()
+                Dim minute As String = .Minute.ToString(CultureInfo.InvariantCulture)
                 If minute.Length = 1 Then
                     minute = "0" & minute
                 End If
-                Dim second As String = .Second.ToString()
+                Dim second As String = .Second.ToString(CultureInfo.InvariantCulture)
                 If second.Length = 1 Then
                     second = "0" & second
                 End If
-                Dim day As String = .Day.ToString()
+                Dim day As String = .Day.ToString(CultureInfo.InvariantCulture)
                 If day.Length = 1 Then
                     day = "0" & day
                 End If
-                Dim month As String = .Month.ToString()
+                Dim month As String = .Month.ToString(CultureInfo.InvariantCulture)
                 If month.Length = 1 Then
                     month = "0" & month
                 End If
-                Dim year As String = .Year.ToString()
+                Dim year As String = .Year.ToString(CultureInfo.InvariantCulture)
 
                 dateString = day & "-" & month & "-" & year & "_" & hour & "." & minute & "." & second
             End With

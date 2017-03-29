@@ -3,12 +3,14 @@
 using P3D.Legacy.Core.Entities;
 using P3D.Legacy.Core.Entities.Other;
 using P3D.Legacy.Core.Pokemon;
-using P3D.Legacy.Core.Resources;
 
 namespace P3D.Legacy.Core.World
 {
     public interface ILevel
     {
+        MapRenderer MapRenderer { get; }
+        MapOffsetRenderer MapOffsetRenderer { get; }
+
         /// <summary>
         /// The Terrain of this level.
         /// </summary>
@@ -20,14 +22,19 @@ namespace P3D.Legacy.Core.World
         RouteSign RouteSign { get; }
 
         /// <summary>
+        /// Wether the map is dark, and needs to be lightened up by Flash.
+        /// </summary>
+        bool IsDark { get; set; }
+
+        /// <summary>
         /// Indicates wether the player is surfing.
         /// </summary>
-        bool Surfing { get; set; }
+        bool IsSurfing { get; set; }
 
         /// <summary>
         /// Indicates wether the player is riding.
         /// </summary>
-        bool Riding { get; set; }
+        bool IsRiding { get; set; }
 
         /// <summary>
         /// Indicates wether the player used Strength already.
@@ -47,17 +54,17 @@ namespace P3D.Legacy.Core.World
         /// <summary>
         /// The array of entities composing the map.
         /// </summary>
-        List<Entity> Entities { get; set; }
+        List<Entity> Entities { get; }
 
         /// <summary>
         /// The array of floors the player can move on.
         /// </summary>
-        List<Entity> Floors { get; set; }
+        List<Entity> Floors { get; }
 
         /// <summary>
         /// The array of shaders that add specific lighting to the map.
         /// </summary>
-        List<IShader> Shaders { get; set; }
+        List<IShader> Shaders { get; }
         
         /// <summary>
         /// The array of players on the server to render.
@@ -72,12 +79,12 @@ namespace P3D.Legacy.Core.World
         /// <summary>
         /// The array of entities the offset maps are composed of.
         /// </summary>
-        List<Entity> OffsetmapEntities { get; set; }
+        List<Entity> OffsetmapEntities { get; }
 
         /// <summary>
         /// The array of floors the offset maps are composed of.
         /// </summary>
-        List<Entity> OffsetmapFloors { get; set; }
+        List<Entity> OffsetmapFloors { get; }
 
         /// <summary>
         /// The name of the current map.
@@ -96,6 +103,16 @@ namespace P3D.Legacy.Core.World
         /// </summary>
         /// <remarks>The path is relative to the \maps\ or \GameMode\[gamemode]\maps\ path.</remarks>
         string LevelFile { get; set; }
+
+        /// <summary>
+        /// Determines wether the player can use Ride on this map.
+        /// </summary>
+        bool CanRide { get; }
+
+        /// <summary>
+        /// Wether the player can move based on the entity around him.
+        /// </summary>
+        bool CanMove { get; }
 
         /// <summary>
         /// Wether the player can use the move Teleport.
@@ -143,11 +160,6 @@ namespace P3D.Legacy.Core.World
         /// Wether the player can encounter wild Pokémon while surfing.
         /// </summary>
         bool WildPokemonWater { get; set; }
-
-        /// <summary>
-        /// Wether the map is dark, and needs to be lightened up by Flash.
-        /// </summary>
-        bool IsDark { get; set; }
 
         /// <summary>
         /// Wether the Overworld Pokémon is visible.
@@ -236,12 +248,6 @@ namespace P3D.Legacy.Core.World
         PokemonEcounterDataStruct PokemonEncounterData { get; set; }
         WarpDataStruct WarpData { get; set; }
 
-        /// <summary>
-        /// Initializes the offset map update cycle.
-        /// </summary>
-        void StartOffsetMapUpdate();
-
-        void StopOffsetMapUpdate();
 
         /// <summary>
         /// Loads a level from a levelfile.
@@ -275,6 +281,11 @@ namespace P3D.Legacy.Core.World
         void UpdateOffsetMap();
 
         /// <summary>
+        /// Sorts the offset map entity enumerations.
+        /// </summary>
+        void SortOffsetEntities();
+
+        /// <summary>
         /// Returns a list of all NPCs on the map.
         /// </summary>
         List<BaseNPC> GetNPCs();
@@ -295,15 +306,5 @@ namespace P3D.Legacy.Core.World
         /// Checks all NPCs on the map for if the player is in their line of sight.
         /// </summary>
         void CheckTrainerSights();
-
-        /// <summary>
-        /// Determines wether the player can use Ride on this map.
-        /// </summary>
-        bool CanRide();
-
-        /// <summary>
-        /// Wether the player can move based on the entity around him.
-        /// </summary>
-        bool CanMove();
     }
 }

@@ -1,9 +1,11 @@
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Security
 Imports P3D.Legacy.Core.World
+Imports PCLExt.FileStorage
 
 Public Class Spawner
     ''' <summary>
@@ -28,16 +30,16 @@ Public Class Spawner
         Dim LevelCaps As New List(Of String)
 
         If InputPokeFile = "" Then
-            pokeFile = LevelFile.Remove(LevelFile.Length - 4, 4) & ".poke"
+            pokeFilePath = LevelFile.Remove(LevelFile.Length - 4, 4) & ".poke"
         Else
-            pokeFile = InputPokeFile
+            pokeFilePath = InputPokeFile
         End If
 
-        Dim pokeFilePath As String = GameModeManager.GetPokeFileAsync(pokeFile).Result.Path
-
-        If System.IO.File.Exists(pokeFilePath) = True Then
-            FileValidation.CheckFileValid(pokeFilePath, False, "Spawner.vb")
-            Dim Data() As String = System.IO.File.ReadAllLines(pokeFilePath)
+        ' TODO
+        If GameModeManager.PokeFileExistsAsync(pokeFilePath).Result Then
+            Dim pokeFile = GameModeManager.GetPokeFileAsync(Spawner.pokeFilePath).Result
+            FileValidation.CheckFileValid(pokeFile, False, "Spawner.vb")
+            Dim Data() As String = pokeFile.ReadAllTextAsync.Result.SplitAtNewline()
 
             Dim i As Integer = 0
             For Each Line As String In Data
@@ -64,9 +66,9 @@ Public Class Spawner
                         Seasons = splits(6).Split(",")
                     End If
 
-                    If Weathers.Contains("-1") = True Or Weathers.Contains(CInt(World.GetWeatherFromWeatherType(Screen.Level.WeatherType)).ToString()) = True Then
-                        If Seasons.Contains("-1") = True Or Seasons.Contains(CInt(World.CurrentSeason).ToString()) = True Then
-                            If DayTime.Contains("-1") = True Or DayTime.Contains(CInt(World.GetTime()).ToString()) = True Then
+                    If Weathers.Contains("-1") = True Or Weathers.Contains(CInt(World.GetWeatherFromWeatherType(Screen.Level.WeatherType)).ToString(NumberFormatInfo.InvariantInfo)) = True Then
+                        If Seasons.Contains("-1") = True Or Seasons.Contains(CInt(World.CurrentSeason).ToString(NumberFormatInfo.InvariantInfo)) = True Then
+                            If DayTime.Contains("-1") = True Or DayTime.Contains(CInt(World.GetTime()).ToString(NumberFormatInfo.InvariantInfo)) = True Then
                                 If Method = PMethod Then
                                     Pokemons.Add(Pokemon)
                                     Chances.Add(Chance)
@@ -91,7 +93,7 @@ Public Class Spawner
         End If
     End Function
 
-    Private Shared pokeFile As String = ""
+    Private Shared pokeFilePath As String = ""
 
     Private Shared Function CheckForRoaming(ByVal LevelFile As String, ByVal Method As Integer) As RoamingPokemon
         If Method = 0 Or Method = 2 Then
@@ -169,7 +171,7 @@ Public Class Spawner
                 Dim p As Pokemon = Pokemon.GetPokemonByID(Pokemons(i))
                 p.Generate(level, True)
 
-                BattleSystem.BattleScreen.TempPokeFile = pokeFile
+                BattleSystem.BattleScreen.TempPokeFile = pokeFilePath
 
                 Return p
             End If

@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Dialogues
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Pokemon
@@ -71,8 +72,8 @@ Public Class ItemObject
         Core.Player.AddPoints(1, "Found an item.")
     End Sub
 
-    Public Overrides Sub Render()
-        Me.Draw(Me.Model, Textures, False)
+    Public Overrides Sub Render(effect As BasicEffect)
+        Me.Draw(effect, Me.Model, Textures, False)
     End Sub
 
     Public Shared Function ItemExists(ByVal ItemObject As ItemObject) As Boolean
@@ -80,13 +81,13 @@ Public Class ItemObject
             If Core.Player.ItemData.Contains(",") = True Then
                 Dim IDs() As String = Core.Player.ItemData.ToLower().Split(CChar(","))
 
-                If IDs.Contains((Screen.Level.LevelFile & "|" & ItemObject.ItemID.ToString()).ToLower()) = True Then
+                If IDs.Contains((Screen.Level.LevelFile & "|" & ItemObject.ItemID.ToString(CultureInfo.InvariantCulture)).ToLower()) = True Then
                     Return True
                 Else
                     Return False
                 End If
             Else
-                If Core.Player.ItemData.ToLower() = (Screen.Level.LevelFile & "|" & ItemObject.ItemID.ToString()).ToLower() Then
+                If Core.Player.ItemData.ToLower() = (Screen.Level.LevelFile & "|" & ItemObject.ItemID.ToString(CultureInfo.InvariantCulture)).ToLower() Then
                     Return True
                 Else
                     Return False
@@ -101,11 +102,11 @@ Public Class ItemObject
         Screen.Level.Entities.Remove(ItemObject)
 
         If Core.Player.ItemData = "" Then
-            Core.Player.ItemData = (Screen.Level.LevelFile & "|" & ItemObject.ItemID.ToString()).ToLower()
+            Core.Player.ItemData = (Screen.Level.LevelFile & "|" & ItemObject.ItemID.ToString(CultureInfo.InvariantCulture)).ToLower()
         Else
             Dim IDs() As String = Core.Player.ItemData.Split(CChar(","))
-            If IDs.Contains((Screen.Level.LevelFile & "|" & ItemObject.ItemID.ToString()).ToLower()) = False Then
-                Core.Player.ItemData &= "," & (Screen.Level.LevelFile & "|" & ItemObject.ItemID.ToString()).ToLower()
+            If IDs.Contains((Screen.Level.LevelFile & "|" & ItemObject.ItemID.ToString(CultureInfo.InvariantCulture)).ToLower()) = False Then
+                Core.Player.ItemData &= "," & (Screen.Level.LevelFile & "|" & ItemObject.ItemID.ToString(CultureInfo.InvariantCulture)).ToLower()
             End If
         End If
     End Sub

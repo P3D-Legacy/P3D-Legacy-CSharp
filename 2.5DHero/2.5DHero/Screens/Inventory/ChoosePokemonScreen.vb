@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Battle
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
@@ -329,7 +330,7 @@ Public Class ChoosePokemonScreen
             End If
 
             Dim space As String = ""
-            For x = 1 To 3 - Pokemon.Level.ToString().Length
+            For x = 1 To 3 - Pokemon.Level.ToString(CultureInfo.InvariantCulture).Length
                 space &= " "
             Next
 

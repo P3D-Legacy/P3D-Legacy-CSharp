@@ -14,7 +14,7 @@ Namespace ScriptVersion2
             Dim command As String = ScriptComparer.GetSubClassArgumentPair(subClass).Command
             Dim argument As String = ScriptComparer.GetSubClassArgumentPair(subClass).Argument
 
-            argument = argument.Replace(".", GameController.DecSeparator)
+            argument = argument
 
             Select Case command.ToLower()
                 Case "allowchannel"

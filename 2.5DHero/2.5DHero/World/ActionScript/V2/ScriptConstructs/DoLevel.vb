@@ -19,9 +19,9 @@ Namespace ScriptVersion2
                     Dim filename As String = System.IO.Path.GetFileNameWithoutExtension(Screen.Level.LevelFile)
                     Return filename
                 Case "riding"
-                    Return ReturnBoolean(Screen.Level.Riding)
+                    Return ReturnBoolean(Screen.Level.IsRiding)
                 Case "surfing"
-                    Return ReturnBoolean(Screen.Level.Surfing)
+                    Return ReturnBoolean(Screen.Level.IsSurfing)
             End Select
 
             Return DEFAULTNULL

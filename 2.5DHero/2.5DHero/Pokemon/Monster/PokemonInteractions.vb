@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.Pokemon
@@ -67,7 +68,7 @@ Public Class PokemonInteractions
                 s &= "@camera.activatethirdperson" & vbNewLine &
                      "@camera.setposition(" & newPosition.X & ",1," & newPosition.Y & ")" & vbNewLine
 
-                s &= "@entity.showmessagebulb(" & CInt(reaction.Notification).ToString() & "|" & cPosition.X + offset.X & "|" & cPosition.Y + 0.7F & "|" & cPosition.Z + offset.Y & ")" & vbNewLine
+                s &= "@entity.showmessagebulb(" & CInt(reaction.Notification).ToString(NumberFormatInfo.InvariantInfo) & "|" & cPosition.X + offset.X & "|" & cPosition.Y + 0.7F & "|" & cPosition.Z + offset.Y & ")" & vbNewLine
 
                 s &= "@camera.deactivatethirdperson" & vbNewLine
             End If
@@ -77,7 +78,7 @@ Public Class PokemonInteractions
             If reaction.HasNotification = True Then
                 s &= "@camera.setyaw(" & CType(Screen.Camera, OverworldCamera).GetAimYawFromDirection(Screen.Camera.GetPlayerFacingDirection()) & ")" & vbNewLine
                 s &= "@camera.setposition(" & newPosition.X & ",1," & newPosition.Y & ")" & vbNewLine
-                s &= "@entity.showmessagebulb(" & CInt(reaction.Notification).ToString() & "|" & cPosition.X + offset.X & "|" & cPosition.Y + 0.7F & "|" & cPosition.Z + offset.Y & ")" & vbNewLine
+                s &= "@entity.showmessagebulb(" & CInt(reaction.Notification).ToString(NumberFormatInfo.InvariantInfo) & "|" & cPosition.X + offset.X & "|" & cPosition.Y + 0.7F & "|" & cPosition.Z + offset.Y & ")" & vbNewLine
 
                 s &= "@camera.deactivatethirdperson" & vbNewLine
             End If
@@ -116,7 +117,7 @@ Public Class PokemonInteractions
             s &= "@camera.activatethirdperson" & vbNewLine &
                  "@camera.setposition(" & newPosition.X & ",1," & newPosition.Y & ")" & vbNewLine
 
-            s &= "@entity.showmessagebulb(" & CInt(MessageBulb.NotifcationTypes.Question).ToString() & "|" & cPosition.X + offset.X & "|" & cPosition.Y + 0.7F & "|" & cPosition.Z + offset.Y & ")" & vbNewLine
+            s &= "@entity.showmessagebulb(" & CInt(MessageBulb.NotifcationTypes.Question).ToString(NumberFormatInfo.InvariantInfo) & "|" & cPosition.X + offset.X & "|" & cPosition.Y + 0.7F & "|" & cPosition.Z + offset.Y & ")" & vbNewLine
 
             s &= "@camera.deactivatethirdperson" & vbNewLine
             s &= "@text.show(" & message & ")" & vbNewLine &
@@ -131,7 +132,7 @@ Public Class PokemonInteractions
                 ":endwhen" & vbNewLine
         Else
             s &= "@camera.setposition(" & newPosition.X & ",1," & newPosition.Y & ")" & vbNewLine
-            s &= "@entity.showmessagebulb(" & CInt(MessageBulb.NotifcationTypes.Question).ToString() & "|" & cPosition.X + offset.X & "|" & cPosition.Y + 0.7F & "|" & cPosition.Z + offset.Y & ")" & vbNewLine
+            s &= "@entity.showmessagebulb(" & CInt(MessageBulb.NotifcationTypes.Question).ToString(NumberFormatInfo.InvariantInfo) & "|" & cPosition.X + offset.X & "|" & cPosition.Y + 0.7F & "|" & cPosition.Z + offset.Y & ")" & vbNewLine
 
             s &= "@camera.deactivatethirdperson" & vbNewLine
 
@@ -705,10 +706,10 @@ Public Class PokemonInteractions
     Public Shared Sub Load()
         SpecialReactionList.Clear()
 
-        Dim path As IFile = GameModeManager.GetContentFileAsync("Data\interactions.dat").Result
-        FileValidation.CheckFileValid(path, False, "PokemonInteractions.vb")
+        Dim file As IFile = GameModeManager.GetContentFileAsync("Data\interactions.dat").Result
+        FileValidation.CheckFileValid(file, False, "PokemonInteractions.vb")
 
-        Dim data() As String = System.IO.File.ReadAllLines(path.Path)
+        Dim data() As String = file.ReadAllTextAsync.Result.SplitAtNewline()
 
         For Each line As String In data
             If line.StartsWith("{") = True And line.EndsWith("}") = True Then
@@ -892,7 +893,7 @@ Public Class PokemonInteractions
         'Checks if the first Pokémon in the party is following the player:
         If Screen.Level.ShowOverworldPokemon = True And GameModeManager.GetActiveGameRuleValueOrDefault("ShowFollowPokemon", True) = True Then
             'Checks if the player has a Pokémon:
-            If Core.Player.Pokemons.Count > 0 And Screen.Level.Surfing = False And Screen.Level.Riding = False And Screen.Level.ShowOverworldPokemon = True And Not Core.Player.GetWalkPokemon() Is Nothing Then
+            If Core.Player.Pokemons.Count > 0 And Screen.Level.IsSurfing = False And Screen.Level.IsRiding = False And Screen.Level.ShowOverworldPokemon = True And Not Core.Player.GetWalkPokemon() Is Nothing Then
                 If Core.Player.GetWalkPokemon().Status = BasePokemon.StatusProblems.None Then
                     'If the player switched the Pokémon, reset the item ID.
                     If PickupIndividualValue <> Core.Player.GetWalkPokemon().IndividualValue Then

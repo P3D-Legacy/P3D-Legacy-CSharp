@@ -29,7 +29,7 @@ Namespace ScriptVersion2
                         Data = newData.ToArray()
 
                         Dim ID As Integer = int(Data(0))
-                        Dim Position As New Vector3(sng(Data(1).Replace(".", GameController.DecSeparator)), sng(Data(2).Replace(".", GameController.DecSeparator)), sng(Data(3).Replace(".", GameController.DecSeparator)))
+                        Dim Position As New Vector3(sng(Data(1)), sng(Data(2)), sng(Data(3)))
 
                         Dim noType As MessageBulb.NotifcationTypes = MessageBulb.NotifcationTypes.Waiting
                         Select Case ID
@@ -43,7 +43,7 @@ Namespace ScriptVersion2
                     End If
 
                     Dim contains As Boolean = False
-                    Screen.Level.Entities = (From e In Screen.Level.Entities Order By e.CameraDistance Descending).ToList()
+                    Screen.Level.SortEntities()
                     For Each e As Entity In Screen.Level.Entities
                         If e.EntityID = "MessageBulb" Then
                             e.Update()
@@ -72,17 +72,17 @@ Namespace ScriptVersion2
                         Select Case command.ToLower()
                             Case "warp"
                                 Dim PositionList As List(Of String) = argument.Split(CChar(",")).ToList()
-                                Dim newPosition As Vector3 = New Vector3(sng(PositionList(1).Replace("~", CStr(ent.Position.X)).Replace(".", GameController.DecSeparator)),
-                                                                         sng(PositionList(2).Replace("~", CStr(ent.Position.Y)).Replace(".", GameController.DecSeparator)),
-                                                                         sng(PositionList(3).Replace("~", CStr(ent.Position.Z)).Replace(".", GameController.DecSeparator)))
+                                Dim newPosition As Vector3 = New Vector3(sng(PositionList(1).Replace("~", CStr(ent.Position.X))),
+                                                                         sng(PositionList(2).Replace("~", CStr(ent.Position.Y))),
+                                                                         sng(PositionList(3).Replace("~", CStr(ent.Position.Z))))
 
                                 ent.Position = newPosition
                                 ent.CreatedWorld = False
                             Case "setscale"
                                 Dim ScaleList As List(Of String) = argument.Split(CChar(",")).ToList()
-                                Dim newScale As Vector3 = New Vector3(sng(ScaleList(1).Replace("~", CStr(ent.Position.X)).Replace(".", GameController.DecSeparator)),
-                                                                      sng(ScaleList(2).Replace("~", CStr(ent.Position.Y)).Replace(".", GameController.DecSeparator)),
-                                                                      sng(ScaleList(3).Replace("~", CStr(ent.Position.Z)).Replace(".", GameController.DecSeparator)))
+                                Dim newScale As Vector3 = New Vector3(sng(ScaleList(1).Replace("~", CStr(ent.Position.X))),
+                                                                      sng(ScaleList(2).Replace("~", CStr(ent.Position.Y))),
+                                                                      sng(ScaleList(3).Replace("~", CStr(ent.Position.Z))))
 
                                 ent.Scale = newScale
                                 ent.CreatedWorld = False
@@ -110,9 +110,9 @@ Namespace ScriptVersion2
                                 ent.Textures(textureID) = TextureManager.GetTexture(textureInformation(0), New Rectangle(int(textureInformation(1)), int(textureInformation(2)), int(textureInformation(3)), int(textureInformation(4))))
                             Case "addtoposition"
                                 Dim PositionList As List(Of String) = argument.Split(CChar(",")).ToList()
-                                Dim newPosition As Vector3 = New Vector3(sng(PositionList(1).Replace("~", CStr(ent.Position.X)).Replace(".", GameController.DecSeparator)),
-                                                                         sng(PositionList(2).Replace("~", CStr(ent.Position.Y)).Replace(".", GameController.DecSeparator)),
-                                                                         sng(PositionList(3).Replace("~", CStr(ent.Position.Z)).Replace(".", GameController.DecSeparator)))
+                                Dim newPosition As Vector3 = New Vector3(sng(PositionList(1).Replace("~", CStr(ent.Position.X))),
+                                                                         sng(PositionList(2).Replace("~", CStr(ent.Position.Y))),
+                                                                         sng(PositionList(3).Replace("~", CStr(ent.Position.Z))))
 
                                 ent.Position += newPosition
                                 ent.CreatedWorld = False

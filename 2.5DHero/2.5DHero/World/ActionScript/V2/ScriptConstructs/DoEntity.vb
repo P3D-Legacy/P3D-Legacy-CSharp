@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core.Entities
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Screens
 
 Namespace ScriptVersion2
@@ -23,7 +24,7 @@ Namespace ScriptVersion2
                     Case "opacity"
                         Return ent.Opacity * 100
                     Case "position"
-                        Return ent.Position.X.ToString() & "," & ent.Position.Y.ToString() & "," & ent.Position.Z.ToString()
+                        Return ent.Position.X.ToString(CultureInfo.InvariantCulture) & "," & ent.Position.Y.ToString(CultureInfo.InvariantCulture) & "," & ent.Position.Z.ToString(CultureInfo.InvariantCulture)
                     Case "positiony"
                         Return ent.Position.Y
                     Case "positionz"
@@ -31,7 +32,7 @@ Namespace ScriptVersion2
                     Case "positionx"
                         Return ent.Position.X
                     Case "scale"
-                        Return ent.Scale.X.ToString() & "," & ent.Scale.Y.ToString() & "," & ent.Scale.Z.ToString()
+                        Return ent.Scale.X.ToString(CultureInfo.InvariantCulture) & "," & ent.Scale.Y.ToString(CultureInfo.InvariantCulture) & "," & ent.Scale.Z.ToString(CultureInfo.InvariantCulture)
                     Case "additionalvalue"
                         Return ent.AdditionalValue
                     Case "collision"

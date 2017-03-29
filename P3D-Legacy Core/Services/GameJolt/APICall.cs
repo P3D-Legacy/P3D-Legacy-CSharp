@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -502,7 +503,7 @@ namespace P3D.Legacy.Core.GameJolt
                 {"game_id", GameID},
                 {"username", Username},
                 {"user_token", Token},
-                {"trophy_id", trophy_id.ToString()}
+                {"trophy_id", trophy_id.ToString(NumberFormatInfo.InvariantInfo)}
             };
 
             await Initialize(url.GetURL, RequestMethod.GET);
@@ -515,7 +516,7 @@ namespace P3D.Legacy.Core.GameJolt
                 {"game_id", GameID},
                 {"username", Username},
                 {"user_token", Token},
-                {"trophy_id", trophy_id.ToString()}
+                {"trophy_id", trophy_id.ToString(NumberFormatInfo.InvariantInfo)}
             };
 
             await Initialize(url.GetURL, RequestMethod.POST);
@@ -528,7 +529,7 @@ namespace P3D.Legacy.Core.GameJolt
                 {"game_id", GameID},
                 {"username", Username},
                 {"user_token", Token},
-                {"trophy_id", trophy_id.ToString()}
+                {"trophy_id", trophy_id.ToString(NumberFormatInfo.InvariantInfo)}
             };
 
             await Initialize(url.GetURL, RequestMethod.POST);
@@ -543,7 +544,7 @@ namespace P3D.Legacy.Core.GameJolt
             var url = new APIURL("/scores/")
             {
                 {"game_id", GameID},
-                {"limit", score_count.ToString()},
+                {"limit", score_count.ToString(NumberFormatInfo.InvariantInfo)},
                 {"table_id", table_id}
             };
 
@@ -555,7 +556,7 @@ namespace P3D.Legacy.Core.GameJolt
             var url = new APIURL("/scores/get-rank/")
             {
                 {"game_id", GameID},
-                {"sort", sort.ToString()},
+                {"sort", sort.ToString(NumberFormatInfo.InvariantInfo)},
                 {"table_id", table_id}
             };
 
@@ -570,7 +571,7 @@ namespace P3D.Legacy.Core.GameJolt
                 {"username", Username},
                 {"user_token", Token},
                 {"score", score},
-                {"sort", sort.ToString()},
+                {"sort", sort.ToString(NumberFormatInfo.InvariantInfo)},
                 {"table_id", table_id}
             };
 

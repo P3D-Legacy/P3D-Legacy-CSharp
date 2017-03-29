@@ -18,7 +18,7 @@ Public Class HeadbuttTree
     End Sub
 
     Public Overrides Sub ClickFunction()
-        If Screen.Level.Surfing = False Then
+        If Screen.Level.IsSurfing = False Then
             Dim pName As String = ""
 
             For Each p As Pokemon In Core.Player.Pokemons
@@ -83,8 +83,8 @@ Public Class HeadbuttTree
         End If
     End Sub
 
-    Public Overrides Sub Render()
-        Me.Draw(Me.Model, Textures, False)
+    Public Overrides Sub Render(effect As BasicEffect)
+        Me.Draw(effect, Me.Model, Textures, False)
     End Sub
 
 End Class

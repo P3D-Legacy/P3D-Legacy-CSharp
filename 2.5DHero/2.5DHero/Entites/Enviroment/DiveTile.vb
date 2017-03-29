@@ -17,7 +17,7 @@ Public Class DiveTile
     End Sub
 
     Public Overrides Sub Update()
-        If Screen.Level.Surfing = True Then
+        If Screen.Level.IsSurfing = True Then
             If CInt(Me.Position.X) = CInt(Screen.Camera.Position.X) And CInt(Me.Position.Y) = CInt(Screen.Camera.Position.Y) And CInt(Me.Position.Z) = CInt(Screen.Camera.Position.Z) Then
                 If Controls.Accept(True, True, True) = True Then
                     If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
@@ -115,8 +115,8 @@ Public Class DiveTile
         Return ""
     End Function
 
-    Public Overrides Sub Render()
-        Me.Draw(Me.Model, Textures, False)
+    Public Overrides Sub Render(effect As BasicEffect)
+        Me.Draw(effect, Me.Model, Textures, False)
     End Sub
 
 End Class

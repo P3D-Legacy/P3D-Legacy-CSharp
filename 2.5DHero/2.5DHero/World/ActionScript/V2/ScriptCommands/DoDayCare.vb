@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Resources
 
 Namespace ScriptVersion2
@@ -19,7 +20,7 @@ Namespace ScriptVersion2
                     Dim dayCareID As Integer = int(argument)
 
                     For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                        If line.StartsWith(dayCareID.ToString() & "|Egg|") = False Then
+                        If line.StartsWith(dayCareID.ToString(CultureInfo.InvariantCulture) & "|Egg|") = False Then
                             If newData <> "" Then
                                 newData &= vbNewLine
                             End If
@@ -40,7 +41,7 @@ Namespace ScriptVersion2
                     Dim PokemonIndex As Integer = int(argument.GetSplit(1))
 
                     For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                        If line.StartsWith(dayCareID.ToString() & "|" & PokemonIndex.ToString() & "|") = True Then
+                        If line.StartsWith(dayCareID.ToString(CultureInfo.InvariantCulture) & "|" & PokemonIndex.ToString(CultureInfo.InvariantCulture) & "|") = True Then
                             Dim data As String = line.Remove(0, line.IndexOf("{"))
                             Dim startStep As Integer = CInt(line.Split(CChar("|"))(2))
                             Dim p As Pokemon = Pokemon.GetPokemonByData(data)
@@ -64,7 +65,7 @@ Namespace ScriptVersion2
                         Core.Player.DaycareData &= vbNewLine
                     End If
 
-                    Core.Player.DaycareData &= dayCareID.ToString() & "|" & PokemonDaycareIndex.ToString() & "|" & Core.Player.DaycareSteps & "|0|" & Core.Player.Pokemons(PokemonIndex).GetSaveData()
+                    Core.Player.DaycareData &= dayCareID.ToString(CultureInfo.InvariantCulture) & "|" & PokemonDaycareIndex.ToString(CultureInfo.InvariantCulture) & "|" & Core.Player.DaycareSteps & "|0|" & Core.Player.Pokemons(PokemonIndex).GetSaveData()
 
                     Core.Player.Pokemons.RemoveAt(PokemonIndex)
                 Case "removeegg"
@@ -72,7 +73,7 @@ Namespace ScriptVersion2
                     Dim dayCareID As Integer = int(argument)
 
                     For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                        If line.StartsWith(dayCareID.ToString() & "|Egg|") = False Then
+                        If line.StartsWith(dayCareID.ToString(CultureInfo.InvariantCulture) & "|Egg|") = False Then
                             If newData <> "" Then
                                 newData &= vbNewLine
                             End If
@@ -106,9 +107,9 @@ Namespace ScriptVersion2
                         End If
 
                         If data(1) = "Egg" Then
-                            newData &= daycareID.ToString() & "|Egg|" & data(2)
+                            newData &= daycareID.ToString(CultureInfo.InvariantCulture) & "|Egg|" & data(2)
                         Else
-                            newData &= daycareID.ToString() & "|" & i.ToString() & "|" & data(2) & "|" & data(3) & "|" & line.Remove(0, line.IndexOf("{"))
+                            newData &= daycareID.ToString(CultureInfo.InvariantCulture) & "|" & i.ToString(CultureInfo.InvariantCulture) & "|" & data(2) & "|" & data(3) & "|" & line.Remove(0, line.IndexOf("{"))
                         End If
                     Next
 
@@ -118,7 +119,7 @@ Namespace ScriptVersion2
                     Dim newData As String = ""
 
                     For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                        If line.StartsWith(daycareID.ToString() & "|") = False Then
+                        If line.StartsWith(daycareID.ToString(CultureInfo.InvariantCulture) & "|") = False Then
                             If newData <> "" Then
                                 newData &= vbNewLine
                             End If

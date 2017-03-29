@@ -190,7 +190,7 @@ Public Class Pokemon
     ''' </summary>
     Public Shared Function PokemonDataExists(ByVal Number As Integer) As Boolean
         ' TODO
-        Return System.IO.File.Exists(GameModeManager.GetPokemonDataFileAsync(Number.ToString() & ".dat").Result.Path)
+        Return System.IO.File.Exists(GameModeManager.GetPokemonDataFileAsync(Number.ToString(NumberFormatInfo.InvariantInfo) & ".dat").Result.Path)
     End Function
 
     ''' <summary>
@@ -253,7 +253,7 @@ Public Class Pokemon
                     'If Value.Contains(".") Then
                     'Value = Value.Replace(".", ",")
                     'End If
-                    Me.IsMale = Decimal.Parse(Value.Replace(".", GameController.DecSeparator), CultureInfo.InvariantCulture)
+                    Me.IsMale = Decimal.Parse(Value, NumberFormatInfo.InvariantInfo)
                 Case "isgenderless"
                     Me.IsGenderless = CBool(Value)
                 Case "devolution"
@@ -346,12 +346,12 @@ Public Class Pokemon
                     Me.CanFly = CBool(Value)
                 Case "pokedex"
                     Dim PokedexData() As String = Value.Split(CChar("\"))
-                    Me.PokedexEntry = New PokedexEntry(PokedexData(0), PokedexData(1), Single.Parse(PokedexData(2).Replace(".", GameController.DecSeparator), CultureInfo.InvariantCulture), Single.Parse(PokedexData(3).Replace(".", GameController.DecSeparator), CultureInfo.InvariantCulture), New Microsoft.Xna.Framework.Color(CInt(PokedexData(4).GetSplit(0)), CInt(PokedexData(4).GetSplit(1)), CInt(PokedexData(4).GetSplit(2))))
+                    Me.PokedexEntry = New PokedexEntry(PokedexData(0), PokedexData(1), Single.Parse(PokedexData(2), NumberFormatInfo.InvariantInfo), Single.Parse(PokedexData(3), NumberFormatInfo.InvariantInfo), New Microsoft.Xna.Framework.Color(CInt(PokedexData(4).GetSplit(0)), CInt(PokedexData(4).GetSplit(1)), CInt(PokedexData(4).GetSplit(2))))
                 Case "scale"
                     If Value.Contains(".") Then
                         Value = Value.Replace(".", ",")
                     End If
-                    Me.Scale = New Vector3(Single.Parse(Value.Replace(",", GameController.DecSeparator), CultureInfo.InvariantCulture))
+                    Me.Scale = New Vector3(Single.Parse(Value, NumberFormatInfo.InvariantInfo))
                 Case "move"
                     Dim Level As Integer = CInt(Value.GetSplit(0))
                     Dim MoveID As Integer = CInt(Value.GetSplit(1))
@@ -627,7 +627,7 @@ Public Class Pokemon
 
         Dim SaveItemID As String = "0"
         If Not Me.Item Is Nothing Then
-            SaveItemID = Me.Item.Id.ToString()
+            SaveItemID = Me.Item.Id.ToString(NumberFormatInfo.InvariantInfo)
         End If
 
         Dim ItemData As String = ""
@@ -713,7 +713,7 @@ Public Class Pokemon
 
             For Each mysteryEvent As MysteryEventScreen.MysteryEvent In MysteryEventScreen.ActivatedMysteryEvents
                 If mysteryEvent.EventType = MysteryEventScreen.EventTypes.ShinyMultiplier Then
-                    shinyRate = CInt(shinyRate / CSng(mysteryEvent.Value.Replace(".", GameController.DecSeparator)))
+                    shinyRate = CInt(shinyRate / Single.Parse(mysteryEvent.Value, NumberFormatInfo.InvariantInfo))
                 End If
             Next
 

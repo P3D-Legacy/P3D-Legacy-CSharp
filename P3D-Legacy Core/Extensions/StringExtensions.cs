@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using P3D.Legacy.Core.Resources;
@@ -49,7 +50,7 @@ namespace P3D.Legacy.Core.Extensions
         public static string[] SplitAtNewline(this string s)
         {
             if (s.Contains("§") == false)
-                return s.Replace(Constants.vbNewLine, "§").Replace(Constants.vbLf, "§").Split(Convert.ToChar("§"));
+                return s.Replace(Environment.NewLine, "§").Replace(Constants.vbLf, "§").Split(Convert.ToChar("§"));
             var data = new List<string>();
 
             if (string.IsNullOrEmpty(s))
@@ -58,7 +59,7 @@ namespace P3D.Legacy.Core.Extensions
             var i = 0;
             while (!string.IsNullOrEmpty(s) && i < s.Length)
             {
-                if (!s.Substring(i).StartsWith(Constants.vbNewLine) || !s.Substring(i).StartsWith(Constants.vbLf))
+                if (!s.Substring(i).StartsWith(Environment.NewLine) || !s.Substring(i).StartsWith(Constants.vbLf))
                     i += 1;
                 else
                 {
@@ -143,7 +144,7 @@ namespace P3D.Legacy.Core.Extensions
                 {
                     if (i != 0)
                     {
-                        s += Constants.vbNewLine;
+                        s += Environment.NewLine;
                     }
 
                     s += Array[i].ToString();
@@ -200,15 +201,15 @@ namespace P3D.Legacy.Core.Extensions
                     string newText = "";
                     while (fulltext.Length > 0)
                     {
-                        if ((font.MeasureString(newText + fulltext[0].ToString()).X * scale) > width)
+                        if ((font.MeasureString(newText + fulltext[0].ToString(NumberFormatInfo.InvariantInfo)).X * scale) > width)
                         {
-                            newText += Constants.vbNewLine;
-                            newText += fulltext[0].ToString();
+                            newText += Environment.NewLine;
+                            newText += fulltext[0].ToString(NumberFormatInfo.InvariantInfo);
                             fulltext.Remove(0, 1);
                         }
                         else
                         {
-                            newText += fulltext[0].ToString();
+                            newText += fulltext[0].ToString(NumberFormatInfo.InvariantInfo);
                             fulltext.Remove(0, 1);
                         }
                     }
@@ -222,14 +223,14 @@ namespace P3D.Legacy.Core.Extensions
 
             while (fulltext.Length > 0)
             {
-                if (fulltext.StartsWith(Constants.vbNewLine) == true)
+                if (fulltext.StartsWith(Environment.NewLine) == true)
                 {
                     if (!string.IsNullOrEmpty(currentLine))
                     {
                         currentLine += " ";
                     }
                     currentLine += currentWord;
-                    output += currentLine + Constants.vbNewLine;
+                    output += currentLine + Environment.NewLine;
                     currentLine = "";
                     currentWord = "";
                     fulltext = fulltext.Remove(0, 2);
@@ -251,13 +252,13 @@ namespace P3D.Legacy.Core.Extensions
                     {
                         if (string.IsNullOrEmpty(currentLine))
                         {
-                            output += currentWord + Constants.vbNewLine;
+                            output += currentWord + Environment.NewLine;
                             currentWord = "";
                             currentLine = "";
                         }
                         else
                         {
-                            output += currentLine + Constants.vbNewLine;
+                            output += currentLine + Environment.NewLine;
                             currentLine = "";
                         }
                     }

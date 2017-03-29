@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.GameJolt
@@ -164,7 +165,7 @@ Public Class NPC
                     Select Case action.ToLower()
                         Case "position"
                             Dim PositionData() As String = addition.Split(CChar(","))
-                            Me.Position = New Vector3(CSng(PositionData(0).Replace(".", GameController.DecSeparator)) + Offset.X, CSng(PositionData(1).Replace(".", GameController.DecSeparator)) + Offset.Y, CSng(PositionData(2).Replace(".", GameController.DecSeparator)) + Offset.Z)
+                            Me.Position = New Vector3(Single.Parse(PositionData(0), NumberFormatInfo.InvariantInfo) + Offset.X, Single.Parse(PositionData(1), NumberFormatInfo.InvariantInfo) + Offset.Y, Single.Parse(PositionData(2), NumberFormatInfo.InvariantInfo) + Offset.Z)
                         Case "remove"
                             Me.CanBeRemoved = True
                     End Select
@@ -414,7 +415,7 @@ Public Class NPC
                                 With CType(Screen.Camera, OverworldCamera)
                                     If CType(Screen.Camera, OverworldCamera).ThirdPerson = True And IsOnScreen() = False Then
                                         s &= "@camera.setfocus(npc," & Me.NPCID & ")" & vbNewLine
-                                        Dim cPosition = .ThirdPersonOffset.X.ToString() & "," & .ThirdPersonOffset.Y.ToString() & "," & .ThirdPersonOffset.Z.ToString()
+                                        Dim cPosition = .ThirdPersonOffset.X.ToString(CultureInfo.InvariantCulture) & "," & .ThirdPersonOffset.Y.ToString(CultureInfo.InvariantCulture) & "," & .ThirdPersonOffset.Z.ToString(CultureInfo.InvariantCulture)
                                         s &= "@entity.showmessagebulb(1|" & Me.Position.X + offset.X & "|" & Me.Position.Y + 0.7F & "|" & Me.Position.Z + offset.Y & ")" & vbNewLine &
                                              "@npc.move(" & Me.NPCID & "," & distance - 1 & ")" & vbNewLine &
                                              "@camera.resetfocus" & vbNewLine &
@@ -474,10 +475,10 @@ Public Class NPC
         MyBase.UpdateEntity()
     End Sub
 
-    Public Overrides Sub Render()
+    Public Overrides Sub Render(effect As BasicEffect)
         Dim state = Core.GraphicsDevice.DepthStencilState
         Core.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
-        Draw(Me.Model, Me.Textures, True)
+        Draw(effect, Me.Model, Me.Textures, True)
         Core.GraphicsDevice.DepthStencilState = state
     End Sub
 

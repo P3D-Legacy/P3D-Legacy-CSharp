@@ -70,7 +70,7 @@ Public Class NetworkPokemon
         End If
     End Sub
 
-    Public Overrides Sub Render()
+    Public Overrides Sub Render(effect As BasicEffect)
         If ConnectScreen.Connected = True Then
             If GameModeManager.GetActiveGameRuleValueOrDefault("ShowFollowPokemon", True) = True Then
                 If Screen.Level.ShowOverworldPokemon = True Then
@@ -79,7 +79,7 @@ Public Class NetworkPokemon
                             If Not Me.Textures Is Nothing Then
                                 Dim state = Core.GraphicsDevice.DepthStencilState
                                 Core.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
-                                Draw(Me.Model, {Me.Textures(0)}, False)
+                                Draw(effect, Me.Model, {Me.Textures(0)}, False)
                                 Core.GraphicsDevice.DepthStencilState = state
                             End If
                         End If

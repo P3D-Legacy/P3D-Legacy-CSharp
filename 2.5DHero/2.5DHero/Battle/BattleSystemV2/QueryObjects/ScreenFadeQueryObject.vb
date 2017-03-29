@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Screens.GUI
 
 Namespace BattleSystem
@@ -163,7 +164,7 @@ Namespace BattleSystem
             Dim s As String = CInt(Me._fadeType) & "|" &
                 Me._color.R & "|" & Me._color.G & "|" & Me._color.B & "|" &
                 Me.appear.ToNumberString() & "|" &
-                Me.animationSpeed.ToString() & "|" &
+                Me.animationSpeed.ToString(CultureInfo.InvariantCulture) & "|" &
                 Me.PassThis.ToNumberString()
 
             Return "{FADE|" & s & "}"

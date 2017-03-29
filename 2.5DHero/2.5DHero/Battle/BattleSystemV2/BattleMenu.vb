@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Battle
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
@@ -78,7 +79,7 @@ Namespace BattleSystem
                 Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Battle\Interface"), New Rectangle(CInt(pos.X) + 14, CInt(pos.Y) + 14, 182, 42), New Rectangle(0, 0, 91, 21), shinyHue)
 
                 'Name:
-                Dim nameInformation As String = p.GetDisplayName() & " Lv. " & p.Level.ToString()
+                Dim nameInformation As String = p.GetDisplayName() & " Lv. " & p.Level.ToString(CultureInfo.InvariantCulture)
 
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, nameInformation, New Vector2(pos.X + 2, pos.Y + 2), New Color(0, 0, 0, _moveMenuAlpha))
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, nameInformation, New Vector2(pos.X, pos.Y), shinyHue)
@@ -135,7 +136,7 @@ Namespace BattleSystem
                 Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Battle\Interface"), New Rectangle(CInt(pos.X) + 14, CInt(pos.Y) + 14, 182, 32), New Rectangle(0, 21, 91, 16), shinyHue)
 
                 'Name:
-                Dim nameInformation As String = p.GetDisplayName() & " Lv. " & p.Level.ToString()
+                Dim nameInformation As String = p.GetDisplayName() & " Lv. " & p.Level.ToString(CultureInfo.InvariantCulture)
 
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, nameInformation, New Vector2(pos.X + 2, pos.Y + 2), New Color(0, 0, 0, _moveMenuAlpha))
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, nameInformation, New Vector2(pos.X, pos.Y), shinyHue)
@@ -590,7 +591,7 @@ Namespace BattleSystem
             _mainMenuItemList.Clear()
             Select Case BattleScreen.BattleMode
                 Case BattleSystem.BattleScreen.BattleModes.Safari
-                    Dim safariBallText As String = "Safari Ball x" & Core.Player.Inventory.GetItemAmount(181).ToString()
+                    Dim safariBallText As String = "Safari Ball x" & Core.Player.Inventory.GetItemAmount(181).ToString(CultureInfo.InvariantCulture)
                     If Core.Player.Inventory.GetItemAmount(181) = 0 Then
                         safariBallText = "No Safari Balls."
                     End If
@@ -603,7 +604,7 @@ Namespace BattleSystem
                 Case BattleSystem.BattleScreen.BattleModes.BugContest
                     _mainMenuItemList.Add(New MainMenuItem(0, "Battle", 0, AddressOf MainMenuOpenBattleMenu))
 
-                    Dim sportBallText As String = "Sport Ball x" & Core.Player.Inventory.GetItemAmount(177).ToString()
+                    Dim sportBallText As String = "Sport Ball x" & Core.Player.Inventory.GetItemAmount(177).ToString(CultureInfo.InvariantCulture)
                     If Core.Player.Inventory.GetItemAmount(177) = 0 Then
                         sportBallText = "No Sport Balls."
                     End If
@@ -692,7 +693,7 @@ Namespace BattleSystem
             _nextMenuState = MenuStates.Moves
 
             BattleScreen.BattleQuery.Clear()
-            Dim q As New CameraQueryObject(New Vector3(11, 0.5F, 14.0F), New Vector3(11, 0.5F, 14.0F), Screen.Camera.Speed, Screen.Camera.Speed, -(CSng(MathHelper.PiOver4) + 0.3F), -(CSng(MathHelper.PiOver4) + 0.3F), -0.3F, -0.3F, 0.04F, 0.04F)
+            Dim q As New CameraQueryObject(New Vector3(11, 0.5F, 14.0F), New Vector3(11, 0.5F, 14.0F), Screen.Camera.Speed, Screen.Camera.Speed, -(MathHelper.PiOver4 + 0.3F), -(MathHelper.PiOver4 + 0.3F), -0.3F, -0.3F, 0.04F, 0.04F)
             BattleScreen.BattleQuery.AddRange({q})
         End Sub
 
@@ -735,7 +736,7 @@ Namespace BattleSystem
                 BattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
                 Core.SetScreen(New BattleCatchScreen(BattleScreen, Item.GetItemById(181)))
 
-                Dim safariBallText As String = "Safari Ball x" & Core.Player.Inventory.GetItemAmount(181).ToString()
+                Dim safariBallText As String = "Safari Ball x" & Core.Player.Inventory.GetItemAmount(181).ToString(CultureInfo.InvariantCulture)
                 If Core.Player.Inventory.GetItemAmount(181) = 0 Then
                     safariBallText = "No Safari Balls."
                 End If
@@ -751,7 +752,7 @@ Namespace BattleSystem
                 BattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
                 Core.SetScreen(New BattleCatchScreen(BattleScreen, Item.GetItemById(177)))
 
-                Dim sportBallText As String = "Sport Ball x" & Core.Player.Inventory.GetItemAmount(177).ToString()
+                Dim sportBallText As String = "Sport Ball x" & Core.Player.Inventory.GetItemAmount(177).ToString(CultureInfo.InvariantCulture)
                 If Core.Player.Inventory.GetItemAmount(177) = 0 Then
                     sportBallText = "No Sport Balls."
                 End If
@@ -786,7 +787,7 @@ Namespace BattleSystem
             _nextMenuState = MenuStates.Moves
 
             BattleScreen.BattleQuery.Clear()
-            Dim q As New CameraQueryObject(New Vector3(11, 0.5F, 14.0F), New Vector3(11, 0.5F, 14.0F), Screen.Camera.Speed, Screen.Camera.Speed, -(CSng(MathHelper.PiOver4) + 0.3F), -(CSng(MathHelper.PiOver4) + 0.3F), -0.3F, -0.3F, 0.04F, 0.04F)
+            Dim q As New CameraQueryObject(New Vector3(11, 0.5F, 14.0F), New Vector3(11, 0.5F, 14.0F), Screen.Camera.Speed, Screen.Camera.Speed, -(MathHelper.PiOver4 + 0.3F), -(MathHelper.PiOver4 + 0.3F), -0.3F, -0.3F, 0.04F, 0.04F)
             BattleScreen.BattleQuery.AddRange({q})
 
             BattleScreen.IsMegaEvolvingOwn = True
@@ -883,10 +884,10 @@ Namespace BattleSystem
                 BattleScreen.BattleQuery.Add(BattleScreen.FocusBattle())
                 BattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
                 If BattleScreen.IsMegaEvolvingOwn Then
-                    BattleScreen.SendClientCommand("MEGA|" & BattleScreen.OwnPokemon.Attacks(_moveMenuIndex).Id.ToString())
+                    BattleScreen.SendClientCommand("MEGA|" & BattleScreen.OwnPokemon.Attacks(_moveMenuIndex).Id.ToString(CultureInfo.InvariantCulture))
                     BattleScreen.IsMegaEvolvingOwn = False
                 Else
-                    BattleScreen.SendClientCommand("MOVE|" & BattleScreen.OwnPokemon.Attacks(_moveMenuIndex).Id.ToString())
+                    BattleScreen.SendClientCommand("MOVE|" & BattleScreen.OwnPokemon.Attacks(_moveMenuIndex).Id.ToString(CultureInfo.InvariantCulture))
                 End If
             Else
                 BattleScreen.OwnStatistics.Moves += 1
@@ -937,12 +938,12 @@ Namespace BattleSystem
                                     TempBattleScreen.BattleQuery.Clear()
                                     TempBattleScreen.BattleQuery.Add(TempBattleScreen.FocusBattle())
                                     TempBattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                                    TempBattleScreen.SendClientCommand("SWITCH|" & PokeIndex.ToString())
+                                    TempBattleScreen.SendClientCommand("SWITCH|" & PokeIndex.ToString(CultureInfo.InvariantCulture))
                                 Else
                                     TempBattleScreen.BattleQuery.Clear()
                                     TempBattleScreen.BattleQuery.Add(TempBattleScreen.FocusBattle())
                                     TempBattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                                    TempBattleScreen.Battle.InitializeRound(TempBattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Switch, .Argument = PokeIndex.ToString()})
+                                    TempBattleScreen.Battle.InitializeRound(TempBattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Switch, .Argument = PokeIndex.ToString(CultureInfo.InvariantCulture)})
                                 End If
                             End If
                         End If
@@ -1007,7 +1008,7 @@ Namespace BattleSystem
             If Item.UseOnPokemon(PokeIndex) = True Then
                 TempBattleScreen.BattleQuery.Add(TempBattleScreen.FocusBattle())
                 TempBattleScreen.BattleQuery.Insert(0, New ToggleMenuQueryObject(True))
-                TempBattleScreen.Battle.InitializeRound(TempBattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Item, .Argument = TempItemID.ToString()})
+                TempBattleScreen.Battle.InitializeRound(TempBattleScreen, New RoundConst With {.StepType = RoundConst.StepTypes.Item, .Argument = TempItemID.ToString(CultureInfo.InvariantCulture)})
             End If
         End Sub
 

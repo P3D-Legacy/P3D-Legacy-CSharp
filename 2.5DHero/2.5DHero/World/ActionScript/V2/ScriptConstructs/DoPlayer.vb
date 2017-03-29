@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Screens
 
 Namespace ScriptVersion2
@@ -54,7 +55,7 @@ Namespace ScriptVersion2
                 Case "ismoving"
                     Return ReturnBoolean(Screen.Camera.IsMoving())
                 Case "facing"
-                    Return Screen.Camera.GetPlayerFacingDirection().ToString()
+                    Return Screen.Camera.GetPlayerFacingDirection().ToString(CultureInfo.InvariantCulture)
                 Case "compass"
                     Select Case Screen.Camera.GetPlayerFacingDirection()
                         Case 0
@@ -67,7 +68,7 @@ Namespace ScriptVersion2
                             Return "east"
                     End Select
                 Case "money"
-                    Return Core.Player.Money.ToString()
+                    Return Core.Player.Money.ToString(CultureInfo.InvariantCulture)
                 Case "name"
                     Return Core.Player.Name
                 Case "gender"
@@ -77,7 +78,7 @@ Namespace ScriptVersion2
                         Return "0"
                     End If
                 Case "bp"
-                    Return Core.Player.BP.ToString()
+                    Return Core.Player.BP.ToString(CultureInfo.InvariantCulture)
                 Case "badges"
                     Return Core.Player.Badges.Count
                 Case "thirdperson"

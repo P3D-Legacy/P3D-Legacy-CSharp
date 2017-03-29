@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core.Data
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core.Data
 Imports P3D.Legacy.Core.Dialogues
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
@@ -29,9 +30,9 @@ Namespace ScriptVersion2
                         Screen.TextBox.TextFont = FontManager.GetFontContainer("textfont")
                     End If
                 Case "debug"
-                    Logger.Debug("DEBUG: " & argument.ToString())
+                    Logger.Debug("DEBUG: " & argument.ToString(CultureInfo.InvariantCulture))
                 Case "log"
-                    Logger.Log(Logger.LogTypes.Debug, argument.ToString())
+                    Logger.Log(Logger.LogTypes.Debug, argument.ToString(CultureInfo.InvariantCulture))
                 Case "color"
                     Dim args As String() = argument.Split(CChar(","))
 

@@ -1,3 +1,4 @@
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Pokemon
@@ -20,7 +21,7 @@ Namespace Items.KeyItems
         End Sub
 
         Public Overrides Sub Use()
-            If IsInfrontOfWater() = True And Screen.Level.Surfing = False And Screen.Level.Riding = False Then
+            If IsInfrontOfWater() = True And Screen.Level.IsSurfing = False And Screen.Level.IsRiding = False Then
                 Dim s As String = "version=2"
 
                 While Core.CurrentScreen.Identification <> Screen.Identifications.OverworldScreen
@@ -70,7 +71,7 @@ Namespace Items.KeyItems
                         "@text.show(. . . . . . . . . .)" & vbNewLine &
                         "@text.show(Oh!~A bite!)" & vbNewLine &
                         "@player.hiderod" & vbNewLine &
-                        "@npc.spawn(" & spawnPosition.X.ToString().Replace(GameController.DecSeparator, ".") & "," & spawnPosition.Y.ToString().Replace(GameController.DecSeparator, ".") & "," & spawnPosition.Z.ToString().Replace(GameController.DecSeparator, ".") & ",0,...,[POKEMON|" & PokemonShiny & "]" & PokemonID & PokemonForms.GetOverworldAddition(p) & ",0," & endRotation & ",POKEMON,1337,Still)" & vbNewLine &
+                        "@npc.spawn(" & spawnPosition.X.ToString(CultureInfo.InvariantCulture) & "," & spawnPosition.Y.ToString(CultureInfo.InvariantCulture) & "," & spawnPosition.Z.ToString(CultureInfo.InvariantCulture) & ",0,...,[POKEMON|" & PokemonShiny & "]" & PokemonID & PokemonForms.GetOverworldAddition(p) & ",0," & endRotation & ",POKEMON,1337,Still)" & vbNewLine &
                         "@Level.Update" & vbNewLine &
                         "@pokemon.cry(" & PokemonID & ")" & vbNewLine &
                         "@level.wait(50)" & vbNewLine &

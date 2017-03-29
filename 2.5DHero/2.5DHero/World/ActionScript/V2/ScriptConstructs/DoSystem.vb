@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 
 Namespace ScriptVersion2
 
@@ -55,11 +56,11 @@ Namespace ScriptVersion2
                     Next
 
                     If sortMode.ToLower() = "ascending" Then
-                        Dim sortedList As List(Of String) = (From i In sortList Order By i.ToString() Ascending).ToList()
+                        Dim sortedList As List(Of String) = (From i In sortList Order By i.ToString(CultureInfo.InvariantCulture) Ascending).ToList()
 
                         Return sortedList(returnIndex)
                     ElseIf sortMode.ToLower() = "descending" Then
-                        Dim sortedList As List(Of String) = (From i In sortList Order By i.ToString() Descending).ToList()
+                        Dim sortedList As List(Of String) = (From i In sortList Order By i.ToString(CultureInfo.InvariantCulture) Descending).ToList()
 
                         Return sortedList(returnIndex)
                     End If
@@ -85,7 +86,7 @@ Namespace ScriptVersion2
                     Next
                     Return output
                 Case "scriptlevel"
-                    Return ActionScript.ScriptLevelIndex.ToString()
+                    Return ActionScript.ScriptLevelIndex.ToString(CultureInfo.InvariantCulture)
             End Select
 
             Return DEFAULTNULL

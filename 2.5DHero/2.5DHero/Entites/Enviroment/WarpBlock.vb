@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
@@ -8,8 +9,8 @@ Public Class WarpBlock
 
     Inherits Entity
 
-    Public Overrides Sub Render()
-        Me.Draw(Me.Model, Textures, False)
+    Public Overrides Sub Render(effect As BasicEffect)
+        Me.Draw(effect, Me.Model, Textures, False)
     End Sub
 
     Public Overrides Function WalkAgainstFunction() As Boolean
@@ -43,7 +44,7 @@ Public Class WarpBlock
             If t0 = True Or System.IO.File.Exists(GameController.GamePath & "\maps\" & destination) = True Then
                 If MapViewMode = False Then
                     Screen.Level.WarpData.WarpDestination = Me.AdditionalValue.GetSplit(0)
-                    Screen.Level.WarpData.WarpPosition = New Vector3(CSng(Me.AdditionalValue.GetSplit(1)), CSng(Me.AdditionalValue.GetSplit(2).Replace(".", GameController.DecSeparator)), CSng(Me.AdditionalValue.GetSplit(3)))
+                    Screen.Level.WarpData.WarpPosition = New Vector3(Single.Parse(Me.AdditionalValue.GetSplit(1), NumberFormatInfo.InvariantInfo), Single.Parse(Me.AdditionalValue.GetSplit(2), NumberFormatInfo.InvariantInfo), Single.Parse(Me.AdditionalValue.GetSplit(3), NumberFormatInfo.InvariantInfo))
                     Screen.Level.WarpData.WarpRotations = CInt(Me.AdditionalValue.GetSplit(4))
                     Screen.Level.WarpData.DoWarpInNextTick = True
                     Screen.Level.WarpData.CorrectCameraYaw = Screen.Camera.Yaw
@@ -55,7 +56,7 @@ Public Class WarpBlock
                     Screen.Level.Load(Me.AdditionalValue.GetSplit(0))
                     Screen.Level.World.Initialize(Screen.Level.EnvironmentType, Screen.Level.WeatherType)
 
-                    Screen.Camera.Position = New Vector3(CSng(Me.AdditionalValue.GetSplit(1)), CSng(Me.AdditionalValue.GetSplit(2).Replace(".", GameController.DecSeparator)), CSng(Me.AdditionalValue.GetSplit(3)))
+                    Screen.Camera.Position = New Vector3(Single.Parse(Me.AdditionalValue.GetSplit(1), NumberFormatInfo.InvariantInfo), Single.Parse(Me.AdditionalValue.GetSplit(2), NumberFormatInfo.InvariantInfo), Single.Parse(Me.AdditionalValue.GetSplit(3), NumberFormatInfo.InvariantInfo))
                 End If
             Else
                 CallError("Map file """ & Path.Combine(GameModeManager.ActiveGameMode.MapFolder.Path, destination) & """ does not exist.")
@@ -78,7 +79,7 @@ Public Class WarpBlock
                     Dim destination As String = link.GetSplit(0)
                     If destination.EndsWith(".dat") = True Then
                         Dim x As String = link.GetSplit(1)
-                        'Dim y As String = link.GetSplit(2).Replace(".", GameController.DecSeparator)
+                        'Dim y As String = link.GetSplit(2)
                         Dim y As String = link.GetSplit(2).Replace(".", ",")
                         Dim z As String = link.GetSplit(3)
                         Dim l As String = link.GetSplit(4)

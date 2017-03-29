@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 
 using P3D.Legacy.Core.Resources;
@@ -38,8 +39,8 @@ namespace P3D.Legacy.Core.GameJolt
                     TempSteps = 0;
                 }
 
-                APICall.UpdateStorageData(GetKey(statName), addition.ToString(), "add", false);
-                Logger.Debug("Track online statistic: " + statName + " (" + addition.ToString() + ")");
+                APICall.UpdateStorageData(GetKey(statName), addition.ToString(NumberFormatInfo.InvariantInfo), "add", false);
+                Logger.Debug("Track online statistic: " + statName + " (" + addition.ToString(NumberFormatInfo.InvariantInfo) + ")");
             }
         }
 

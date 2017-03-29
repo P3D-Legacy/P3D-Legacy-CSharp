@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core.Entities.Other
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.Screens
 
 Namespace ScriptVersion2
@@ -62,7 +63,7 @@ Namespace ScriptVersion2
                 Case "moved"
                     Dim targetNPC As NPC = Screen.Level.GetNPC(int(argument.GetSplit(0)))
 
-                    Return targetNPC.Moved.ToString()
+                    Return targetNPC.Moved.ToString(CultureInfo.InvariantCulture)
                 Case "skin"
                     Dim targetNPC As NPC = Screen.Level.GetNPC(int(argument.GetSplit(0)))
 
@@ -90,7 +91,7 @@ Namespace ScriptVersion2
                 Case "movement"
                     Dim targetNPC As NPC = Screen.Level.GetNPC(int(argument.GetSplit(0)))
 
-                    Return targetNPC.Movement.ToString()
+                    Return targetNPC.Movement.ToString(CultureInfo.InvariantCulture)
                 Case "hasmoverectangles"
                     Dim targetNPC As NPC = Screen.Level.GetNPC(int(argument.GetSplit(0)))
 

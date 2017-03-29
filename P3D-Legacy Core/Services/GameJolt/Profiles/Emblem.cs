@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 
@@ -210,11 +211,11 @@ namespace P3D.Legacy.Core.GameJolt.Profiles
 
             if (PokemonList == null || PokemonList.Count == 0)
             {
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, PlayerName + Constants.vbNewLine + PlayerTitle + Constants.vbNewLine + Constants.vbNewLine + "Level: " + PlayerLevel + Constants.vbNewLine + "(Points: " + PlayerPoints + ")", new Vector2(32 * Scale + 10 + Position.X, 10 + Position.Y), EmblemFontColor, 0f, Vector2.Zero, Convert.ToSingle(Scale / 4), SpriteEffects.None, 0f);
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, PlayerName + Environment.NewLine + PlayerTitle + Environment.NewLine + Environment.NewLine + "Level: " + PlayerLevel + Environment.NewLine + "(Points: " + PlayerPoints + ")", new Vector2(32 * Scale + 10 + Position.X, 10 + Position.Y), EmblemFontColor, 0f, Vector2.Zero, Convert.ToSingle(Scale / 4), SpriteEffects.None, 0f);
             }
             else
             {
-                Core.SpriteBatch.DrawString(FontManager.MiniFont, PlayerName + Constants.vbNewLine + PlayerTitle + Constants.vbNewLine + "Level: " + PlayerLevel + Constants.vbNewLine + "(Points: " + PlayerPoints + ")", new Vector2(32 * Scale + 10 + Position.X, 6 + Position.Y), EmblemFontColor, 0f, Vector2.Zero, Convert.ToSingle(Scale / 4), SpriteEffects.None, 0f);
+                Core.SpriteBatch.DrawString(FontManager.MiniFont, PlayerName + Environment.NewLine + PlayerTitle + Environment.NewLine + "Level: " + PlayerLevel + Environment.NewLine + "(Points: " + PlayerPoints + ")", new Vector2(32 * Scale + 10 + Position.X, 6 + Position.Y), EmblemFontColor, 0f, Vector2.Zero, Convert.ToSingle(Scale / 4), SpriteEffects.None, 0f);
 
                 for (var i = 0; i <= 5; i++)
                 {

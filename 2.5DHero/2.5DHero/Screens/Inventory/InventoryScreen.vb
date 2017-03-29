@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Input
@@ -254,7 +255,7 @@ Public Class InventoryScreen
 
         Core.SpriteBatch.DrawString(FontManager.InGameFont, Localization.GetString("inventory_menu_bag"), New Vector2(646, 134), Microsoft.Xna.Framework.Color.Black)
         Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("inventory_menu_backadvice"), New Vector2(1200 - FontManager.MiniFont.MeasureString(Localization.GetString("inventory_menu_backadvice")).X - 330, 580), Microsoft.Xna.Framework.Color.DarkGray)
-        Core.SpriteBatch.DrawString(FontManager.MainFont, Localization.GetString("inventory_menu_items") & ":" & vbNewLine & Localization.GetString("item_category_" & Me.bagIdentifier.ToString()), New Vector2(640, 446), Microsoft.Xna.Framework.Color.Black)
+        Core.SpriteBatch.DrawString(FontManager.MainFont, Localization.GetString("inventory_menu_items") & ":" & vbNewLine & Localization.GetString("item_category_" & Me.bagIdentifier.ToString(CultureInfo.InvariantCulture)), New Vector2(640, 446), Microsoft.Xna.Framework.Color.Black)
 
         Canvas.DrawScrollBar(New Vector2(555, 120), cItems.Count, 6, scrollIndex(bagIndex), New Size(4, 390), False, TextureManager.GetTexture(mainTexture, New Microsoft.Xna.Framework.Rectangle(112, 12, 1, 1)), TextureManager.GetTexture(mainTexture, New Microsoft.Xna.Framework.Rectangle(113, 12, 1, 1)))
 
@@ -278,12 +279,12 @@ Public Class InventoryScreen
 
                     If Me.bagIndex <> 7 Then
                         Dim lenght As String = ""
-                        If cItems.Values(i).ToString().Length < 3 Then
-                            For n = 1 To 3 - cItems.Values(i).ToString().Length
+                        If cItems.Values(i).ToString(CultureInfo.InvariantCulture).Length < 3 Then
+                            For n = 1 To 3 - cItems.Values(i).ToString(CultureInfo.InvariantCulture).Length
                                 lenght &= " "
                             Next
                         End If
-                        .DrawString(FontManager.MiniFont, "x" & lenght & cItems.Values(i).ToString(), New Vector2(CInt(p.X + 280), CInt(p.Y + (i + scrollIndex(bagIndex)) * 70) + 13), Microsoft.Xna.Framework.Color.Black)
+                        .DrawString(FontManager.MiniFont, "x" & lenght & cItems.Values(i).ToString(CultureInfo.InvariantCulture), New Vector2(CInt(p.X + 280), CInt(p.Y + (i + scrollIndex(bagIndex)) * 70) + 13), Microsoft.Xna.Framework.Color.Black)
                     End If
 
                     If i = index(bagIndex) Then

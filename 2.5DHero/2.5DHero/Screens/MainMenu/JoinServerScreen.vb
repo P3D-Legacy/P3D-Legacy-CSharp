@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports System.IO
 Imports System.Net.Sockets
 Imports System.Net
@@ -10,6 +11,8 @@ Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Server
+Imports P3D.Legacy.Core.Storage
+Imports PCLExt.FileStorage
 
 Public Class JoinServerScreen
     Inherits BaseJoinServerScreen
@@ -43,12 +46,10 @@ Public Class JoinServerScreen
 
         Me.ServerList.Add(localServer)
 
-        If System.IO.File.Exists(GameController.GamePath & "\Save\server_list.dat") = False Then
-            System.IO.File.WriteAllText(GameController.GamePath & "\Save\server_list.dat", "Official Pokémon3D Server,karp.pokemon3d.net:15124" & vbNewLine & "AGN Server,p3d.aggressivegaming.org:15124")
-        End If
+        StorageInfo.SaveFolder.ServerListFile.WriteAllTextAsync("Official Pokémon3D Server,karp.pokemon3d.net:15124" & vbNewLine & "AGN Server,p3d.aggressivegaming.org:15124").Wait()
 
-        If LoadOnlineServers = True Then
-            Dim data() As String = System.IO.File.ReadAllLines(GameController.GamePath & "\Save\server_list.dat")
+        If LoadOnlineServers = True Then        
+            Dim data() As String = StorageInfo.SaveFolder.ServerListFile.ReadAllTextAsync().Result.SplitAtNewline()
             If data.Length > 0 Then
                 For Each line As String In data
                     If line.CountSeperators(",") = 1 Then
@@ -661,7 +662,7 @@ Public Class JoinServerScreen
         ClearThreadList.Clear()
     End Sub
 
-    Private Sub SaveServerlist()
+    Private Async Sub SaveServerlist()
         Dim data As String = ""
         For Each s As Server In Me.ServerList
             If s.IsLocal = False Then
@@ -671,7 +672,7 @@ Public Class JoinServerScreen
                 data &= s.ToString()
             End If
         Next
-        System.IO.File.WriteAllText(GameController.GamePath & "\Save\server_list.dat", data)
+        Await StorageInfo.SaveFolder.ServerListFile.WriteAllTextAsync(data)
     End Sub
 
 End Class

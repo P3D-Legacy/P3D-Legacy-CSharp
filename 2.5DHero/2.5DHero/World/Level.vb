@@ -1,14 +1,15 @@
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Debug
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.Input
-Imports P3D.Legacy.Core.Interfaces
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.World
+
 Imports PCLExt.FileStorage
 
 ''' <summary>
@@ -16,6 +17,9 @@ Imports PCLExt.FileStorage
 ''' </summary>
 Public Class Level
     Implements ILevel
+
+    Private ReadOnly Property MapRenderer as MapRenderer = new MapRenderer()  Implements ILevel.MapRenderer
+    Private ReadOnly Property MapOffsetRenderer as MapOffsetRenderer = new MapOffsetRenderer() Implements ILevel.MapOffsetRenderer
 
 #Region "Fields"
 
@@ -70,16 +74,14 @@ Public Class Level
     Private _ownPlayer As OwnPlayer
     Private _ownOverworldPokemon As OverworldPokemon
 
-    Private _entities As New List(Of Entity)
-    Private _floors As New List(Of Entity)
     Private _shaders As New List(Of IShader)
     Private _backdropRenderer As IBackdropRenderer
 
     Private _networkPlayers As New List(Of BaseNetworkPlayer)
     Private _networkPokemon As New List(Of BaseNetworkPokemon)
 
-    Private _offsetMapEntities As New List(Of Entity)
-    Private _offsetMapFloors As New List(Of Entity)
+    'Private _offsetMapEntities As New List(Of Entity)
+    'Private _offsetMapFloors As New List(Of Entity)
 
     'Radio:
     Private _isRadioOn As Boolean = False
@@ -114,7 +116,7 @@ Public Class Level
     ''' <summary>
     ''' Indicates wether the player is surfing.
     ''' </summary>
-    Public Property Surfing As Boolean Implements ILevel.Surfing
+    Public Property IsSurfing As Boolean Implements ILevel.IsSurfing
         Get
             Return _isSurfing
         End Get
@@ -126,7 +128,7 @@ Public Class Level
     ''' <summary>
     ''' Indicates wether the player is riding.
     ''' </summary>
-    Public Property Riding As Boolean Implements ILevel.Riding
+    Public Property IsRiding As Boolean Implements ILevel.IsRiding
         Get
             Return Me._isRiding
         End Get
@@ -174,25 +176,19 @@ Public Class Level
     ''' <summary>
     ''' The array of entities composing the map.
     ''' </summary>
-    Public Property Entities As List(Of Entity) Implements ILevel.Entities
+    Public ReadOnly Property Entities As List(Of Entity) Implements ILevel.Entities
         Get
-            Return Me._entities
+            Return MapRenderer.Entities
         End Get
-        Set(value As List(Of Entity))
-            Me._entities = value
-        End Set
     End Property
 
     ''' <summary>
     ''' The array of floors the player can move on.
     ''' </summary>
-    Public Property Floors As List(Of Entity) Implements ILevel.Floors
+    Public ReadOnly Property Floors As List(Of Entity) Implements ILevel.Floors
         Get
-            Return Me._floors
+            Return MapRenderer.Floors
         End Get
-        Set(value As List(Of Entity))
-            Me._floors = value
-        End Set
     End Property
 
     ''' <summary>
@@ -234,25 +230,19 @@ Public Class Level
     ''' <summary>
     ''' The array of entities the offset maps are composed of.
     ''' </summary>
-    Public Property OffsetmapEntities As List(Of Entity) Implements ILevel.OffsetmapEntities
+    Public ReadOnly Property OffsetmapEntities As List(Of Entity) Implements ILevel.OffsetmapEntities
         Get
-            Return Me._offsetMapEntities
+            Return MapOffsetRenderer.Entities
         End Get
-        Set(value As List(Of Entity))
-            Me._offsetMapEntities = value
-        End Set
     End Property
 
     ''' <summary>
     ''' The array of floors the offset maps are composed of.
     ''' </summary>
-    Public Property OffsetmapFloors As List(Of Entity) Implements ILevel.OffsetmapFloors
+    Public ReadOnly Property OffsetmapFloors As List(Of Entity) Implements ILevel.OffsetmapFloors
         Get
-            Return Me._offsetMapFloors
+            Return MapOffsetRenderer.Floors
         End Get
-        Set(value As List(Of Entity))
-            Me._offsetMapFloors = value
-        End Set
     End Property
 
     ''' <summary>
@@ -610,34 +600,8 @@ Public Class Level
         Me.PokemonEncounterData = New PokemonEcounterDataStruct()
         Me._pokemonEncounter = New PokemonEncounter(Me)
 
-        Me.StartOffsetMapUpdate()
-
         Me._backdropRenderer = New BackdropRenderer()
         Me._backdropRenderer.Initialize()
-    End Sub
-
-    ''' <summary>
-    ''' Initializes the offset map update cycle.
-    ''' </summary>
-    Public Sub StartOffsetMapUpdate() Implements ILevel.StartOffsetMapUpdate
-        If Not Me._offsetTimer Is Nothing Then
-            Me._offsetTimer.Stop()
-        End If
-
-        Me._offsetTimer = New Timers.Timer()
-        Me._offsetTimer.Interval = 16
-        Me._offsetTimer.AutoReset = True
-        AddHandler Me._offsetTimer.Elapsed, AddressOf Me.UpdateOffsetMap
-        Me._offsetTimer.Start()
-
-        Logger.Debug("Started Offset map update")
-    End Sub
-
-    Public Sub StopOffsetMapUpdate() Implements ILevel.StopOffsetMapUpdate
-        Me._offsetTimer.Stop()
-        While Me._isUpdatingOffsetMaps : End While
-
-        Logger.Debug("Stopped Offset map update")
     End Sub
 
     ''' <summary>
@@ -653,7 +617,6 @@ Public Class Level
         World = New World(0, 0)
 
         If Levelpath.StartsWith("|") = False Then
-            Me.StopOffsetMapUpdate()
             Dim levelLoader As New LevelLoader()
             levelLoader.LoadLevel(params.ToArray())
         Else
@@ -666,8 +629,7 @@ Public Class Level
         OverworldPokemon.ChangeRotation()
         Entities.AddRange({OwnPlayer, OverworldPokemon})
 
-        Me.Surfing = Core.Player.startSurfing
-        Me.StartOffsetMapUpdate()
+        Me.IsSurfing = Core.Player.startSurfing
     End Sub
 
     ''' <summary>
@@ -676,38 +638,17 @@ Public Class Level
     Public Sub Draw() Implements ILevel.Draw
         Me._backdropRenderer.Draw()
 
-        'Set the effect's View and Projection matrices.
-        Screen.Effect.View = Screen.Camera.View
-        Screen.Effect.Projection = Screen.Camera.Projection
-
         'Reset the Debug values.
         DebugDisplay.DrawnVertices = 0
         DebugDisplay.MaxVertices = 0
         DebugDisplay.MaxDistance = 0
 
-        If Core.GameOptions.LoadOffsetMaps > 0 Then
-            Me.RenderOffsetMap() 'Only render offset maps if they are activated.
-        End If
-
-        'Render floors.
-        For i = 0 To Me.Floors.Count - 1
-            If i <= Me.Floors.Count - 1 Then
-                Me.Floors(i).Render()
-                DebugDisplay.MaxVertices += Me.Floors(i).VertexCount
-            End If
-        Next
-
-        'Render all other entities.
-        For i = 0 To Me.Entities.Count - 1
-            If i <= Me.Entities.Count - 1 Then
-                Me.Entities(i).Render()
-                DebugDisplay.MaxVertices += Me.Entities(i).VertexCount
-            End If
-        Next
+        MapOffsetRenderer.Draw()
+        MapRenderer.Draw()
 
         If IsDark = True Then
             DrawFlashOverlay()
-        End If
+        End If       
     End Sub
 
     ''' <summary>
@@ -733,8 +674,13 @@ Public Class Level
             Core.ServersManager.PlayerManager.UpdatePlayers()
         End If
 
-        'Call Update and UpdateEntity methods of all entities:
-        Me.UpdateEntities()
+        If(_offsetMapUpdateDelay > 20)
+            _offsetMapUpdateDelay = 0
+            MapOffsetRenderer.Update()
+        End If
+        _offsetMapUpdateDelay = _offsetMapUpdateDelay + 1
+
+        MapRenderer.Update()
     End Sub
 
     ''' <summary>
@@ -745,7 +691,7 @@ Public Class Level
         If LevelLoader.IsBusy = False Then
             For i = 0 To Entities.Count - 1
                 If i <= Entities.Count - 1 Then
-                    If Entities.Count - 1 >= i AndAlso Entities(i).CanBeRemoved = True Then
+                    If Entities(i).CanBeRemoved = True Then
                         Entities.RemoveAt(i)
                         i -= 1
                     Else
@@ -781,7 +727,7 @@ Public Class Level
     ''' </summary>
     Public Sub SortEntities() Implements ILevel.SortEntities
         If LevelLoader.IsBusy = False Then
-            Entities = (From f In Entities Order By f.CameraDistance Descending).ToList()
+            MapRenderer.SortEntities()
         End If
     End Sub
 
@@ -795,37 +741,11 @@ Public Class Level
 
             If Me._offsetMapUpdateDelay <= 0 Then 'Only when the delay is 0, update.
                 'Sort the list:
-                If LevelLoader.IsBusy = False Then
-                    OffsetmapEntities = (From e In OffsetmapEntities Order By e.CameraDistance Descending).ToList()
-                End If
+                SortOffsetEntities()
 
                 Me._offsetMapUpdateDelay = Core.GameOptions.LoadOffsetMaps - 1 'Set the new delay
 
-                'Remove entities that CanBeRemoved (see what I did there?)
-                For i = 0 To OffsetmapEntities.Count - 1
-                    If i <= OffsetmapEntities.Count - 1 Then
-                        If OffsetmapEntities(i).CanBeRemoved = True Then
-                            OffsetmapEntities.RemoveAt(i)
-                            i -= 1
-                        End If
-                    Else
-                        Exit For
-                    End If
-                Next
-
-                'Call UpdateEntity on all offset map entities.
-                For i = Me.OffsetmapEntities.Count - 1 To 0 Step -1
-                    If i <= Me.OffsetmapEntities.Count - 1 Then
-                        Me.OffsetmapEntities(i).UpdateEntity()
-                    End If
-                Next
-
-                'Call UpdateEntity on all offset map floors.
-                For i = Me.OffsetmapFloors.Count - 1 To 0 Step -1
-                    If i <= Me.OffsetmapFloors.Count - 1 Then
-                        Me.OffsetmapFloors(i).UpdateEntity()
-                    End If
-                Next
+                'MapOffsetRenderer.Update()
             Else
                 Me._offsetMapUpdateDelay -= 1
             End If
@@ -834,33 +754,12 @@ Public Class Level
     End Sub
 
     ''' <summary>
-    ''' Renders offset map entities.
+    ''' Sorts the entity enumerations.
     ''' </summary>
-    Private Sub RenderOffsetMap()
-        Dim state = Core.GraphicsDevice.DepthStencilState
-        Core.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
-
-        'Render floors:
-        For i = 0 To Me.OffsetmapFloors.Count - 1
-            If i <= Me.OffsetmapFloors.Count - 1 Then
-                If Not Me.OffsetmapFloors(i) Is Nothing Then
-                    Me.OffsetmapFloors(i).Render()
-                    DebugDisplay.MaxVertices += Me.OffsetmapFloors(i).VertexCount
-                End If
-            End If
-        Next
-
-        'Render entities:
-        For i = 0 To Me.OffsetmapEntities.Count - 1
-            If i <= Me.OffsetmapEntities.Count - 1 Then
-                If Not Me.OffsetmapEntities(i) Is Nothing Then
-                    Me.OffsetmapEntities(i).Render()
-                    DebugDisplay.MaxVertices += Me.OffsetmapEntities(i).VertexCount
-                End If
-            End If
-        Next
-
-        Core.GraphicsDevice.DepthStencilState = state
+    Public Sub SortOffsetEntities() Implements ILevel.SortOffsetEntities
+        If LevelLoader.IsBusy = False Then
+            MapOffsetRenderer.SortEntities()
+        End If
     End Sub
 
     ''' <summary>
@@ -880,12 +779,12 @@ Public Class Level
             PokemonEncounterData.EncounteredPokemon = False
 
             'Set the surfing flag for the next map:
-            Core.Player.startSurfing = Surfing
+            Core.Player.startSurfing = IsSurfing
 
             'Change the player position:
             Screen.Camera.Position = WarpData.WarpPosition
 
-            Dim tempProperties As String = Me.CanDig.ToString() & "," & Me.CanFly.ToString() 'Store properties to determine if the "enter" sound should be played.
+            Dim tempProperties As String = Me.CanDig.ToString(NumberFormatInfo.InvariantInfo) & "," & Me.CanFly.ToString(NumberFormatInfo.InvariantInfo) 'Store properties to determine if the "enter" sound should be played.
 
             'Store skin values:
             Dim usingGameJoltTexture As Boolean = OwnPlayer.UsingGameJoltTexture
@@ -897,13 +796,12 @@ Public Class Level
 
             World = New World(0, 0)
 
-            Me.StopOffsetMapUpdate()
             Dim levelLoader As New LevelLoader()
             levelLoader.LoadLevel(params.ToArray())
 
             Core.Player.AddVisitedMap(Me.LevelFile) 'Add new map to visited maps list.
             UsedStrength = False 'Disable strength usuage upon map switch.
-            Me.Surfing = Core.Player.startSurfing 'Set the surfing property after map switch.
+            Me.IsSurfing = Core.Player.startSurfing 'Set the surfing property after map switch.
 
             'Create player and Pokémon entities.
             OwnPlayer = New OwnPlayer(0, 0, 0, {TextureManager.DefaultTexture}, Core.Player.Skin, 0, 0, "", "Gold", 0)
@@ -915,8 +813,8 @@ Public Class Level
             Entities.AddRange({OwnPlayer, OverworldPokemon})
 
             'Set ride skin, if needed.
-            If Riding = True And CanRide() = False Then
-                Riding = False
+            If IsRiding = True And CanRide() = False Then
+                IsRiding = False
                 OwnPlayer.SetTexture(Core.Player.TempRideSkin, True)
                 Core.Player.Skin = Core.Player.TempRideSkin
             End If
@@ -932,10 +830,10 @@ Public Class Level
                 MusicManager.PlayMusic(SelectedRadioStation.Music, True)
             Else
                 IsRadioOn = False
-                If Me.Surfing = True Then
+                If Me.IsSurfing = True Then
                     MusicManager.PlayMusic("surf", True)
                 Else
-                    If Me.Riding = True Then
+                    If Me.IsRiding = True Then
                         MusicManager.PlayMusic("ride", True)
                     Else
                         MusicManager.PlayMusic(MusicLoop, True)
@@ -967,7 +865,7 @@ Public Class Level
             RoamingPokemon.ShiftRoamingPokemon(-1)
 
             'Check if the enter sound should be played by checking if CanDig or CanFly properties are different from the last map.
-            If tempProperties <> Me.CanDig.ToString() & "," & Me.CanFly.ToString() Then
+            If tempProperties <> Me.CanDig.ToString(NumberFormatInfo.InvariantInfo) & "," & Me.CanFly.ToString(NumberFormatInfo.InvariantInfo) Then
                 SoundManager.PlaySound("enter", False)
             End If
 
@@ -1054,35 +952,39 @@ Public Class Level
     ''' <summary>
     ''' Determines wether the player can use Ride on this map.
     ''' </summary>
-    Public Function CanRide() As Boolean Implements ILevel.CanRide
-        If GameController.IS_DEBUG_ACTIVE = True Or Core.Player.SandBoxMode = True Then 'Always true for Sandboxmode and Debug mode.
-            Return True
-        End If
-        If RideType > 0 Then
-            Select Case RideType
-                Case 1
-                    Return True
-                Case 2
-                    Return False
-            End Select
-        End If
-        If Screen.Level.CanDig = False And Screen.Level.CanFly = False Then
-            Return False
-        Else
-            Return True
-        End If
-    End Function
+    Public Readonly Property CanRide As Boolean Implements ILevel.CanRide
+        Get
+            If GameController.IS_DEBUG_ACTIVE = True Or Core.Player.SandBoxMode = True Then 'Always true for Sandboxmode and Debug mode.
+                Return True
+            End If
+            If RideType > 0 Then
+                Select Case RideType
+                    Case 1
+                        Return True
+                    Case 2
+                        Return False
+                End Select
+            End If
+            If Screen.Level.CanDig = False And Screen.Level.CanFly = False Then
+                Return False
+            Else
+                Return True
+            End If
+        End Get   
+    End Property
 
     ''' <summary>
     ''' Wether the player can move based on the entity around him.
     ''' </summary>
-    Public Function CanMove() As Boolean Implements ILevel.CanMove
-        For Each e As Entity In Me.Entities
-            If e.Position.X = Screen.Camera.Position.X And e.Position.Z = Screen.Camera.Position.Z And CInt(e.Position.Y) = CInt(Screen.Camera.Position.Y) Then
-                Return e.LetPlayerMove()
-            End If
-        Next
-        Return True
-    End Function
+    Public Readonly Property CanMove As Boolean Implements ILevel.CanMove
+        Get
+            For Each e As Entity In Me.Entities
+                If e.Position.X = Screen.Camera.Position.X And e.Position.Z = Screen.Camera.Position.Z And CInt(e.Position.Y) = CInt(Screen.Camera.Position.Y) Then
+                    Return e.LetPlayerMove()
+                End If
+            Next
+            Return True
+        End Get
+    End Property
 
 End Class

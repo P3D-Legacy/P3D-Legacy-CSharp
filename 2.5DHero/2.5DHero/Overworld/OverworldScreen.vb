@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports System.Threading
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities.Other
@@ -68,10 +69,10 @@ Public Class OverworldScreen
     ''' </summary>
     ''' <remarks>Implements the GetScreenStatus method.</remarks>
     Public Overrides Function GetScreenStatus() As String
-        Dim s As String = "IsSurfing=" & Level.Surfing.ToString() & vbNewLine &
-            "IsRiding=" & Level.Riding.ToString() & vbNewLine &
+        Dim s As String = "IsSurfing=" & Level.IsSurfing.ToString(NumberFormatInfo.InvariantInfo) & vbNewLine &
+            "IsRiding=" & Level.IsRiding.ToString(NumberFormatInfo.InvariantInfo) & vbNewLine &
             "LevelFile=" & Level.LevelFile & vbNewLine &
-            "UsedStrength=" & Level.UsedStrength.ToString() & vbNewLine &
+            "UsedStrength=" & Level.UsedStrength.ToString(NumberFormatInfo.InvariantInfo) & vbNewLine &
             "EntityCount=" & Level.Entities.Count
 
         Return s
@@ -96,10 +97,10 @@ Public Class OverworldScreen
         Level.Load(Core.Player.startMap)
 
         'Play music depending on the player state in the level (surfing and riding):
-        If Level.Surfing = True Then
+        If Level.IsSurfing = True Then
             MusicManager.PlayMusic("surf", True) 'Play "surf" when player is surfing.
         Else
-            If Level.Riding = True Then
+            If Level.IsRiding = True Then
                 MusicManager.PlayMusic("ride", True) 'Play "ride" when player is riding.
             Else
                 MusicManager.PlayMusic(Level.MusicLoop, True) 'Play default MusicLoop.
@@ -372,10 +373,10 @@ Public Class OverworldScreen
             End If
 
             Dim theme As String = Level.MusicLoop
-            If Screen.Level.Surfing = True Then
+            If Screen.Level.IsSurfing = True Then
                 theme = "surf"
             End If
-            If Screen.Level.Riding = True Then
+            If Screen.Level.IsRiding = True Then
                 theme = "ride"
             End If
 

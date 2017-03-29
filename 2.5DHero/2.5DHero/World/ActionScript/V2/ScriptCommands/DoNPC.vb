@@ -28,9 +28,9 @@ Namespace ScriptVersion2
                     Dim targetNPC As NPC = Screen.Level.GetNPC(int(argument.GetSplit(0)))
 
                     Dim PositionData() As String = argument.Split(CChar(","))
-                    targetNPC.Position = New Vector3(sng(PositionData(1).Replace("~", CStr(targetNPC.Position.X)).Replace(".", GameController.DecSeparator)),
-                                                             sng(PositionData(2).Replace("~", CStr(targetNPC.Position.Y)).Replace(".", GameController.DecSeparator)),
-                                                             sng(PositionData(3).Replace("~", CStr(targetNPC.Position.Z)).Replace(".", GameController.DecSeparator)))
+                    targetNPC.Position = New Vector3(sng(PositionData(1).Replace("~", CStr(targetNPC.Position.X))),
+                                                             sng(PositionData(2).Replace("~", CStr(targetNPC.Position.Y))),
+                                                             sng(PositionData(3).Replace("~", CStr(targetNPC.Position.Z))))
                     targetNPC.CreatedWorld = False
 
                     If targetNPC.InCameraFocus() = True Then
@@ -42,9 +42,9 @@ Namespace ScriptVersion2
                     Dim targetNPC As NPC = Screen.Level.GetNPC(int(argument.GetSplit(0)))
 
                     Dim PositionData() As String = argument.Split(CChar(","))
-                    targetNPC.Position += New Vector3(sng(PositionData(1).Replace("~", CStr(targetNPC.Position.X)).Replace(".", GameController.DecSeparator)),
-                                                         sng(PositionData(2).Replace("~", CStr(targetNPC.Position.Y)).Replace(".", GameController.DecSeparator)),
-                                                         sng(PositionData(3).Replace("~", CStr(targetNPC.Position.Z)).Replace(".", GameController.DecSeparator)))
+                    targetNPC.Position += New Vector3(sng(PositionData(1).Replace("~", CStr(targetNPC.Position.X))),
+                                                         sng(PositionData(2).Replace("~", CStr(targetNPC.Position.Y))),
+                                                         sng(PositionData(3).Replace("~", CStr(targetNPC.Position.Z))))
                     targetNPC.CreatedWorld = False
 
                     If targetNPC.InCameraFocus() = True Then

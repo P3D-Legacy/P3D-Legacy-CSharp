@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Objects
 Imports P3D.Legacy.Core.Resources
@@ -47,7 +48,7 @@ Public Class MysteryEventScreen
         End Sub
 
         Public Overrides Function ToString() As String
-            Return "ID: " & ID & "|EVENT TYPE: " & Me.EventType.ToString() & "|NAME: " & Name & "|DESCRIPTION: " & Description & "|VALUE: " & Me.Value
+            Return "ID: " & ID & "|EVENT TYPE: " & Me.EventType.ToString(CultureInfo.InvariantCulture) & "|NAME: " & Name & "|DESCRIPTION: " & Description & "|VALUE: " & Me.Value
         End Function
 
         Public Function IsEventActivated() As Boolean
@@ -161,14 +162,14 @@ Public Class MysteryEventScreen
                             Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\GTS"), New Rectangle(58, startY + i * 100 + 13, 32, 32), New Rectangle(384, 96, 16, 16), Color.White)
                         End If
 
-                        Core.SpriteBatch.DrawString(FontManager.MiniFont, cEvent.EventType.ToString() & ": " & cEvent.Name & vbNewLine & activated, New Vector2(100, startY + i * 100 + 8), textColor)
+                        Core.SpriteBatch.DrawString(FontManager.MiniFont, cEvent.EventType.ToString(CultureInfo.InvariantCulture) & ": " & cEvent.Name & vbNewLine & activated, New Vector2(100, startY + i * 100 + 8), textColor)
                     Next
 
                     Canvas.DrawGradient(New Rectangle(500, startY, 400, 300), Color.White, Color.Gray, False, -1)
 
                     Dim sEvent As MysteryEvent = EventData(cursor)
                     Core.SpriteBatch.DrawString(FontManager.MiniFont, "Name: " & sEvent.Name & vbNewLine & vbNewLine &
-                                                 "Type: " & sEvent.EventType.ToString() & vbNewLine & vbNewLine &
+                                                 "Type: " & sEvent.EventType.ToString(CultureInfo.InvariantCulture) & vbNewLine & vbNewLine &
                                                  "Multiplicator: " & sEvent.Value & "x" & vbNewLine & vbNewLine &
                                                  "Description:" & vbNewLine &
                                                  sEvent.Description.CropStringToWidth(FontManager.MiniFont, 300), New Vector2(512, startY + 12), Color.Black)

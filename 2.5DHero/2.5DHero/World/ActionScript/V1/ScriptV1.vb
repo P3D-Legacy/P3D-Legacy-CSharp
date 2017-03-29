@@ -1,4 +1,5 @@
-﻿Imports net.Pokemon3D.Game.BattleSystem
+﻿Imports System.Globalization
+Imports net.Pokemon3D.Game.BattleSystem
 Imports OpenTK.Graphics.OpenGL
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
@@ -379,11 +380,11 @@ Public Class ScriptV1
             Dim action As String = Value.GetSplit(0)
             Select Case action.ToLower()
                 Case "set"
-                    Dim x As Single = CSng(Value.GetSplit(1).Replace(".", GameController.DecSeparator))
-                    Dim y As Single = CSng(Value.GetSplit(2).Replace(".", GameController.DecSeparator))
-                    Dim z As Single = CSng(Value.GetSplit(3).Replace(".", GameController.DecSeparator))
-                    Dim yaw As Single = CSng(Value.GetSplit(4).Replace(".", GameController.DecSeparator))
-                    Dim pitch As Single = CSng(Value.GetSplit(5).Replace(".", GameController.DecSeparator))
+                    Dim x As Single = Single.Parse(Value.GetSplit(1), NumberFormatInfo.InvariantInfo)
+                    Dim y As Single = Single.Parse(Value.GetSplit(2), NumberFormatInfo.InvariantInfo)
+                    Dim z As Single = Single.Parse(Value.GetSplit(3), NumberFormatInfo.InvariantInfo)
+                    Dim yaw As Single = Single.Parse(Value.GetSplit(4), NumberFormatInfo.InvariantInfo)
+                    Dim pitch As Single = Single.Parse(Value.GetSplit(5), NumberFormatInfo.InvariantInfo)
 
                     c.ThirdPersonOffset = New Vector3(x, y, z)
                     c.Yaw = yaw
@@ -391,29 +392,29 @@ Public Class ScriptV1
                 Case "reset"
                     c.ThirdPersonOffset = New Vector3(0.0F, 0.3F, 1.5F)
                 Case "yaw"
-                    Dim yaw As Single = CSng(Value.GetSplit(1).Replace(",", ".").Replace(".", GameController.DecSeparator))
+                    Dim yaw As Single = Single.Parse(Value.GetSplit(1).Replace(",", "."), NumberFormatInfo.InvariantInfo)
 
                     c.Yaw = yaw
                 Case "pitch"
-                    Dim pitch As Single = CSng(Value.GetSplit(1).Replace(",", ".").Replace(".", GameController.DecSeparator))
+                    Dim pitch As Single = Single.Parse(Value.GetSplit(1).Replace(",", "."), NumberFormatInfo.InvariantInfo)
 
                     c.Pitch = pitch
                 Case "position"
-                    Dim x As Single = CSng(Value.GetSplit(1).Replace(".", GameController.DecSeparator))
-                    Dim y As Single = CSng(Value.GetSplit(2).Replace(".", GameController.DecSeparator))
-                    Dim z As Single = CSng(Value.GetSplit(3).Replace(".", GameController.DecSeparator))
+                    Dim x As Single = Single.Parse(Value.GetSplit(1), NumberFormatInfo.InvariantInfo)
+                    Dim y As Single = Single.Parse(Value.GetSplit(2), NumberFormatInfo.InvariantInfo)
+                    Dim z As Single = Single.Parse(Value.GetSplit(3), NumberFormatInfo.InvariantInfo)
 
                     c.ThirdPersonOffset = New Vector3(x, y, z)
                 Case "x"
-                    Dim x As Single = CSng(Value.GetSplit(1).Replace(".", GameController.DecSeparator))
+                    Dim x As Single = Single.Parse(Value.GetSplit(1), NumberFormatInfo.InvariantInfo)
 
                     c.ThirdPersonOffset.X = x
                 Case "y"
-                    Dim y As Single = CSng(Value.GetSplit(1).Replace(".", GameController.DecSeparator))
+                    Dim y As Single = Single.Parse(Value.GetSplit(1), NumberFormatInfo.InvariantInfo)
 
                     c.ThirdPersonOffset.Y = y
                 Case "z"
-                    Dim z As Single = CSng(Value.GetSplit(1).Replace(".", GameController.DecSeparator))
+                    Dim z As Single = Single.Parse(Value.GetSplit(1), NumberFormatInfo.InvariantInfo)
 
                     c.ThirdPersonOffset.Z = z
             End Select
@@ -422,7 +423,7 @@ Public Class ScriptV1
             c.UpdateFrustum()
             c.UpdateViewMatrix()
             Screen.Level.UpdateEntities()
-            Screen.Level.Entities = (From e In Screen.Level.Entities Order By e.CameraDistance Descending).ToList()
+            Screen.Level.SortEntities()
             Screen.Level.UpdateEntities()
         End If
 
@@ -555,7 +556,7 @@ Public Class ScriptV1
                     checkPosition = Screen.Level.GetNPC(targetID).Position
                 End If
 
-                Dim p As New Vector3(CSng(PositionValues(1)), CSng(PositionValues(2)), CSng(PositionValues(3)))
+                Dim p As New Vector3(Single.Parse(PositionValues(1), NumberFormatInfo.InvariantInfo), Single.Parse(PositionValues(2), NumberFormatInfo.InvariantInfo), Single.Parse(PositionValues(3), NumberFormatInfo.InvariantInfo))
 
                 If p = checkPosition Then
                     T = True
@@ -771,7 +772,7 @@ Public Class ScriptV1
                     c.UpdateFrustum()
                     c.UpdateViewMatrix()
                     Screen.Level.UpdateEntities()
-                    Screen.Level.Entities = (From e In Screen.Level.Entities Order By e.CameraDistance Descending).ToList()
+                    Screen.Level.SortEntities()
                     Screen.Level.UpdateEntities()
                 End If
             Case Me.Value.ToLower() = "activatethirdperson"
@@ -782,7 +783,7 @@ Public Class ScriptV1
                     c.UpdateFrustum()
                     c.UpdateViewMatrix()
                     Screen.Level.UpdateEntities()
-                    Screen.Level.Entities = (From e In Screen.Level.Entities Order By e.CameraDistance Descending).ToList()
+                    Screen.Level.SortEntities()
                     Screen.Level.UpdateEntities()
                 End If
             Case Me.Value.ToLower() = "deactivatethirdperson"
@@ -793,7 +794,7 @@ Public Class ScriptV1
                     c.UpdateFrustum()
                     c.UpdateViewMatrix()
                     Screen.Level.UpdateEntities()
-                    Screen.Level.Entities = (From e In Screen.Level.Entities Order By e.CameraDistance Descending).ToList()
+                    Screen.Level.SortEntities()
                     Screen.Level.UpdateEntities()
                 End If
             Case Me.Value.ToLower().StartsWith("setfont(")
@@ -931,7 +932,7 @@ Public Class ScriptV1
             Dim Data() As String = Me.Value.Split(CChar("|"))
 
             Dim ID As Integer = CInt(Data(0))
-            Dim Position As New Vector3(CSng(Data(1).Replace(".", GameController.DecSeparator)), CSng(Data(2).Replace(".", GameController.DecSeparator)), CSng(Data(3).Replace(".", GameController.DecSeparator)))
+            Dim Position As New Vector3(Single.Parse(Data(1), NumberFormatInfo.InvariantInfo), Single.Parse(Data(2), NumberFormatInfo.InvariantInfo), Single.Parse(Data(3), NumberFormatInfo.InvariantInfo))
 
             Dim noType As MessageBulb.NotifcationTypes = MessageBulb.NotifcationTypes.Waiting
             Select Case ID
@@ -963,7 +964,7 @@ Public Class ScriptV1
         End If
 
         Dim contains As Boolean = False
-        Screen.Level.Entities = (From e In Screen.Level.Entities Order By e.CameraDistance Descending).ToList()
+        Screen.Level.SortEntities()
         For Each e As Entity In Screen.Level.Entities
             If e.EntityID = "MessageBulb" Then
                 e.Update()
@@ -1283,7 +1284,7 @@ Public Class ScriptV1
                 Dim targetNPC As NPC = Screen.Level.GetNPC(CInt(argument.GetSplit(0)))
 
                 Dim PositionData() As String = argument.Split(CChar(","))
-                targetNPC.Position = New Vector3(CSng(PositionData(1).Replace(".", GameController.DecSeparator)), CSng(PositionData(2).Replace(".", GameController.DecSeparator)), CSng(PositionData(3).Replace(".", GameController.DecSeparator)))
+                targetNPC.Position = New Vector3(Single.Parse(PositionData(1), NumberFormatInfo.InvariantInfo), Single.Parse(PositionData(2), NumberFormatInfo.InvariantInfo), Single.Parse(PositionData(3), NumberFormatInfo.InvariantInfo))
                 targetNPC.CreatedWorld = False
                 Me.IsReady = True
             Case "register"
@@ -1399,12 +1400,12 @@ Public Class ScriptV1
                 Select Case commas
                     Case 4
                         Screen.Level.WarpData.WarpDestination = argument.GetSplit(0)
-                        Screen.Level.WarpData.WarpPosition = New Vector3(CSng(argument.GetSplit(1)), CSng(argument.GetSplit(2).Replace(".", GameController.DecSeparator)), CSng(argument.GetSplit(3)))
+                        Screen.Level.WarpData.WarpPosition = New Vector3(Single.Parse(argument.GetSplit(1), NumberFormatInfo.InvariantInfo), Single.Parse(argument.GetSplit(2), NumberFormatInfo.InvariantInfo), Single.Parse(argument.GetSplit(3), NumberFormatInfo.InvariantInfo))
                         Screen.Level.WarpData.WarpRotations = CInt(argument.GetSplit(4))
                         Screen.Level.WarpData.DoWarpInNextTick = True
                         Screen.Level.WarpData.CorrectCameraYaw = Screen.Camera.Yaw
                     Case 2
-                        Screen.Camera.Position = New Vector3(CSng(argument.GetSplit(0)), CSng(argument.GetSplit(1).Replace(".", GameController.DecSeparator)), CSng(argument.GetSplit(2)))
+                        Screen.Camera.Position = New Vector3(Single.Parse(argument.GetSplit(0), NumberFormatInfo.InvariantInfo), Single.Parse(argument.GetSplit(1), NumberFormatInfo.InvariantInfo), Single.Parse(argument.GetSplit(2), NumberFormatInfo.InvariantInfo))
                 End Select
 
                 Screen.Level.OverworldPokemon.warped = True
@@ -1448,13 +1449,13 @@ Public Class ScriptV1
             Select Case command.ToLower()
                 Case "warp"
                     Dim PositionList As List(Of String) = argument.Split(CChar(",")).ToList()
-                    Dim newPosition As Vector3 = New Vector3(CSng(PositionList(1).Replace(".", GameController.DecSeparator)), CSng(PositionList(2).Replace(".", GameController.DecSeparator)), CSng(PositionList(3).Replace(".", GameController.DecSeparator)))
+                    Dim newPosition As Vector3 = New Vector3(Single.Parse(PositionList(1), NumberFormatInfo.InvariantInfo), Single.Parse(PositionList(2), NumberFormatInfo.InvariantInfo), Single.Parse(PositionList(3), NumberFormatInfo.InvariantInfo))
 
                     ent.Position = newPosition
                     ent.CreatedWorld = False
                 Case "scale"
                     Dim ScaleList As List(Of String) = argument.Split(CChar(",")).ToList()
-                    Dim newScale As Vector3 = New Vector3(CSng(ScaleList(1).Replace(".", GameController.DecSeparator)), CSng(ScaleList(2).Replace(".", GameController.DecSeparator)), CSng(ScaleList(3).Replace(".", GameController.DecSeparator)))
+                    Dim newScale As Vector3 = New Vector3(Single.Parse(ScaleList(1), NumberFormatInfo.InvariantInfo), Single.Parse(ScaleList(2), NumberFormatInfo.InvariantInfo), Single.Parse(ScaleList(3), NumberFormatInfo.InvariantInfo))
 
                     ent.Scale = newScale
                     ent.CreatedWorld = False
@@ -1620,12 +1621,12 @@ Public Class ScriptV1
         Select Case commas
             Case 4
                 Screen.Level.WarpData.WarpDestination = Me.Value.GetSplit(0)
-                Screen.Level.WarpData.WarpPosition = New Vector3(CSng(Me.Value.GetSplit(1)), CSng(Me.Value.GetSplit(2).Replace(".", GameController.DecSeparator)), CSng(Me.Value.GetSplit(3)))
+                Screen.Level.WarpData.WarpPosition = New Vector3(Single.Parse(Me.Value.GetSplit(1), NumberFormatInfo.InvariantInfo), Single.Parse(Me.Value.GetSplit(2), NumberFormatInfo.InvariantInfo), Single.Parse(Me.Value.GetSplit(3), NumberFormatInfo.InvariantInfo))
                 Screen.Level.WarpData.WarpRotations = CInt(Me.Value.GetSplit(4))
                 Screen.Level.WarpData.DoWarpInNextTick = True
                 Screen.Level.WarpData.CorrectCameraYaw = Screen.Camera.Yaw
             Case 2
-                Screen.Camera.Position = New Vector3(CSng(Me.Value.GetSplit(0)), CSng(Me.Value.GetSplit(1).Replace(".", GameController.DecSeparator)), CSng(Me.Value.GetSplit(2)))
+                Screen.Camera.Position = New Vector3(Single.Parse(Me.Value.GetSplit(0), NumberFormatInfo.InvariantInfo), Single.Parse(Me.Value.GetSplit(1), NumberFormatInfo.InvariantInfo), Single.Parse(Me.Value.GetSplit(2), NumberFormatInfo.InvariantInfo))
         End Select
 
         Screen.Level.OverworldPokemon.Visible = False
@@ -1670,9 +1671,9 @@ Public Class ScriptV1
 
         Dim Message As String = ""
         If Amount = 1 Then
-            Message = "Received the~" & Item.Name & ".*" & Core.Player.Name & " stored it in the~" & Item.ItemType.ToString() & " pocket."
+            Message = "Received the~" & Item.Name & ".*" & Core.Player.Name & " stored it in the~" & Item.ItemType.ToString(NumberFormatInfo.InvariantInfo) & " pocket."
         Else
-            Message = "Received " & Amount & "~" & Item.PluralName & ".*" & Core.Player.Name & " stored them~in the " & Item.ItemType.ToString() & " pocket."
+            Message = "Received " & Amount & "~" & Item.PluralName & ".*" & Core.Player.Name & " stored them~in the " & Item.ItemType.ToString(NumberFormatInfo.InvariantInfo) & " pocket."
         End If
 
         Core.Player.Inventory.AddItem(ItemID, Amount)

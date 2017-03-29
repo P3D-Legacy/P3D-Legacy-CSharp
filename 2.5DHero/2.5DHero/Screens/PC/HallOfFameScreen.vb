@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Battle.BattleSystemV2
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
@@ -69,10 +70,10 @@ Public Class HallOfFameScreen
 
             Dim data() As String = Core.Player.HallOfFameData.SplitAtNewline()
             For Each l As String In data
-                If l.StartsWith(Me.ID.ToString() & ",{") = True Then
+                If l.StartsWith(Me.ID.ToString(CultureInfo.InvariantCulture) & ",{") = True Then
                     Dim pokeData As String = l.Remove(0, l.IndexOf("{"))
                     Me.PokemonList.Add(New PokemonWrapper(pokeData))
-                ElseIf l.StartsWith(Me.ID.ToString() & ",(") = True Then
+                ElseIf l.StartsWith(Me.ID.ToString(CultureInfo.InvariantCulture) & ",(") = True Then
                     Dim playerData() As String = l.Remove(l.Length - 1, 1).Remove(0, l.IndexOf("(") + 1).Split(CChar("|"))
 
                     Select Case playerData.Length
@@ -184,7 +185,7 @@ Public Class HallOfFameScreen
         Core.SpriteBatch.DrawString(FontManager.MainFont, "Hall of Fame", New Vector2(100, 24), Color.White, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
 
         If Not Me.SelectedEntry Is Nothing Then
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "Entry No. " & (Me.SelectedEntry.ID + 1).ToString(), New Vector2(-1100 + (255 - alpha) * 5.0F, 70), Color.White, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "Entry No. " & (Me.SelectedEntry.ID + 1).ToString(CultureInfo.InvariantCulture), New Vector2(-1100 + (255 - alpha) * 5.0F, 70), Color.White, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
         End If
 
         If Me.Preselect = -1 Then
@@ -196,7 +197,7 @@ Public Class HallOfFameScreen
                     Core.SpriteBatch.Draw(Me.texture, New Rectangle(100 + 64, 100 + p * 96, 64 * 8, 64), New Rectangle(32, 16, 16, 16), New Color(255, 255, 255, alpha))
                     Core.SpriteBatch.Draw(Me.texture, New Rectangle(100 + 64 * 9, 100 + p * 96, 64, 64), New Rectangle(16, 16, 16, 16), New Color(255, 255, 255, alpha), 0.0F, Vector2.Zero, SpriteEffects.FlipHorizontally, 0.0F)
 
-                    Core.SpriteBatch.DrawString(FontManager.MainFont, "Entry No. " & (Me.Entries(i).ID + 1).ToString(), New Vector2(120, 116 + p * 96), New Color(0, 0, 0, alpha), 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
+                    Core.SpriteBatch.DrawString(FontManager.MainFont, "Entry No. " & (Me.Entries(i).ID + 1).ToString(CultureInfo.InvariantCulture), New Vector2(120, 116 + p * 96), New Color(0, 0, 0, alpha), 0.0F, Vector2.Zero, 1.25F, SpriteEffects.None, 0.0F)
 
                     For d = 0 To Me.Entries(i).PokemonList.Count - 1
                         Core.SpriteBatch.Draw(Me.Entries(i).PokemonList(d).GetPokemon().GetMenuTexture(), New Rectangle(360 + d * 40, 116 + p * 96, 32, 32), New Color(255, 255, 255, alpha))
@@ -205,7 +206,7 @@ Public Class HallOfFameScreen
             Next
 
             Core.SpriteBatch.DrawString(FontManager.MainFont, "Entries: ", New Vector2(90 + 64 * 11, 119), New Color(0, 0, 0, alpha))
-            Core.SpriteBatch.DrawString(FontManager.MainFont, Me.Entries.Count.ToString(), New Vector2(190 + 64 * 11, 119), New Color(255, 255, 255, alpha))
+            Core.SpriteBatch.DrawString(FontManager.MainFont, Me.Entries.Count.ToString(CultureInfo.InvariantCulture), New Vector2(190 + 64 * 11, 119), New Color(255, 255, 255, alpha))
 
             DrawCursor()
         End If
@@ -259,9 +260,9 @@ Public Class HallOfFameScreen
             Core.SpriteBatch.DrawString(FontManager.MainFont, p.GetDisplayName(), New Vector2(pos.X + 40, pos.Y + 4), Color.White, 0.0F, Vector2.Zero, 1.5F, SpriteEffects.None, 0.0F)
             Core.SpriteBatch.DrawString(FontManager.MainFont, "Level" & vbNewLine & vbNewLine & "OT" & vbNewLine & vbNewLine & "Type 1" & vbNewLine & vbNewLine & "Type 2", New Vector2(pos.X + 10, pos.Y + 43), Color.White, 0.0F, Vector2.Zero, 1.0F, SpriteEffects.None, 0.0F)
 
-            Dim s As String = p.Level & vbNewLine & vbNewLine & p.OT & " / " & p.CatchTrainerName & vbNewLine & vbNewLine & p.Type1.Type.ToString()
+            Dim s As String = p.Level & vbNewLine & vbNewLine & p.OT & " / " & p.CatchTrainerName & vbNewLine & vbNewLine & p.Type1.Type.ToString(CultureInfo.InvariantCulture)
             If p.Type2.Type <> Element.Types.Blank Then
-                s &= vbNewLine & vbNewLine & p.Type2.Type.ToString()
+                s &= vbNewLine & vbNewLine & p.Type2.Type.ToString(CultureInfo.InvariantCulture)
             Else
                 s &= vbNewLine & vbNewLine & "none"
             End If

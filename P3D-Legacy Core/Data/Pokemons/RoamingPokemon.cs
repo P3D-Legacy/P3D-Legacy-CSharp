@@ -6,6 +6,8 @@ using System.Linq;
 using P3D.Legacy.Core.Extensions;
 using P3D.Legacy.Core.Resources;
 
+using PCLExt.FileStorage;
+
 namespace P3D.Legacy.Core.Pokemon
 {
     public class RoamingPokemon
@@ -19,26 +21,20 @@ namespace P3D.Legacy.Core.Pokemon
         {
             string[] data = DataLine.Split(Convert.ToChar("|"));
 
-            this.PokemonReference = BasePokemon.GetPokemonByData(data[5]);
+            PokemonReference = BasePokemon.GetPokemonByData(data[5]);
 
-            this.WorldID = Convert.ToInt32(data[2]);
-            this.LevelFile = data[3];
-            this.MusicLoop = data[4];
+            WorldID = Convert.ToInt32(data[2]);
+            LevelFile = data[3];
+            MusicLoop = data[4];
         }
 
-        public string CompareData()
-        {
-            return this.PokemonReference.Number.ToString() + "|" + this.PokemonReference.Level.ToString() + "|" + this.WorldID.ToString() + "|";
-        }
+        public string CompareData() => PokemonReference.Number + "|" + PokemonReference.Level + "|" + WorldID + "|";
 
-        public BasePokemon GetPokemon()
-        {
-            return this.PokemonReference;
-        }
+        public BasePokemon GetPokemon() => PokemonReference;
 
         public static void ShiftRoamingPokemon(int worldID)
         {
-            Logger.Debug("Shift Roaming Pokémon for world ID: " + worldID.ToString());
+            Logger.Debug("Shift Roaming Pokémon for world ID: " + worldID);
 
             string newData = "";
             foreach (string line in Core.Player.RoamingPokemonData.SplitAtNewline())
@@ -49,22 +45,22 @@ namespace P3D.Legacy.Core.Pokemon
 
                     if (!string.IsNullOrEmpty(newData))
                     {
-                        newData += Constants.vbNewLine;
+                        newData += Environment.NewLine;
                     }
 
                     if (Convert.ToInt32(data[2]) == worldID || worldID == -1)
                     {
-                        string regionsFile = GameModeManager.GetScriptFileAsync(Path.Combine("worldmap", "roaming_regions.dat")).Result.Path;
+                        var regionsFile = GameModeManager.GetScriptFileAsync(Path.Combine("worldmap", "roaming_regions.dat")).Result;
                         Security.FileValidation.CheckFileValid(regionsFile, false, "RoamingPokemon.vb");
 
-                        List<string> worldList = System.IO.File.ReadAllLines(regionsFile).ToList();
-                        List<string> levelList = new List<string>();
+                        var worldList = regionsFile.ReadAllTextAsync().Result.SplitAtNewline();
+                        var levelList = new List<string>();
 
-                        foreach (string worldLine in worldList)
+                        foreach (var worldLine in worldList)
                         {
-                            if (worldLine.StartsWith(Convert.ToInt32(data[2]).ToString() + "|") == true)
+                            if (worldLine.StartsWith(Convert.ToInt32(data[2]) + "|"))
                             {
-                                levelList = worldLine.Remove(0, worldLine.IndexOf("|") + 1).Split(Convert.ToChar(",")).ToList();
+                                levelList = worldLine.Remove(0, worldLine.IndexOf("|", StringComparison.Ordinal) + 1).Split(Convert.ToChar(",")).ToList();
                             }
                         }
 
@@ -76,7 +72,7 @@ namespace P3D.Legacy.Core.Pokemon
                         }
 
                         //PokémonID,Level,regionID,startLevelFile,MusicLoop,PokemonData
-                        newData += data[0] + "|" + data[1] + "|" + Convert.ToInt32(data[2]).ToString() + "|" + levelList[nextIndex] + "|" + data[4] + "|" + data[5];
+                        newData += data[0] + "|" + data[1] + "|" + Convert.ToInt32(data[2]) + "|" + levelList[nextIndex] + "|" + data[4] + "|" + data[5];
                     }
                     else
                     {
@@ -104,7 +100,7 @@ namespace P3D.Legacy.Core.Pokemon
                 {
                     if (!string.IsNullOrEmpty(newData))
                     {
-                        newData += Constants.vbNewLine;
+                        newData += Environment.NewLine;
                     }
                     newData += line;
                 }
@@ -123,7 +119,7 @@ namespace P3D.Legacy.Core.Pokemon
             {
                 if (!string.IsNullOrEmpty(newData))
                 {
-                    newData += Constants.vbNewLine;
+                    newData += Environment.NewLine;
                 }
                 if (line.StartsWith(compareData) == false)
                 {
@@ -131,7 +127,7 @@ namespace P3D.Legacy.Core.Pokemon
                 }
                 else
                 {
-                    newData += p.PokemonReference.Number + "|" + p.PokemonReference.Level + "|" + p.WorldID.ToString() + "|" + p.LevelFile + "|" + p.MusicLoop + "|" + p.PokemonReference.GetSaveData();
+                    newData += p.PokemonReference.Number + "|" + p.PokemonReference.Level + "|" + p.WorldID + "|" + p.LevelFile + "|" + p.MusicLoop + "|" + p.PokemonReference.GetSaveData();
                 }
             }
 

@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Battle
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
@@ -273,7 +274,7 @@ Public Class PokemonStatusScreen
                 Core.SpriteBatch.Draw(MainTexture, New Rectangle(180, 376, 12, 20), r, Color.White)
             End If
 
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("Level") & ": " & Me.Pokemon.Level & vbNewLine & Localization.GetString("poke_status_screen_number") & Pokemon.Number & vbNewLine & vbNewLine & Localization.GetString("poke_status_screen_nature") & ":" & vbNewLine & Me.Pokemon.Nature.ToString(), New Vector2(76, 410), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("Level") & ": " & Me.Pokemon.Level & vbNewLine & Localization.GetString("poke_status_screen_number") & Pokemon.Number & vbNewLine & vbNewLine & Localization.GetString("poke_status_screen_nature") & ":" & vbNewLine & Me.Pokemon.Nature.ToString(CultureInfo.InvariantCulture), New Vector2(76, 410), Color.Black)
 
             Dim StatusTexture As Texture2D = BattleStats.GetStatImage(Pokemon.Status)
             If Not StatusTexture Is Nothing Then
@@ -467,7 +468,7 @@ Public Class PokemonStatusScreen
                 Dim i As Integer = 0
                 Dim n As String = ""
                 For i = 0 To fullText.Length - 1
-                    Dim c As Char = CChar(fullText(i).ToString().Replace("’", "'"))
+                    Dim c As Char = CChar(fullText(i).ToString(CultureInfo.InvariantCulture).Replace("’", "'"))
 
                     If c = CChar(" ") Then
                         If FontManager.MiniFont.MeasureString(n & c).X > 170 Then
@@ -483,12 +484,12 @@ Public Class PokemonStatusScreen
                     End If
                 Next
 
-                Dim power As String = A.Power.ToString()
+                Dim power As String = A.Power.ToString(CultureInfo.InvariantCulture)
                 If power = "0" Then
                     power = "-"
                 End If
 
-                Dim acc As String = A.Accuracy.ToString()
+                Dim acc As String = A.Accuracy.ToString(CultureInfo.InvariantCulture)
                 If acc = "0" Then
                     acc = "-"
                 End If

@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
@@ -105,7 +106,7 @@ Namespace BattleSystem.Moves.Ground
         End Function
 
         Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
-            BattleScreen.BattleQuery.Add(New TextQueryObject("Magnitude " & UsedLevel.ToString() & "!"))
+            BattleScreen.BattleQuery.Add(New TextQueryObject("Magnitude " & UsedLevel.ToString(CultureInfo.InvariantCulture) & "!"))
         End Sub
 
     End Class

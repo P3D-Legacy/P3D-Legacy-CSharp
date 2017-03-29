@@ -77,15 +77,13 @@ Public Class LevelLoader
             Screen.Level.LevelFile = levelPath
 
             Core.Player.LastSavePlace = Screen.Level.LevelFile
-            Core.Player.LastSavePlacePosition = Player.Temp.LastPosition.X & "," & Player.Temp.LastPosition.Y.ToString().Replace(GameController.DecSeparator, ".") & "," & Player.Temp.LastPosition.Z
+            Core.Player.LastSavePlacePosition = Player.Temp.LastPosition.X.ToString(NumberFormatInfo.InvariantInfo) & "," & Player.Temp.LastPosition.Y.ToString(NumberFormatInfo.InvariantInfo) & "," & Player.Temp.LastPosition.Z.ToString(NumberFormatInfo.InvariantInfo)
 
-            Screen.Level.Entities.Clear()
-            Screen.Level.Floors.Clear()
+            Screen.Level.MapRenderer.Clear()
             Screen.Level.Shaders.Clear()
             Screen.Level.BackdropRenderer.Clear()
 
-            Screen.Level.OffsetmapFloors.Clear()
-            Screen.Level.OffsetmapEntities.Clear()
+            Screen.Level.MapOffsetRenderer.Clear()
 
             Screen.Level.WildPokemonFloor = False
             Screen.Level.WalkedSteps = 0
@@ -116,9 +114,7 @@ Public Class LevelLoader
             Exit Sub
         End If
 
-        'TODO
-        'Dim Data As List(Of String) = IO.File.ReadAllLines(levelPath).ToList()
-        Dim Data As List(Of String) = levelFile.ReadAllTextAsync().Result.Split(Environment.NewLine).ToList()
+        Dim Data As List(Of String) = levelFile.ReadAllTextAsync().Result.SplitAtNewline().ToList()
         Dim Tags As New Dictionary(Of String, Object)
 
         Me.Offset = offset
@@ -258,7 +254,7 @@ Public Class LevelLoader
         Next
 
         Logger.Debug("Map loading finished: " & levelPath.Remove(0, GameController.GamePath.Length))
-        Logger.Debug("Loaded textures: " & TextureManager.TextureList.Count.ToString())
+        Logger.Debug("Loaded textures: " & TextureManager.TextureList.Count.ToString(NumberFormatInfo.InvariantInfo))
         timer.Stop()
         Logger.Debug("Map loading time: " & timer.ElapsedTicks & " Ticks; " & timer.ElapsedMilliseconds & " Milliseconds.")
 
@@ -266,10 +262,6 @@ Public Class LevelLoader
         'xmlLevelLoader.Load(My.Computer.FileSystem.SpecialDirectories.Desktop & "\t.xml", _5DHero.XmlLevelLoader.LevelElement.Types.Default, Vector3.Zero)
 
         Busy -= 1
-
-        If Busy = 0 Then
-            Screen.Level.StartOffsetMapUpdate()
-        End If
     End Sub
 
     Private Function GetTags(ByVal line As String) As Dictionary(Of String, Object)
@@ -315,7 +307,7 @@ Public Class LevelLoader
                     Case "str"
                         Dictionary.Add(TagName, CStr(subTagValue))
                     Case "sng"
-                        subTagValue = subTagValue.Replace(".", GameController.DecSeparator)
+                        subTagValue = subTagValue
                         Dictionary.Add(TagName, CSng(subTagValue))
                     Case "bool"
                         Dictionary.Add(TagName, CBool(subTagValue))
@@ -323,7 +315,7 @@ Public Class LevelLoader
                         Dim values() As String = subTagValue.Split(CChar(","))
                         Dim arr As New List(Of Integer)
                         For Each value As String In values
-                            arr.Add(CInt(Single.Parse(value, CultureInfo.InvariantCulture)))
+                            arr.Add(CInt(Single.Parse(value, NumberFormatInfo.InvariantInfo)))
                         Next
                         Dictionary.Add(TagName, arr)
                     Case "rec"
@@ -345,7 +337,7 @@ Public Class LevelLoader
                         Dim values() As String = subTagValue.Split(CChar(","))
                         Dim arr As New List(Of Single)
                         For Each value As String In values
-                            arr.Add(Single.Parse(value, CultureInfo.InvariantCulture))
+                            arr.Add(Single.Parse(value, NumberFormatInfo.InvariantInfo))
                         Next
                         Dictionary.Add(TagName, arr)
                 End Select
@@ -415,16 +407,17 @@ Public Class LevelLoader
 
                 Dim levelLoader As New LevelLoader()
                 levelLoader.LoadLevel(params.ToArray())
-                Dim entList As New List(Of Entity)
-                Dim floorList As New List(Of Entity)
 
-                For i = offsetEntityCount To Screen.Level.OffsetmapEntities.Count - 1
-                    entList.Add(Screen.Level.OffsetmapEntities(i))
-                Next
-                For i = offsetFloorCount To Screen.Level.OffsetmapFloors.Count - 1
-                    floorList.Add(Screen.Level.OffsetmapFloors(i))
-                Next
-                mapList.AddRange({entList, floorList})
+                dim entityCount = Screen.Level.OffsetmapEntities.Count - 1 - offsetEntityCount 
+                if(entityCount < 0)
+                    entityCount = 0
+                End If
+                dim floorCount = Screen.Level.OffsetmapFloors.Count - 1 - offsetFloorCount 
+                if(floorCount < 0)
+                    floorCount = 0
+                End If
+
+                mapList.AddRange({Screen.Level.OffsetmapEntities.GetRange(offsetEntityCount, entityCount), Screen.Level.OffsetmapFloors.GetRange(offsetFloorCount, floorCount)})
 
                 Core.OffsetMaps.Add(listName, mapList)
             Else
@@ -433,26 +426,19 @@ Public Class LevelLoader
                 For Each e As Entity In Core.OffsetMaps(listName)(0)
                     If e.MapOrigin = MapName Then
                         e.IsOffsetMapContent = True
-                        Screen.Level.OffsetmapEntities.Add(e)
+                        Screen.Level.MapOffsetRenderer.AddEntity(MapOrigin, e)
                     End If
                 Next
                 For Each e As Entity In Core.OffsetMaps(listName)(1)
                     If e.MapOrigin = MapName Then
                         e.IsOffsetMapContent = True
-                        Screen.Level.OffsetmapFloors.Add(e)
+                        Screen.Level.MapOffsetRenderer.AddFloor(MapOrigin, e)
                     End If
                 Next
             End If
             Logger.Debug("Offset maps in store: " & Core.OffsetMaps.Count)
 
-            Screen.Level.OffsetmapEntities = (From e In Screen.Level.OffsetmapEntities Order By e.CameraDistance Descending).ToList()
-
-            For Each Entity As Entity In Screen.Level.OffsetmapEntities
-                Entity.UpdateEntity()
-            Next
-            For Each Floor As Entity In Screen.Level.OffsetmapFloors
-                Floor.UpdateEntity()
-            Next
+            'Screen.Level.MapOffsetRenderer.Update()
         End If
     End Sub
 
@@ -480,20 +466,19 @@ Public Class LevelLoader
             addNPC = CBool(GetTag(Tags, "AddNPC"))
         End If
 
-        Dim structureKey As String = MapOffset.X.ToString() & "|" & MapOffset.Y.ToString() & "|" & MapOffset.Z.ToString() & "|" & MapName
+        Dim structureKey As String = MapOffset.X.ToString(NumberFormatInfo.InvariantInfo) & "|" & MapOffset.Y.ToString(NumberFormatInfo.InvariantInfo) & "|" & MapOffset.Z.ToString(NumberFormatInfo.InvariantInfo) & "|" & MapName
 
         If tempStructureList.ContainsKey(structureKey) = False Then
-            Dim filepath As String = GameModeManager.GetMapFileAsync(MapName).Result.Path
-            'TODO
-            'FileValidation.CheckFileValid(filepath, False, "LevelLoader.vb/StructureSpawner")
+            Dim file = GameModeManager.GetMapFileAsync(MapName).Result
+            FileValidation.CheckFileValid(file, False, "LevelLoader.vb/StructureSpawner")
 
-            If IO.File.Exists(filepath) = False Then
-                Logger.Log(Logger.LogTypes.ErrorMessage, "LevelLoader.vb: Error loading structure from """ & filepath & """. File not found.")
+            If String.IsNullOrEmpty(file.ReadAllTextAsync().Result) Then
+                Logger.Log(Logger.LogTypes.ErrorMessage, "LevelLoader.vb: Error loading structure from """ & file.Path & """. File not found.")
 
                 Return {}
             End If
 
-            Dim MapContent() As String = IO.File.ReadAllLines(filepath)
+            Dim MapContent() As String = file.ReadAllTextAsync().Result.SplitAtNewline()
             Dim structureList As New List(Of String)
 
             For Each line As String In MapContent
@@ -540,18 +525,18 @@ Public Class LevelLoader
         End If
 
         If replaceString <> "" Then
-            Dim rotationString As String = line.Remove(0, line.ToLower().IndexOf(replaceString))
-            rotationString = rotationString.Remove(rotationString.IndexOf("]}}") + 3)
+            Dim rotationString As String = line.Remove(0, line.ToLower().IndexOf(replaceString, StringComparison.Ordinal))
+            rotationString = rotationString.Remove(rotationString.IndexOf("]}}", StringComparison.Ordinal) + 3)
 
-            Dim rotationData As String = rotationString.Remove(0, rotationString.IndexOf("[") + 1)
-            rotationData = rotationData.Remove(rotationData.IndexOf("]"))
+            Dim rotationData As String = rotationString.Remove(0, rotationString.IndexOf("[", StringComparison.Ordinal) + 1)
+            rotationData = rotationData.Remove(rotationData.IndexOf("]", StringComparison.Ordinal))
 
             Dim newRotation As Integer = CInt(rotationData) + MapRotation
             While newRotation > 3
                 newRotation -= 4
             End While
 
-            line = line.Replace(rotationString, "{""rotation""{int[" & newRotation.ToString() & "]}}")
+            line = line.Replace(rotationString, "{""rotation""{int[" & newRotation.ToString(NumberFormatInfo.InvariantInfo) & "]}}")
         End If
 
         Return line
@@ -567,19 +552,19 @@ Public Class LevelLoader
         End If
 
         If replaceString <> "" Then
-            Dim positionString As String = line.Remove(0, line.ToLower().IndexOf(replaceString))
-            positionString = positionString.Remove(positionString.IndexOf("]}}") + 3)
+            Dim positionString As String = line.Remove(0, line.ToLower().IndexOf(replaceString, StringComparison.Ordinal))
+            positionString = positionString.Remove(positionString.IndexOf("]}}", StringComparison.Ordinal) + 3)
 
-            Dim positionData As String = positionString.Remove(0, positionString.IndexOf("[") + 1)
-            positionData = positionData.Remove(positionData.IndexOf("]"))
+            Dim positionData As String = positionString.Remove(0, positionString.IndexOf("[", StringComparison.Ordinal) + 1)
+            positionData = positionData.Remove(positionData.IndexOf("]", StringComparison.Ordinal))
 
             Dim posArr() As String = positionData.Split(CChar(","))
-            Dim newPosition As New Vector3(ScriptConversion.ToSingle(posArr(0).Replace(".", GameController.DecSeparator)) + MapOffset.X, ScriptConversion.ToSingle(posArr(1).Replace(".", GameController.DecSeparator)) + MapOffset.Y, CSng(posArr(2).Replace(".", GameController.DecSeparator)) + MapOffset.Z)
+            Dim newPosition As New Vector3(Single.Parse(posArr(0), NumberFormatInfo.InvariantInfo) + MapOffset.X, Single.Parse(posArr(1), NumberFormatInfo.InvariantInfo) + MapOffset.Y, Single.Parse(posArr(2), NumberFormatInfo.InvariantInfo) + MapOffset.Z)
 
             If line.ToLower().Contains("{""position""{sngarr[") = True Then
-                line = line.Replace(positionString, "{""position""{sngarr[" & newPosition.X.ToString().Replace(GameController.DecSeparator, ".") & "," & newPosition.Y.ToString().Replace(GameController.DecSeparator, ".") & "," & newPosition.Z.ToString().Replace(GameController.DecSeparator, ".") & "]}}")
+                line = line.Replace(positionString, "{""position""{sngarr[" & newPosition.X.ToString(NumberFormatInfo.InvariantInfo) & "," & newPosition.Y.ToString(NumberFormatInfo.InvariantInfo) & "," & newPosition.Z.ToString(NumberFormatInfo.InvariantInfo) & "]}}")
             Else
-                line = line.Replace(positionString, "{""position""{intarr[" & CInt(newPosition.X).ToString().Replace(GameController.DecSeparator, ".") & "," & CInt(newPosition.Y).ToString().Replace(GameController.DecSeparator, ".") & "," & CInt(newPosition.Z).ToString().Replace(GameController.DecSeparator, ".") & "]}}")
+                line = line.Replace(positionString, "{""position""{intarr[" & CInt(newPosition.X).ToString(NumberFormatInfo.InvariantInfo) & "," & CInt(newPosition.Y).ToString(NumberFormatInfo.InvariantInfo) & "," & CInt(newPosition.Z).ToString(NumberFormatInfo.InvariantInfo) & "]}}")
             End If
         End If
 
@@ -646,7 +631,7 @@ Public Class LevelLoader
         If loadOffsetMap = False Then
             Screen.Level.Entities.Add(NPC)
         Else
-            Screen.Level.OffsetmapEntities.Add(NPC)
+            Screen.Level.MapOffsetRenderer.AddEntity(MapOrigin, NPC)
         End If
     End Sub
 
@@ -873,7 +858,7 @@ Public Class LevelLoader
                                                                    Collision,
                                                                    Rotation,
                                                                    Scale,
-                                                                   BaseModel.getModelbyID(ModelID),
+                                                                   BaseModel.GetModelbyID(ModelID),
                                                                    ActionValue,
                                                                    AdditionalValue,
                                                                    Visible,
@@ -890,7 +875,7 @@ Public Class LevelLoader
                             If loadOffsetMap = False Then
                                 Screen.Level.Entities.Add(newEnt)
                             Else
-                                Screen.Level.OffsetmapEntities.Add(newEnt)
+                                Screen.Level.MapOffsetRenderer.AddEntity(MapOrigin, newEnt)
                             End If
                         End If
                     End If
@@ -1026,7 +1011,7 @@ Public Class LevelLoader
         If TagExists(Tags, "RadioChannels") = True Then
             Dim channels() As String = CStr(GetTag(Tags, "RadioChannels")).Split(CChar(","))
             For Each c As String In channels
-                Screen.Level.AllowedRadioChannels.Add(CDec(c.Replace(".", GameController.DecSeparator)))
+                Screen.Level.AllowedRadioChannels.Add(CDec(c))
             Next
         Else
             Screen.Level.AllowedRadioChannels.Clear()
@@ -1135,7 +1120,7 @@ Public Class LevelLoader
                 End If
 
                 If BData(0).ToLower() = Screen.Level.LevelFile.ToLower() Then
-                    Dim newEnt As Entity = Entity.GetNewEntity("BerryPlant", New Vector3(CSng(PData(0)), CSng(PData(1)), CSng(PData(2))), {Nothing}, {0, 0}, True, New Vector3(0), New Vector3(1), BaseModel.BillModel, 0, "", True, New Vector3(1.0F), -1, MapOrigin, "", Offset)
+                    Dim newEnt As Entity = Entity.GetNewEntity("BerryPlant", New Vector3(Single.Parse(PData(0), NumberFormatInfo.InvariantInfo), Single.Parse(PData(1), NumberFormatInfo.InvariantInfo), Single.Parse(PData(2), NumberFormatInfo.InvariantInfo)), {Nothing}, {0, 0}, True, New Vector3(0), New Vector3(1), BaseModel.BillModel, 0, "", True, New Vector3(1.0F), -1, MapOrigin, "", Offset)
                     CType(newEnt, BerryPlant).Initialize(CInt(BData(2)), CInt(BData(3)), CStr(BData(4)), BData(5), CBool(BData(6)))
 
                     Screen.Level.Entities.Add(newEnt)

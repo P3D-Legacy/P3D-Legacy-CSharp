@@ -18,8 +18,8 @@ Public Class WallBill
         MyBase.UpdateEntity()
     End Sub
 
-    Public Overrides Sub Render()
-        Me.Draw(Me.Model, Textures, False)
+    Public Overrides Sub Render(effect As BasicEffect)
+        Me.Draw(effect, Me.Model, Textures, False)
     End Sub
 
 End Class

@@ -18,11 +18,11 @@ Namespace ScriptVersion2
 
             Select Case command.ToLower()
                 Case "set"
-                    Dim x As Single = sng(argument.GetSplit(0).Replace("~", CStr(c.ThirdPersonOffset.X)).Replace(".", GameController.DecSeparator))
-                    Dim y As Single = sng(argument.GetSplit(1).Replace("~", CStr(c.ThirdPersonOffset.Y)).Replace(".", GameController.DecSeparator))
-                    Dim z As Single = sng(argument.GetSplit(2).Replace("~", CStr(c.ThirdPersonOffset.Z)).Replace(".", GameController.DecSeparator))
-                    Dim yaw As Single = sng(argument.GetSplit(3).Replace(".", GameController.DecSeparator))
-                    Dim pitch As Single = sng(argument.GetSplit(4).Replace(".", GameController.DecSeparator))
+                    Dim x As Single = sng(argument.GetSplit(0).Replace("~", CStr(c.ThirdPersonOffset.X)))
+                    Dim y As Single = sng(argument.GetSplit(1).Replace("~", CStr(c.ThirdPersonOffset.Y)))
+                    Dim z As Single = sng(argument.GetSplit(2).Replace("~", CStr(c.ThirdPersonOffset.Z)))
+                    Dim yaw As Single = sng(argument.GetSplit(3))
+                    Dim pitch As Single = sng(argument.GetSplit(4))
 
                     c.ThirdPersonOffset = New Vector3(x, y, z)
                     c.Yaw = yaw
@@ -33,29 +33,29 @@ Namespace ScriptVersion2
                         doCameraUpdate = CBool(argument)
                     End If
                 Case "setyaw"
-                    Dim yaw As Single = sng(argument.Replace(",", ".").Replace(".", GameController.DecSeparator))
+                    Dim yaw As Single = sng(argument.Replace(",", "."))
 
                     c.Yaw = yaw
                 Case "setpitch"
-                    Dim pitch As Single = sng(argument.Replace(",", ".").Replace(".", GameController.DecSeparator))
+                    Dim pitch As Single = sng(argument.Replace(",", "."))
 
                     c.Pitch = pitch
                 Case "setposition"
-                    Dim x As Single = sng(argument.GetSplit(0).Replace("~", CStr(c.ThirdPersonOffset.X)).Replace(".", GameController.DecSeparator))
-                    Dim y As Single = sng(argument.GetSplit(1).Replace("~", CStr(c.ThirdPersonOffset.Y)).Replace(".", GameController.DecSeparator))
-                    Dim z As Single = sng(argument.GetSplit(2).Replace("~", CStr(c.ThirdPersonOffset.Z)).Replace(".", GameController.DecSeparator))
+                    Dim x As Single = sng(argument.GetSplit(0).Replace("~", CStr(c.ThirdPersonOffset.X)))
+                    Dim y As Single = sng(argument.GetSplit(1).Replace("~", CStr(c.ThirdPersonOffset.Y)))
+                    Dim z As Single = sng(argument.GetSplit(2).Replace("~", CStr(c.ThirdPersonOffset.Z)))
 
                     c.ThirdPersonOffset = New Vector3(x, y, z)
                 Case "setx"
-                    Dim x As Single = sng(argument.Replace("~", CStr(c.ThirdPersonOffset.X)).Replace(".", GameController.DecSeparator))
+                    Dim x As Single = sng(argument.Replace("~", CStr(c.ThirdPersonOffset.X)))
 
                     c.ThirdPersonOffset.X = x
                 Case "sety"
-                    Dim y As Single = sng(argument.Replace("~", CStr(c.ThirdPersonOffset.Y)).Replace(".", GameController.DecSeparator))
+                    Dim y As Single = sng(argument.Replace("~", CStr(c.ThirdPersonOffset.Y)))
 
                     c.ThirdPersonOffset.Y = y
                 Case "setz"
-                    Dim z As Single = sng(argument.Replace("~", CStr(c.ThirdPersonOffset.Z)).Replace(".", GameController.DecSeparator))
+                    Dim z As Single = sng(argument.Replace("~", CStr(c.ThirdPersonOffset.Z)))
 
                     c.ThirdPersonOffset.Z = z
                 Case "togglethirdperson"
@@ -139,7 +139,7 @@ Namespace ScriptVersion2
             If doCameraUpdate = True Then
                 c.UpdateFrustum()
                 c.UpdateViewMatrix()
-                Screen.Level.Entities = (From e In Screen.Level.Entities Order By e.CameraDistance Descending).ToList()
+                Screen.Level.SortEntities()
                 Screen.Level.UpdateEntities()
             End If
 

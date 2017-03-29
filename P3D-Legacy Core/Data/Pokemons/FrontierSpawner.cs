@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -43,7 +44,7 @@ namespace P3D.Legacy.Core.Pokemon
 
         private static BasePokemon GetPredeterminedPokemon(int ID, int level, int pokemon_class)
         {
-            string path = GameController.GamePath + "\\Content\\Pokemon\\Data\\frontier\\" + pokemon_class.ToString() + ".dat";
+            string path = GameController.GamePath + "\\Content\\Pokemon\\Data\\frontier\\" + pokemon_class.ToString(NumberFormatInfo.InvariantInfo) + ".dat";
             // TODO:
             //Security.FileValidation.CheckFileValid(path, false, "FrontierSpawner.vb");
 
@@ -53,7 +54,7 @@ namespace P3D.Legacy.Core.Pokemon
             {
                 string[] lData = line.Split(Convert.ToChar("|"));
                 string[] InputIDs = lData[0].Split(Convert.ToChar(","));
-                if (InputIDs.Contains(ID.ToString()) == true)
+                if (InputIDs.Contains(ID.ToString(NumberFormatInfo.InvariantInfo)) == true)
                 {
                     int OutputID = Convert.ToInt32(lData[1]);
                     List<int> Moveset = new List<int>();

@@ -39,11 +39,11 @@ Public Class ViewModelScreen
 
     Public Overrides Sub Draw()
         SkyDome.Draw(Camera.FOV)
-        Me.Model.Render()
+        Me.Model.Render(Screen.Effect)
 
         Screen.Effect.View = Screen.Camera.View
         Screen.Effect.Projection = Screen.Camera.Projection
-        Me.Ground.Render()
+        Me.Ground.Render(Screen.Effect)
     End Sub
 
     Dim turnDelay As Single = 10.0F

@@ -12,7 +12,7 @@ namespace P3D.Legacy.Core.Debug
         {
             if (KeyBoardHandler.KeyDown(Core.KeyBindings.DebugControl) && KeyBoardHandler.KeyDown(Keys.C))
             {
-                //Debug.Print("CRASH IN: " + Delay.ToString());
+                //Debug.Print("CRASH IN: " + Delay.ToString(NumberFormatInfo.InvariantInfo));
                 Delay -= 0.1f;
                 if (Delay <= 0f)
                 {

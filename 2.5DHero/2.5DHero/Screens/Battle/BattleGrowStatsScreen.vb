@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
@@ -50,12 +51,12 @@ Public Class BattleGrowStatsScreen
         Core.SpriteBatch.DrawString(FontManager.MiniFont, " reached level " & Pokemon.Level & "!", New Vector2(p.X + 90 + FontManager.InGameFont.MeasureString(Pokemon.GetDisplayName()).X, p.Y + 41), Color.Black)
 
         If Delay >= 3.0F Then
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Max HP:      " & OldStats(0).ToString(), New Vector2(p.X + 32, p.Y + 84), Color.Black)
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Attack:      " & OldStats(1).ToString(), New Vector2(p.X + 32, p.Y + 124), Color.Black)
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Defense:     " & OldStats(2).ToString(), New Vector2(p.X + 32, p.Y + 164), Color.Black)
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Sp Attack:   " & OldStats(3).ToString(), New Vector2(p.X + 32, p.Y + 204), Color.Black)
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Sp Defense:  " & OldStats(4).ToString(), New Vector2(p.X + 32, p.Y + 244), Color.Black)
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Speed:       " & OldStats(5).ToString(), New Vector2(p.X + 32, p.Y + 284), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Max HP:      " & OldStats(0).ToString(CultureInfo.InvariantCulture), New Vector2(p.X + 32, p.Y + 84), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Attack:      " & OldStats(1).ToString(CultureInfo.InvariantCulture), New Vector2(p.X + 32, p.Y + 124), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Defense:     " & OldStats(2).ToString(CultureInfo.InvariantCulture), New Vector2(p.X + 32, p.Y + 164), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Sp Attack:   " & OldStats(3).ToString(CultureInfo.InvariantCulture), New Vector2(p.X + 32, p.Y + 204), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Sp Defense:  " & OldStats(4).ToString(CultureInfo.InvariantCulture), New Vector2(p.X + 32, p.Y + 244), Color.Black)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, "Speed:       " & OldStats(5).ToString(CultureInfo.InvariantCulture), New Vector2(p.X + 32, p.Y + 284), Color.Black)
         End If
         If Delay >= 5.0F Then
             Core.SpriteBatch.DrawString(FontManager.MiniFont, "+ " & newMaxHP, New Vector2(p.X + 200, p.Y + 84), Color.Black)
@@ -87,7 +88,7 @@ Public Class BattleGrowStatsScreen
             Dim newStat As Integer = 0
             newStat = newAttack + newDefense + newSpAttack + newMaxHP + newSpDefense + newSpeed
 
-            Core.SpriteBatch.DrawString(FontManager.MiniFont, Pokemon.GetDisplayName() & " got a boost of " & newStat.ToString() & "!", New Vector2(p.X + 32, p.Y + 320), Color.DarkRed)
+            Core.SpriteBatch.DrawString(FontManager.MiniFont, Pokemon.GetDisplayName() & " got a boost of " & newStat.ToString(CultureInfo.InvariantCulture) & "!", New Vector2(p.X + 32, p.Y + 320), Color.DarkRed)
         End If
     End Sub
 

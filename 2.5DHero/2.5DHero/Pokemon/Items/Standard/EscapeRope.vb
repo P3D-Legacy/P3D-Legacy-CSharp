@@ -1,3 +1,4 @@
+Imports System.Globalization
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Screens
@@ -28,7 +29,7 @@ Namespace Items.Standard
 
                 Dim setToFirstPerson As Boolean = Not CType(Screen.Camera, OverworldCamera).ThirdPerson
 
-                Dim yFinish As String = (Screen.Camera.Position.Y + 2.9F).ToString().ReplaceDecSeparator()
+                Dim yFinish As String = (Screen.Camera.Position.Y + 2.9F).ToString(CultureInfo.InvariantCulture)
 
                 Dim s As String = "version=2" & vbNewLine &
                     "@text.show(" & t & ")

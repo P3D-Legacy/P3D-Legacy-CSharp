@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 
 Namespace ScriptVersion2
 
@@ -18,7 +19,7 @@ Namespace ScriptVersion2
                     Dim PokemonIndex As Integer = int(argument.GetSplit(1))
 
                     For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                        If line.StartsWith(dayCareID.ToString() & "|" & PokemonIndex.ToString() & "|") = True Then
+                        If line.StartsWith(dayCareID.ToString(CultureInfo.InvariantCulture) & "|" & PokemonIndex.ToString(CultureInfo.InvariantCulture) & "|") = True Then
                             Dim data As String = line.Remove(0, line.IndexOf("{"))
                             Dim p As Pokemon = Pokemon.GetPokemonByData(data)
                             Return p.Number
@@ -31,7 +32,7 @@ Namespace ScriptVersion2
                     Dim PokemonIndex As Integer = int(argument.GetSplit(1))
 
                     For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                        If line.StartsWith(dayCareID.ToString() & "|" & PokemonIndex.ToString() & "|") = True Then
+                        If line.StartsWith(dayCareID.ToString(CultureInfo.InvariantCulture) & "|" & PokemonIndex.ToString(CultureInfo.InvariantCulture) & "|") = True Then
                             Dim data As String = line.Remove(0, line.IndexOf("{"))
                             Dim p As Pokemon = Pokemon.GetPokemonByData(data)
                             Return p.GetDisplayName()
@@ -44,7 +45,7 @@ Namespace ScriptVersion2
                     Dim PokemonIndex As Integer = int(argument.GetSplit(1))
 
                     For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                        If line.StartsWith(dayCareID.ToString() & "|" & PokemonIndex.ToString() & "|") = True Then
+                        If line.StartsWith(dayCareID.ToString(CultureInfo.InvariantCulture) & "|" & PokemonIndex.ToString(CultureInfo.InvariantCulture) & "|") = True Then
                             Dim data As String = line.Remove(0, line.IndexOf("{"))
                             Dim p As Pokemon = Pokemon.GetPokemonByData(data)
 
@@ -62,7 +63,7 @@ Namespace ScriptVersion2
                     Dim PokemonIndex As Integer = int(argument.GetSplit(1))
 
                     For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                        If line.StartsWith(dayCareID.ToString() & "|" & PokemonIndex.ToString() & "|") = True Then
+                        If line.StartsWith(dayCareID.ToString(CultureInfo.InvariantCulture) & "|" & PokemonIndex.ToString(CultureInfo.InvariantCulture) & "|") = True Then
                             Dim data As String = line.Remove(0, line.IndexOf("{"))
                             Dim p As Pokemon = Pokemon.GetPokemonByData(data)
 
@@ -71,7 +72,7 @@ Namespace ScriptVersion2
                                 shiny = "S"
                             End If
 
-                            Return "[POKEMON|" & shiny & "]" & p.Number.ToString() & PokemonForms.GetOverworldAddition(p)
+                            Return "[POKEMON|" & shiny & "]" & p.Number.ToString(CultureInfo.InvariantCulture) & PokemonForms.GetOverworldAddition(p)
                         End If
                     Next
 
@@ -81,7 +82,7 @@ Namespace ScriptVersion2
                     If Core.Player.DaycareData <> "" Then
                         Dim dayCareID As Integer = int(argument)
                         For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                            If line.StartsWith(dayCareID.ToString() & "|") = True Then
+                            If line.StartsWith(dayCareID.ToString(CultureInfo.InvariantCulture) & "|") = True Then
                                 count += 1
                             End If
                         Next
@@ -92,7 +93,7 @@ Namespace ScriptVersion2
                     If Core.Player.DaycareData <> "" Then
                         Dim dayCareID As Integer = int(argument)
                         For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                            If line.StartsWith(dayCareID.ToString() & "|") = True Then
+                            If line.StartsWith(dayCareID.ToString(CultureInfo.InvariantCulture) & "|") = True Then
                                 count += 1
                             End If
                         Next
@@ -107,7 +108,7 @@ Namespace ScriptVersion2
                     Dim PokemonIndex As Integer = int(argument.GetSplit(1))
 
                     For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                        If line.StartsWith(dayCareID.ToString() & "|" & PokemonIndex.ToString() & "|") = True Then
+                        If line.StartsWith(dayCareID.ToString(CultureInfo.InvariantCulture) & "|" & PokemonIndex.ToString(CultureInfo.InvariantCulture) & "|") = True Then
                             Dim data As String = line.Remove(0, line.IndexOf("{"))
                             Dim p As Pokemon = Pokemon.GetPokemonByData(data)
 
@@ -120,7 +121,7 @@ Namespace ScriptVersion2
                     Dim dayCareID As Integer = int(argument)
 
                     For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                        If line.StartsWith(dayCareID.ToString() & "|Egg|") = True Then
+                        If line.StartsWith(dayCareID.ToString(CultureInfo.InvariantCulture) & "|Egg|") = True Then
                             Return ReturnBoolean(True)
                         End If
                     Next
@@ -130,7 +131,7 @@ Namespace ScriptVersion2
                     Dim PokemonIndex As Integer = int(argument.GetSplit(1))
 
                     For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                        If line.StartsWith(dayCareID.ToString() & "|" & PokemonIndex.ToString() & "|") = True Then
+                        If line.StartsWith(dayCareID.ToString(CultureInfo.InvariantCulture) & "|" & PokemonIndex.ToString(CultureInfo.InvariantCulture) & "|") = True Then
                             Dim data As String = line.Remove(0, line.IndexOf("{"))
                             Dim startStep As Integer = CInt(line.Split(CChar("|"))(2))
                             Dim p As Pokemon = Pokemon.GetPokemonByData(data)
@@ -145,7 +146,7 @@ Namespace ScriptVersion2
                     Dim PokemonIndex As Integer = int(argument.GetSplit(1))
 
                     For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-                        If line.StartsWith(dayCareID.ToString() & "|" & PokemonIndex.ToString() & "|") = True Then
+                        If line.StartsWith(dayCareID.ToString(CultureInfo.InvariantCulture) & "|" & PokemonIndex.ToString(CultureInfo.InvariantCulture) & "|") = True Then
                             Dim data As String = line.Remove(0, line.IndexOf("{"))
                             Dim startStep As Integer = CInt(line.Split(CChar("|"))(2))
                             Dim p As Pokemon = Pokemon.GetPokemonByData(data)

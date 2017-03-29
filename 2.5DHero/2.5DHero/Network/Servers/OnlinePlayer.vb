@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Server
 
 Namespace Servers
@@ -54,10 +55,11 @@ Namespace Servers
                         Case 5 '5: levelfile
                             Me.LevelFile = value
                         Case 6 '6: position
+                            ' TODO: Check
                             Dim posString As String = value.Replace(Me._decimalSeparator, GameController.DecSeparator)
                             Dim posList() As String = posString.Split(CChar("|"))
 
-                            Me.Position = New Vector3(CSng(posList(0)), CSng(posList(1)), CSng(posList(2)))
+                            Me.Position = New Vector3(Single.Parse(posList(0), NumberFormatInfo.InvariantInfo), Single.Parse(posList(1), NumberFormatInfo.InvariantInfo), Single.Parse(posList(2), NumberFormatInfo.InvariantInfo))
                         Case 7 '7: facing
                             Me.Facing = CInt(value)
                         Case 8 '8: moving
@@ -72,7 +74,7 @@ Namespace Servers
                             Dim posString As String = value.Replace(Me._decimalSeparator, GameController.DecSeparator)
                             Dim posList() As String = posString.Split(CChar("|"))
 
-                            Me.PokemonPosition = New Vector3(CSng(posList(0)), CSng(posList(1)), CSng(posList(2)))
+                            Me.PokemonPosition = New Vector3(Single.Parse(posList(0), NumberFormatInfo.InvariantInfo), Single.Parse(posList(1), NumberFormatInfo.InvariantInfo), Single.Parse(posList(2), NumberFormatInfo.InvariantInfo))
                         Case 13 '13: Skin
                             Me.PokemonSkin = value
                         Case 14 '14: facing

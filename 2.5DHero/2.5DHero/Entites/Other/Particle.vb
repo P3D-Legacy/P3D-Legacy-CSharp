@@ -106,8 +106,8 @@ Public Class Particle
         MyBase.UpdateEntity()
     End Sub
 
-    Public Overrides Sub Render()
-        MyBase.Draw(Me.Model, Me.Textures, False)
+    Public Overrides Sub Render(effect As BasicEffect)
+        MyBase.Draw(effect, Me.Model, Me.Textures, False)
     End Sub
 
 End Class

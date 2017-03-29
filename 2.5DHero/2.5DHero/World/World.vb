@@ -270,7 +270,7 @@ Public Class World
         If MapWeather = WeatherEnum.Thunderstorm Then
             If Core.Random.Next(0, 250) = 0 Then
                 Dim pitch As Single = -(Core.Random.Next(8, 11) / 10.0F)
-                'Debug.Print(pitch.ToString())
+                'Debug.Print(pitch.ToString(CultureInfo.InvariantCulture))
                 SoundManager.PlaySound("Battle\Effects\effect_thunderbolt", pitch, 0F, SoundManager.Volume, False)
             End If
         End If

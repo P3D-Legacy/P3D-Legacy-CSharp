@@ -1,5 +1,6 @@
 ﻿Option Strict On
 
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
@@ -72,7 +73,7 @@ Namespace Servers
                 End If
 
                 'facing
-                If Me._lastPackage.DataItems(7) <> Me.GetFacing().ToString() Then
+                If Me._lastPackage.DataItems(7) <> Me.GetFacing().ToString(CultureInfo.InvariantCulture) Then
                     Return True
                 End If
 
@@ -308,7 +309,7 @@ Namespace Servers
             AddToDataItems(dataItems, Core.Player.Name, 4)
             AddToDataItems(dataItems, levelFile, 5)
             AddToDataItems(dataItems, positionString, 6)
-            AddToDataItems(dataItems, facing.ToString(), 7)
+            AddToDataItems(dataItems, facing.ToString(CultureInfo.InvariantCulture), 7)
             AddToDataItems(dataItems, moving, 8)
             AddToDataItems(dataItems, Core.Player.Skin, 9)
             AddToDataItems(dataItems, busyType, 10)
@@ -371,9 +372,9 @@ Namespace Servers
             Get
                 Dim PositionString As String = ""
                 If net.Pokemon3D.Game.Player.Temp.IsInBattle = True Then
-                    PositionString = net.Pokemon3D.Game.Player.Temp.BeforeBattlePosition.X.ToString() & "|" & (net.Pokemon3D.Game.Player.Temp.BeforeBattlePosition.Y - 0.1F).ToString() & "|" & net.Pokemon3D.Game.Player.Temp.BeforeBattlePosition.Z.ToString()
+                    PositionString = net.Pokemon3D.Game.Player.Temp.BeforeBattlePosition.X.ToString(CultureInfo.InvariantCulture) & "|" & (net.Pokemon3D.Game.Player.Temp.BeforeBattlePosition.Y - 0.1F).ToString(CultureInfo.InvariantCulture) & "|" & net.Pokemon3D.Game.Player.Temp.BeforeBattlePosition.Z.ToString(CultureInfo.InvariantCulture)
                 Else
-                    PositionString = Screen.Camera.Position.X.ToString() & "|" & (Screen.Camera.Position.Y - 0.1F).ToString() & "|" & Screen.Camera.Position.Z.ToString()
+                    PositionString = Screen.Camera.Position.X.ToString(CultureInfo.InvariantCulture) & "|" & (Screen.Camera.Position.Y - 0.1F).ToString(CultureInfo.InvariantCulture) & "|" & Screen.Camera.Position.Z.ToString(CultureInfo.InvariantCulture)
                 End If
                 Return PositionString
             End Get
@@ -429,7 +430,7 @@ Namespace Servers
 
         Private ReadOnly Property GetPokemonVisible() As String
             Get
-                If Screen.Level.OverworldPokemon.Visible = True And Screen.Level.Surfing = False And Screen.Level.Riding = False And net.Pokemon3D.Game.Player.Temp.IsInBattle = False Then
+                If Screen.Level.OverworldPokemon.Visible = True And Screen.Level.IsSurfing = False And Screen.Level.IsRiding = False And net.Pokemon3D.Game.Player.Temp.IsInBattle = False Then
                     Return "1"
                 End If
                 Return "0"
@@ -439,7 +440,7 @@ Namespace Servers
         Private ReadOnly Property GetPokemonPosition() As String
             Get
                 If net.Pokemon3D.Game.Player.Temp.IsInBattle = False Then
-                    Return Screen.Level.OverworldPokemon.Position.X.ToString() & "|" & Math.Floor(Screen.Level.OverworldPokemon.Position.Y).ToString() & "|" & Screen.Level.OverworldPokemon.Position.Z.ToString()
+                    Return Screen.Level.OverworldPokemon.Position.X.ToString(CultureInfo.InvariantCulture) & "|" & Math.Floor(Screen.Level.OverworldPokemon.Position.Y).ToString(CultureInfo.InvariantCulture) & "|" & Screen.Level.OverworldPokemon.Position.Z.ToString(CultureInfo.InvariantCulture)
                 End If
                 Return "0|-10|0"
             End Get
@@ -451,13 +452,13 @@ Namespace Servers
                 If Core.Player.GetWalkPokemon().IsShiny = True Then
                     shinyString = "S"
                 End If
-                Return "[POKEMON|" & shinyString & "]" & Core.Player.GetWalkPokemon().Number.ToString() & PokemonForms.GetOverworldAddition(Core.Player.GetWalkPokemon())
+                Return "[POKEMON|" & shinyString & "]" & Core.Player.GetWalkPokemon().Number.ToString(CultureInfo.InvariantCulture) & PokemonForms.GetOverworldAddition(Core.Player.GetWalkPokemon())
             End Get
         End Property
 
         Private ReadOnly Property GetPokemonFacing() As String
             Get
-                Return Screen.Level.OverworldPokemon.faceRotation.ToString()
+                Return Screen.Level.OverworldPokemon.faceRotation.ToString(CultureInfo.InvariantCulture)
             End Get
         End Property
 

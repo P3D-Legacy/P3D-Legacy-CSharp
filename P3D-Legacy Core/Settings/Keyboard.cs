@@ -31,14 +31,14 @@ namespace P3D.Legacy.Core.Settings
         public static async void SaveKeyboard(Keyboard options)
         {
             var serializer = SerializerBuilder.Build();
-            await StorageInfo.KeyboardFile.WriteAllTextAsync(serializer.Serialize(options));
+            await StorageInfo.SaveFolder.KeyboardFile.WriteAllTextAsync(serializer.Serialize(options));
         }
         public static async Task<Keyboard> LoadKeyboard()
         {
             var deserializer = DeserializerBuilder.Build();
             try
             {
-                var deserialized = deserializer.Deserialize<Keyboard>(await StorageInfo.KeyboardFile.ReadAllTextAsync());
+                var deserialized = deserializer.Deserialize<Keyboard>(await StorageInfo.SaveFolder.KeyboardFile.ReadAllTextAsync().ConfigureAwait(false));
                 if (deserialized == null)
                 {
                     SaveKeyboard(Default);
@@ -49,7 +49,7 @@ namespace P3D.Legacy.Core.Settings
             catch (YamlException)
             {
                 SaveKeyboard(Default);
-                var deserialized = deserializer.Deserialize<Keyboard>(await StorageInfo.KeyboardFile.ReadAllTextAsync());
+                var deserialized = deserializer.Deserialize<Keyboard>(await StorageInfo.SaveFolder.KeyboardFile.ReadAllTextAsync());
                 return deserialized;
             }
         }

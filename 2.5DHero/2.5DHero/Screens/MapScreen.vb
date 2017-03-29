@@ -1,9 +1,11 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Security
+Imports PCLExt.FileStorage
 
 Public Class MapScreen
 
@@ -97,10 +99,10 @@ Public Class MapScreen
         Dim TempPoke As New List(Of Roaming)
         Dim RoamingPokeName As New List(Of String)
 
-        Dim path As String = GameModeManager.GetScriptFileAsync("worldmap\" & Me.currentRegion & ".dat").Result.Path
-        FileValidation.CheckFileValid(path, False, "MapScreen.vb")
+        Dim file = GameModeManager.GetScriptFileAsync("worldmap\" & Me.currentRegion & ".dat").Result
+        FileValidation.CheckFileValid(file, False, "MapScreen.vb")
 
-        Dim InputData() As String = System.IO.File.ReadAllLines(path)
+        Dim InputData() As String = file.ReadAllTextAsync.Result.SplitAtNewline()
 
         For Each line As String In InputData
             If line <> "" And line.StartsWith("{""") = True Then
@@ -143,7 +145,7 @@ Public Class MapScreen
                         If Tags.ContainsKey("flyto") = True Then
                             Dim FlyTo As New List(Of String)
                             FlyTo = Tags("flyto").Split(CChar(",")).ToList()
-                            cities.Add(New City(Name, MapFiles, CInt(PositionList(0)), CInt(PositionList(1)), CitySize, FlyTo(0), New Vector3(CSng(FlyTo(1)), CSng(FlyTo(2)), CSng(FlyTo(3)))))
+                            cities.Add(New City(Name, MapFiles, CInt(PositionList(0)), CInt(PositionList(1)), CitySize, FlyTo(0), New Vector3(Single.Parse(FlyTo(1), NumberFormatInfo.InvariantInfo), Single.Parse(FlyTo(2), NumberFormatInfo.InvariantInfo), Single.Parse(FlyTo(3), NumberFormatInfo.InvariantInfo))))
                         Else
                             cities.Add(New City(Name, MapFiles, CInt(PositionList(0)), CInt(PositionList(1)), CitySize, "", Nothing))
                         End If
@@ -201,7 +203,7 @@ Public Class MapScreen
                         If Tags.ContainsKey("flyto") = True Then
                             Dim FlyTo As New List(Of String)
                             FlyTo = Tags("flyto").Split(CChar(",")).ToList()
-                            routes.Add(New Route(Name, MapFiles, CInt(PositionList(0)), CInt(PositionList(1)), RouteDirection, RouteType, FlyTo(0), New Vector3(CSng(FlyTo(1)), CSng(FlyTo(2)), CSng(FlyTo(3)))))
+                            routes.Add(New Route(Name, MapFiles, CInt(PositionList(0)), CInt(PositionList(1)), RouteDirection, RouteType, FlyTo(0), New Vector3(Single.Parse(FlyTo(1), NumberFormatInfo.InvariantInfo), Single.Parse(FlyTo(2), NumberFormatInfo.InvariantInfo), Single.Parse(FlyTo(3), NumberFormatInfo.InvariantInfo))))
                         Else
                             routes.Add(New Route(Name, MapFiles, CInt(PositionList(0)), CInt(PositionList(1)), RouteDirection, RouteType, "", Nothing))
                         End If
@@ -231,7 +233,7 @@ Public Class MapScreen
                         If Tags.ContainsKey("flyto") = True Then
                             Dim FlyTo As New List(Of String)
                             FlyTo = Tags("flyto").Split(CChar(",")).ToList()
-                            places.Add(New Place(Name, MapFiles, CInt(PositionList(0)), CInt(PositionList(1)), PlaceSize, FlyTo(0), New Vector3(CSng(FlyTo(1)), CSng(FlyTo(2)), CSng(FlyTo(3)))))
+                            places.Add(New Place(Name, MapFiles, CInt(PositionList(0)), CInt(PositionList(1)), PlaceSize, FlyTo(0), New Vector3(Single.Parse(FlyTo(1), NumberFormatInfo.InvariantInfo), Single.Parse(FlyTo(2), NumberFormatInfo.InvariantInfo), Single.Parse(FlyTo(3), NumberFormatInfo.InvariantInfo))))
                         Else
                             places.Add(New Place(Name, MapFiles, CInt(PositionList(0)), CInt(PositionList(1)), PlaceSize, "", Nothing))
                         End If
@@ -485,7 +487,7 @@ Public Class MapScreen
             Core.SpriteBatch.DrawString(FontManager.MiniFont, Localization.GetString("Places_" & Me.hoverText), New Vector2(Me.CursorPosition.X + 29, Me.CursorPosition.Y - 32), Color.White)
         End If
 
-        Dim regionString As String = Localization.GetString(Me.currentRegion(0).ToString().ToUpper() & Me.currentRegion.Remove(0, 1))
+        Dim regionString As String = Localization.GetString(Me.currentRegion(0).ToString(NumberFormatInfo.InvariantInfo).ToUpper() & Me.currentRegion.Remove(0, 1))
         If Me.regions.Count > 1 Then
             regionString &= " (Press Shift/Shoulder Buttons to switch between regions)"
         End If
@@ -543,14 +545,14 @@ Public Class MapScreen
         Dim p As Pokemon = CType(flag(1), Pokemon)
         Dim skinName As String = Screen.Level.OwnPlayer.SkinName
 
-        If Screen.Level.Surfing = True Then
+        If Screen.Level.IsSurfing = True Then
             skinName = Core.Player.TempSurfSkin
-            Screen.Level.Surfing = False
+            Screen.Level.IsSurfing = False
             Screen.Level.OverworldPokemon.Visible = False
         End If
-        If Screen.Level.Riding = True Then
+        If Screen.Level.IsRiding = True Then
             skinName = Core.Player.TempRideSkin
-            Screen.Level.Riding = False
+            Screen.Level.IsRiding = False
         End If
 
         Dim isShiny As String = "N"
@@ -580,7 +582,7 @@ Public Class MapScreen
             "@camera.defix" & vbNewLine &
             "@camera.reset" & vbNewLine &
             "@player.turnto(0)" & vbNewLine &
-            "@player.warp(" & FlyToFile & "," & FlyToPosition.X.ToString().ReplaceDecSeparator() & "," & (FlyToPosition.Y - 4 + 0.1F).ToString().ReplaceDecSeparator() & "," & (FlyToPosition.Z + 6).ToString().ReplaceDecSeparator() & ",0)" & vbNewLine &
+            "@player.warp(" & FlyToFile & "," & FlyToPosition.X.ToString(NumberFormatInfo.InvariantInfo) & "," & (FlyToPosition.Y - 4 + 0.1F).ToString(NumberFormatInfo.InvariantInfo) & "," & (FlyToPosition.Z + 6).ToString(NumberFormatInfo.InvariantInfo) & ",0)" & vbNewLine &
             "@camera.setyaw(0)" & vbNewLine &
             "@camera.setposition(0,-3.7,-4.5)" & vbNewLine &
             "@sound.play(Battle\Effects\effect_fly)" & vbNewLine &

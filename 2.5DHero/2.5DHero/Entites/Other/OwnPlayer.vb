@@ -206,11 +206,11 @@ Public Class OwnPlayer
         Return 1
     End Function
 
-    Public Overrides Sub Render()
+    Public Overrides Sub Render(effect As BasicEffect)
         If InCameraFocus() = True Then
             Dim state = Core.GraphicsDevice.DepthStencilState
             Core.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
-            Draw(Me.Model, Me.Textures, True)
+            Draw(effect, Me.Model, Me.Textures, True)
             Core.GraphicsDevice.DepthStencilState = state
         End If
     End Sub

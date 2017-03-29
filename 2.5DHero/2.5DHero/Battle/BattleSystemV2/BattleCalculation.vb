@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
@@ -847,7 +848,7 @@ Namespace BattleSystem
 
             For Each mysteryEvent As MysteryEventScreen.MysteryEvent In MysteryEventScreen.ActivatedMysteryEvents
                 If mysteryEvent.EventType = MysteryEventScreen.EventTypes.EXPMultiplier Then
-                    EXP = CInt(EXP * CSng(mysteryEvent.Value.Replace(".", GameController.DecSeparator)))
+                    EXP = CInt(EXP * Single.Parse(mysteryEvent.Value, NumberFormatInfo.InvariantInfo))
                 End If
             Next
 

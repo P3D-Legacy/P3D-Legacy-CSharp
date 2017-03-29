@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Server
 
 Namespace Servers
@@ -242,12 +243,12 @@ Namespace Servers
         ''' Returns the raw Package data from the members of this instance.
         ''' </summary>
         Public Overrides Function ToString() As String Implements IPackage.ToString
-            Dim outputStr As String = Me._protocolVersion & "|" & CInt(Me._packageType).ToString() & "|" & Me._origin.ToString() & "|" & Me._dataItems.Count
+            Dim outputStr As String = Me._protocolVersion & "|" & CInt(Me._packageType).ToString(CultureInfo.InvariantCulture) & "|" & Me._origin.ToString(CultureInfo.InvariantCulture) & "|" & Me._dataItems.Count
 
             Dim currentIndex As Integer = 0
             Dim data As String = ""
             For Each dataItem As String In Me._dataItems
-                outputStr &= "|" & currentIndex.ToString()
+                outputStr &= "|" & currentIndex.ToString(CultureInfo.InvariantCulture)
                 data &= dataItem
                 currentIndex += dataItem.Length
             Next

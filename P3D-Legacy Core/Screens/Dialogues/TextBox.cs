@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Globalization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -162,7 +162,7 @@ namespace P3D.Legacy.Core.Dialogues
                         {
                             if (_delay <= 0f)
                             {
-                                if (Text[_currentChar].ToString() == "\\")
+                                if (Text[_currentChar].ToString(NumberFormatInfo.InvariantInfo) == "\\")
                                 {
                                     if (Text.Length > _currentChar + 1)
                                     {

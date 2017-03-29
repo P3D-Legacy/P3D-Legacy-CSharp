@@ -1,3 +1,4 @@
+Imports System.Globalization
 Imports P3D.Legacy.Core.Resources
 
 Namespace ScriptVersion2
@@ -1003,13 +1004,13 @@ Namespace ScriptVersion2
 
             Public Overrides Function ToString() As String
                 If Me._isOptional = True Then
-                    Dim s As String = Me._type.ToString().ToLower() & " " & Me._name
+                    Dim s As String = Me._type.ToString(CultureInfo.InvariantCulture).ToLower() & " " & Me._name
                     If Me._defaultValue <> "" Then
                         s &= "=""" & Me._defaultValue & """"
                     End If
                     Return "[" & s & "]"
                 Else
-                    Return Me._type.ToString().ToLower() & " " & Me._name
+                    Return Me._type.ToString(CultureInfo.InvariantCulture).ToLower() & " " & Me._name
                 End If
             End Function
 

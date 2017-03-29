@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
@@ -12,13 +13,13 @@ Public Class Daycare
         Dim EggID As Integer = 0
 
         For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-            If line.StartsWith(daycareID.ToString() & "|0|") = True Then
+            If line.StartsWith(daycareID.ToString(CultureInfo.InvariantCulture) & "|0|") = True Then
                 Dim data As String = line.Remove(0, line.IndexOf("{"))
                 parent1 = net.Pokemon3D.Game.Pokemon.GetPokemonByData(data)
-            ElseIf line.StartsWith(daycareID.ToString() & "|1|") = True Then
+            ElseIf line.StartsWith(daycareID.ToString(CultureInfo.InvariantCulture) & "|1|") = True Then
                 Dim data As String = line.Remove(0, line.IndexOf("{"))
                 parent2 = net.Pokemon3D.Game.Pokemon.GetPokemonByData(data)
-            ElseIf line.StartsWith(daycareID.ToString() & "|Egg|") = True Then
+            ElseIf line.StartsWith(daycareID.ToString(CultureInfo.InvariantCulture) & "|Egg|") = True Then
                 EggID = CInt(line.Split(CChar("|"))(2))
             End If
         Next
@@ -421,7 +422,7 @@ Public Class Daycare
         Dim l As New List(Of Pokemon)
 
         For Each line As String In Core.Player.DaycareData.SplitAtNewline()
-            If line.StartsWith(daycareID.ToString() & "|") = True Then
+            If line.StartsWith(daycareID.ToString(CultureInfo.InvariantCulture) & "|") = True Then
                 Dim data As String = line.Remove(0, line.IndexOf("{"))
                 Dim p As Pokemon = net.Pokemon3D.Game.Pokemon.GetPokemonByData(data)
                 l.Add(p)
@@ -550,7 +551,7 @@ Public Class Daycare
             Next
 
             Logger.Debug("Pokémon count: " & Pokemon.Count)
-            Logger.Debug("Has Egg: " & hasEgg.ToString())
+            Logger.Debug("Has Egg: " & hasEgg.ToString(CultureInfo.InvariantCulture))
 
             If hasEgg = False Then
                 Dim breedChance As Integer = CanBreed(Pokemon)
@@ -560,7 +561,7 @@ Public Class Daycare
                         Dim parentID As Integer = GetEggPokemonID(Pokemon)
 
                         Dim newEggID As Integer = net.Pokemon3D.Game.Pokemon.GetPokemonByID(parentID).EggPokemon
-                        Dim s As String = DaycareID.ToString() & "|Egg|" & newEggID.ToString()
+                        Dim s As String = DaycareID.ToString(CultureInfo.InvariantCulture) & "|Egg|" & newEggID.ToString(CultureInfo.InvariantCulture)
 
                         Logger.Debug("Egg created!" & vbNewLine & "EggID: " & newEggID)
                         TriggerCall(DaycareID)
@@ -580,17 +581,17 @@ Public Class Daycare
     End Sub
 
     Public Shared Sub TriggerCall(ByVal daycareID As Integer)
-        If ActionScript.IsRegistered("daycare_callid_" & daycareID.ToString()) = True Then
-            Dim c() As Object = ActionScript.GetRegisterValue("daycare_callid_" & daycareID.ToString())
+        If ActionScript.IsRegistered("daycare_callid_" & daycareID.ToString(CultureInfo.InvariantCulture)) = True Then
+            Dim c() As Object = ActionScript.GetRegisterValue("daycare_callid_" & daycareID.ToString(CultureInfo.InvariantCulture))
             If Not c(0) Is Nothing And Not c(1) Is Nothing Then
                 Dim callID As String = CStr(c(0))
 
                 GameJolt.PokegearScreen.CallID(callID, True, False)
             Else
-                Logger.Debug("Cannot initialize call for Daycare ID " & daycareID.ToString() & ".")
+                Logger.Debug("Cannot initialize call for Daycare ID " & daycareID.ToString(CultureInfo.InvariantCulture) & ".")
             End If
         Else
-            Logger.Debug("Cannot initialize call for Daycare ID " & daycareID.ToString() & ".")
+            Logger.Debug("Cannot initialize call for Daycare ID " & daycareID.ToString(CultureInfo.InvariantCulture) & ".")
         End If
     End Sub
 

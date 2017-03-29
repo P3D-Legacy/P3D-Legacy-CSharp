@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
@@ -764,7 +765,7 @@ Namespace BattleSystem
                 'Debug feature: Enable if not sure
                 'Logger.Debug("RESULTS:")
                 'For t = 0 To attackDic.Count - 1
-                '    Logger.Debug(t.ToString() & ": " & m(attackDic.Keys(t)).Name & "; VALUE: " & attackDic.Values(t))
+                '    Logger.Debug(t.ToString(CultureInfo.InvariantCulture) & ": " & m(attackDic.Keys(t)).Name & "; VALUE: " & attackDic.Values(t))
                 'Next
 
                 Dim index As Integer = 0
@@ -889,11 +890,11 @@ Namespace BattleSystem
         End Function
 
         Private Shared Function ProduceOppStep(ByVal ItemID As Integer, ByVal target As Integer) As RoundConst
-            Return New RoundConst With {.StepType = RoundConst.StepTypes.Item, .Argument = ItemID.ToString() & "," & target.ToString()}
+            Return New RoundConst With {.StepType = RoundConst.StepTypes.Item, .Argument = ItemID.ToString(CultureInfo.InvariantCulture) & "," & target.ToString(CultureInfo.InvariantCulture)}
         End Function
 
         Private Shared Function ProduceOppStep(ByVal SwitchID As Integer) As RoundConst
-            Return New RoundConst With {.StepType = RoundConst.StepTypes.Switch, .Argument = SwitchID.ToString()}
+            Return New RoundConst With {.StepType = RoundConst.StepTypes.Switch, .Argument = SwitchID.ToString(CultureInfo.InvariantCulture)}
         End Function
 
 #End Region

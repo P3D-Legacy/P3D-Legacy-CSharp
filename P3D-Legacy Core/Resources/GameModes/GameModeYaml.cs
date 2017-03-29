@@ -175,7 +175,7 @@ namespace P3D.Legacy.Core.GameModes
         /// <summary>
         /// The Localizations path to load additional tokens from. Tokens that are already existing get overritten.
         /// </summary>
-        public LocalizationFolder LocalizationFolder { get; set; } = StorageInfo.LocalizationFolder;
+        public TokensFolder LocalizationFolder { get; set; } = StorageInfo.LocalizationFolder;
 
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Sound
@@ -69,7 +70,7 @@ Public Class BlackOutScreen
                         Dim positionString() As String = Core.Player.LastRestPlacePosition.Split(CChar(","))
                         CType(BattleScreen.SavedOverworld.Camera, OverworldCamera).YawLocked = False
                         Screen.Camera.Yaw = MathHelper.Pi
-                        Screen.Camera.Position = New Vector3(CSng(positionString(0).Replace(".", GameController.DecSeparator)), CSng(positionString(1).Replace(".", GameController.DecSeparator)), CSng(positionString(2).Replace(".", GameController.DecSeparator)))
+                        Screen.Camera.Position = New Vector3(Single.Parse(positionString(0), NumberFormatInfo.InvariantInfo), Single.Parse(positionString(1), NumberFormatInfo.InvariantInfo), Single.Parse(positionString(2), NumberFormatInfo.InvariantInfo))
                         CType(BattleScreen.SavedOverworld.OverworldScreen, OverworldScreen).ActionScript.Scripts.Clear()
 
                         Core.SetScreen(New TransitionScreen(Me, BattleScreen.SavedOverworld.OverworldScreen, Color.Black, False))
@@ -85,7 +86,7 @@ Public Class BlackOutScreen
                         Dim positionString() As String = Core.Player.LastRestPlacePosition.Split(CChar(","))
                         CType(BattleScreen.SavedOverworld.Camera, OverworldCamera).YawLocked = False
                         Screen.Camera.Yaw = MathHelper.Pi
-                        Screen.Camera.Position = New Vector3(CSng(positionString(0).Replace(".", GameController.DecSeparator)), CSng(positionString(1).Replace(".", GameController.DecSeparator)), CSng(positionString(2).Replace(".", GameController.DecSeparator)))
+                        Screen.Camera.Position = New Vector3(Single.Parse(positionString(0), NumberFormatInfo.InvariantInfo), Single.Parse(positionString(1), NumberFormatInfo.InvariantInfo), Single.Parse(positionString(2), NumberFormatInfo.InvariantInfo))
                         CType(BattleScreen.SavedOverworld.OverworldScreen, OverworldScreen).ActionScript.Scripts.Clear()
 
                         While Core.CurrentScreen.Identification <> Identifications.OverworldScreen
@@ -154,13 +155,13 @@ Public Class BlackOutScreen
     End Sub
 
     Private Sub ChangeFromSurfRideTexture()
-        If Screen.Level.Riding = True Then
-            Screen.Level.Riding = False
+        If Screen.Level.IsRiding = True Then
+            Screen.Level.IsRiding = False
             Screen.Level.OwnPlayer.SetTexture(Core.Player.TempRideSkin, True)
             Core.Player.Skin = Core.Player.TempRideSkin
         End If
-        If Screen.Level.Surfing = True Then
-            Screen.Level.Surfing = False
+        If Screen.Level.IsSurfing = True Then
+            Screen.Level.IsSurfing = False
             Screen.Level.OwnPlayer.SetTexture(Core.Player.TempSurfSkin, True)
             Core.Player.Skin = Core.Player.TempSurfSkin
         End If

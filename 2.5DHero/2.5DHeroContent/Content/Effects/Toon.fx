@@ -1,4 +1,13 @@
-﻿//--------------------------- BASIC PROPERTIES ------------------------------
+﻿#if OPENGL
+	#define SV_POSITION POSITION
+	#define VS_SHADERMODEL vs_3_0
+	#define PS_SHADERMODEL ps_3_0
+#else
+	#define VS_SHADERMODEL vs_4_0_level_9_1
+	#define PS_SHADERMODEL ps_4_0_level_9_1
+#endif
+
+//--------------------------- BASIC PROPERTIES ------------------------------
 // The world transformation
 float4x4 World;
 
@@ -148,8 +157,8 @@ technique Toon
 	// model will get drawn normally, and draw over the top most of this, leaving only an outline.
 	pass Pass1
 	{
-		VertexShader = compile vs_2_0 OutlineVertexShader();
-		PixelShader = compile ps_2_0 OutlinePixelShader();
+		VertexShader = compile VS_SHADERMODEL OutlineVertexShader();
+		PixelShader = compile PS_SHADERMODEL OutlinePixelShader();
 		CullMode = CW;
 	}
 
@@ -157,8 +166,8 @@ technique Toon
 	// color the model with certain colors, giving us the cel/toon effect that we are looking for.
 	pass Pass2
 	{
-		VertexShader = compile vs_2_0 CelVertexShader();
-		PixelShader = compile ps_2_0 CelPixelShader();
+		VertexShader = compile VS_SHADERMODEL CelVertexShader();
+		PixelShader = compile PS_SHADERMODEL CelPixelShader();
 		CullMode = CCW;
 	}
 }

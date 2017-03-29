@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Globalization;
 using P3D.Legacy.Core.Resources;
 
 namespace P3D.Legacy.Core.Pokemon
@@ -35,7 +35,7 @@ namespace P3D.Legacy.Core.Pokemon
 
             if (LoadedMoves.Count > 0)
             {
-                Logger.Debug("Loaded " + LoadedMoves.Count.ToString() + " GameMode move(s).");
+                Logger.Debug("Loaded " + LoadedMoves.Count.ToString(NumberFormatInfo.InvariantInfo) + " GameMode move(s).");
             }
         }
 
@@ -273,12 +273,12 @@ namespace P3D.Legacy.Core.Pokemon
                     }
                     else
                     {
-                        Logger.Log(Logger.LogTypes.ErrorMessage, "GameModeAttackLoader.vb: User defined moves are not allowed to have an ID of an already existing move or an ID below 1000. The ID for the move loaded from \"" + file + "\" has the ID " + move.Id.ToString() + ", which is the ID of an already existing move (" + testMove.Name + ").");
+                        Logger.Log(Logger.LogTypes.ErrorMessage, "GameModeAttackLoader.vb: User defined moves are not allowed to have an ID of an already existing move or an ID below 1000. The ID for the move loaded from \"" + file + "\" has the ID " + move.Id.ToString(NumberFormatInfo.InvariantInfo) + ", which is the ID of an already existing move (" + testMove.Name + ").");
                     }
                 }
                 else
                 {
-                    Logger.Log(Logger.LogTypes.ErrorMessage, "GameModeAttackLoader.vb: User defined moves are not allowed to have an ID of an already existing move or an ID below 1000. The ID for the move loaded from \"" + file + "\" has the ID " + move.Id.ToString() + ", which is smaller than 1000.");
+                    Logger.Log(Logger.LogTypes.ErrorMessage, "GameModeAttackLoader.vb: User defined moves are not allowed to have an ID of an already existing move or an ID below 1000. The ID for the move loaded from \"" + file + "\" has the ID " + move.Id.ToString(NumberFormatInfo.InvariantInfo) + ", which is smaller than 1000.");
                 }
             }
             else

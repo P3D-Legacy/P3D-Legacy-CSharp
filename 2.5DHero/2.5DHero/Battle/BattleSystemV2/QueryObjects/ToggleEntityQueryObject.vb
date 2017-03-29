@@ -1,4 +1,6 @@
-﻿Namespace BattleSystem
+﻿Imports System.Globalization
+
+Namespace BattleSystem
 
     Public Class ToggleEntityQueryObject
 
@@ -173,15 +175,15 @@
         End Function
 
         Public Overrides Function ToString() As String
-            Dim s As String = Me.ChangeType.ToString() & "|"
+            Dim s As String = Me.ChangeType.ToString(CultureInfo.InvariantCulture) & "|"
 
             Select Case Me.ChangeType
                 Case 0
-                    s &= "0|" & CInt(Me._entity).ToString() & "|" & Me._toggleMode.ToString() & "|" & Me.ownModelID.ToString() & "|" & Me.ownNPCID.ToString() & "|" & Me.oppModelID.ToString() & "|" & Me.oppNPCID.ToString()
+                    s &= "0|" & CInt(Me._entity).ToString(CultureInfo.InvariantCulture) & "|" & Me._toggleMode.ToString(CultureInfo.InvariantCulture) & "|" & Me.ownModelID.ToString(CultureInfo.InvariantCulture) & "|" & Me.ownNPCID.ToString(CultureInfo.InvariantCulture) & "|" & Me.oppModelID.ToString(CultureInfo.InvariantCulture) & "|" & Me.oppNPCID.ToString(CultureInfo.InvariantCulture)
                 Case 1
-                    s &= "0|" & CInt(Me._entity).ToString() & "|" & Me._newTexture & "|" & Me.ownModelID.ToString() & "|" & Me.ownNPCID.ToString() & "|" & Me.oppModelID.ToString() & "|" & Me.oppNPCID.ToString()
+                    s &= "0|" & CInt(Me._entity).ToString(CultureInfo.InvariantCulture) & "|" & Me._newTexture & "|" & Me.ownModelID.ToString(CultureInfo.InvariantCulture) & "|" & Me.ownNPCID.ToString(CultureInfo.InvariantCulture) & "|" & Me.oppModelID.ToString(CultureInfo.InvariantCulture) & "|" & Me.oppNPCID.ToString(CultureInfo.InvariantCulture)
                 Case 2
-                    s &= (Not Me.own).ToNumberString() & "|" & Me._newTexture & "|" & Me.ownModelID.ToString() & "|" & Me.ownNPCID.ToString() & "|" & Me.oppModelID.ToString() & "|" & Me.oppNPCID.ToString()
+                    s &= (Not Me.own).ToNumberString() & "|" & Me._newTexture & "|" & Me.ownModelID.ToString(CultureInfo.InvariantCulture) & "|" & Me.ownNPCID.ToString(CultureInfo.InvariantCulture) & "|" & Me.oppModelID.ToString(CultureInfo.InvariantCulture) & "|" & Me.oppNPCID.ToString(CultureInfo.InvariantCulture)
             End Select
 
             Return "{TOGGLEENTITY|" & s & "}"

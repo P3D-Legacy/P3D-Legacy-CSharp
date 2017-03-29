@@ -9,7 +9,6 @@ namespace P3D.Legacy.Core.Storage.Folders
     public class PokemonDataFolder : IFolder
     {
         private IFolder _folder;
-
         public string Name => _folder.Name;
         public string Path => _folder.Path;
 
@@ -24,5 +23,6 @@ namespace P3D.Legacy.Core.Storage.Folders
         public Task<IList<IFile>> GetFilesAsync(CancellationToken cancellationToken = default(CancellationToken)) => _folder.GetFilesAsync(cancellationToken);
         public Task<IFolder> GetFolderAsync(string name, CancellationToken cancellationToken = default(CancellationToken)) => _folder.GetFolderAsync(name, cancellationToken);
         public Task<IList<IFolder>> GetFoldersAsync(CancellationToken cancellationToken = default(CancellationToken)) => _folder.GetFoldersAsync(cancellationToken);
+        public Task<IFolder> MoveAsync(IFolder folder, NameCollisionOption option = NameCollisionOption.ReplaceExisting, CancellationToken cancellationToken = new CancellationToken()) => _folder.MoveAsync(folder, option, cancellationToken);
     }
 }

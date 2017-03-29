@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Security
@@ -17,10 +18,10 @@ Public Class Pokedex
     Public Shared Sub Load()
         Core.Player.Pokedexes.Clear()
 
-        Dim path As IFile = GameModeManager.GetContentFileAsync("Data\pokedex.dat").Result
-        FileValidation.CheckFileValid(path, False, "Pokedex.vb")
+        Dim file As IFile = GameModeManager.GetContentFileAsync("Data\pokedex.dat").Result
+        FileValidation.CheckFileValid(file, False, "Pokedex.vb")
 
-        Dim lines() As String = System.IO.File.ReadAllLines(path.Path)
+        Dim lines() As String = file.ReadAllTextAsync.Result.SplitAtNewline()
         For Each PokedexData As String In lines
             Core.Player.Pokedexes.Add(New Pokedex(PokedexData))
         Next
@@ -51,7 +52,7 @@ Public Class Pokedex
         Dim Place As Integer = 1
 
         For Each l As String In pokemonData
-            l = l.Replace("[MAX]", POKEMONCOUNT.ToString())
+            l = l.Replace("[MAX]", POKEMONCOUNT.ToString(NumberFormatInfo.InvariantInfo))
 
             If l.Contains("-") = True Then
                 Dim range() As String = l.Split(CChar("-"))

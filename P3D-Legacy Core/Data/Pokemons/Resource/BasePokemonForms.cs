@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-
+using System.Globalization;
 using Microsoft.Xna.Framework;
 
 using P3D.Legacy.Core.Resources;
@@ -136,7 +136,7 @@ namespace P3D.Legacy.Core.Pokemon.Resource
         public static string GetPokemonDataFile(int Number, string AdditionalData)
         {
             // TODO
-            var FileName = GameModeManager.GetPokemonDataFileAsync(Number.ToString() + ".dat").Result.Path;
+            var FileName = GameModeManager.GetPokemonDataFileAsync(Number.ToString(NumberFormatInfo.InvariantInfo) + ".dat").Result.Path;
 
             string Addition = "";
 

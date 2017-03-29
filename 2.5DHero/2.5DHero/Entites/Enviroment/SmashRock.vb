@@ -166,8 +166,8 @@ Public Class SmashRock
         End If
     End Sub
 
-    Public Overrides Sub Render()
-        Me.Draw(Me.Model, Me.Textures, False)
+    Public Overrides Sub Render(effect As BasicEffect)
+        Me.Draw(effect, Me.Model, Me.Textures, False)
     End Sub
 
 End Class

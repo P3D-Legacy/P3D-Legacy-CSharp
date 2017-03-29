@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Battle
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.GameJolt.Profiles
@@ -161,7 +162,7 @@ Public Class PokemonScreen
                 Screen.Level.OverworldPokemon.ForceTextureChange()
                 Screen.Level.OverworldPokemon.Update()
                 Screen.Level.OverworldPokemon.UpdateEntity()
-                Screen.Level.OverworldPokemon.Render()
+                Screen.Level.OverworldPokemon.Render(Screen.Effect)
             End If
         End If
     End Sub
@@ -439,7 +440,7 @@ Public Class PokemonScreen
             End If
 
             Dim space As String = ""
-            For x = 1 To 3 - Pokemon.Level.ToString().Length
+            For x = 1 To 3 - Pokemon.Level.ToString(NumberFormatInfo.InvariantInfo).Length
                 space &= " "
             Next
 
@@ -539,8 +540,8 @@ Public Class PokemonScreen
     End Sub
 
     Private Sub UseRide()
-        If Screen.Level.Riding = True Then
-            Screen.Level.Riding = False
+        If Screen.Level.IsRiding = True Then
+            Screen.Level.IsRiding = False
             Screen.Level.OwnPlayer.SetTexture(Core.Player.TempRideSkin, True)
             Core.Player.Skin = Core.Player.TempRideSkin
 
@@ -554,14 +555,14 @@ Public Class PokemonScreen
                 MusicManager.PlayMusic(Level.MusicLoop)
             End If
         Else
-            If Screen.Level.Surfing = False And Screen.Camera.IsMoving() = False And Screen.Camera.Turning = False And Level.CanRide() = True Then
+            If Screen.Level.IsSurfing = False And Screen.Camera.IsMoving() = False And Screen.Camera.Turning = False And Level.CanRide = True Then
                 ChooseBox.Showing = False
                 Core.SetScreen(Me.PreScreen)
                 If Core.CurrentScreen.Identification = Identifications.MenuScreen Then
                     Core.SetScreen(Core.CurrentScreen.PreScreen)
                 End If
 
-                Screen.Level.Riding = True
+                Screen.Level.IsRiding = True
                 Core.Player.TempRideSkin = Core.Player.Skin
 
                 Dim skin As String = "[POKEMON|"
@@ -606,7 +607,7 @@ Public Class PokemonScreen
 @camera.fix
 @player.turnto(0)
 @sound.play(destroy)
-:while:<player.position(y)>>" & (Screen.Camera.Position.Y - 1.4).ToString().ReplaceDecSeparator() & "
+:while:<player.position(y)>>" & (Screen.Camera.Position.Y - 1.4).ToString(NumberFormatInfo.InvariantInfo) & "
 @player.turn(1)
 @player.warp(~,~-0.1,~)
 @level.wait(1)
@@ -641,7 +642,7 @@ Public Class PokemonScreen
 
             Dim setToFirstPerson As Boolean = Not CType(Screen.Camera, OverworldCamera).ThirdPerson
 
-            Dim yFinish As String = (Screen.Camera.Position.Y + 2.9F).ToString().ReplaceDecSeparator()
+            Dim yFinish As String = (Screen.Camera.Position.Y + 2.9F).ToString(NumberFormatInfo.InvariantInfo)
 
             Dim s As String = "version=2
 @text.show(" & Core.Player.Pokemons(index).GetDisplayName() & "~used Teleport!)

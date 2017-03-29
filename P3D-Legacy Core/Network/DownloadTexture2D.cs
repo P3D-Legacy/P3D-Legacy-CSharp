@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Net;
 
@@ -30,7 +31,7 @@ namespace P3D.Legacy.Core.Network
                     Directory.CreateDirectory(GameController.GamePath + n_tempPath);
                 }
 
-                string Filename = GameController.GamePath + n_tempPath + DateTime.Now.Ticks.ToString() + ".tmp";
+                string Filename = GameController.GamePath + n_tempPath + DateTime.Now.Ticks.ToString(NumberFormatInfo.InvariantInfo) + ".tmp";
 
                 int tI = 1;
                 if (File.Exists(Filename))

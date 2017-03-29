@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
@@ -145,7 +146,7 @@ Namespace GameJolt
                     End If
 
                     Core.SpriteBatch.DrawString(FontManager.MiniFont, "Level: " & P.Level & vbNewLine & vbNewLine &
-                                                 "Gender: " & P.Gender.ToString() & vbNewLine & vbNewLine &
+                                                 "Gender: " & P.Gender.ToString(CultureInfo.InvariantCulture) & vbNewLine & vbNewLine &
                                                  "OT: " & P.CatchTrainerName & "/" & P.OT & vbNewLine & vbNewLine &
                                                  "Item: " & ItemString, New Vector2(150 + OwnX, 360), Microsoft.Xna.Framework.Color.Black)
 
@@ -201,7 +202,7 @@ Namespace GameJolt
                 End If
 
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, "Level: " & D.Pokemon.Level & vbNewLine & vbNewLine &
-                                             "Gender: " & D.Pokemon.Gender.ToString() & vbNewLine & vbNewLine &
+                                             "Gender: " & D.Pokemon.Gender.ToString(CultureInfo.InvariantCulture) & vbNewLine & vbNewLine &
                                              "OT: " & D.Pokemon.CatchTrainerName & "/" & D.Pokemon.OT & vbNewLine & vbNewLine &
                                              "Item: " & ItemString, New Vector2(150 + OppX, 360), Microsoft.Xna.Framework.Color.Black)
 
@@ -217,7 +218,7 @@ Namespace GameJolt
 
                 Dim v As Integer = P.TradeValue - D.Pokemon.TradeValue
 
-                If v.ToString().EndsWith("5") = True Then
+                If v.ToString(CultureInfo.InvariantCulture).EndsWith("5") = True Then
                     v += 5
                 End If
 
@@ -363,7 +364,7 @@ Namespace GameJolt
 
                     Dim v As Integer = P.TradeValue - D.Pokemon.TradeValue
 
-                    If v.ToString().EndsWith("5") = True Then
+                    If v.ToString(CultureInfo.InvariantCulture).EndsWith("5") = True Then
                         v += 5
                     End If
 
@@ -450,7 +451,7 @@ Namespace GameJolt
 
                             If P1Pos.Y >= Core.windowSize.Height And P2Pos.Y <= -160 Then
                                 If D.Pokemon.CanEVolve(EvolutionCondition.EvolutionTrigger.Trading, "") = True Then
-                                    Core.SetScreen(New EvolutionScreen(Me, {Core.Player.Pokemons.Count - 1}.ToList(), P.Number.ToString(), EvolutionCondition.EvolutionTrigger.Trading))
+                                    Core.SetScreen(New EvolutionScreen(Me, {Core.Player.Pokemons.Count - 1}.ToList(), P.Number.ToString(CultureInfo.InvariantCulture), EvolutionCondition.EvolutionTrigger.Trading))
                                 End If
                                 state = 3
                             End If

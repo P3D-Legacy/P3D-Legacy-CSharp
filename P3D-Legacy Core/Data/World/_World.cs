@@ -556,7 +556,7 @@ namespace P3D.Legacy.Core.World
                 if (Core.Random.Next(0, 250) == 0)
                 {
                     float pitch = -(Core.Random.Next(8, 11) / 10f);
-                    //Debug.Print(pitch.ToString())
+                    //Debug.Print(pitch.ToString(NumberFormatInfo.InvariantInfo))
                     SoundManager.PlaySound("Battle\\Effects\\effect_thunderbolt", pitch, 0f, SoundManager.Volume, false);
                 }
             }

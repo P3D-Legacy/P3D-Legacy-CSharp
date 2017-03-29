@@ -124,8 +124,8 @@ Public Class ApricornPlant
         MyBase.UpdateEntity()
     End Sub
 
-    Public Overrides Sub Render()
-        Draw(Model, Textures, False)
+    Public Overrides Sub Render(effect As BasicEffect)
+        Draw(effect, Model, Textures, False)
     End Sub
 
     Public Overrides Sub ClickFunction()

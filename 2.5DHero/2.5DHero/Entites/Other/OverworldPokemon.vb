@@ -117,11 +117,11 @@ Public Class OverworldPokemon
         MyBase.UpdateEntity()
     End Sub
 
-    Public Overrides Sub Render()
+    Public Overrides Sub Render(effect As BasicEffect)
         If Me.IsVisible() = True Then
             Dim state = Core.GraphicsDevice.DepthStencilState
             Core.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
-            Draw(Me.Model, {Me.Textures(0)}, False)
+            Draw(effect, Me.Model, {Me.Textures(0)}, False)
             Core.GraphicsDevice.DepthStencilState = state
         End If
     End Sub
@@ -134,7 +134,7 @@ Public Class OverworldPokemon
             If Screen.Level.ShowOverworldPokemon = True Then
                 If IsCorrectScreen() = True Then
                     If Not Core.Player.GetWalkPokemon() Is Nothing Then
-                        If Screen.Level.Surfing = False And Screen.Level.Riding = False Then
+                        If Screen.Level.IsSurfing = False And Screen.Level.IsRiding = False Then
                             If Me.PokemonID > 0 Then
                                 If Not Me.Textures Is Nothing Then
                                     Return True
@@ -248,7 +248,7 @@ Public Class OverworldPokemon
 
     Public Overrides Sub ClickFunction()
         If GameModeManager.GetActiveGameRuleValueOrDefault("ShowFollowPokemon", True) = True Then
-            If Me.Visible = True And Not Core.Player.GetWalkPokemon() Is Nothing And Screen.Level.Surfing = False And Screen.Level.Riding = False And Screen.Level.ShowOverworldPokemon = True Then
+            If Me.Visible = True And Not Core.Player.GetWalkPokemon() Is Nothing And Screen.Level.IsSurfing = False And Screen.Level.IsRiding = False And Screen.Level.ShowOverworldPokemon = True Then
                 Dim p As Pokemon = Core.Player.GetWalkPokemon()
                 Dim scriptString As String = PokemonInteractions.GetScriptString(p, Me.Position, Me.faceRotation)
 

@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
@@ -182,7 +183,7 @@ Namespace GameJolt
                         End If
 
                         Core.SpriteBatch.DrawString(FontManager.MiniFont, "Level: " & D.Pokemon.Level & vbNewLine & vbNewLine &
-                                                     "Gender: " & D.Pokemon.Gender.ToString() & vbNewLine & vbNewLine &
+                                                     "Gender: " & D.Pokemon.Gender.ToString(CultureInfo.InvariantCulture) & vbNewLine & vbNewLine &
                                                      "OT: " & D.Pokemon.CatchTrainerName & "/" & D.Pokemon.OT & vbNewLine & vbNewLine &
                                                      "Item: " & ItemString, New Vector2(524, 360), Microsoft.Xna.Framework.Color.Black)
 
@@ -648,7 +649,7 @@ Namespace GameJolt
                             y += 1
                         End While
 
-                        Dim Number As String = CurrentPokemon.Keys(i).ToString()
+                        Dim Number As String = CurrentPokemon.Keys(i).ToString(CultureInfo.InvariantCulture)
                         While Number.Length < 3
                             Number = "0" & Number
                         End While
@@ -710,7 +711,7 @@ Namespace GameJolt
                             End While
 
                             If New Microsoft.Xna.Framework.Rectangle(100 + x * 160, 200 + y * 100, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
-                                Dim newSetting As String = CurrentPokemon.Values(i) & " (" & CurrentPokemon.Keys(i).ToString() & ")"
+                                Dim newSetting As String = CurrentPokemon.Values(i) & " (" & CurrentPokemon.Keys(i).ToString(CultureInfo.InvariantCulture) & ")"
 
                                 If Mode = "Request" Then
                                     Me.GTSSearchScreen.RequestFilter = newSetting

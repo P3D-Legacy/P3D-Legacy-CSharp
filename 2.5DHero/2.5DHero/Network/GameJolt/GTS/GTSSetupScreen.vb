@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
@@ -112,7 +113,7 @@ Namespace GameJolt
                         End If
 
                         Core.SpriteBatch.DrawString(FontManager.MiniFont, "Level: " & D.Pokemon.Level & vbNewLine & vbNewLine &
-                                                     "Gender: " & D.Pokemon.Gender.ToString() & vbNewLine & vbNewLine &
+                                                     "Gender: " & D.Pokemon.Gender.ToString(CultureInfo.InvariantCulture) & vbNewLine & vbNewLine &
                                                      "OT: " & D.Pokemon.CatchTrainerName & "/" & D.Pokemon.OT & vbNewLine & vbNewLine &
                                                      "Item: " & ItemString & vbNewLine & vbNewLine &
                                                      "Message: " & vbNewLine & D.Message, New Vector2(524, 360), Microsoft.Xna.Framework.Color.Black)
@@ -398,7 +399,7 @@ Namespace GameJolt
                         If D.SecurityArea = GTSDataItem.SecurityCode.Global Then
                             Dim v As Integer = TempPokemon.TradeValue - D.Pokemon.TradeValue
 
-                            If v.ToString().EndsWith("5") = True Then
+                            If v.ToString(CultureInfo.InvariantCulture).EndsWith("5") = True Then
                                 v += 5
                             End If
 
@@ -456,7 +457,7 @@ Namespace GameJolt
                     End If
 
                     Core.SpriteBatch.DrawString(FontManager.MiniFont, "Level: " & D.Pokemon.Level & vbNewLine & vbNewLine &
-                                                 "Gender: " & D.Pokemon.Gender.ToString() & vbNewLine & vbNewLine &
+                                                 "Gender: " & D.Pokemon.Gender.ToString(CultureInfo.InvariantCulture) & vbNewLine & vbNewLine &
                                                  "OT: " & D.Pokemon.CatchTrainerName & "/" & D.Pokemon.OT & vbNewLine & vbNewLine &
                                                  "Item: " & ItemString, New Vector2(74, 356), Microsoft.Xna.Framework.Color.Black)
 
@@ -481,7 +482,7 @@ Namespace GameJolt
                 DrawFilter(New Vector2(420, 280), 4, "Level:", D.RequestLevel)
                 DrawFilter(New Vector2(420, 360), 4, "Gender:", D.RequestGender)
 
-                DrawFilter(New Vector2(600, 200), 4, "Area:", D.SecurityArea.ToString())
+                DrawFilter(New Vector2(600, 200), 4, "Area:", D.SecurityArea.ToString(CultureInfo.InvariantCulture))
 
                 If D.SecurityArea = GTSDataItem.SecurityCode.Private Then
                     Dim RecipientName As String = ""
@@ -511,7 +512,7 @@ Namespace GameJolt
 
                         '        Dim v As Integer = p.TradeValue - D.Pokemon.TradeValue
 
-                        '        If v.ToString().EndsWith("5") = True Then
+                        '        If v.ToString(CultureInfo.InvariantCulture).EndsWith("5") = True Then
                         '            v += 5
                         '        End If
 
@@ -560,7 +561,7 @@ Namespace GameJolt
                                         If D.SecurityArea = GTSDataItem.SecurityCode.Private And D.ToUserID <> "" Or D.SecurityArea = GTSDataItem.SecurityCode.Global Then
                                             Dim v As Integer = TempPokemon.TradeValue - D.Pokemon.TradeValue
 
-                                            If v.ToString().EndsWith("5") = True Then
+                                            If v.ToString(CultureInfo.InvariantCulture).EndsWith("5") = True Then
                                                 v += 5
                                             End If
 
@@ -610,7 +611,7 @@ Namespace GameJolt
 
                             'Dim v As Integer = TempPokemon.TradeValue - D.Pokemon.TradeValue
 
-                            'If v.ToString().EndsWith("5") = True Then
+                            'If v.ToString(CultureInfo.InvariantCulture).EndsWith("5") = True Then
                             '    v += 5
                             'End If
 
@@ -819,7 +820,7 @@ Namespace GameJolt
                 If Not TempPokemon Is Nothing Then
                     Dim v As Integer = TempPokemon.TradeValue - D.Pokemon.TradeValue
 
-                    If v.ToString().EndsWith("5") = True Then
+                    If v.ToString(CultureInfo.InvariantCulture).EndsWith("5") = True Then
                         v += 5
                     End If
 
@@ -917,7 +918,7 @@ Namespace GameJolt
                                 y += 1
                             End While
 
-                            Dim Number As String = CurrentPokemon.Keys(i).ToString()
+                            Dim Number As String = CurrentPokemon.Keys(i).ToString(CultureInfo.InvariantCulture)
                             While Number.Length < 3
                                 Number = "0" & Number
                             End While
@@ -979,12 +980,12 @@ Namespace GameJolt
                                 End While
 
                                 If New Microsoft.Xna.Framework.Rectangle(100 + x * 160, 200 + y * 100, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
-                                    Dim newSetting As String = CurrentPokemon.Values(i) & " (" & CurrentPokemon.Keys(i).ToString() & ")"
+                                    Dim newSetting As String = CurrentPokemon.Values(i) & " (" & CurrentPokemon.Keys(i).ToString(CultureInfo.InvariantCulture) & ")"
 
                                     If Mode = "Request" Then
-                                        Me.GTSEditTradeScreen.D.RequestID = CurrentPokemon.Keys(i).ToString()
+                                        Me.GTSEditTradeScreen.D.RequestID = CurrentPokemon.Keys(i).ToString(CultureInfo.InvariantCulture)
                                     ElseIf Mode = "Offer" Then
-                                        Me.GTSEditTradeScreen.D.RequestID = CurrentPokemon.Keys(i).ToString()
+                                        Me.GTSEditTradeScreen.D.RequestID = CurrentPokemon.Keys(i).ToString(CultureInfo.InvariantCulture)
                                     End If
 
                                     Close()
@@ -1383,7 +1384,7 @@ Namespace GameJolt
                                 y += 1
                             End While
 
-                            Dim UserID As String = Users.Keys(i + Page * 20).ToString()
+                            Dim UserID As String = Users.Keys(i + Page * 20).ToString(CultureInfo.InvariantCulture)
                             Dim UserName As String = Users.Values(i + Page * 20)
 
                             DrawButton(New Vector2(100 + x * 160, 200 + y * 100), 4, "User (" & UserID & ")", UserName)
@@ -1446,7 +1447,7 @@ Namespace GameJolt
                                 End While
 
                                 If New Microsoft.Xna.Framework.Rectangle(100 + x * 160, 200 + y * 100, 32 * 4, 64).Contains(MouseHandler.MousePosition) = True Then
-                                    Me.GTSEditTradeScreen.D.ToUserID = Users.Keys(i + Page * 20).ToString()
+                                    Me.GTSEditTradeScreen.D.ToUserID = Users.Keys(i + Page * 20).ToString(CultureInfo.InvariantCulture)
                                     Core.SetScreen(Me.GTSEditTradeScreen)
                                 End If
                             End If

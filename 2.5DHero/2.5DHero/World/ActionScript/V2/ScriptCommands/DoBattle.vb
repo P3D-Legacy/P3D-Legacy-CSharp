@@ -35,7 +35,7 @@ Namespace ScriptVersion2
                             CType(Core.CurrentScreen, OverworldScreen).TrainerEncountered = False
 
                             Dim method As Integer = 0
-                            If Screen.Level.Surfing = True Then
+                            If Screen.Level.IsSurfing = True Then
                                 method = 2
                             End If
 
@@ -80,7 +80,7 @@ Namespace ScriptVersion2
                     Dim t As New Trainer(ID)
 
                     Dim method As Integer = 0
-                    If Screen.Level.Surfing = True Then
+                    If Screen.Level.IsSurfing = True Then
                         method = 2
                     End If
 
@@ -102,7 +102,7 @@ Namespace ScriptVersion2
                     Dim introType As Integer = Core.Random.Next(0, 10)
 
                     Dim method As Integer = 0
-                    If Screen.Level.Surfing = True Then
+                    If Screen.Level.IsSurfing = True Then
                         method = 2
                     End If
 

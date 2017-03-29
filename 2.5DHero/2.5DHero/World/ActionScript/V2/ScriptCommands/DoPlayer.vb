@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Dialogues
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Resources
@@ -123,24 +124,24 @@ Namespace ScriptVersion2
                     Select Case commas
                         Case 4
                             Screen.Level.WarpData.WarpDestination = argument.GetSplit(0)
-                            Screen.Level.WarpData.WarpPosition = New Vector3(sng(argument.GetSplit(1).Replace("~", CStr(cPosition.X)).Replace(".", GameController.DecSeparator)),
-                                                                          sng(argument.GetSplit(2).Replace("~", CStr(cPosition.Y)).Replace(".", GameController.DecSeparator)),
-                                                                          sng(argument.GetSplit(3).Replace("~", CStr(cPosition.Z)).Replace(".", GameController.DecSeparator)))
+                            Screen.Level.WarpData.WarpPosition = New Vector3(sng(argument.GetSplit(1).Replace("~", CStr(cPosition.X))),
+                                                                          sng(argument.GetSplit(2).Replace("~", CStr(cPosition.Y))),
+                                                                          sng(argument.GetSplit(3).Replace("~", CStr(cPosition.Z))))
                             Screen.Level.WarpData.WarpRotations = int(argument.GetSplit(4))
                             Screen.Level.WarpData.DoWarpInNextTick = True
                             Screen.Level.WarpData.CorrectCameraYaw = Screen.Camera.Yaw
                         Case 3
                             Screen.Level.WarpData.WarpDestination = argument.GetSplit(0)
-                            Screen.Level.WarpData.WarpPosition = New Vector3(sng(argument.GetSplit(1).Replace("~", CStr(cPosition.X)).Replace(".", GameController.DecSeparator)),
-                                                                          sng(argument.GetSplit(2).Replace("~", CStr(cPosition.Y)).Replace(".", GameController.DecSeparator)),
-                                                                          sng(argument.GetSplit(3).Replace("~", CStr(cPosition.Z)).Replace(".", GameController.DecSeparator)))
+                            Screen.Level.WarpData.WarpPosition = New Vector3(sng(argument.GetSplit(1).Replace("~", CStr(cPosition.X))),
+                                                                          sng(argument.GetSplit(2).Replace("~", CStr(cPosition.Y))),
+                                                                          sng(argument.GetSplit(3).Replace("~", CStr(cPosition.Z))))
                             Screen.Level.WarpData.WarpRotations = 0
                             Screen.Level.WarpData.DoWarpInNextTick = True
                             Screen.Level.WarpData.CorrectCameraYaw = Screen.Camera.Yaw
                         Case 2
-                            Screen.Camera.Position = New Vector3(sng(argument.GetSplit(0).Replace("~", CStr(cPosition.X)).Replace(".", GameController.DecSeparator)),
-                                                                 sng(argument.GetSplit(1).Replace("~", CStr(cPosition.Y)).Replace(".", GameController.DecSeparator)),
-                                                                 sng(argument.GetSplit(2).Replace("~", CStr(cPosition.Z)).Replace(".", GameController.DecSeparator)))
+                            Screen.Camera.Position = New Vector3(sng(argument.GetSplit(0).Replace("~", CStr(cPosition.X))),
+                                                                 sng(argument.GetSplit(1).Replace("~", CStr(cPosition.Y))),
+                                                                 sng(argument.GetSplit(2).Replace("~", CStr(cPosition.Z))))
                         Case 0
                             Screen.Level.WarpData.WarpDestination = argument
                             Screen.Level.WarpData.WarpPosition = Screen.Camera.Position
@@ -249,7 +250,7 @@ Namespace ScriptVersion2
                     Core.Player.RivalName = argument
                     IsReady = True
                 Case "setopacity"
-                    Dim newOpacity As Single = sng(argument.Replace("~", Screen.Level.OwnPlayer.Opacity.ToString().Replace(".", GameController.DecSeparator)))
+                    Dim newOpacity As Single = sng(argument.Replace("~", Screen.Level.OwnPlayer.Opacity.ToString(CultureInfo.InvariantCulture)))
                     Screen.Level.OwnPlayer.Opacity = newOpacity
                     IsReady = True
                 Case Else

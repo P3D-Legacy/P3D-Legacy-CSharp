@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
@@ -259,15 +260,15 @@ Public Class NetworkPlayer
         MyBase.Update()
     End Sub
 
-    Public Overrides Sub Render()
+    Public Overrides Sub Render(effect As BasicEffect)
         If ConnectScreen.Connected = True Then
             If IsCorrectScreen() = True Then
-                Me.Draw(Me.Model, Textures, False)
+                Me.Draw(effect, Me.Model, Textures, False)
                 If Core.GameOptions.ShowGUI = True Then
                     If Me.NameTexture IsNot Nothing Then
                         Dim state = Core.GraphicsDevice.DepthStencilState
                         Core.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead
-                        Draw(BaseModel.BillModel, {Me.NameTexture}, False)
+                        Draw(effect, BaseModel.BillModel, {Me.NameTexture}, False)
                         Core.GraphicsDevice.DepthStencilState = state
                     End If
                     If Me.BusyType <> "0" Then
@@ -290,7 +291,7 @@ Public Class NetworkPlayer
         End Select
         If Not b Is Nothing Then
             b.Visible = Me.Visible
-            b.Render()
+            b.Render(Screen.Effect)
         End If
     End Sub
 
@@ -333,7 +334,7 @@ Public Class NetworkPlayer
             Me.FaceDirection = p.Facing
             Me.moving = p.Moving
             Me.LevelFile = p.LevelFile
-            Me.BusyType = p.BusyType.ToString()
+            Me.BusyType = p.BusyType.ToString(CultureInfo.InvariantCulture)
             Me.Visible = False
 
             If Screen.Level.LevelFile.ToLower() = p.LevelFile.ToLower() Then

@@ -66,10 +66,10 @@ Public Class ModelEntity
         ApplyEffect()
     End Sub
 
-    Public Overrides Sub Render()
+    Public Overrides Sub Render(effect As BasicEffect)
         If Visible = True Then
             If Not _model Is Nothing Then
-                _model.Draw(Me.World, Screen.Camera.View, Screen.Camera.Projection)
+                '_model.Draw(Me.World, Screen.Camera.View, Screen.Camera.Projection)
             End If
 
             If drawViewBox = True Then

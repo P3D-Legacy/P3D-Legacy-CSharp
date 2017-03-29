@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing
 Imports System.Globalization
+
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
@@ -8,17 +9,17 @@ Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Objects
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Sound
-Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Security
 Imports P3D.Legacy.Core.Settings
 Imports P3D.Legacy.Core.Storage
-Imports P3D.Legacy.Shared.Data
+Imports P3D.Legacy.Shared.Extensions
+
 Imports PCLExt.FileStorage
 
 Public Class MainMenuScreen
 
-    Inherits Screen
+    Inherits Screens.Screen
 
     Dim mainmenuIndex As Integer = 0
     Dim loadMenuIndex(3) As Integer
@@ -52,7 +53,7 @@ Public Class MainMenuScreen
     Public Overrides Function GetScreenStatus() As String
         Dim s As String = "MenuIndex=" & Me.menuIndex & vbNewLine &
             "CurrentLevel=" & Me.currentLevel & vbNewLine &
-            "LevelChangeDelay=" & Me.levelChangeDelay.ToString()
+            "LevelChangeDelay=" & Me.levelChangeDelay.ToString(NumberFormatInfo.InvariantInfo)
 
         Return s
     End Function
@@ -66,9 +67,9 @@ Public Class MainMenuScreen
         Me.CanChat = False
         Me.currentLanguage = P3D.Legacy.Core.Localization.Language
 
-        Screen.TextBox.Showing = False
-        Screen.PokemonImageView.Showing = False
-        Screen.ChooseBox.Showing = False
+        Screens.Screen.TextBox.Showing = False
+        Screens.Screen.PokemonImageView.Showing = False
+        Screens.Screen.ChooseBox.Showing = False
 
         Effect = New BasicEffect(Core.GraphicsDevice)
         Effect.FogEnabled = True
@@ -84,7 +85,7 @@ Public Class MainMenuScreen
 
         mainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
 
-        Screen.Level.World.Initialize(Screen.Level.EnvironmentType, Screen.Level.WeatherType)
+        Screens.Screen.Level.World.Initialize(Screens.Screen.Level.EnvironmentType, Screens.Screen.Level.WeatherType)
 
         Dim savePath = Path.Combine(GameController.GamePath, "Save")
         If System.IO.Directory.Exists(savePath) = False Then
@@ -96,7 +97,7 @@ Public Class MainMenuScreen
         GetPacks()
 
         Emblem.ClearOnlineSpriteCache()
-        Screen.Level.World.Initialize(Screen.Level.EnvironmentType, Screen.Level.WeatherType)
+        Screens.Screen.Level.World.Initialize(Screens.Screen.Level.EnvironmentType, Screens.Screen.Level.WeatherType)
     End Sub
 
     Private Sub GetPacks(Optional ByVal reload As Boolean = False)
@@ -135,12 +136,13 @@ Public Class MainMenuScreen
     End Sub
 
     Private Sub GetSaves()
-        If System.IO.File.Exists(GameController.GamePath & "\Save\lastSession.id") = True Then
-            Dim idData As String = System.IO.File.ReadAllText(GameController.GamePath & "\Save\lastSession.id")
-            If System.IO.Directory.Exists(GameController.GamePath & "\Save\" & idData) = False Then
-                System.IO.File.Delete(GameController.GamePath & "\Save\lastSession.id")
-            End If
-        End If
+        ' -- (Aragas) Seems that this is not used anymore
+        'If System.IO.File.Exists(GameController.GamePath & "\Save\lastSession.id") = True Then
+        '    Dim idData As String = System.IO.File.ReadAllText(GameController.GamePath & "\Save\lastSession.id")
+        '    If System.IO.Directory.Exists(GameController.GamePath & "\Save\" & idData) = False Then
+        '        System.IO.File.Delete(GameController.GamePath & "\Save\lastSession.id")
+        '    End If
+        'End If
 
         Saves.Clear()
         SaveNames.Clear()
@@ -155,7 +157,9 @@ Public Class MainMenuScreen
             If i <= Saves.Count - 1 Then
                 Dim entry As String = Saves(i)
 
-                Dim Data() As String = System.IO.File.ReadAllText(entry & "\Player.dat").SplitAtNewline()
+                Dim userFolder = StorageInfo.SaveFolder.GetUserSaveFolder(Path.GetFileName(entry.TrimEnd("/").TrimEnd("\"))).Result
+                Dim Data() As String = userFolder.PlayerFile.ReadAllTextAsync().Result.SplitAtNewline()
+
                 Dim Name As String = "Missingno."
                 Dim Autosave As Boolean = False
 
@@ -231,7 +235,7 @@ Public Class MainMenuScreen
     End Sub
 
     Public Overrides Sub Update()
-        Lighting.UpdateLighting(Screen.Effect)
+        Lighting.UpdateLighting(Screens.Screen.Effect)
 
         Camera.Update()
         Level.Update()
@@ -279,7 +283,7 @@ Public Class MainMenuScreen
 
         SkyDome.Draw(45.0F)
         Level.Draw()
-        World.DrawWeather(Screen.Level.World.CurrentWeather)
+        World.DrawWeather(Screens.Screen.Level.World.CurrentWeather)
 
         'Core.GraphicsDevice.SetRenderTarget(Nothing)
 
@@ -644,7 +648,8 @@ Public Class MainMenuScreen
             Dim dispLocation As String = "(Unknown)"
             Dim dispGameMode As String = "Kolben"
 
-            Dim Data() As String = System.IO.File.ReadAllText(Saves(loadMenuIndex(0)) & "\Player.dat").SplitAtNewline()
+            Dim userFolder = StorageInfo.SaveFolder.GetUserSaveFolder(Saves(loadMenuIndex(0)).TrimEnd("/").TrimEnd("\")).Result
+            Dim Data() As String = userFolder.PlayerFile.ReadAllTextAsync().Result.SplitAtNewline()
             For Each Line As String In Data
                 If Line.Contains("|") = True Then
                     Dim ID As String = Line.Remove(Line.IndexOf("|"))
@@ -664,7 +669,7 @@ Public Class MainMenuScreen
                                     bCount = s.Length
                                 End If
                             End If
-                            dispBadges = bCount.ToString()
+                            dispBadges = bCount.ToString(NumberFormatInfo.InvariantInfo)
                         Case "PlayTime"
                             Dim dd() As String = Value.Split(CChar(","))
 
@@ -1609,19 +1614,17 @@ Public Class MainMenuScreen
 
         Dim deleteAutosave As Boolean = False
         For Each f As String In System.IO.Directory.GetDirectories(GameController.GamePath & "\Save\")
-            If System.IO.File.Exists(f & "\Player.dat") = True Then
-                Dim Data() As String = System.IO.File.ReadAllText(f & "\Player.dat").SplitAtNewline()
-                Dim Autosave As Boolean = False
 
-                For Each Line As String In Data
-                    If Line.StartsWith("AutoSave|") = True Then
-                        Dim autosaveName As String = Line.GetSplit(1, "|")
-                        If autosaveName = Saves(loadMenuIndex(0)).Remove(0, Saves(loadMenuIndex(0)).LastIndexOf("\") + 1) Then
-                            deleteAutosave = True
-                        End If
+            Dim userFolder = StorageInfo.SaveFolder.GetUserSaveFolder(f.TrimEnd("/").TrimEnd("\")).Result
+            Dim Data() As String = userFolder.PlayerFile.ReadAllTextAsync().Result.SplitAtNewline()
+            For Each Line As String In Data
+                If Line.StartsWith("AutoSave|") = True Then
+                    Dim autosaveName As String = Line.GetSplit(1, "|")
+                    If autosaveName = Saves(loadMenuIndex(0)).Remove(0, Saves(loadMenuIndex(0)).LastIndexOf("\") + 1) Then
+                        deleteAutosave = True
                     End If
-                Next
-            End If
+                End If
+            Next
         Next
         If deleteAutosave = True Then
             System.IO.Directory.Delete(GameController.GamePath & "\Save\autosave", True)

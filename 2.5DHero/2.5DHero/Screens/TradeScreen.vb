@@ -1,3 +1,4 @@
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
@@ -447,7 +448,7 @@ Public Class TradeScreen
                 If i <= Me.loadedBuyCategories.Count - 1 Then
                     Dim p As Integer = i - Scroll
 
-                    DrawButton(New Vector2(100, 100 + p * 96), 5, Me.loadedBuyCategories(i).ToString(), 16, GetItemTypeTexture(Me.loadedBuyCategories(i)))
+                    DrawButton(New Vector2(100, 100 + p * 96), 5, Me.loadedBuyCategories(i).ToString(CultureInfo.InvariantCulture), 16, GetItemTypeTexture(Me.loadedBuyCategories(i)))
                 End If
             Next
 
@@ -502,7 +503,7 @@ Public Class TradeScreen
     End Sub
 
     Private Sub UpdateBuyItems()
-        Me.Title = "Buy " & Me.CurrentCategory.ToString()
+        Me.Title = "Buy " & Me.CurrentCategory.ToString(CultureInfo.InvariantCulture)
 
         If Controls.Down(True, True, True, True, True, True) = True Then
             Me.Cursor += 1
@@ -716,7 +717,7 @@ Public Class TradeScreen
             End If
 
             'Amount of item in bag:
-            Dim amount As String = Core.Player.Inventory.GetItemAmount(selectedItem.ItemID).ToString()
+            Dim amount As String = Core.Player.Inventory.GetItemAmount(selectedItem.ItemID).ToString(CultureInfo.InvariantCulture)
             While amount.Length < 3
                 amount = "0" & amount
             End While
@@ -733,7 +734,7 @@ Public Class TradeScreen
             'amount field:
             Canvas.DrawRectangle(New Rectangle(740, 492, 104, 48), New Color(77, 147, 198))
             Canvas.DrawRectangle(New Rectangle(744, 496, 96, 40), New Color(232, 240, 248))
-            Dim amountString As String = Me.BuyItemsAmount.ToString()
+            Dim amountString As String = Me.BuyItemsAmount.ToString(CultureInfo.InvariantCulture)
             While amountString.Length < 3
                 amountString = "0" & amountString
             End While
@@ -744,8 +745,8 @@ Public Class TradeScreen
             Core.SpriteBatch.Draw(texture, New Rectangle(856, 484, 64, 64), New Rectangle(16, 32, 16, 16), Color.White)
             Core.SpriteBatch.DrawString(FontManager.MainFont, "+", New Vector2(856 + 19, 484 + 6), Color.Black, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
 
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "Per Item: " & selectedItem.Price.ToString() & GetCurrencyShort() & vbNewLine &
-                                                       "Total: " & (BuyItemsAmount * selectedItem.Price).ToString() & GetCurrencyShort(), New Vector2(930, 490), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "Per Item: " & selectedItem.Price.ToString(CultureInfo.InvariantCulture) & GetCurrencyShort() & vbNewLine &
+                                                       "Total: " & (BuyItemsAmount * selectedItem.Price).ToString(CultureInfo.InvariantCulture) & GetCurrencyShort(), New Vector2(930, 490), Color.White)
 
             'Buy button:
             If Me.BuyItemsAmount > 0 Then
@@ -857,7 +858,7 @@ Public Class TradeScreen
                 If i <= Me.loadedSellCategories.Count - 1 Then
                     Dim p As Integer = i - Scroll
 
-                    DrawButton(New Vector2(100, 100 + p * 96), 5, Me.loadedSellCategories(i).ToString(), 16, GetItemTypeTexture(Me.loadedSellCategories(i)))
+                    DrawButton(New Vector2(100, 100 + p * 96), 5, Me.loadedSellCategories(i).ToString(CultureInfo.InvariantCulture), 16, GetItemTypeTexture(Me.loadedSellCategories(i)))
                 End If
             Next
 
@@ -889,7 +890,7 @@ Public Class TradeScreen
     End Sub
 
     Private Sub UpdateSellItems()
-        Me.Title = "Sell " & Me.CurrentCategory.ToString()
+        Me.Title = "Sell " & Me.CurrentCategory.ToString(CultureInfo.InvariantCulture)
 
         If Controls.Down(True, True, True, True, True, True) = True Then
             Me.Cursor += 1
@@ -1057,7 +1058,7 @@ Public Class TradeScreen
             End If
 
             'Amount of item in bag:
-            Dim amount As String = Core.Player.Inventory.GetItemAmount(selectedItem.ItemID).ToString()
+            Dim amount As String = Core.Player.Inventory.GetItemAmount(selectedItem.ItemID).ToString(CultureInfo.InvariantCulture)
             While amount.Length < 3
                 amount = "0" & amount
             End While
@@ -1070,7 +1071,7 @@ Public Class TradeScreen
             'amount field:
             Canvas.DrawRectangle(New Rectangle(740, 492, 104, 48), New Color(77, 147, 198))
             Canvas.DrawRectangle(New Rectangle(744, 496, 96, 40), New Color(232, 240, 248))
-            Dim amountString As String = Me.SellItemsAmount.ToString()
+            Dim amountString As String = Me.SellItemsAmount.ToString(CultureInfo.InvariantCulture)
             While amountString.Length < 3
                 amountString = "0" & amountString
             End While
@@ -1081,8 +1082,8 @@ Public Class TradeScreen
             Core.SpriteBatch.Draw(texture, New Rectangle(856, 484, 64, 64), New Rectangle(16, 32, 16, 16), Color.White)
             Core.SpriteBatch.DrawString(FontManager.MainFont, "+", New Vector2(856 + 19, 484 + 6), Color.Black, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
 
-            Core.SpriteBatch.DrawString(FontManager.MainFont, "Per Item: " & selectedItem.SellPrice().ToString() & GetCurrencyShort() & vbNewLine &
-                                                       "Total: " & (SellItemsAmount * selectedItem.SellPrice()).ToString() & GetCurrencyShort(), New Vector2(930, 490), Color.White)
+            Core.SpriteBatch.DrawString(FontManager.MainFont, "Per Item: " & selectedItem.SellPrice().ToString(CultureInfo.InvariantCulture) & GetCurrencyShort() & vbNewLine &
+                                                       "Total: " & (SellItemsAmount * selectedItem.SellPrice()).ToString(CultureInfo.InvariantCulture) & GetCurrencyShort(), New Vector2(930, 490), Color.White)
 
             'Sell button:
             If Me.SellItemsAmount > 0 Then
@@ -1265,9 +1266,9 @@ Public Class TradeScreen
     Private Function GetCurrencyDisplay() As String
         Select Case Me.Currency
             Case Currencies.BattlePoints
-                Return GetCurrencyAmount().ToString() & " Battle Points"
+                Return GetCurrencyAmount().ToString(CultureInfo.InvariantCulture) & " Battle Points"
             Case Currencies.Pokédollar
-                Return GetCurrencyAmount().ToString() & " Pokédollar"
+                Return GetCurrencyAmount().ToString(CultureInfo.InvariantCulture) & " Pokédollar"
         End Select
         Return ""
     End Function

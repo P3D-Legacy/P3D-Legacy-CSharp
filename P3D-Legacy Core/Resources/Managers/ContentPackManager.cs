@@ -117,20 +117,12 @@ namespace P3D.Legacy.Core.Resources
             return new ContentManager(Core.GameInstance.Services, "Content");
         }
 
-        public static void CreateContentPackFolder()
-        {
-            var path = Path.Combine(GameController.GamePath, "ContentPacks");
-
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-        }
-
         public static string[] GetContentPackInfo(string contentPackName)
         {
             var p0 = Path.Combine(GameController.GamePath, "ContentPacks", contentPackName, "info.dat");
             if (!File.Exists(p0))
             {
-                var s = "1.00" + Constants.vbNewLine + "Pokémon3D" + Constants.vbNewLine + "[Add information here!]";
+                var s = "1.00" + Environment.NewLine + "Pokémon3D" + Environment.NewLine + "[Add information here!]";
                 File.WriteAllText(p0, s);
             }
             return File.ReadAllLines(p0);

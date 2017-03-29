@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Sound
@@ -733,7 +734,7 @@ Public Class OptionScreen
                 If Me._drawPercentage = True Then
                     t &= CStr(Me._value / (Me._max - Me._min) * 100)
                 Else
-                    t &= Me._value.ToString()
+                    t &= Me._value.ToString(CultureInfo.InvariantCulture)
                 End If
             End If
 

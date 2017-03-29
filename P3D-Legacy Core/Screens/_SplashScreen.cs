@@ -13,7 +13,7 @@ namespace P3D.Legacy.Core.Screens
     /*
     internal class SplashScreen : Screen
     {
-        private static readonly string LicenseText = "\"MonoGame\", the MonoGame Logo and source code are copyrights of MonoGame Team (monogame.net)." + Constants.vbNewLine + "Pokémon 3D is not affiliated with Nintendo, Creatures Inc. or GAME FREAK Inc.";
+        private static readonly string LicenseText = "\"MonoGame\", the MonoGame Logo and source code are copyrights of MonoGame Team (monogame.net)." + Environment.NewLine + "Pokémon 3D is not affiliated with Nintendo, Creatures Inc. or GAME FREAK Inc.";
         private readonly Texture2D _monoGameLogo;
         private readonly SpriteFont _licenseFont;
 

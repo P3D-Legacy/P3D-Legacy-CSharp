@@ -192,6 +192,13 @@ namespace P3D.Legacy.Core.Resources
         }
 
 
+        public static async Task<bool> PokeFileExistsAsync(string levelFile)
+        {
+            var path = await ActiveGameMode.PokeFolder.CheckExistsAsync(levelFile) == ExistenceCheckResult.FileExists;
+            var defaultPath = await StorageInfo.PokeFolder.CheckExistsAsync(levelFile) == ExistenceCheckResult.FileExists;
+            return ActiveGameMode.IsDefaultGamemode ? defaultPath : path || defaultPath;
+        }
+
         /// <summary>
         /// Checks if a map file exists either in the active GameMode or the default GameMode.
         /// </summary>

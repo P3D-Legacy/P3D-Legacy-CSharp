@@ -1,6 +1,8 @@
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Security
+Imports PCLExt.FileStorage
 
 Public Class RoamingPokemon
 
@@ -20,7 +22,7 @@ Public Class RoamingPokemon
     End Sub
 
     Public Function CompareData() As String
-        Return Me.PokemonReference.Number.ToString() & "|" & Me.PokemonReference.Level.ToString() & "|" & Me.WorldID.ToString() & "|"
+        Return Me.PokemonReference.Number.ToString(NumberFormatInfo.InvariantInfo) & "|" & Me.PokemonReference.Level.ToString(NumberFormatInfo.InvariantInfo) & "|" & Me.WorldID.ToString(NumberFormatInfo.InvariantInfo) & "|"
     End Function
 
     Public Function GetPokemon() As Pokemon
@@ -28,7 +30,7 @@ Public Class RoamingPokemon
     End Function
 
     Public Shared Sub ShiftRoamingPokemon(ByVal worldID As Integer)
-        Logger.Debug("Shift Roaming Pokémon for world ID: " & worldID.ToString())
+        Logger.Debug("Shift Roaming Pokémon for world ID: " & worldID.ToString(NumberFormatInfo.InvariantInfo))
 
         Dim newData As String = ""
         For Each line As String In Core.Player.RoamingPokemonData.SplitAtNewline()
@@ -40,14 +42,14 @@ Public Class RoamingPokemon
                 End If
 
                 If CInt(data(2)) = worldID Or worldID = -1 Then
-                    Dim regionsFile As String = GameModeManager.GetScriptFileAsync("worldmap\roaming_regions.dat").Result.Path
+                    Dim regionsFile = GameModeManager.GetScriptFileAsync("worldmap\roaming_regions.dat").Result
                     FileValidation.CheckFileValid(regionsFile, False, "RoamingPokemon.vb")
 
-                    Dim worldList As List(Of String) = System.IO.File.ReadAllLines(regionsFile).ToList()
+                    Dim worldList As List(Of String) = regionsFile.ReadAllTextAsync.Result.SplitAtNewline.ToList()
                     Dim levelList As New List(Of String)
 
                     For Each worldLine As String In worldList
-                        If worldLine.StartsWith(CInt(data(2)).ToString() & "|") = True Then
+                        If worldLine.StartsWith(CInt(data(2)).ToString(NumberFormatInfo.InvariantInfo) & "|") = True Then
                             levelList = worldLine.Remove(0, worldLine.IndexOf("|") + 1).Split(CChar(",")).ToList()
                         End If
                     Next
@@ -59,7 +61,7 @@ Public Class RoamingPokemon
                     End If
 
                     'PokémonID,Level,regionID,startLevelFile,MusicLoop,PokemonData
-                    newData &= data(0) & "|" & data(1) & "|" & CInt(data(2)).ToString() & "|" & levelList(nextIndex) & "|" & data(4) & "|" & data(5)
+                    newData &= data(0) & "|" & data(1) & "|" & CInt(data(2)).ToString(NumberFormatInfo.InvariantInfo) & "|" & levelList(nextIndex) & "|" & data(4) & "|" & data(5)
                 Else
                     newData &= line
                 End If
@@ -102,7 +104,7 @@ Public Class RoamingPokemon
             If line.StartsWith(compareData) = False Then
                 newData &= line
             Else
-                newData &= p.PokemonReference.Number & "|" & p.PokemonReference.Level & "|" & p.WorldID.ToString() & "|" & p.LevelFile & "|" & p.MusicLoop & "|" & p.PokemonReference.GetSaveData()
+                newData &= p.PokemonReference.Number & "|" & p.PokemonReference.Level & "|" & p.WorldID.ToString(NumberFormatInfo.InvariantInfo) & "|" & p.LevelFile & "|" & p.MusicLoop & "|" & p.PokemonReference.GetSaveData()
             End If
         Next
 

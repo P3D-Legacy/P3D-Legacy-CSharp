@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 
 using Microsoft.Xna.Framework;
-
+using Microsoft.Xna.Framework.Graphics;
 using P3D.Legacy.Core.Debug;
 using P3D.Legacy.Core.Entities.Other;
 using P3D.Legacy.Core.GameJolt;
@@ -69,7 +69,8 @@ namespace P3D.Legacy.Core
 
             Activated += DGame_Activated;
             Deactivated += DGame_Deactivated;
-            Graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this) { PreferMultiSampling = false };
+            Graphics.PreparingDeviceSettings += Graphics_PreparingDeviceSettings;
             Content.RootDirectory = "Content";
 
             Window.AllowUserResizing = true;
@@ -81,6 +82,11 @@ namespace P3D.Legacy.Core
             var gameHacked = File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "temp"));
             if (gameHacked)
                 HackerAlerts.Activate();
+        }
+        private void Graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
+        {
+            e.GraphicsDeviceInformation.GraphicsProfile = GraphicsProfile.HiDef;
+            e.GraphicsDeviceInformation.PresentationParameters.MultiSampleCount = 2;
         }
 
         protected override void Initialize()
@@ -112,7 +118,7 @@ namespace P3D.Legacy.Core
         }
 
         //public static string DecSeparator => new NumberFormatInfo().NumberDecimalSeparator;
-        public static string DecSeparator => CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+        public static string DecSeparator => NumberFormatInfo.InvariantInfo.NumberDecimalSeparator;
 
         protected override void OnExiting(object sender, EventArgs args)
         {

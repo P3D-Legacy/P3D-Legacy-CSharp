@@ -36,14 +36,14 @@ namespace P3D.Legacy.Core.Interfaces
         string BerryData { get; set; }
         string NPCData { get; set; }
         bool IsRunning { get; }
-        Vector3C LastPokemonPosition { get; set; }
+        Vector3 LastPokemonPosition { get; set; }
         BasePokemon GetWalkPokemon();
         float CameraDistance { get; set; }
         bool loadedSave { get; set; }
         TimeSpan PlayTime { get; set; }
         DateTime GameStart { get; set; }
         int GTSStars { get; set; }
-        Vector3C startPosition { get; set; }
+        Vector3 startPosition { get; set; }
         bool startThirdPerson { get; set; }
         double startRotationSpeed { get; set; }
         float startFOV { get; set; }

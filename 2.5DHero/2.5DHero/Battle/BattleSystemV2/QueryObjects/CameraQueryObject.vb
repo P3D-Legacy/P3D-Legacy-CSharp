@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Battle.BattleSystemV2
 Imports P3D.Legacy.Core.Screens
 
@@ -211,7 +212,7 @@ Namespace BattleSystem
         Public Shared Shadows Function FromString(ByVal input As String) As QueryObject
             Dim d() As String = input.Split(CChar("|"))
 
-            Dim c As New CameraQueryObject(New Vector3(CSng(STSE(d(0))), CSng(STSE(d(1))), CSng(STSE(d(2)))), New Vector3(CSng(STSE(d(3))), CSng(STSE(d(4))), CSng(STSE(d(5)))), CSng(STSE(d(6))), CSng(STSE(d(7))), CSng(STSE(d(8))), CSng(STSE(d(9))), CSng(STSE(d(10))), CSng(STSE(d(11))), CSng(STSE(d(12))), CSng(STSE(d(13))))
+            Dim c As New CameraQueryObject(New Vector3(Single.Parse(STSE(d(0)), NumberFormatInfo.InvariantInfo), Single.Parse(STSE(d(1)), NumberFormatInfo.InvariantInfo), Single.Parse(STSE(d(2)), NumberFormatInfo.InvariantInfo)), New Vector3(Single.Parse(STSE(d(3)), NumberFormatInfo.InvariantInfo), Single.Parse(STSE(d(4)), NumberFormatInfo.InvariantInfo), Single.Parse(STSE(d(5)), NumberFormatInfo.InvariantInfo)), Single.Parse(STSE(d(6)), NumberFormatInfo.InvariantInfo), Single.Parse(STSE(d(7)), NumberFormatInfo.InvariantInfo), Single.Parse(STSE(d(8)), NumberFormatInfo.InvariantInfo), Single.Parse(STSE(d(9)), NumberFormatInfo.InvariantInfo), Single.Parse(STSE(d(10)), NumberFormatInfo.InvariantInfo), Single.Parse(STSE(d(11)), NumberFormatInfo.InvariantInfo), Single.Parse(STSE(d(12)), NumberFormatInfo.InvariantInfo), Single.Parse(STSE(d(13)), NumberFormatInfo.InvariantInfo))
             c.ApplyCurrentCamera = CBool(14)
             c.PassThis = CBool(15)
 
@@ -219,16 +220,16 @@ Namespace BattleSystem
         End Function
 
         Public Overrides Function ToString() As String
-            Dim s As String = SEST(_targetPosition.X.ToString()) & "|" & SEST(_targetPosition.Y.ToString()) & "|" & SEST(_targetPosition.Z.ToString()) & "|" &
-                SEST(_startPosition.X.ToString()) & "|" & SEST(_startPosition.Y.ToString()) & "|" & SEST(_startPosition.Z.ToString()) & "|" &
-                SEST(_targetSpeed.ToString()) & "|" &
-                SEST(_startSpeed.ToString()) & "|" &
-                SEST(_targetYaw.ToString()) & "|" &
-                SEST(_startYaw.ToString()) & "|" &
-                SEST(_targetPitch.ToString()) & "|" &
-                SEST(_startPitch.ToString()) & "|" &
-                SEST(_targetRotationSpeed.ToString()) & "|" &
-                SEST(_startRotationSpeed.ToString()) & "|" &
+            Dim s As String = _targetPosition.X.ToString(CultureInfo.InvariantCulture) & "|" & _targetPosition.Y.ToString(CultureInfo.InvariantCulture) & "|" & _targetPosition.Z.ToString(CultureInfo.InvariantCulture) & "|" &
+                _startPosition.X.ToString(CultureInfo.InvariantCulture) & "|" & _startPosition.Y.ToString(CultureInfo.InvariantCulture) & "|" & _startPosition.Z.ToString(CultureInfo.InvariantCulture) & "|" &
+                _targetSpeed.ToString(CultureInfo.InvariantCulture) & "|" &
+                _startSpeed.ToString(CultureInfo.InvariantCulture) & "|" &
+                _targetYaw.ToString(CultureInfo.InvariantCulture) & "|" &
+                _startYaw.ToString(CultureInfo.InvariantCulture) & "|" &
+                _targetPitch.ToString(CultureInfo.InvariantCulture) & "|" &
+                _startPitch.ToString(CultureInfo.InvariantCulture) & "|" &
+                _targetRotationSpeed.ToString(CultureInfo.InvariantCulture) & "|" &
+                _startRotationSpeed.ToString(CultureInfo.InvariantCulture) & "|" &
                 ApplyCurrentCamera.ToNumberString() & "|" &
                 PassThis.ToNumberString()
 
@@ -240,11 +241,7 @@ Namespace BattleSystem
         End Function
 
         Private Shared Function STSE(ByVal s As String) As String
-            Return s.Replace(".", GameController.DecSeparator)
-        End Function
-
-        Private Shared Function SEST(ByVal s As String) As String
-            Return s.Replace(GameController.DecSeparator, ".")
+            Return s
         End Function
 
     End Class

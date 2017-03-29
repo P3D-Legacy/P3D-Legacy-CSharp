@@ -66,8 +66,8 @@ Public Class Whirlpool
         End If
     End Sub
 
-    Public Overrides Sub Render()
-        Me.Draw(Me.Model, Textures, False)
+    Public Overrides Sub Render(effect As BasicEffect)
+        Me.Draw(effect, Me.Model, Textures, False)
     End Sub
 
     Private Function ReturnWhirlPoolPokemonName() As String
@@ -88,7 +88,7 @@ Public Class Whirlpool
             Return Me.Collision
         End If
 
-        If Screen.Level.Surfing = True Then
+        If Screen.Level.IsSurfing = True Then
             Dim pName As String = ReturnWhirlPoolPokemonName()
             Dim s As String = ""
 

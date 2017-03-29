@@ -26,7 +26,7 @@ namespace P3D.Legacy.Core.Pokemon
 
         public static int CountEntries(string Data, int[] Type)
         {
-            string[] pData = Data.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            string[] pData = Data.SplitAtNewline();
 
             return pData.Select(entry => entry.Remove(0, entry.IndexOf("{", StringComparison.Ordinal) + 1))
                 .Select(entry => entry.Remove(entry.Length - 1, 1))
@@ -61,7 +61,7 @@ namespace P3D.Legacy.Core.Pokemon
                 }
             }
 
-            string[] pData = Data.Split(Convert.ToChar(Constants.vbNewLine));
+            string[] pData = Data.SplitAtNewline();
 
             return (pData.Select(entry => entry.Remove(0, entry.IndexOf("{", StringComparison.Ordinal) + 1))
                 .Select(entry => entry.Remove(entry.Length - 1, 1))
@@ -73,7 +73,7 @@ namespace P3D.Legacy.Core.Pokemon
 
         public static int GetEntryType(string Data, int ID)
         {
-            string[] pData = Data.Split(new [] { Environment.NewLine}, StringSplitOptions.None); //Data.Split(Convert.ToChar(Constants.vbNewLine));
+            string[] pData = Data.SplitAtNewline(); //Data.Split(Convert.ToChar(Environment.NewLine));
 
             if (pData.Length >= ID)
             {
@@ -115,7 +115,7 @@ namespace P3D.Legacy.Core.Pokemon
                 {
                     if (!string.IsNullOrEmpty(Data))
                     {
-                        Data += Constants.vbNewLine;
+                        Data += Environment.NewLine;
                     }
                     Data += "{" + ID + "|" + Type + "}";
                     return Data;
@@ -133,7 +133,7 @@ namespace P3D.Legacy.Core.Pokemon
                 Data += "{" + i + "|0}";
                 if (i != POKEMONCOUNT)
                 {
-                    Data += Constants.vbNewLine;
+                    Data += Environment.NewLine;
                 }
             }
 
@@ -142,7 +142,7 @@ namespace P3D.Legacy.Core.Pokemon
 
         public static int GetLastSeen(string Data)
         {
-            string[] pData = Data.Split(Convert.ToChar(Constants.vbNewLine));
+            string[] pData = Data.SplitAtNewline();
             int lastSeen = 1;
 
             for (var i = 0; i < pData.Length; i++)

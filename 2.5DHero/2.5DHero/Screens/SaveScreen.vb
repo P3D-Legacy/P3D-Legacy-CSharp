@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Input
@@ -67,7 +68,7 @@ Public Class SaveScreen
                     End If
                 Next
 
-                .DrawString(FontManager.MiniFont, Localization.GetString("save_screen_name") & ": " & Core.Player.Name & vbNewLine & vbNewLine & Localization.GetString("save_screen_badges") & ": " & Core.Player.Badges.Count.ToString() & vbNewLine & vbNewLine & Localization.GetString("save_screen_money") & ": " & Core.Player.Money & vbNewLine & vbNewLine & Localization.GetString("save_screen_time") & ": " & TimeHelpers.GetDisplayTime(TimeHelpers.GetCurrentPlayTime(), True), New Vector2(192, 350), Color.DarkBlue)
+                .DrawString(FontManager.MiniFont, Localization.GetString("save_screen_name") & ": " & Core.Player.Name & vbNewLine & vbNewLine & Localization.GetString("save_screen_badges") & ": " & Core.Player.Badges.Count.ToString(CultureInfo.InvariantCulture) & vbNewLine & vbNewLine & Localization.GetString("save_screen_money") & ": " & Core.Player.Money & vbNewLine & vbNewLine & Localization.GetString("save_screen_time") & ": " & TimeHelpers.GetDisplayTime(TimeHelpers.GetCurrentPlayTime(), True), New Vector2(192, 350), Color.DarkBlue)
             End If
         End With
 

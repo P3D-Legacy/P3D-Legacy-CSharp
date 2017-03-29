@@ -29,7 +29,7 @@ namespace P3D.Legacy.Core.Settings
             RenderDistance = 3, LoadOffsetMaps = 0, MaxOffsetLevel = 0,
             ViewBobbing = true,  LightingEnabled = true, GamePadEnabled = true, StartedOfflineGame = false, PreferMultiSampling = false,
             ContentPackNames = { },
-            ShowDebug = 0, ShowDebugConsole = false, ShowGUI = true, DrawViewBox = false,
+            ShowDebug = false, ShowDebugConsole = false, ShowGUI = true, DrawViewBox = false,
             GraphicStyle = 1,
             Language = new CultureInfo("en"),
             WindowSize = new Vector2(1200, 680)
@@ -38,14 +38,14 @@ namespace P3D.Legacy.Core.Settings
         public static async void SaveOptions(Options options)
         {
             var serializer = SerializerBuilder.Build();
-            await StorageInfo.OptionsFile.WriteAllTextAsync(serializer.Serialize(options));
+            await StorageInfo.SaveFolder.OptionsFile.WriteAllTextAsync(serializer.Serialize(options));
         }
         public static async Task<Options> LoadOptions()
         {
             var deserializer = DeserializerBuilder.Build();
             try
             {
-                var deserialized = deserializer.Deserialize<Options>(await StorageInfo.OptionsFile.ReadAllTextAsync());
+                var deserialized = deserializer.Deserialize<Options>(await StorageInfo.SaveFolder.OptionsFile.ReadAllTextAsync().ConfigureAwait(false));
                 if (deserialized == null)
                 {
                     SaveOptions(Default);
@@ -57,7 +57,7 @@ namespace P3D.Legacy.Core.Settings
             catch (YamlException)
             {
                 SaveOptions(Default);
-                var deserialized = deserializer.Deserialize<Options>(await StorageInfo.OptionsFile.ReadAllTextAsync());
+                var deserialized = deserializer.Deserialize<Options>(await StorageInfo.SaveFolder.OptionsFile.ReadAllTextAsync());
                 deserialized.Parse();
                 return deserialized;
             }
@@ -82,7 +82,7 @@ namespace P3D.Legacy.Core.Settings
 
         public string[] ContentPackNames { get; set; } = { };
 
-        public int ShowDebug { get; set; }
+        public bool ShowDebug { get; set; }
         public bool ShowDebugConsole { get; set; }
         public bool ShowGUI { get; set; }
         public bool DrawViewBox { get; set; }
@@ -95,7 +95,7 @@ namespace P3D.Legacy.Core.Settings
 
 
 
-        public async Task Parse()
+        public async void Parse()
         {
             if (WindowSize.X == 0 && WindowSize.Y == 0)
                 WindowSize = new Vector2(1200, 680);
@@ -110,7 +110,6 @@ namespace P3D.Legacy.Core.Settings
 
             Localization.Load(Language);
 
-            ContentPackManager.CreateContentPackFolder();
             if (ContentPackNames.Any())
             {
                 var contentPackNames = new List<string>(ContentPackNames);

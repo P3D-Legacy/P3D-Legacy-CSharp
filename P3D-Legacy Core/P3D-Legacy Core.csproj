@@ -31,20 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
+    <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.Portable.3.6.0.1625\lib\portable-net45+win8+wpa81\MonoGame.Framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="NVorbis, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\NVorbis.dll</HintPath>
+    <Reference Include="PCLExt.FileStorage, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PCLExt.FileStorage.1.0.8\lib\net45\PCLExt.FileStorage.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\OpenTK.dll</HintPath>
-    </Reference>
-    <Reference Include="PCLExt.FileStorage, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\PCLExt.FileStorage.1.0.5\lib\net45\PCLExt.FileStorage.dll</HintPath>
-    </Reference>
-    <Reference Include="PCLExt.FileStorage.Abstractions, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\PCLExt.FileStorage.1.0.5\lib\net45\PCLExt.FileStorage.Abstractions.dll</HintPath>
+    <Reference Include="PCLExt.FileStorage.Abstractions, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PCLExt.FileStorage.1.0.8\lib\net45\PCLExt.FileStorage.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -81,6 +76,7 @@
     <Compile Include="Data\Entities\Other\BaseOwnPlayer.cs" />
     <Compile Include="Data\Entities\Other\BaseParticle.cs" />
     <Compile Include="Data\Entities\Entity.cs" />
+    <Compile Include="Extensions\BoundingFrustumExtension.cs" />
     <Compile Include="Services\GameJolt\API.cs" />
     <Compile Include="Services\GameJolt\APICall.cs" />
     <Compile Include="Services\GameJolt\BaseRegisterBattleScreen.cs" />
@@ -110,6 +106,7 @@
     <Compile Include="Server\PlayerCollection.cs" />
     <Compile Include="Server\BaseOnlinePlayer.cs" />
     <Compile Include="Server\ServerManager.cs" />
+    <Compile Include="Storage\Folders\SaveFolder.cs" />
     <Compile Include="Storage\Folders\ContentFolder.cs" />
     <Compile Include="Storage\Folders\MapsFolder.cs" />
     <Compile Include="Storage\Folders\PokeFolder.cs" />
@@ -120,7 +117,6 @@
     <Compile Include="Data\Objects\LoadingDots.cs" />
     <Compile Include="PlayerStatistics.cs" />
     <Compile Include="CommandLineArgHandler.cs" />
-    <Compile Include="Data\Vector3C.cs" />
     <Compile Include="DebugC\BoundingBoxRenderer.cs" />
     <Compile Include="DebugC\ForcedCrash.cs" />
     <Compile Include="DebugC\DotNetVersion.cs" />
@@ -209,11 +205,9 @@
     <Compile Include="Settings\YamlConverters\CultureInfoConverter.cs" />
     <Compile Include="Settings\Keyboard.cs" />
     <Compile Include="Settings\Options.cs" />
-    <Compile Include="Storage\Files\ILocalizationFile.cs" />
-    <Compile Include="Storage\Folders\ILocalizationFolder.cs" />
     <Compile Include="Storage\StorageInfo.cs" />
-    <Compile Include="Storage\Files\LocalizationFile.cs" />
-    <Compile Include="Storage\Folders\LocalizationFolder.cs" />
+    <Compile Include="Storage\Files\TokensFile.cs" />
+    <Compile Include="Storage\Folders\TokensFolder.cs" />
     <Compile Include="Data\World\BaseLevelLoader.cs" />
     <Compile Include="Data\World\BaseWorld.cs" />
     <Compile Include="Data\World\Enums\DayTime.cs" />
@@ -234,6 +228,8 @@
     <Compile Include="Data\World\Enums\TerrainTypeEnums.cs" />
     <Compile Include="Data\World\Enums\WeatherEnum.cs" />
     <Compile Include="Data\World\_World.cs" />
+    <Compile Include="World\MapRenderer.cs" />
+    <Compile Include="World\MapOffsetRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

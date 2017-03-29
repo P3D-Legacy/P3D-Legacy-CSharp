@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 
 Namespace ScriptVersion2
 
@@ -27,20 +28,20 @@ Namespace ScriptVersion2
 
                     Dim currentValue As String = ScriptStorage.GetObject(type, name).ToString()
 
-                    If IsNumeric(value.Replace(".", GameController.DecSeparator)) = True And IsNumeric(currentValue.Replace(".", GameController.DecSeparator)) = True Then
+                    If IsNumeric(value) = True And IsNumeric(currentValue) = True Then
                         Select Case operation.ToLower()
                             Case "+", "plus", "add", "addition"
                                 If ScriptConversion.IsArithmeticExpression(currentValue) = True And ScriptConversion.IsArithmeticExpression(value) = True Then
-                                    value = dbl(currentValue.Replace(".", GameController.DecSeparator) & "+" & value.Replace(".", GameController.DecSeparator)).ToString()
+                                    value = dbl(currentValue & "+" & value).ToString(CultureInfo.InvariantCulture)
                                 Else
                                     value = currentValue & value
                                 End If
                             Case "-", "minus", "subtract", "subtraction"
-                                value = dbl(currentValue.Replace(".", GameController.DecSeparator) & "-" & value.Replace(".", GameController.DecSeparator)).ToString()
+                                value = dbl(currentValue & "-" & value).ToString(CultureInfo.InvariantCulture)
                             Case "*", "multiply", "multiplication"
-                                value = dbl(currentValue.Replace(".", GameController.DecSeparator) & "*" & value.Replace(".", GameController.DecSeparator)).ToString()
+                                value = dbl(currentValue & "*" & value).ToString(CultureInfo.InvariantCulture)
                             Case "/", ":", "divide", "division"
-                                value = dbl(currentValue.Replace(".", GameController.DecSeparator) & "/" & value.Replace(".", GameController.DecSeparator)).ToString()
+                                value = dbl(currentValue & "/" & value).ToString(CultureInfo.InvariantCulture)
                         End Select
 
                         ScriptStorage.SetObject(type, name, value)

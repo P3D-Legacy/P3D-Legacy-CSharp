@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace P3D.Legacy.Core
 {
@@ -60,15 +61,15 @@ namespace P3D.Legacy.Core
             if (days > 0)
                 hour += days * 24;
 
-            string hours = hour.ToString();
+            string hours = hour.ToString(NumberFormatInfo.InvariantInfo);
             if (hours.Length == 1)
                 hours = "0" + hours;
 
-            string minutes = time.Minutes.ToString();
+            string minutes = time.Minutes.ToString(NumberFormatInfo.InvariantInfo);
             if (minutes.Length == 1)
                 minutes = "0" + minutes;
 
-            string seconds = time.Seconds.ToString();
+            string seconds = time.Seconds.ToString(NumberFormatInfo.InvariantInfo);
             if (seconds.Length == 1)
                 seconds = "0" + seconds;
 

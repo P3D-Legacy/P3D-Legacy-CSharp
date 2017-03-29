@@ -1,3 +1,4 @@
+Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
@@ -248,7 +249,7 @@ Public Class NameObjectScreen
         'Loop through all of the original text and only put in the allowed ones.
         For i = 0 To text.Length - 1
             If chars.Contains(text(i)) = True Then
-                newText &= text(i).ToString()
+                newText &= text(i).ToString(CultureInfo.InvariantCulture)
             End If
         Next
 

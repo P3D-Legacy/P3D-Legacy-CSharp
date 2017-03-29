@@ -1,4 +1,5 @@
-﻿Imports net.Pokemon3D.Game.ScriptVersion2
+﻿Imports System.Globalization
+Imports net.Pokemon3D.Game.ScriptVersion2
 
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Battle
@@ -163,7 +164,7 @@ Public Class Trainer
                     Dim openTag As Boolean = False
 
                     While readData.Length > 0
-                        Select Case readData(0).ToString()
+                        Select Case readData(0).ToString(NumberFormatInfo.InvariantInfo)
                             Case "<"
                                 openTag = True
                             Case ">"
@@ -174,11 +175,11 @@ Public Class Trainer
                                 End If
                         End Select
 
-                        If readData(0).ToString() <> "," Or openTag = True Then
+                        If readData(0).ToString(NumberFormatInfo.InvariantInfo) <> "," Or openTag = True Then
                             If endedFirstPart = True Then
-                                secondPart &= readData(0).ToString()
+                                secondPart &= readData(0).ToString(NumberFormatInfo.InvariantInfo)
                             Else
-                                firstPart &= readData(0).ToString()
+                                firstPart &= readData(0).ToString(NumberFormatInfo.InvariantInfo)
                             End If
                         End If
 

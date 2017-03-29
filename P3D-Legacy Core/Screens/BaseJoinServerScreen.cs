@@ -31,7 +31,7 @@ namespace P3D.Legacy.Core.Screens
             {
                 if (!string.IsNullOrEmpty(newData))
                 {
-                    newData += Constants.vbNewLine;
+                    newData += Environment.NewLine;
                 }
                 if (line.StartsWith(server_name + ",") == true)
                 {

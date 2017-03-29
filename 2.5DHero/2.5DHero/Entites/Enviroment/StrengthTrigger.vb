@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Screens
 
@@ -55,7 +56,7 @@ Public Class StrengthTrigger
                             CType(sRock, StrengthRock).CanBeRemoved = True
                         End If
                         If RemoveForever = True Then
-                            ActionScript.RegisterID("ACTIVATOR_REMOVE_STRENGTH_ROCK_" & Screen.Level.LevelFile & "_" & sRock.ID.ToString())
+                            ActionScript.RegisterID("ACTIVATOR_REMOVE_STRENGTH_ROCK_" & Screen.Level.LevelFile & "_" & sRock.ID.ToString(CultureInfo.InvariantCulture))
                         End If
                         If ActivateScript <> "" Then
                             If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
@@ -72,8 +73,8 @@ Public Class StrengthTrigger
         MyBase.Update()
     End Sub
 
-    Public Overrides Sub Render()
-        Me.Draw(Me.Model, Textures, True)
+    Public Overrides Sub Render(effect As BasicEffect)
+        Me.Draw(effect, Me.Model, Textures, True)
     End Sub
 
 End Class

@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using P3D.Legacy.Core.Battle.BattleSystemV2;
 using P3D.Legacy.Core.Debug;
+using P3D.Legacy.Core.Extensions;
 using P3D.Legacy.Core.Resources;
 using P3D.Legacy.Core.Resources.Models;
 using P3D.Legacy.Core.Screens;
@@ -286,15 +287,15 @@ namespace P3D.Legacy.Core.Entities
             Vector3 CPosition = Screen.Camera.Position;
             bool ActionScriptActive = false;
 
-            lock (Screen.Camera)
+            //lock (Screen.Camera)
             {
-                if ((Core.CurrentScreen != null))
+                if (Core.CurrentScreen != null)
                 {
-                    if (Screen.Camera.Name.ToLower() == "overworld")
+                    if (Screen.Camera.Name == "Overworld")
                     {
                         CPosition = ((BaseOverworldCamera)Screen.Camera).CPosition;
                     }
-                    if (Screen.Camera.Name.ToLower() == "battlev2")
+                    if (Screen.Camera.Name == "BattleV2")
                     {
                         CPosition = ((BattleCamera)Screen.Camera).CPosition;
                     }
@@ -460,33 +461,33 @@ namespace P3D.Legacy.Core.Entities
             return tempCenterVector;
         }
 
-        public virtual void Draw(BaseModel Model, Texture2D[] Textures, bool setRasterizerState)
+        public void Draw(BasicEffect effect, BaseModel Model, Texture2D[] Textures, bool setRasterizerState)
         {
-            if (Visible == true)
+            if (Visible)
             {
-                if (IsInFieldOfView() == true)
+                if (IsInFieldOfView())
                 {
-                    if (setRasterizerState == true)
+                    if (setRasterizerState)
                     {
                         Core.GraphicsDevice.RasterizerState = _newRasterizerState;
                     }
 
-                    Model.Draw(this, Textures);
+                    Model.Draw(effect, this, Textures);
 
-                    if (setRasterizerState == true)
+                    if (setRasterizerState)
                     {
                         Core.GraphicsDevice.RasterizerState = _oldRasterizerState;
                     }
 
                     _drawnLastFrame = true;
 
-                    if (EntityID != "Floor" && EntityID != "Water")
-                    {
-                        if (DrawViewBox == true)
-                        {
-                            BoundingBoxRenderer.Render(ViewBox, Core.GraphicsDevice, Screen.Camera.View, Screen.Camera.Projection, Color.LightCoral);
-                        }
-                    }
+                    //if (EntityID != "Floor" && EntityID != "Water")
+                    //{
+                    //    if (DrawViewBox == true)
+                    //    {
+                    //        BoundingBoxRenderer.Render(ViewBox, Core.GraphicsDevice, Screen.Camera.View, Screen.Camera.Projection, Color.LightCoral);
+                    //    }
+                    //}
                 }
                 else
                 {
@@ -500,7 +501,7 @@ namespace P3D.Legacy.Core.Entities
         }
 
 
-        public virtual void Render()
+        public virtual void Render(BasicEffect effect)
         {
         }
 
@@ -539,7 +540,7 @@ namespace P3D.Legacy.Core.Entities
         public bool _occluded = false;
         public bool IsInFieldOfView()
         {
-            if (Screen.Camera.BoundingFrustum.Contains(ViewBox) != ContainmentType.Disjoint)
+            if (Screen.Camera.BoundingFrustum.FastIntersect(ViewBox))
             {
                 _visibleLastFrame = true;
                 return true;
@@ -549,6 +550,19 @@ namespace P3D.Legacy.Core.Entities
                 _visibleLastFrame = false;
                 return false;
             }
+            return false;
+
+            // TODO
+            //if (Screen.Camera.BoundingFrustum.Contains(ViewBox) != ContainmentType.Disjoint)
+            //{
+            //    _visibleLastFrame = true;
+            //    return true;
+            //}
+            //else
+            //{
+            //    _visibleLastFrame = false;
+            //    return false;
+            //}
         }
 
         //Stores the vertex count so it doesnt need to be recalculated.
@@ -562,7 +576,7 @@ namespace P3D.Legacy.Core.Entities
                 {
                     if ((Model != null))
                     {
-                        int c = Convert.ToInt32(Model.vertexBuffer.VertexCount / 3);
+                        int c = Convert.ToInt32(Model.VertexBuffer.VertexCount / 3);
                         int min = 0;
 
                         for (var i = 0; i <= TextureIndex.Length - 1; i++)

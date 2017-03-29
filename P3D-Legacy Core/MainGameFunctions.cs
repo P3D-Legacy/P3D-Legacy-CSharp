@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing.Imaging;
-
+using System.Globalization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -29,11 +29,7 @@ namespace P3D.Legacy.Core
 
             if (KeyBoardHandler.KeyPressed(Core.KeyBindings.DebugControl))
             {
-                Core.GameOptions.ShowDebug += 1;
-
-                if (Core.GameOptions.ShowDebug >= 2)
-                    Core.GameOptions.ShowDebug = 0;
-
+                Core.GameOptions.ShowDebug = !Core.GameOptions.ShowDebug;
                 Options.SaveOptions(Core.GameOptions);
             }
             if (KeyBoardHandler.KeyPressed(Core.KeyBindings.GUIControl))
@@ -82,27 +78,27 @@ namespace P3D.Legacy.Core
 
                 string fileName = "";
                 var _with1 = DateTime.Now.ToLocalTime().Date;
-                string month = _with1.Month.ToString();
+                string month = _with1.Month.ToString(NumberFormatInfo.InvariantInfo);
                 if (month.Length == 1)
                 {
                     month = "0" + month;
                 }
-                string day = _with1.Day.ToString();
+                string day = _with1.Day.ToString(NumberFormatInfo.InvariantInfo);
                 if (day.Length == 1)
                 {
                     day = "0" + day;
                 }
-                string hour = _with1.Hour.ToString();
+                string hour = _with1.Hour.ToString(NumberFormatInfo.InvariantInfo);
                 if (hour.Length == 1)
                 {
                     hour = "0" + hour;
                 }
-                string minute = _with1.Minute.ToString();
+                string minute = _with1.Minute.ToString(NumberFormatInfo.InvariantInfo);
                 if (minute.Length == 1)
                 {
                     minute = "0" + minute;
                 }
-                string second = _with1.Second.ToString();
+                string second = _with1.Second.ToString(NumberFormatInfo.InvariantInfo);
                 if (second.Length == 1)
                 {
                     second = "0" + second;

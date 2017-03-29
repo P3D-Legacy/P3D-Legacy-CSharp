@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core
+﻿Imports System.Globalization
+Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Pokemon.Items
 Imports P3D.Legacy.Core.Resources
@@ -296,12 +297,12 @@ Namespace BattleSystem
 
                 ''Shadow Force:
                 'If BattleScreen.FieldEffects.OppShadowForceCounter = 1 Then
-                '    Return New RoundConst() With {.StepType = RoundConst.StepTypes.Move, .Argument = (19).ToString()}
+                '    Return New RoundConst() With {.StepType = RoundConst.StepTypes.Move, .Argument = (19).ToString(NumberFormatInfo.InvariantInfo)}
                 'End If
 
                 ''Sky Drop:
                 'If BattleScreen.FieldEffects.OppSkyDropCounter = 1 Then
-                '    Return New RoundConst() With {.StepType = RoundConst.StepTypes.Move, .Argument = (19).ToString()}
+                '    Return New RoundConst() With {.StepType = RoundConst.StepTypes.Move, .Argument = (19).ToString(NumberFormatInfo.InvariantInfo)}
                 'End If
 
                 'Solar Beam:
@@ -355,7 +356,7 @@ Namespace BattleSystem
                 ElseIf BattleScreen.ReceivedInput.StartsWith("SWITCH|") Then
                     BattleScreen.OppStatistics.Switches += 1
                     Dim switchID As Integer = CInt(BattleScreen.ReceivedInput.Remove(0, 7))
-                    Return New RoundConst() With {.StepType = RoundConst.StepTypes.Switch, .Argument = switchID.ToString()}
+                    Return New RoundConst() With {.StepType = RoundConst.StepTypes.Switch, .Argument = switchID.ToString(NumberFormatInfo.InvariantInfo)}
                 ElseIf BattleScreen.ReceivedInput.StartsWith("TEXT|") Then
                     Dim text As String = BattleScreen.ReceivedInput.Remove(0, 5)
                     Return New RoundConst() With {.StepType = RoundConst.StepTypes.Text, .Argument = text}
@@ -2163,7 +2164,7 @@ Namespace BattleSystem
             p.HP = 0
             p.Status = BasePokemon.StatusProblems.Fainted
             Me.ChangeCameraAngel(1, own, BattleScreen)
-            BattleScreen.BattleQuery.Add(New PlaySoundQueryObject(p.Number.ToString(), True))
+            BattleScreen.BattleQuery.Add(New PlaySoundQueryObject(p.Number.ToString(NumberFormatInfo.InvariantInfo), True))
 
             If message = "" Then
                 message = p.GetDisplayName() & " fainted!"
@@ -3865,12 +3866,12 @@ Namespace BattleSystem
 
                     Select Case message
                         Case "" 'Print default message only
-                            BattleScreen.BattleQuery.Add(New TextQueryObject("The weather changed to " & newWeather.ToString() & "!"))
+                            BattleScreen.BattleQuery.Add(New TextQueryObject("The weather changed to " & newWeather.ToString(NumberFormatInfo.InvariantInfo) & "!"))
                         Case "-1" 'Print no message at all
                             'Do nothing
                         Case Else 'Print message given in 'message'
                             BattleScreen.BattleQuery.Add(New TextQueryObject(message))
-                            BattleScreen.BattleQuery.Add(New TextQueryObject("The weather changed to " & newWeather.ToString() & "!"))
+                            BattleScreen.BattleQuery.Add(New TextQueryObject("The weather changed to " & newWeather.ToString(NumberFormatInfo.InvariantInfo) & "!"))
                     End Select
 
                     ApplyForecast(BattleScreen)
@@ -4312,7 +4313,7 @@ Namespace BattleSystem
                             BattleScreen.OwnFaint = True
                             If BattleScreen.IsRemoteBattle AndAlso BattleScreen.IsHost Then
                                 Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleHostData,
-                                    Core.ServersManager.ID, ProtocolTypes.TCP, {BattleScreen.PartnerNetworkID.ToString(), "-HostFainted-"}.ToList()))
+                                    Core.ServersManager.ID, ProtocolTypes.TCP, {BattleScreen.PartnerNetworkID.ToString(NumberFormatInfo.InvariantInfo), "-HostFainted-"}.ToList()))
                             End If
                             SwitchOutOwn(BattleScreen, -1, -1)
                         End If
@@ -4321,7 +4322,7 @@ Namespace BattleSystem
                             BattleScreen.OppFaint = True
                             If BattleScreen.IsRemoteBattle AndAlso BattleScreen.IsHost Then
                                 Core.ServersManager.ServerConnection.SendPackage(New Servers.Package(PackageTypes.BattleHostData,
-                                    Core.ServersManager.ID, ProtocolTypes.TCP, {BattleScreen.PartnerNetworkID.ToString(), "-ClientFainted-"}.ToList()))
+                                    Core.ServersManager.ID, ProtocolTypes.TCP, {BattleScreen.PartnerNetworkID.ToString(NumberFormatInfo.InvariantInfo), "-ClientFainted-"}.ToList()))
                             End If
                             If BattleScreen.IsTrainerBattle = True Then
                                 If BattleScreen.Trainer.HasBattlePokemon() = True Then
@@ -4970,7 +4971,7 @@ Namespace BattleSystem
                 If BattleScreen.FieldEffects.OwnPerishSongCount > 0 Then 'Perish Song
                     BattleScreen.FieldEffects.OwnPerishSongCount -= 1
                     If .OwnPokemon.HP > 0 Then
-                        BattleScreen.BattleQuery.Add(New TextQueryObject(.OwnPokemon.GetDisplayName() & "'s Perish Count is at " & BattleScreen.FieldEffects.OwnPerishSongCount.ToString() & "!"))
+                        BattleScreen.BattleQuery.Add(New TextQueryObject(.OwnPokemon.GetDisplayName() & "'s Perish Count is at " & BattleScreen.FieldEffects.OwnPerishSongCount.ToString(NumberFormatInfo.InvariantInfo) & "!"))
                         If BattleScreen.FieldEffects.OwnPerishSongCount = 0 Then
                             ReduceHP(.OwnPokemon.HP, True, False, BattleScreen, "", "move:perishsong")
                             Me.FaintPokemon(True, BattleScreen, .OwnPokemon.GetDisplayName() & " fainted due to Perish Song!")
@@ -5697,7 +5698,7 @@ Namespace BattleSystem
                 If BattleScreen.FieldEffects.OppPerishSongCount > 0 Then 'Perish Song
                     BattleScreen.FieldEffects.OppPerishSongCount -= 1
                     If .OppPokemon.HP > 0 Then
-                        BattleScreen.BattleQuery.Add(New TextQueryObject(.OppPokemon.GetDisplayName() & "'s Perish Count is at " & BattleScreen.FieldEffects.OppPerishSongCount.ToString() & "!"))
+                        BattleScreen.BattleQuery.Add(New TextQueryObject(.OppPokemon.GetDisplayName() & "'s Perish Count is at " & BattleScreen.FieldEffects.OppPerishSongCount.ToString(NumberFormatInfo.InvariantInfo) & "!"))
                         If BattleScreen.FieldEffects.OppPerishSongCount = 0 Then
                             ReduceHP(.OppPokemon.HP, False, True, BattleScreen, "", "move:perishsong")
                             Me.FaintPokemon(False, BattleScreen, .OppPokemon.GetDisplayName() & " fainted due to Perish Song!")
@@ -6032,7 +6033,7 @@ Namespace BattleSystem
                 End If
 
                 BattleScreen.AddToQuery(InsertIndex, New ToggleEntityQueryObject(True, ToggleEntityQueryObject.BattleEntities.OwnPokemon, 1, -1, -1, -1, -1))
-                BattleScreen.BattleQuery.Add(New PlaySoundQueryObject(BattleScreen.OwnPokemon.Number.ToString(), True))
+                BattleScreen.BattleQuery.Add(New PlaySoundQueryObject(BattleScreen.OwnPokemon.Number.ToString(NumberFormatInfo.InvariantInfo), True))
                 BattleScreen.AddToQuery(InsertIndex, New TextQueryObject("Go, " & BattleScreen.OwnPokemon.GetDisplayName() & "!"))
             End If
 
@@ -6364,7 +6365,7 @@ Namespace BattleSystem
                 End If
 
                 BattleScreen.BattleQuery.Add(New ToggleEntityQueryObject(True, ToggleEntityQueryObject.BattleEntities.OppPokemon, 1, -1, -1, -1, -1))
-                BattleScreen.BattleQuery.Add(New PlaySoundQueryObject(BattleScreen.OppPokemon.Number.ToString(), True))
+                BattleScreen.BattleQuery.Add(New PlaySoundQueryObject(BattleScreen.OppPokemon.Number.ToString(NumberFormatInfo.InvariantInfo), True))
                 BattleScreen.BattleQuery.Add(New TextQueryObject(BattleScreen.Trainer.Name & ": ""Go, " & BattleScreen.OppPokemon.GetDisplayName() & "!"""))
             End If
 
@@ -6589,7 +6590,7 @@ Namespace BattleSystem
                             If moveLevel < Core.Player.Pokemons(PokeIndex).Level Then
                                 moveLevel = Core.Player.Pokemons(PokeIndex).Level
 
-                                Core.Player.AddPoints(CInt(Math.Sqrt(Core.Player.Pokemons(PokeIndex).Level)).Clamp(1, 10), "Leveled up a Pokémon to level " & moveLevel.ToString() & ".")
+                                Core.Player.AddPoints(CInt(Math.Sqrt(Core.Player.Pokemons(PokeIndex).Level)).Clamp(1, 10), "Leveled up a Pokémon to level " & moveLevel.ToString(NumberFormatInfo.InvariantInfo) & ".")
                                 Core.Player.Pokemons(PokeIndex).ChangeFriendShip(BasePokemon.FriendShipCauses.LevelUp)
 
                                 Core.Player.Pokemons(PokeIndex).HasLeveledUp = True

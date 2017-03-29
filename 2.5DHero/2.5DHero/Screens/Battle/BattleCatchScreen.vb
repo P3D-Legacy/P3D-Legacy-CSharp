@@ -73,7 +73,7 @@ Public Class BattleCatchScreen
         End If
 
         For Each [Object] As Entity In RenderObjects
-            [Object].Render()
+            [Object].Render(Screen.Effect)
         Next
 
         World.DrawWeather(Screen.Level.World.CurrentWeather)

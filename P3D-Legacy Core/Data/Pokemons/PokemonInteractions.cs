@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -78,34 +79,34 @@ namespace P3D.Legacy.Core.Pokemon
 
             Vector2 newPosition = new Vector2(0, 1);
 
-            string s = "version=2" + Constants.vbNewLine + "@pokemon.cry(" + p.Number + ")" + Constants.vbNewLine;
+            string s = "version=2" + Environment.NewLine + "@pokemon.cry(" + p.Number + ")" + Environment.NewLine;
 
             if (((BaseOverworldCamera)Screen.Camera).ThirdPerson == false)
             {
                 if (reaction.HasNotification == true)
                 {
-                    s += "@camera.activatethirdperson" + Constants.vbNewLine + "@camera.setposition(" + newPosition.X + ",1," + newPosition.Y + ")" + Constants.vbNewLine;
+                    s += "@camera.activatethirdperson" + Environment.NewLine + "@camera.setposition(" + newPosition.X + ",1," + newPosition.Y + ")" + Environment.NewLine;
 
-                    s += "@entity.showmessagebulb(" + Convert.ToInt32(reaction.Notification).ToString() + "|" + cPosition.X + offset.X + "|" + cPosition.Y + 0.7f + "|" + cPosition.Z + offset.Y + ")" + Constants.vbNewLine;
+                    s += "@entity.showmessagebulb(" + Convert.ToInt32(reaction.Notification).ToString(NumberFormatInfo.InvariantInfo) + "|" + cPosition.X + offset.X + "|" + cPosition.Y + 0.7f + "|" + cPosition.Z + offset.Y + ")" + Environment.NewLine;
 
-                    s += "@camera.deactivatethirdperson" + Constants.vbNewLine;
+                    s += "@camera.deactivatethirdperson" + Environment.NewLine;
                 }
-                s += "@text.show(" + reaction.GetMessage(p) + ")" + Constants.vbNewLine;
+                s += "@text.show(" + reaction.GetMessage(p) + ")" + Environment.NewLine;
             }
             else
             {
                 float preYaw = Screen.Camera.Yaw;
-                if (reaction.HasNotification == true)
+                if (reaction.HasNotification)
                 {
-                    s += "@camera.setyaw(" + ((BaseOverworldCamera)Screen.Camera).GetAimYawFromDirection(Screen.Camera.GetPlayerFacingDirection()) + ")" + Constants.vbNewLine;
-                    s += "@camera.setposition(" + newPosition.X + ",1," + newPosition.Y + ")" + Constants.vbNewLine;
-                    s += "@entity.showmessagebulb(" + Convert.ToInt32(reaction.Notification).ToString() + "|" + cPosition.X + offset.X + "|" + cPosition.Y + 0.7f + "|" + cPosition.Z + offset.Y + ")" + Constants.vbNewLine;
+                    s += "@camera.setyaw(" + ((BaseOverworldCamera)Screen.Camera).GetAimYawFromDirection(Screen.Camera.GetPlayerFacingDirection()) + ")" + Environment.NewLine;
+                    s += "@camera.setposition(" + newPosition.X + ",1," + newPosition.Y + ")" + Environment.NewLine;
+                    s += "@entity.showmessagebulb(" + Convert.ToInt32(reaction.Notification) + "|" + cPosition.X + offset.X + "|" + cPosition.Y + 0.7f + "|" + cPosition.Z + offset.Y + ")" + Environment.NewLine;
 
-                    s += "@camera.deactivatethirdperson" + Constants.vbNewLine;
+                    s += "@camera.deactivatethirdperson" + Environment.NewLine;
                 }
-                s += "@text.show(" + reaction.GetMessage(p) + ")" + Constants.vbNewLine;
-                s += "@camera.activatethirdperson" + Constants.vbNewLine;
-                s += "@camera.setyaw(" + preYaw + ")" + Constants.vbNewLine;
+                s += "@text.show(" + reaction.GetMessage(p) + ")" + Environment.NewLine;
+                s += "@camera.activatethirdperson" + Environment.NewLine;
+                s += "@camera.setyaw(" + preYaw + ")" + Environment.NewLine;
             }
             s += ":end";
 
@@ -137,26 +138,26 @@ namespace P3D.Legacy.Core.Pokemon
 
             Item item = Item.GetItemByID(PickupItemID);
 
-            string s = "version=2" + Constants.vbNewLine + "@pokemon.cry(" + p.Number + ")" + Constants.vbNewLine;
+            string s = "version=2" + Environment.NewLine + "@pokemon.cry(" + p.Number + ")" + Environment.NewLine;
 
             if (((BaseOverworldCamera)Screen.Camera).ThirdPerson == false)
             {
-                s += "@camera.activatethirdperson" + Constants.vbNewLine + "@camera.setposition(" + newPosition.X + ",1," + newPosition.Y + ")" + Constants.vbNewLine;
+                s += "@camera.activatethirdperson" + Environment.NewLine + "@camera.setposition(" + newPosition.X + ",1," + newPosition.Y + ")" + Environment.NewLine;
 
-                s += "@entity.showmessagebulb(" + Convert.ToInt32(BaseMessageBulb.NotifcationTypes.Question).ToString() + "|" + cPosition.X + offset.X + "|" + cPosition.Y + 0.7f + "|" + cPosition.Z + offset.Y + ")" + Constants.vbNewLine;
+                s += "@entity.showmessagebulb(" + Convert.ToInt32(BaseMessageBulb.NotifcationTypes.Question).ToString(NumberFormatInfo.InvariantInfo) + "|" + cPosition.X + offset.X + "|" + cPosition.Y + 0.7f + "|" + cPosition.Z + offset.Y + ")" + Environment.NewLine;
 
-                s += "@camera.deactivatethirdperson" + Constants.vbNewLine;
-                s += "@text.show(" + message + ")" + Constants.vbNewLine + "@options.show(Yes,No)" + Constants.vbNewLine + ":when:Yes" + Constants.vbNewLine + "@text.show(Your Pokémon handed over~the " + item.Name + "!)" + Constants.vbNewLine + "@item.give(" + PickupItemID + ",1)" + Constants.vbNewLine + "@item.messagegive(" + PickupItemID + ",1)" + Constants.vbNewLine + ":when:No" + Constants.vbNewLine + "@text.show(Your Pokémon kept~the item happily.)" + Constants.vbNewLine + "@pokemon.addfriendship(0,10)" + Constants.vbNewLine + ":endwhen" + Constants.vbNewLine;
+                s += "@camera.deactivatethirdperson" + Environment.NewLine;
+                s += "@text.show(" + message + ")" + Environment.NewLine + "@options.show(Yes,No)" + Environment.NewLine + ":when:Yes" + Environment.NewLine + "@text.show(Your Pokémon handed over~the " + item.Name + "!)" + Environment.NewLine + "@item.give(" + PickupItemID + ",1)" + Environment.NewLine + "@item.messagegive(" + PickupItemID + ",1)" + Environment.NewLine + ":when:No" + Environment.NewLine + "@text.show(Your Pokémon kept~the item happily.)" + Environment.NewLine + "@pokemon.addfriendship(0,10)" + Environment.NewLine + ":endwhen" + Environment.NewLine;
             }
             else
             {
-                s += "@camera.setposition(" + newPosition.X + ",1," + newPosition.Y + ")" + Constants.vbNewLine;
-                s += "@entity.showmessagebulb(" + Convert.ToInt32(BaseMessageBulb.NotifcationTypes.Question).ToString() + "|" + cPosition.X + offset.X + "|" + cPosition.Y + 0.7f + "|" + cPosition.Z + offset.Y + ")" + Constants.vbNewLine;
+                s += "@camera.setposition(" + newPosition.X + ",1," + newPosition.Y + ")" + Environment.NewLine;
+                s += "@entity.showmessagebulb(" + Convert.ToInt32(BaseMessageBulb.NotifcationTypes.Question).ToString(NumberFormatInfo.InvariantInfo) + "|" + cPosition.X + offset.X + "|" + cPosition.Y + 0.7f + "|" + cPosition.Z + offset.Y + ")" + Environment.NewLine;
 
-                s += "@camera.deactivatethirdperson" + Constants.vbNewLine;
+                s += "@camera.deactivatethirdperson" + Environment.NewLine;
 
-                s += "@text.show(" + message + ")" + Constants.vbNewLine + "@options.show(Yes,No)" + Constants.vbNewLine + ":when:Yes" + Constants.vbNewLine + "@text.show(Your Pokémon handed over~the " + item.Name + "!)" + Constants.vbNewLine + "@item.give(" + PickupItemID + ",1)" + Constants.vbNewLine + "@item.messagegive(" + PickupItemID + ",1)" + Constants.vbNewLine + ":when:No" + Constants.vbNewLine + "@text.show(Your Pokémon kept~the item happily.)" + Constants.vbNewLine + "@pokemon.addfriendship(0,10)" + Constants.vbNewLine + ":endwhen" + Constants.vbNewLine;
-                s += "@camera.activatethirdperson" + Constants.vbNewLine;
+                s += "@text.show(" + message + ")" + Environment.NewLine + "@options.show(Yes,No)" + Environment.NewLine + ":when:Yes" + Environment.NewLine + "@text.show(Your Pokémon handed over~the " + item.Name + "!)" + Environment.NewLine + "@item.give(" + PickupItemID + ",1)" + Environment.NewLine + "@item.messagegive(" + PickupItemID + ",1)" + Environment.NewLine + ":when:No" + Environment.NewLine + "@text.show(Your Pokémon kept~the item happily.)" + Environment.NewLine + "@pokemon.addfriendship(0,10)" + Environment.NewLine + ":endwhen" + Environment.NewLine;
+                s += "@camera.activatethirdperson" + Environment.NewLine;
             }
             s += ":end";
 
@@ -989,7 +990,7 @@ namespace P3D.Legacy.Core.Pokemon
             var file = GameModeManager.GetContentFileAsync("Data\\interactions.dat").Result;
             FileValidation.CheckFileValid(file, false, "PokemonInteractions.vb");
 
-            string[] data = file.ReadAllTextAsync().Result.Split(new [] {Environment.NewLine}, StringSplitOptions.None);
+            string[] data = file.ReadAllTextAsync().Result.SplitAtNewline();
 
             foreach (string line in data)
             {
@@ -1214,7 +1215,7 @@ namespace P3D.Legacy.Core.Pokemon
             if (Screen.Level.ShowOverworldPokemon == true && GameModeManager.GetActiveGameRuleValueOrDefault("ShowFollowPokemon", true) == true)
             {
                 //Checks if the player has a Pokémon:
-                if (Core.Player.Pokemons.Count > 0 && Screen.Level.Surfing == false && Screen.Level.Riding == false && Screen.Level.ShowOverworldPokemon == true && (Core.Player.GetWalkPokemon() != null))
+                if (Core.Player.Pokemons.Count > 0 && Screen.Level.IsSurfing == false && Screen.Level.IsRiding == false && Screen.Level.ShowOverworldPokemon == true && (Core.Player.GetWalkPokemon() != null))
                 {
                     if (Core.Player.GetWalkPokemon().Status == BasePokemon.StatusProblems.None)
                     {
