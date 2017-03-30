@@ -99,10 +99,10 @@ Public Class MapScreen
         Dim TempPoke As New List(Of Roaming)
         Dim RoamingPokeName As New List(Of String)
 
-        Dim file = GameModeManager.GetScriptFileAsync("worldmap\" & Me.currentRegion & ".dat").Result
+        Dim file = GameModeManager.GetScriptFile("worldmap\" & Me.currentRegion & ".dat")
         FileValidation.CheckFileValid(file, False, "MapScreen.vb")
 
-        Dim InputData() As String = file.ReadAllTextAsync.Result.SplitAtNewline()
+        Dim InputData() As String = file.ReadAllLines()
 
         For Each line As String In InputData
             If line <> "" And line.StartsWith("{""") = True Then

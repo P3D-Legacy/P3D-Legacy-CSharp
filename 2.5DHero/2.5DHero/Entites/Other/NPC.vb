@@ -349,10 +349,10 @@ Public Class NPC
                                 Dim InSightMusic As String = "nomusic"
 
                                 If Me.IsTrainer = True Then
-                                    Dim trainerFile = GameModeManager.GetScriptFileAsync(Me.AdditionalValue & ".dat").Result
+                                    Dim trainerFile = GameModeManager.GetScriptFile(Me.AdditionalValue & ".dat")
                                     FileValidation.CheckFileValid(trainerFile, False, "NPC.vb")
 
-                                    Dim trainerContent() = trainerFile.ReadAllTextAsync().Result.SplitAtNewline()
+                                    Dim trainerContent() = trainerFile.ReadAllLines()
                                     For Each line As String In trainerContent
                                         If line.StartsWith("@Trainer:") = True Then
                                             Dim trainerID As String = line.GetSplit(1, ":")

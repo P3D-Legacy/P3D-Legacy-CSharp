@@ -96,9 +96,9 @@ Public Class Badge
     Public Shared Sub Load()
         Badges.Clear()
 
-        Dim file As IFile = GameModeManager.GetContentFileAsync("Data\badges.dat").Result
+        Dim file As IFile = GameModeManager.GetContentFile("Data\badges.dat")
         FileValidation.CheckFileValid(file, False, "Badge.vb")
-        Dim data() As String = file.ReadAllTextAsync.Result.SplitAtNewline()
+        Dim data() As String = file.ReadAllLines()
         For Each line As String In data
             If line.Contains("|") = True Then
                 Badges.Add(New BadgeDeclaration(line))

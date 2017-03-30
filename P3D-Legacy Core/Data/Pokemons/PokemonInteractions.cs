@@ -987,14 +987,12 @@ namespace P3D.Legacy.Core.Pokemon
         {
             SpecialReactionList.Clear();
 
-            var file = GameModeManager.GetContentFileAsync("Data\\interactions.dat").Result;
+            var file = GameModeManager.GetContentFile("Data\\interactions.dat");
             FileValidation.CheckFileValid(file, false, "PokemonInteractions.vb");
 
-            string[] data = file.ReadAllTextAsync().Result.SplitAtNewline();
-
-            foreach (string line in data)
+            foreach (string line in file.ReadAllLines())
             {
-                if (line.StartsWith("{") == true && line.EndsWith("}") == true)
+                if (line.StartsWith("{") && line.EndsWith("}"))
                 {
                     if (line.CountSeperators("|") >= 8)
                     {

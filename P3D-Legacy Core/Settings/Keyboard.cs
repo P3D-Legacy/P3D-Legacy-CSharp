@@ -28,17 +28,17 @@ namespace P3D.Legacy.Core.Settings
             OnlineStatus = Keys.Tab,
         };
 
-        public static async void SaveKeyboard(Keyboard options)
+        public static void SaveKeyboard(Keyboard options)
         {
             var serializer = SerializerBuilder.Build();
-            await StorageInfo.SaveFolder.KeyboardFile.WriteAllTextAsync(serializer.Serialize(options));
+            StorageInfo.SaveFolder.KeyboardFile.WriteAllText(serializer.Serialize(options));
         }
-        public static async Task<Keyboard> LoadKeyboard()
+        public static Keyboard LoadKeyboard()
         {
             var deserializer = DeserializerBuilder.Build();
             try
             {
-                var deserialized = deserializer.Deserialize<Keyboard>(await StorageInfo.SaveFolder.KeyboardFile.ReadAllTextAsync().ConfigureAwait(false));
+                var deserialized = deserializer.Deserialize<Keyboard>(StorageInfo.SaveFolder.KeyboardFile.ReadAllText());
                 if (deserialized == null)
                 {
                     SaveKeyboard(Default);
@@ -49,7 +49,7 @@ namespace P3D.Legacy.Core.Settings
             catch (YamlException)
             {
                 SaveKeyboard(Default);
-                var deserialized = deserializer.Deserialize<Keyboard>(await StorageInfo.SaveFolder.KeyboardFile.ReadAllTextAsync());
+                var deserialized = deserializer.Deserialize<Keyboard>(StorageInfo.SaveFolder.KeyboardFile.ReadAllText());
                 return deserialized;
             }
         }

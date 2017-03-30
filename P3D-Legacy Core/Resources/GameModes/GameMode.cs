@@ -86,16 +86,16 @@ namespace P3D.Legacy.Core.GameModes
 
         public static GameMode LoadPokemon3D() => ParseYaml(GameModeYaml.Pokemon3D);
 
-        public static async Task<GameMode> Load(string name) => ParseYaml(await GameModeYaml.LoadGameModeYaml(name));
-        public static async Task Save(GameMode gameMode) => await GameModeYaml.SaveGameModeYaml(CreateYaml(gameMode));
-        public static async Task<bool> Exists(string name)
+        public static GameMode Load(string name) => ParseYaml(GameModeYaml.LoadGameModeYaml(name));
+        public static void Save(GameMode gameMode) => GameModeYaml.SaveGameModeYaml(CreateYaml(gameMode));
+        public static bool Exists(string name)
         {
-            if (await StorageInfo.GameModesFolder.CheckExistsAsync(name) == ExistenceCheckResult.NotFound)
+            if (StorageInfo.GameModesFolder.CheckExists(name) == ExistenceCheckResult.NotFound)
                 return false;
 
-            var gameModeFolder = await StorageInfo.GameModesFolder.CreateFolderAsync(name, CreationCollisionOption.OpenIfExists);
+            var gameModeFolder = StorageInfo.GameModesFolder.CreateFolder(name, CreationCollisionOption.OpenIfExists);
 
-            if (await gameModeFolder.CheckExistsAsync(GameModeYaml.GameModeFilename) == ExistenceCheckResult.NotFound)
+            if (gameModeFolder.CheckExists(GameModeYaml.GameModeFilename) == ExistenceCheckResult.NotFound)
                 return false;
 
             return true;

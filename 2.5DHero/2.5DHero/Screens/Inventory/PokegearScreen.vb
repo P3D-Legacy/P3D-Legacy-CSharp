@@ -1917,7 +1917,7 @@ Namespace GameJolt
         Private Sub InitializeRadio()
             Me.InitializedRadio = True
 
-            Dim radioData() As String = GameModeManager.GetContentFileAsync("Data\channels.dat").Result.ReadAllTextAsync().Result.Split(Environment.NewLine)
+            Dim radioData() As String = GameModeManager.GetContentFile("Data\channels.dat").ReadAllLines()
             For Each line As String In radioData
                 If line.StartsWith("{") = True And line.EndsWith("}") = True Then
                     line = line.Remove(line.Length - 1, 1).Remove(0, 1)
@@ -1936,10 +1936,10 @@ Namespace GameJolt
         Public Shared Function StationCanPlay(ByVal station As RadioStation) As Boolean
             Dim stations As New List(Of IRadioStation)
 
-            Dim file = GameModeManager.GetContentFileAsync("Data\channels.dat").Result
+            Dim file = GameModeManager.GetContentFile("Data\channels.dat")
             FileValidation.CheckFileValid(file, False, "PokegearScreen.vb")
 
-            Dim radioData() As String = file.ReadAllTextAsync().Result.SplitAtNewline()
+            Dim radioData() As String = file.ReadAllLines()
             For Each line As String In radioData
                 If line.StartsWith("{") = True And line.EndsWith("}") = True Then
                     line = line.Remove(line.Length - 1, 1).Remove(0, 1)

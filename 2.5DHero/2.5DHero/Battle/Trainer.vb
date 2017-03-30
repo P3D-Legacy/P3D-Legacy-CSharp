@@ -25,10 +25,10 @@ Public Class Trainer
     Public Sub New(ByVal TrainerFile As String)
         Me.TrainerFile = TrainerFile
 
-        Dim file = GameModeManager.GetScriptFileAsync("Trainer\" & TrainerFile & ".trainer").Result
+        Dim file = GameModeManager.GetScriptFile("Trainer\" & TrainerFile & ".trainer")
         FileValidation.CheckFileValid(file, False, "Trainer.vb")
 
-        Dim Data() As String = file.ReadAllTextAsync().Result.SplitAtNewline()
+        Dim Data() As String = file.ReadAllLines()
 
         If Data(0) = "[TRAINER FORMAT]" Then
             LoadTrainer(Data)

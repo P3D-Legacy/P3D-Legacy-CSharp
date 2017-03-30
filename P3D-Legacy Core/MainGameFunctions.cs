@@ -104,13 +104,13 @@ namespace P3D.Legacy.Core
                     second = "0" + second;
                 }
                 fileName = _with1.Year + "-" + month + "-" + day + "_" + hour + "." + minute + "." + second + ".png";
-                var file = StorageInfo.ScreenshotsFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting).Result;
+                var file = StorageInfo.ScreenshotsFolder.CreateFile(fileName, CreationCollisionOption.ReplaceExisting);
 
                 if (!Core.GraphicsManager.IsFullScreen)
                 {
                     using (var b = new System.Drawing.Bitmap(Core.WindowSize.Width, Core.WindowSize.Height))
                     using (var g = System.Drawing.Graphics.FromImage(b))
-                    using (var fileStream = file.OpenAsync(PCLExt.FileStorage.FileAccess.ReadAndWrite).Result)
+                    using (var fileStream = file.Open(FileAccess.ReadAndWrite))
                     {
                         g.CopyFromScreen(Core.Window.ClientBounds.X, Core.Window.ClientBounds.Y, 0, 0, new System.Drawing.Size(b.Width, b.Height));
                         b.Save(fileStream, ImageFormat.Png);
@@ -119,7 +119,7 @@ namespace P3D.Legacy.Core
                 else
                 {
                     using (var screenshot = new RenderTarget2D(Core.GraphicsDevice, Core.WindowSize.Width, Core.WindowSize.Height, false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8))
-                    using (var fileStream = file.OpenAsync(PCLExt.FileStorage.FileAccess.ReadAndWrite).Result)
+                    using (var fileStream = file.Open(FileAccess.ReadAndWrite))
                     {
                         Core.GraphicsDevice.SetRenderTarget(screenshot);
                         Core.Draw();

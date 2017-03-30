@@ -56,11 +56,11 @@ namespace P3D.Legacy.Core.Battle
         {
             this.TrainerFile = TrainerFile;
 
-            var file = GameModeManager.GetScriptFileAsync(Path.Combine("Trainer", TrainerFile + ".trainer")).Result;
+            var file = GameModeManager.GetScriptFile(Path.Combine("Trainer", TrainerFile + ".trainer"));
             // TODO:
             //FileValidation.CheckFileValid(path, false, "Trainer.vb");
 
-            string[] Data = file.ReadAllTextAsync().Result.SplitAtNewline();
+            string[] Data = file.ReadAllLines();
 
             if (Data[0] == "[TRAINER FORMAT]")
             {

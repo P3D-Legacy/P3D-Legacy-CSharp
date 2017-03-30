@@ -18,10 +18,10 @@ Public Class Pokedex
     Public Shared Sub Load()
         Core.Player.Pokedexes.Clear()
 
-        Dim file As IFile = GameModeManager.GetContentFileAsync("Data\pokedex.dat").Result
+        Dim file As IFile = GameModeManager.GetContentFile("Data\pokedex.dat")
         FileValidation.CheckFileValid(file, False, "Pokedex.vb")
 
-        Dim lines() As String = file.ReadAllTextAsync.Result.SplitAtNewline()
+        Dim lines() As String = file.ReadAllLines()
         For Each PokedexData As String In lines
             Core.Player.Pokedexes.Add(New Pokedex(PokedexData))
         Next

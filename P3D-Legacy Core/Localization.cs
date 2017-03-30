@@ -6,6 +6,7 @@ using System.Linq;
 using P3D.Legacy.Core.Resources;
 using P3D.Legacy.Core.Storage;
 using P3D.Legacy.Core.Storage.Folders;
+
 using PCLExt.FileStorage;
 
 // IO:
@@ -79,20 +80,18 @@ namespace P3D.Legacy.Core
             Logger.Debug("---Reloaded GameMode Tokens---");
         }
 
-        private static async void LoadTokenFile(TokensFolder localizationFolder, bool isGameModeFile)
+        private static void LoadTokenFile(TokensFolder localizationFolder, bool isGameModeFile)
         {
             var defaultLanguage = new CultureInfo("en");
 
-            if ((await localizationFolder.GetFilesAsync()).Any())
+            if (localizationFolder.GetFiles().Any())
             {
-                if (!await localizationFolder.CheckTranslationExistsAsync(Language))
+                if (!localizationFolder.CheckTranslationExists(Language))
                     Language = defaultLanguage;
 
 
                 {
-                    var translationFile = await localizationFolder.GetTranslationFileAsync(Language);
-                    var data = (await translationFile.ReadAllTextAsync()).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                    foreach (var tokenLine in data)
+                    foreach (var tokenLine in localizationFolder.GetTranslationFile(Language).ReadAllLines())
                     {
                         if (tokenLine.Contains(","))
                         {
@@ -114,12 +113,9 @@ namespace P3D.Legacy.Core
                 // -- Load default definitions, the current language may not have everything translated             
                 if (Equals(Language, defaultLanguage))
                 {
-                    if (await localizationFolder.CheckTranslationExistsAsync(defaultLanguage))
+                    if (localizationFolder.CheckTranslationExists(defaultLanguage))
                     {
-                        var translationFile = await localizationFolder.GetTranslationFileAsync(defaultLanguage);
-                        var data = (await translationFile.ReadAllTextAsync()).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-
-                        foreach (var tokenLine in data)
+                        foreach (var tokenLine in localizationFolder.GetTranslationFile(defaultLanguage).ReadAllLines())
                         {
                             if (tokenLine.Contains(","))
                             {

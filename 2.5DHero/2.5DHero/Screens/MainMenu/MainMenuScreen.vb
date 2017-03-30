@@ -125,9 +125,9 @@ Public Class MainMenuScreen
         Languages.Clear()
         LanguageNames.Clear()
 
-        Dim languageFiles = StorageInfo.LocalizationFolder.GetTranslationFilesAsync().Result
+        Dim languageFiles = StorageInfo.LocalizationFolder.GetTranslationFiles()
         For Each localizationFile In languageFiles
-            Dim data = localizationFile.ReadAllTextAsync().Result.Split(Environment.NewLine)
+            Dim data = localizationFile.ReadAllLines()
             Dim languageName = data(0).GetSplit(1)
 
             Languages.Add(localizationFile.Language)
@@ -157,8 +157,8 @@ Public Class MainMenuScreen
             If i <= Saves.Count - 1 Then
                 Dim entry As String = Saves(i)
 
-                Dim userFolder = StorageInfo.SaveFolder.GetUserSaveFolder(Path.GetFileName(entry.TrimEnd("/").TrimEnd("\"))).Result
-                Dim Data() As String = userFolder.PlayerFile.ReadAllTextAsync().Result.SplitAtNewline()
+                Dim userFolder = StorageInfo.SaveFolder.GetUserSaveFolder(Path.GetFileName(entry.TrimEnd("/").TrimEnd("\")))
+                Dim Data() As String = userFolder.PlayerFile.ReadAllLines()
 
                 Dim Name As String = "Missingno."
                 Dim Autosave As Boolean = False
@@ -648,8 +648,8 @@ Public Class MainMenuScreen
             Dim dispLocation As String = "(Unknown)"
             Dim dispGameMode As String = "Kolben"
 
-            Dim userFolder = StorageInfo.SaveFolder.GetUserSaveFolder(Saves(loadMenuIndex(0)).TrimEnd("/").TrimEnd("\")).Result
-            Dim Data() As String = userFolder.PlayerFile.ReadAllTextAsync().Result.SplitAtNewline()
+            Dim userFolder = StorageInfo.SaveFolder.GetUserSaveFolder(Saves(loadMenuIndex(0)).TrimEnd("/").TrimEnd("\"))
+            Dim Data() As String = userFolder.PlayerFile.ReadAllLines()
             For Each Line As String In Data
                 If Line.Contains("|") = True Then
                     Dim ID As String = Line.Remove(Line.IndexOf("|"))
@@ -1615,8 +1615,8 @@ Public Class MainMenuScreen
         Dim deleteAutosave As Boolean = False
         For Each f As String In System.IO.Directory.GetDirectories(GameController.GamePath & "\Save\")
 
-            Dim userFolder = StorageInfo.SaveFolder.GetUserSaveFolder(f.TrimEnd("/").TrimEnd("\")).Result
-            Dim Data() As String = userFolder.PlayerFile.ReadAllTextAsync().Result.SplitAtNewline()
+            Dim userFolder = StorageInfo.SaveFolder.GetUserSaveFolder(f.TrimEnd("/").TrimEnd("\"))
+            Dim Data() As String = userFolder.PlayerFile.ReadAllLines()
             For Each Line As String In Data
                 If Line.StartsWith("AutoSave|") = True Then
                     Dim autosaveName As String = Line.GetSplit(1, "|")

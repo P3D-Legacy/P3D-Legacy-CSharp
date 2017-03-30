@@ -46,10 +46,10 @@ Public Class JoinServerScreen
 
         Me.ServerList.Add(localServer)
 
-        StorageInfo.SaveFolder.ServerListFile.WriteAllTextAsync("Official Pokémon3D Server,karp.pokemon3d.net:15124" & vbNewLine & "AGN Server,p3d.aggressivegaming.org:15124").Wait()
+        StorageInfo.SaveFolder.ServerListFile.WriteAllText("Official Pokémon3D Server,karp.pokemon3d.net:15124" & vbNewLine & "AGN Server,p3d.aggressivegaming.org:15124")
 
         If LoadOnlineServers = True Then        
-            Dim data() As String = StorageInfo.SaveFolder.ServerListFile.ReadAllTextAsync().Result.SplitAtNewline()
+            Dim data() As String = StorageInfo.SaveFolder.ServerListFile.ReadAllLines()
             If data.Length > 0 Then
                 For Each line As String In data
                     If line.CountSeperators(",") = 1 Then
@@ -662,7 +662,7 @@ Public Class JoinServerScreen
         ClearThreadList.Clear()
     End Sub
 
-    Private Async Sub SaveServerlist()
+    Private Sub SaveServerlist()
         Dim data As String = ""
         For Each s As Server In Me.ServerList
             If s.IsLocal = False Then
@@ -672,7 +672,7 @@ Public Class JoinServerScreen
                 data &= s.ToString()
             End If
         Next
-        Await StorageInfo.SaveFolder.ServerListFile.WriteAllTextAsync(data)
+        StorageInfo.SaveFolder.ServerListFile.WriteAllText(data)
     End Sub
 
 End Class

@@ -36,10 +36,10 @@ Public Class Spawner
         End If
 
         ' TODO
-        If GameModeManager.PokeFileExistsAsync(pokeFilePath).Result Then
-            Dim pokeFile = GameModeManager.GetPokeFileAsync(Spawner.pokeFilePath).Result
+        If GameModeManager.PokeFileExists(pokeFilePath) Then
+            Dim pokeFile = GameModeManager.GetPokeFile(Spawner.pokeFilePath)
             FileValidation.CheckFileValid(pokeFile, False, "Spawner.vb")
-            Dim Data() As String = pokeFile.ReadAllTextAsync.Result.SplitAtNewline()
+            Dim Data() As String = pokeFile.ReadAllLines()
 
             Dim i As Integer = 0
             For Each Line As String In Data

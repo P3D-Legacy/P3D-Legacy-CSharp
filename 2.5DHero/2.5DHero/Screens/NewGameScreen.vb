@@ -408,7 +408,7 @@ Public Class NewGameScreen
         Return s
     End Function
 
-    Private Async Sub CreateGame()
+    Private Sub CreateGame()
         Dim folderPath As String = Name
         Dim folderPrefix As Integer = 0
 
@@ -428,10 +428,10 @@ Public Class NewGameScreen
             folderPrefix += 1
         End While
 
-        Dim playerFolder = Await StorageInfo.SaveFolder.GetUserSaveFolder(folderPath)
-        Await playerFolder.PlayerFile.WriteAllTextAsync(GetPlayerData())
-        Await playerFolder.BerriesFile.WriteAllTextAsync(GetBerryData())
-        Await playerFolder.OptionsFile.WriteAllTextAsync(GetOptionsData())
+        Dim playerFolder = StorageInfo.SaveFolder.GetUserSaveFolder(folderPath)
+        playerFolder.PlayerFile.WriteAllText(GetPlayerData())
+        playerFolder.BerriesFile.WriteAllText(GetBerryData())
+        playerFolder.OptionsFile.WriteAllText(GetOptionsData())
 
         Core.Player.IsGamejoltSave = False
         Core.Player.LoadGame(folderPath)

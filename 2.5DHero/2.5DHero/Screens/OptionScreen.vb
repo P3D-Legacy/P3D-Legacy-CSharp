@@ -392,8 +392,8 @@ Public Class OptionScreen
         Me.MouseSpeed = c.Value
     End Sub
 
-    Private Async Sub ResetKeyBindings(ByVal c As CommandButton)
-        Core.KeyBindings = Await Keyboard.LoadKeyboard()
+    Private Sub ResetKeyBindings(ByVal c As CommandButton)
+        Core.KeyBindings = Keyboard.LoadKeyboard()
     End Sub
 
 #End Region

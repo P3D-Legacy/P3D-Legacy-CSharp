@@ -99,21 +99,21 @@ namespace P3D.Legacy.Core.GameModes
 
         };
 
-        public static async Task SaveGameModeYaml(GameModeYaml gameModeYaml)
+        public static void SaveGameModeYaml(GameModeYaml gameModeYaml)
         {
             var serializer = SerializerBuilder.Build();
-            var gameModeFolder = await StorageInfo.GameModesFolder.CreateFolderAsync(gameModeYaml.Name, CreationCollisionOption.OpenIfExists);
-            var gameModeFile = await gameModeFolder.CreateFileAsync(GameModeFilename, CreationCollisionOption.ReplaceExisting);
-            await gameModeFile.WriteAllTextAsync(serializer.Serialize(gameModeYaml));
+            var gameModeFolder = StorageInfo.GameModesFolder.CreateFolder(gameModeYaml.Name, CreationCollisionOption.OpenIfExists);
+            var gameModeFile = gameModeFolder.CreateFile(GameModeFilename, CreationCollisionOption.ReplaceExisting);
+            gameModeFile.WriteAllText(serializer.Serialize(gameModeYaml));
         }
-        public static async Task<GameModeYaml> LoadGameModeYaml(string gameModeName)
+        public static GameModeYaml LoadGameModeYaml(string gameModeName)
         {
             var deserializer = DeserializerBuilder.Build();
             try
             {
-                var gameModeFolder = await StorageInfo.GameModesFolder.CreateFolderAsync(gameModeName, CreationCollisionOption.OpenIfExists);
-                var gameModeFile = await gameModeFolder.GetFileAsync(GameModeFilename);
-                var data = await gameModeFile.ReadAllTextAsync();
+                var gameModeFolder = StorageInfo.GameModesFolder.CreateFolder(gameModeName, CreationCollisionOption.OpenIfExists);
+                var gameModeFile = gameModeFolder.GetFile(GameModeFilename);
+                var data = gameModeFile.ReadAllText();
                 var deserialized = deserializer.Deserialize<GameModeYaml>(data);
                 return deserialized ?? Pokemon3D;
             }

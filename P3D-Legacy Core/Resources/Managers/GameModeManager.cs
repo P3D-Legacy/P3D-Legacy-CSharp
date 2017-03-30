@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 using P3D.Legacy.Core.GameModes;
 using P3D.Legacy.Core.Storage;
@@ -32,16 +31,16 @@ namespace P3D.Legacy.Core.Resources
         /// <summary>
         /// Loads (or reloads) the list of GameModes. The pointer also gets reset.
         /// </summary>
-        public static async Task LoadGameModesAsync()
+        public static void LoadGameModes()
         {
             GameModeList.Clear();
             GameModePointer = 0;
 
-            await CreateDefaultGameModeAsync();
+            CreateDefaultGameMode();
 
-            foreach (var folder in await StorageInfo.GameModesFolder.GetFoldersAsync())
-                if (await folder.CheckExistsAsync(GameModeYaml.GameModeFilename) == ExistenceCheckResult.FileExists)
-                    await LoadAndAddGameModeAsync(folder.Name);
+            foreach (var folder in StorageInfo.GameModesFolder.GetFolders())
+                if (folder.CheckExists(GameModeYaml.GameModeFilename) == ExistenceCheckResult.FileExists)
+                    LoadAndAddGameMode(folder.Name);
 
             SetGameModePointer("Pokemon 3D");
             Initialized = true;
@@ -75,9 +74,9 @@ namespace P3D.Legacy.Core.Resources
         /// Adds a GameMode to the list.
         /// </summary>
         /// <param name="name">The name of the GameMode directory.</param>
-        private static async Task LoadAndAddGameModeAsync(string name)
+        private static void LoadAndAddGameMode(string name)
         {
-            var newGameMode = await GameMode.Load(name);
+            var newGameMode = GameMode.Load(name);
             if (newGameMode != null)
                 GameModeList.Add(newGameMode);
         }
@@ -85,10 +84,10 @@ namespace P3D.Legacy.Core.Resources
         /// <summary>
         /// Creates the default GameMode.
         /// </summary>
-        public static async Task CreateDefaultGameModeAsync()
+        public static void CreateDefaultGameMode()
         {
-            if (!await GameMode.Exists(GameMode.Pokemon3DGameModeName))
-                await GameMode.Save(GameMode.LoadPokemon3D());
+            if (!GameMode.Exists(GameMode.Pokemon3DGameModeName))
+                GameMode.Save(GameMode.LoadPokemon3D());
         }
 
         #region "Shared GameModeFunctions"
@@ -110,92 +109,92 @@ namespace P3D.Legacy.Core.Resources
         /// Returns the correct map path to load a map from.
         /// </summary>
         /// <param name="levelFile">The levelfile containing the map.</param>
-        public static async Task<IFile> GetMapFileAsync(string levelFile)
+        public static IFile GetMapFile(string levelFile)
         {
             if (ActiveGameMode.IsDefaultGamemode)
-                return await StorageInfo.MapFolder.GetFileAsync(levelFile);
+                return StorageInfo.MapFolder.GetFile(levelFile);
 
-            if (await ActiveGameMode.MapFolder.CheckExistsAsync(levelFile) == ExistenceCheckResult.FileExists)
-                return await ActiveGameMode.MapFolder.GetFileAsync(levelFile);
+            if (ActiveGameMode.MapFolder.CheckExists(levelFile) == ExistenceCheckResult.FileExists)
+                return ActiveGameMode.MapFolder.GetFile(levelFile);
 
             // TODO: Log
 
-            return await StorageInfo.MapFolder.GetFileAsync(levelFile);
+            return StorageInfo.MapFolder.GetFile(levelFile);
         }
 
         /// <summary>
         /// Returns the correct script file path to load a script from.
         /// </summary>
         /// <param name="scriptFile">The file that contains the script information.</param>
-        public static async Task<IFile> GetScriptFileAsync(string scriptFile)
+        public static IFile GetScriptFile(string scriptFile)
         {
             if (ActiveGameMode.IsDefaultGamemode)
-                return await StorageInfo.ScriptFolder.GetFileAsync(scriptFile);
+                return StorageInfo.ScriptFolder.GetFile(scriptFile);
 
-            if (await ActiveGameMode.ScriptFolder.CheckExistsAsync(scriptFile) == ExistenceCheckResult.FileExists)
-                return await ActiveGameMode.ScriptFolder.GetFileAsync(scriptFile);
+            if (ActiveGameMode.ScriptFolder.CheckExists(scriptFile) == ExistenceCheckResult.FileExists)
+                return ActiveGameMode.ScriptFolder.GetFile(scriptFile);
 
             // TODO: Log
 
-            return await StorageInfo.ScriptFolder.GetFileAsync(scriptFile);
+            return StorageInfo.ScriptFolder.GetFile(scriptFile);
         }
 
         /// <summary>
         /// Returns the correct poke file path to load a Wild Pokémon Definition from.
         /// </summary>
         /// <param name="pokeFile">The file that contains the Wild Pokémon Definitions.</param>
-        public static async Task<IFile> GetPokeFileAsync(string pokeFile)
+        public static IFile GetPokeFile(string pokeFile)
         {
             if (ActiveGameMode.IsDefaultGamemode)
-                return await StorageInfo.PokeFolder.GetFileAsync(pokeFile);
+                return StorageInfo.PokeFolder.GetFile(pokeFile);
 
-            if (await ActiveGameMode.PokeFolder.CheckExistsAsync(pokeFile) == ExistenceCheckResult.FileExists)
-                return await ActiveGameMode.PokeFolder.GetFileAsync(pokeFile);
+            if (ActiveGameMode.PokeFolder.CheckExists(pokeFile) == ExistenceCheckResult.FileExists)
+                return ActiveGameMode.PokeFolder.GetFile(pokeFile);
 
             // TODO: Log
 
-            return await StorageInfo.PokeFolder.GetFileAsync(pokeFile);
+            return StorageInfo.PokeFolder.GetFile(pokeFile);
         }
 
         /// <summary>
         /// Returns the correct Pokémon data file path to load a Pokémon from.
         /// </summary>
         /// <param name="pokemonDataFile">The file which contains the Pokémon information.</param>
-        public static async Task<IFile> GetPokemonDataFileAsync(string pokemonDataFile)
+        public static IFile GetPokemonDataFile(string pokemonDataFile)
         {
             if (ActiveGameMode.IsDefaultGamemode)
-                return await StorageInfo.PokemonDataFolder.GetFileAsync(pokemonDataFile);
+                return StorageInfo.PokemonDataFolder.GetFile(pokemonDataFile);
 
-            if (await ActiveGameMode.PokemonDataFolder.CheckExistsAsync(pokemonDataFile) == ExistenceCheckResult.FileExists)
-                return await ActiveGameMode.PokemonDataFolder.GetFileAsync(pokemonDataFile);
+            if (ActiveGameMode.PokemonDataFolder.CheckExists(pokemonDataFile) == ExistenceCheckResult.FileExists)
+                return ActiveGameMode.PokemonDataFolder.GetFile(pokemonDataFile);
 
             // TODO: Log
 
-            return await StorageInfo.PokemonDataFolder.GetFileAsync(pokemonDataFile);
+            return StorageInfo.PokemonDataFolder.GetFile(pokemonDataFile);
         }
 
         /// <summary>
         /// Returns the correct Content file path to load content from.
         /// </summary>
         /// <param name="contentFile">The stub file path to the Content file.</param>
-        public static async Task<IFile> GetContentFileAsync(string contentFile)
+        public static IFile GetContentFile(string contentFile)
         {
             if (ActiveGameMode.IsDefaultGamemode)
-                return await StorageInfo.ContentFolder.GetFileAsync(contentFile);
+                return StorageInfo.ContentFolder.GetFile(contentFile);
 
-            if (await ActiveGameMode.ContentFolder.CheckExistsAsync(contentFile) == ExistenceCheckResult.FileExists)
-                return await ActiveGameMode.ContentFolder.GetFileAsync(contentFile);
+            if (ActiveGameMode.ContentFolder.CheckExists(contentFile) == ExistenceCheckResult.FileExists)
+                return ActiveGameMode.ContentFolder.GetFile(contentFile);
 
             // TODO: Log
 
-            return await StorageInfo.ContentFolder.GetFileAsync(contentFile);
+            return StorageInfo.ContentFolder.GetFile(contentFile);
         }
 
 
-        public static async Task<bool> PokeFileExistsAsync(string levelFile)
+        public static bool PokeFileExists(string levelFile)
         {
-            var path = await ActiveGameMode.PokeFolder.CheckExistsAsync(levelFile) == ExistenceCheckResult.FileExists;
-            var defaultPath = await StorageInfo.PokeFolder.CheckExistsAsync(levelFile) == ExistenceCheckResult.FileExists;
+            var path = ActiveGameMode.PokeFolder.CheckExists(levelFile) == ExistenceCheckResult.FileExists;
+            var defaultPath = StorageInfo.PokeFolder.CheckExists(levelFile) == ExistenceCheckResult.FileExists;
             return ActiveGameMode.IsDefaultGamemode ? defaultPath : path || defaultPath;
         }
 
@@ -203,10 +202,10 @@ namespace P3D.Legacy.Core.Resources
         /// Checks if a map file exists either in the active GameMode or the default GameMode.
         /// </summary>
         /// <param name="levelFile">The map file to look for.</param>
-        public static async Task<bool> MapFileExistsAsync(string levelFile)
+        public static bool MapFileExists(string levelFile)
         {
-            var path = await ActiveGameMode.MapFolder.CheckExistsAsync(levelFile) == ExistenceCheckResult.FileExists;
-            var defaultPath = await StorageInfo.MapFolder.CheckExistsAsync(levelFile) == ExistenceCheckResult.FileExists;
+            var path = ActiveGameMode.MapFolder.CheckExists(levelFile) == ExistenceCheckResult.FileExists;
+            var defaultPath = StorageInfo.MapFolder.CheckExists(levelFile) == ExistenceCheckResult.FileExists;
             return ActiveGameMode.IsDefaultGamemode ? defaultPath : path || defaultPath;
         }
 
@@ -214,8 +213,14 @@ namespace P3D.Legacy.Core.Resources
         /// Checks if a Content file exists either in the active GameMode or the default GameMode.
         /// </summary>
         /// <param name="contentFile">The Content file to look for.</param>
-        public static async Task<bool> ContentFileExistsAsync(string contentFile)
-            => await ActiveGameMode.ContentFolder.CheckExistsAsync(contentFile) == ExistenceCheckResult.FileExists || await StorageInfo.ContentFolder.CheckExistsAsync(contentFile) == ExistenceCheckResult.FileExists;
+        public static bool ContentFileExists(string contentFile)
+        {
+            var path = ActiveGameMode.ContentFolder.CheckExists(contentFile) == ExistenceCheckResult.FileExists;
+            var defaultPath = StorageInfo.ContentFolder.CheckExists(contentFile) == ExistenceCheckResult.FileExists;
+            return ActiveGameMode.IsDefaultGamemode ? defaultPath : path || defaultPath;
+
+            //return ActiveGameMode.ContentFolder.CheckExists(contentFile) == ExistenceCheckResult.FileExists || StorageInfo.ContentFolder.CheckExists(contentFile) == ExistenceCheckResult.FileExists;
+        }
 
         #endregion
 

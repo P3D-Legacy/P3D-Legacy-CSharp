@@ -35,17 +35,17 @@ namespace P3D.Legacy.Core.Settings
             WindowSize = new Vector2(1200, 680)
         };
 
-        public static async void SaveOptions(Options options)
+        public static void SaveOptions(Options options)
         {
             var serializer = SerializerBuilder.Build();
-            await StorageInfo.SaveFolder.OptionsFile.WriteAllTextAsync(serializer.Serialize(options));
+            StorageInfo.SaveFolder.OptionsFile.WriteAllText(serializer.Serialize(options));
         }
-        public static async Task<Options> LoadOptions()
+        public static Options LoadOptions()
         {
             var deserializer = DeserializerBuilder.Build();
             try
             {
-                var deserialized = deserializer.Deserialize<Options>(await StorageInfo.SaveFolder.OptionsFile.ReadAllTextAsync().ConfigureAwait(false));
+                var deserialized = deserializer.Deserialize<Options>(StorageInfo.SaveFolder.OptionsFile.ReadAllText());
                 if (deserialized == null)
                 {
                     SaveOptions(Default);
@@ -57,7 +57,7 @@ namespace P3D.Legacy.Core.Settings
             catch (YamlException)
             {
                 SaveOptions(Default);
-                var deserialized = deserializer.Deserialize<Options>(await StorageInfo.SaveFolder.OptionsFile.ReadAllTextAsync());
+                var deserialized = deserializer.Deserialize<Options>(StorageInfo.SaveFolder.OptionsFile.ReadAllText());
                 deserialized.Parse();
                 return deserialized;
             }
@@ -95,7 +95,7 @@ namespace P3D.Legacy.Core.Settings
 
 
 
-        public async void Parse()
+        public void Parse()
         {
             if (WindowSize.X == 0 && WindowSize.Y == 0)
                 WindowSize = new Vector2(1200, 680);
@@ -115,12 +115,12 @@ namespace P3D.Legacy.Core.Settings
                 var contentPackNames = new List<string>(ContentPackNames);
                 foreach (var contentPack in ContentPackNames)
                 {
-                    if (await StorageInfo.ContentPacksFolder.CheckExistsAsync(contentPack) != ExistenceCheckResult.FolderExists)
+                    if (StorageInfo.ContentPacksFolder.CheckExists(contentPack) != ExistenceCheckResult.FolderExists)
                         contentPackNames.Remove(contentPack);
                     else
                     {
-                        var contentPackFolder = await StorageInfo.ContentPacksFolder.GetFolderAsync(contentPack);
-                        var contentPackException = await contentPackFolder.CreateFileAsync("exceptions.dat", CreationCollisionOption.OpenIfExists);
+                        var contentPackFolder = StorageInfo.ContentPacksFolder.GetFolder(contentPack);
+                        var contentPackException = contentPackFolder.CreateFile("exceptions.dat", CreationCollisionOption.OpenIfExists);
                         // TODO: Check
                         ContentPackManager.Load(contentPackException.Path);
                     }

@@ -189,7 +189,7 @@ Public Class PokedexHabitatScreen
         For Each file As String In System.IO.Directory.GetFiles(GameModeManager.ActiveGameMode.PokeFolder.Path, "*.*", IO.SearchOption.AllDirectories)
             If file.EndsWith(".poke") = True Then
                 ' TODO: Fix
-                dim ifile = FileSystem.Current.GetFileFromPathAsync(file).Result
+                dim ifile = FileSystem.Current.GetFileFromPath(file)
                 Dim fileName As String = file.Remove(0, (GameModeManager.ActiveGameMode.PokeFolder.Path & "\").Length - 1)
                 Dim newHabitat As New PokedexScreen.Habitat(ifile)
                 Dim exists As Boolean = False
@@ -1078,7 +1078,7 @@ Public Class PokedexScreen
 
         Public Sub New(ByVal file As IFile)
             FileValidation.CheckFileValid(file, False, "PokedexScreen.vb")
-            Dim data() As String = file.ReadAllTextAsync.Result.SplitAtNewline()
+            Dim data() As String = file.ReadAllLines()
             Me.MergeData = data
             Me.File = file
 

@@ -97,7 +97,7 @@ Public Class LevelLoader
             sessionMapsLoaded.Add(levelPath)
         End If
 
-        Dim levelFile = GameModeManager.GetMapFileAsync(levelPath).Result
+        Dim levelFile = GameModeManager.GetMapFile(levelPath)
         levelPath = levelFile.Path
         Logger.Debug("Loading map: " & levelPath)
         ' TODO
@@ -114,7 +114,7 @@ Public Class LevelLoader
             Exit Sub
         End If
 
-        Dim Data As List(Of String) = levelFile.ReadAllTextAsync().Result.SplitAtNewline().ToList()
+        Dim Data As List(Of String) = levelFile.ReadAllLines().ToList()
         Dim Tags As New Dictionary(Of String, Object)
 
         Me.Offset = offset
@@ -469,16 +469,16 @@ Public Class LevelLoader
         Dim structureKey As String = MapOffset.X.ToString(NumberFormatInfo.InvariantInfo) & "|" & MapOffset.Y.ToString(NumberFormatInfo.InvariantInfo) & "|" & MapOffset.Z.ToString(NumberFormatInfo.InvariantInfo) & "|" & MapName
 
         If tempStructureList.ContainsKey(structureKey) = False Then
-            Dim file = GameModeManager.GetMapFileAsync(MapName).Result
+            Dim file = GameModeManager.GetMapFile(MapName)
             FileValidation.CheckFileValid(file, False, "LevelLoader.vb/StructureSpawner")
 
-            If String.IsNullOrEmpty(file.ReadAllTextAsync().Result) Then
+            If String.IsNullOrEmpty(file.ReadAllText()) Then
                 Logger.Log(Logger.LogTypes.ErrorMessage, "LevelLoader.vb: Error loading structure from """ & file.Path & """. File not found.")
 
                 Return {}
             End If
 
-            Dim MapContent() As String = file.ReadAllTextAsync().Result.SplitAtNewline()
+            Dim MapContent() As String = file.ReadAllLines()
             Dim structureList As New List(Of String)
 
             For Each line As String In MapContent

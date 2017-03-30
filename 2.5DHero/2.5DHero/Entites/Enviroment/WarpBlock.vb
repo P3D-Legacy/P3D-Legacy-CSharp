@@ -40,7 +40,7 @@ Public Class WarpBlock
                 End If
             End If
 
-            Dim t0 = GameModeManager.ActiveGameMode.MapFolder.CheckExistsAsync(destination).Result = ExistenceCheckResult.FileExists
+            Dim t0 = GameModeManager.ActiveGameMode.MapFolder.CheckExists(destination) = ExistenceCheckResult.FileExists
             If t0 = True Or System.IO.File.Exists(GameController.GamePath & "\maps\" & destination) = True Then
                 If MapViewMode = False Then
                     Screen.Level.WarpData.WarpDestination = Me.AdditionalValue.GetSplit(0)

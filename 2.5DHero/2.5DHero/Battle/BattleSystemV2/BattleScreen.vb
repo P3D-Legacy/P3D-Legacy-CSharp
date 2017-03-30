@@ -756,7 +756,7 @@ Namespace BattleSystem
                     End Select
                 End If
 
-                dim t0 = GameModeManager.ActiveGameMode.MapFolder.CheckExistsAsync(Path.Combine("battle", levelfile)).Result = ExistenceCheckResult.FileExists
+                dim t0 = GameModeManager.ActiveGameMode.MapFolder.CheckExists(Path.Combine("battle", levelfile)) = ExistenceCheckResult.FileExists
                 If File.Exists(GameController.GamePath & "\maps\battle\" & levelfile) = False And t0 = False Then
                     Select Case Me.defaultMapType
                         Case 0
@@ -790,7 +790,7 @@ Namespace BattleSystem
                 End If
             End If
 
-            Dim t1 = GameModeManager.ActiveGameMode.MapFolder.CheckExistsAsync(Path.Combine("battle",levelfile)).Result = ExistenceCheckResult.FileExists
+            Dim t1 = GameModeManager.ActiveGameMode.MapFolder.CheckExists(Path.Combine("battle",levelfile)) = ExistenceCheckResult.FileExists
             If File.Exists(GameController.GamePath & "\maps\battle\" & levelfile) = False And t1 = False Then
                 Select Case Me.defaultMapType
                     Case 0

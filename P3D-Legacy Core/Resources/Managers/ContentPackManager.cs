@@ -110,7 +110,7 @@ namespace P3D.Legacy.Core.Resources
             GameMode gameMode = GameModeManager.ActiveGameMode;
             if (!Equals(gameMode.ContentFolder, StorageInfo.ContentFolder))
             {
-                if (fileEndings.Split(Convert.ToChar(",")).Any(fileEnding => gameMode.ContentFolder.CheckExistsAsync(file + fileEnding).Result == ExistenceCheckResult.FileExists))
+                if (fileEndings.Split(Convert.ToChar(",")).Any(fileEnding => gameMode.ContentFolder.CheckExists(file + fileEnding) == ExistenceCheckResult.FileExists))
                     return new ContentManager(Core.GameInstance.Services, gameMode.ContentFolder.Path);
             }
 

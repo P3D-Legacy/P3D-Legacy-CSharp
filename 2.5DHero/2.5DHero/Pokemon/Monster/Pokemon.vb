@@ -190,7 +190,7 @@ Public Class Pokemon
     ''' </summary>
     Public Shared Function PokemonDataExists(ByVal Number As Integer) As Boolean
         ' TODO
-        Return System.IO.File.Exists(GameModeManager.GetPokemonDataFileAsync(Number.ToString(NumberFormatInfo.InvariantInfo) & ".dat").Result.Path)
+        Return System.IO.File.Exists(GameModeManager.GetPokemonDataFile(Number.ToString(NumberFormatInfo.InvariantInfo) & ".dat").Path)
     End Function
 
     ''' <summary>

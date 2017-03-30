@@ -73,12 +73,8 @@ namespace P3D.Legacy.Core
             else
                 Window.Title = GameController.GAMENAME + " " + GameController.GAMEDEVELOPMENTSTAGE;
 
-            //GameOptions = await Options.LoadOptions();
-            //KeyBindings = await Keyboard.LoadKeyboard();
-            GameOptions = Options.LoadOptions().Result;
-            KeyBindings = Keyboard.LoadKeyboard().Result;
-            //GameOptions = AsyncExtensions.RunSync(Options.LoadOptions);   
-            //KeyBindings = AsyncExtensions.RunSync(Keyboard.LoadKeyboard);
+            GameOptions = Options.LoadOptions();
+            KeyBindings = Keyboard.LoadKeyboard();
 
             GraphicsManager.PreferredBackBufferWidth = Convert.ToInt32(GameOptions.WindowSize.X);
             GraphicsManager.PreferredBackBufferHeight = Convert.ToInt32(GameOptions.WindowSize.Y);
@@ -111,9 +107,9 @@ namespace P3D.Legacy.Core
             SetScreen(Screen.CreateSplashScreen((GameInstance)));
         }
 
-        public static async void LoadContent()
+        public static void LoadContent()
         {
-            GameModeManager.LoadGameModesAsync().Wait();
+            GameModeManager.LoadGameModes();
             Logger.Debug("Loaded game modes.");
 
             FontManager.LoadFonts();
@@ -139,7 +135,7 @@ namespace P3D.Legacy.Core
             };
             Logger.Debug("Gamemessage initialized.");
 
-            GameOptions = Options.LoadOptions().Result;
+            GameOptions = Options.LoadOptions();
 
             var p0 = Path.Combine(GameController.GamePath + "Temp");
             if (Directory.Exists(p0))

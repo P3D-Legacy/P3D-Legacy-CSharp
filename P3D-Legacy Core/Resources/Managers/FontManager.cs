@@ -61,10 +61,10 @@ namespace P3D.Legacy.Core.Resources
                 if (!Equals(GameModeManager.ActiveGameMode.ContentFolder, StorageInfo.ContentFolder))
                 {
                     var p1 = GameModeManager.ActiveGameMode.ContentFolder
-                        .CreateFolderAsync("Fonts", CreationCollisionOption.OpenIfExists).Result
-                        .CreateFolderAsync("BMP", CreationCollisionOption.OpenIfExists).Result;
+                        .CreateFolder("Fonts", CreationCollisionOption.OpenIfExists)
+                        .CreateFolder("BMP", CreationCollisionOption.OpenIfExists);
 
-                    foreach (var file in p1.GetFilesAsync().Result)
+                    foreach (var file in p1.GetFiles())
                     {
                         if (file.Name.EndsWith(".xnb"))
                         {

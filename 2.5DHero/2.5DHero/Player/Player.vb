@@ -471,12 +471,12 @@ Public Class Player
 
 #Region "Load"
 
-    Public Async Sub LoadGame(ByVal filePrefix As String) Implements IPlayer.LoadGame
+    Public Sub LoadGame(ByVal filePrefix As String) Implements IPlayer.LoadGame
         For Each s As String In Core.GameOptions.ContentPackNames
             ContentPackManager.Load(GameController.GamePath & "\ContentPacks\" & s & "\exceptions.dat")
         Next
 
-        Await GameModeManager.CreateDefaultGameModeAsync()
+        GameModeManager.CreateDefaultGameMode()
 
         ScriptStorage.Clear()
         ScriptBlock.TriggeredScriptBlock = False
@@ -487,7 +487,7 @@ Public Class Player
         World.RegionWeatherSet = False
 
         Me.filePrefix = filePrefix
-        _userSaveFolder = Await StorageInfo.SaveFolder.GetUserSaveFolder(filePrefix)
+        _userSaveFolder = StorageInfo.SaveFolder.GetUserSaveFolder(filePrefix)
         PokeFiles.Clear()
         GameMode = "Kolben"
 
@@ -623,14 +623,14 @@ Public Class Player
         loadedSave = True
     End Sub
 
-    Private Async Sub LoadParty()
+    Private Sub LoadParty()
         Pokemons.Clear()
 
         Dim PokeData() As String
         If IsGameJoltSave = True Then
             PokeData = Core.GameJoltSave.Party.SplitAtNewline()
         Else
-            PokeData = (Await _userSaveFolder.PartyFile.ReadAllTextAsync()).SplitAtNewline()
+            PokeData = _userSaveFolder.PartyFile.ReadAllLines()
         End If
 
         If PokeData.Count > 0 AndAlso PokeData(0) <> "" Then
@@ -652,12 +652,12 @@ Public Class Player
         End If
     End Sub
 
-    Private Async Sub LoadPlayer()
+    Private Sub LoadPlayer()
         Dim Data() As String
         If IsGameJoltSave = True Then
             Data = Core.GameJoltSave.Player.SplitAtNewline()
         Else
-            Data = (Await _userSaveFolder.PlayerFile.ReadAllTextAsync()).SplitAtNewline()
+            Data = _userSaveFolder.PlayerFile.ReadAllLines()
         End If
 
         Screen.Level.IsRiding = False
@@ -821,12 +821,12 @@ Public Class Player
         GameStart = Date.Now
     End Sub
 
-    Private Async Sub LoadOptions()
+    Private Sub LoadOptions()
         Dim Data() As String
         If IsGameJoltSave = True Then
             Data = Core.GameJoltSave.Options.SplitAtNewline()
         Else
-            Data = (Await _userSaveFolder.OptionsFile.ReadAllTextAsync()).SplitAtNewline()
+            Data = _userSaveFolder.OptionsFile.ReadAllLines()
         End If
 
         For Each Line As String In Data
@@ -845,7 +845,7 @@ Public Class Player
         Next
     End Sub
 
-    Private Async Sub LoadItems()
+    Private Sub LoadItems()
         Inventory.Clear()
         Mails.Clear()
 
@@ -853,7 +853,7 @@ Public Class Player
         If IsGameJoltSave = True Then
             Data = Core.GameJoltSave.Items
         Else
-            Data = Await _userSaveFolder.ItemsFile.ReadAllTextAsync()
+            Data = _userSaveFolder.ItemsFile.ReadAllText()
         End If
 
         If Data <> "" Then
@@ -878,36 +878,36 @@ Public Class Player
         End If
     End Sub
 
-    Private Async Sub LoadBerries()
+    Private Sub LoadBerries()
         If IsGameJoltSave = True Then
             Core.Player.BerryData = Core.GameJoltSave.Berries
         Else
-            Core.Player.BerryData = Await _userSaveFolder.BerriesFile.ReadAllTextAsync()
+            Core.Player.BerryData = _userSaveFolder.BerriesFile.ReadAllText()
         End If
     End Sub
 
-    Private Async Sub LoadApricorns()
+    Private Sub LoadApricorns()
         If IsGameJoltSave = True Then
             Core.Player.ApricornData = Core.GameJoltSave.Apricorns
         Else
-            Core.Player.ApricornData = Await _userSaveFolder.ApricornsFile.ReadAllTextAsync()
+            Core.Player.ApricornData = _userSaveFolder.ApricornsFile.ReadAllText()
         End If
     End Sub
 
-    Private Async Sub LoadDaycare()
+    Private Sub LoadDaycare()
         Core.Player.DaycareData = ""
         If IsGameJoltSave = True Then
             Core.Player.DaycareData = Core.GameJoltSave.Daycare
         Else
-            Core.Player.DaycareData = Await _userSaveFolder.DaycareFile.ReadAllTextAsync()
+            Core.Player.DaycareData = _userSaveFolder.DaycareFile.ReadAllText()
         End If
     End Sub
 
-    Private Async Sub LoadPokedex()
+    Private Sub LoadPokedex()
         If IsGameJoltSave = True Then
             PokedexData = Core.GameJoltSave.Pokedex
         Else
-            PokedexData = Await _userSaveFolder.PokedexFile.ReadAllTextAsync()
+            PokedexData = _userSaveFolder.PokedexFile.ReadAllText()
         End If
 
         If PokedexData = "" Then
@@ -915,60 +915,60 @@ Public Class Player
         End If
     End Sub
 
-    Private Async Sub LoadRegister()
+    Private Sub LoadRegister()
         If IsGameJoltSave = True Then
             RegisterData = Core.GameJoltSave.Register
         Else
-            RegisterData = Await _userSaveFolder.RegisterFile.ReadAllTextAsync()
+            RegisterData = _userSaveFolder.RegisterFile.ReadAllText()
         End If
     End Sub
 
-    Private Async Sub LoadItemData()
+    Private Sub LoadItemData()
         If IsGameJoltSave = True Then
             ItemData = Core.GameJoltSave.ItemData
         Else
-            ItemData = Await _userSaveFolder.ItemDataFile.ReadAllTextAsync()
+            ItemData = _userSaveFolder.ItemDataFile.ReadAllText()
         End If
     End Sub
 
-    Private Async Sub LoadBoxData()
+    Private Sub LoadBoxData()
         If IsGameJoltSave = True Then
             BoxData = Core.GameJoltSave.Box
         Else
-            BoxData = Await _userSaveFolder.BoxFile.ReadAllTextAsync()
+            BoxData = _userSaveFolder.BoxFile.ReadAllText()
         End If
     End Sub
 
-    Private Async Sub LoadNPCData()
+    Private Sub LoadNPCData()
         If IsGameJoltSave = True Then
             NPCData = Core.GameJoltSave.NPC
         Else
-            NPCData = Await _userSaveFolder.NPCFile.ReadAllTextAsync()
+            NPCData = _userSaveFolder.NPCFile.ReadAllText()
         End If
     End Sub
 
-    Private Async Sub LoadHallOfFameData()
+    Private Sub LoadHallOfFameData()
         If IsGameJoltSave = True Then
             HallOfFameData = Core.GameJoltSave.HallOfFame
         Else
-            HallOfFameData = Await _userSaveFolder.HallOfFameFile.ReadAllTextAsync()
+            HallOfFameData = _userSaveFolder.HallOfFameFile.ReadAllText()
         End If
     End Sub
 
-    Private Async Sub LoadSecretBaseData()
+    Private Sub LoadSecretBaseData()
         If IsGameJoltSave = True Then
             SecretBaseData = Core.GameJoltSave.SecretBase
         Else
-            SecretBaseData = Await _userSaveFolder.SecretBaseFile.ReadAllTextAsync()
+            SecretBaseData = _userSaveFolder.SecretBaseFile.ReadAllText()
         End If
     End Sub
 
-    Private Async Sub LoadRoamingPokemonData()
+    Private Sub LoadRoamingPokemonData()
         RoamingPokemonData = ""
         If IsGameJoltSave = True Then
             RoamingPokemonData = Core.GameJoltSave.RoamingPokemon
         Else
-            For Each line As String In Await _userSaveFolder.RoamingPokemonFile.ReadAllTextAsync()
+            For Each line As String In _userSaveFolder.RoamingPokemonFile.ReadAllText()
                 If RoamingPokemonData <> "" Then
                     RoamingPokemonData &= vbNewLine
                 End If
@@ -986,11 +986,11 @@ Public Class Player
         End If
     End Sub
 
-    Private Async Sub LoadStatistics()
+    Private Sub LoadStatistics()
         If IsGameJoltSave = True Then
             Statistics = Core.GameJoltSave.Statistics
         Else
-            Statistics = Await _userSaveFolder.StatisticsFile.ReadAllTextAsync()
+            Statistics = _userSaveFolder.StatisticsFile.ReadAllText()
         End If
         PlayerStatistics.Load(Statistics)
     End Sub
@@ -1283,132 +1283,132 @@ Public Class Player
         Return CType(Screen.Camera, OverworldCamera)
     End Function
 
-    Private Async Sub SaveParty()
+    Private Sub SaveParty()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|party", GetPartyData())
         Else
-            Await _userSaveFolder.PartyFile.WriteAllTextAsync(GetPartyData())
+            _userSaveFolder.PartyFile.WriteAllText(GetPartyData())
         End If
     End Sub
 
-    Private Async Sub SavePlayer(ByVal IsAutosave As Boolean)
+    Private Sub SavePlayer(ByVal IsAutosave As Boolean)
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|player", GetPlayerData(IsAutosave))
         Else
-            Await _userSaveFolder.PlayerFile.WriteAllTextAsync(GetPlayerData(IsAutosave))
+            _userSaveFolder.PlayerFile.WriteAllText(GetPlayerData(IsAutosave))
         End If
     End Sub
 
-    Private Async Sub SaveOptions()
+    Private Sub SaveOptions()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|options", GetOptionsData())
         Else
-            Await _userSaveFolder.OptionsFile.WriteAllTextAsync(GetOptionsData())
+            _userSaveFolder.OptionsFile.WriteAllText(GetOptionsData())
         End If
     End Sub
 
-    Private Async Sub SaveItems()
+    Private Sub SaveItems()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|items", GetItemsData())
         Else
-            Await _userSaveFolder.ItemsFile.WriteAllTextAsync(GetItemsData())
+            _userSaveFolder.ItemsFile.WriteAllText(GetItemsData())
         End If
     End Sub
 
-    Private Async Sub SaveBerries()
+    Private Sub SaveBerries()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|berries", GetBerriesData())
         Else
-            Await _userSaveFolder.BerriesFile.WriteAllTextAsync(GetBerriesData())
+            _userSaveFolder.BerriesFile.WriteAllText(GetBerriesData())
         End If
     End Sub
 
-    Private Async Sub SaveApricorns()
+    Private Sub SaveApricorns()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|apricorns", GetApricornsData())
         Else
-            Await _userSaveFolder.ApricornsFile.WriteAllTextAsync(GetApricornsData())
+            _userSaveFolder.ApricornsFile.WriteAllText(GetApricornsData())
         End If
     End Sub
 
-    Private Async Sub SaveDaycare()
+    Private Sub SaveDaycare()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|daycare", GetDaycareData())
         Else
-            Await _userSaveFolder.DaycareFile.WriteAllTextAsync(GetDaycareData())
+            _userSaveFolder.DaycareFile.WriteAllText(GetDaycareData())
         End If
     End Sub
 
-    Private Async Sub SavePokedex()
+    Private Sub SavePokedex()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|pokedex", GetPokedexData())
         Else
-            Await _userSaveFolder.PokedexFile.WriteAllTextAsync(GetPokedexData())
+            _userSaveFolder.PokedexFile.WriteAllText(GetPokedexData())
         End If
     End Sub
 
-    Private Async Sub SaveRegister()
+    Private Sub SaveRegister()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|register", GetRegisterData())
         Else
-            Await _userSaveFolder.RegisterFile.WriteAllTextAsync(GetRegisterData())
+            _userSaveFolder.RegisterFile.WriteAllText(GetRegisterData())
         End If
     End Sub
 
-    Private Async Sub SaveItemData()
+    Private Sub SaveItemData()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|itemdata", GetItemDataData())
         Else
-            Await _userSaveFolder.ItemDataFile.WriteAllTextAsync(GetItemDataData())
+            _userSaveFolder.ItemDataFile.WriteAllText(GetItemDataData())
         End If
     End Sub
 
-    Private Async Sub SaveBoxData()
+    Private Sub SaveBoxData()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|box", GetBoxData())
         Else
-            Await _userSaveFolder.BoxFile.WriteAllTextAsync(GetBoxData())
+            _userSaveFolder.BoxFile.WriteAllText(GetBoxData())
         End If
     End Sub
 
-    Private Async Sub SaveNPCData()
+    Private Sub SaveNPCData()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|npc", GetNPCDataData())
         Else
-            Await _userSaveFolder.NPCFile.WriteAllTextAsync(GetNPCDataData())
+            _userSaveFolder.NPCFile.WriteAllText(GetNPCDataData())
         End If
     End Sub
 
-    Private Async Sub SaveHallOfFameData()
+    Private Sub SaveHallOfFameData()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|halloffame", GetHallOfFameData())
         Else
-            Await _userSaveFolder.HallOfFameFile.WriteAllTextAsync(GetHallOfFameData())
+            _userSaveFolder.HallOfFameFile.WriteAllText(GetHallOfFameData())
         End If
     End Sub
 
-    Private Async Sub SaveSecretBaseData()
+    Private Sub SaveSecretBaseData()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|secretbase", GetSecretBaseData())
         Else
-            Await _userSaveFolder.SecretBaseFile.WriteAllTextAsync(GetSecretBaseData())
+            _userSaveFolder.SecretBaseFile.WriteAllText(GetSecretBaseData())
         End If
     End Sub
 
-    Private Async Sub SaveRoamingPokemonData()
+    Private Sub SaveRoamingPokemonData()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|roamingpokemon", GetRoamingPokemonData())
         Else
-            Await _userSaveFolder.RoamingPokemonFile.WriteAllTextAsync(GetRoamingPokemonData())
+            _userSaveFolder.RoamingPokemonFile.WriteAllText(GetRoamingPokemonData())
         End If
     End Sub
 
-    Private Async Sub SaveStatistics()
+    Private Sub SaveStatistics()
         Statistics = PlayerStatistics.GetData()
         If IsGameJoltSave = True Then
             GameJoltTempStoreString.Add("saveStorageV" & GamejoltSave.VERSION & "|" & Core.GameJoltSave.GameJoltID & "|statistics", GetStatisticsData())
         Else
-            Await _userSaveFolder.StatisticsFile.WriteAllTextAsync(GetStatisticsData())
+            _userSaveFolder.StatisticsFile.WriteAllText(GetStatisticsData())
         End If
     End Sub
 

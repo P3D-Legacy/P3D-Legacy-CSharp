@@ -125,10 +125,10 @@ nextScript:
                     Logger.Debug("Start script (ID: " & Input & ")")
                     l.ScriptName = "Type: Script; Input: " & Input
 
-                    Dim file = GameModeManager.GetScriptFileAsync(Input & ".dat").Result
+                    Dim file = GameModeManager.GetScriptFile(Input & ".dat")
                     FileValidation.CheckFileValid(file, False, "ActionScript.vb")
 
-                    Dim Data As String = file.ReadAllTextAsync().Result
+                    Dim Data As String = file.ReadAllText()
                     If String.IsNullOrEmpty(Data) = False Then
                         Data = Data.Replace(vbNewLine, "^")
                         Dim ScriptData() As String = Data.Split(CChar("^"))

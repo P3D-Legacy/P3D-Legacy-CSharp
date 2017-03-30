@@ -706,10 +706,10 @@ Public Class PokemonInteractions
     Public Shared Sub Load()
         SpecialReactionList.Clear()
 
-        Dim file As IFile = GameModeManager.GetContentFileAsync("Data\interactions.dat").Result
+        Dim file As IFile = GameModeManager.GetContentFile("Data\interactions.dat")
         FileValidation.CheckFileValid(file, False, "PokemonInteractions.vb")
 
-        Dim data() As String = file.ReadAllTextAsync.Result.SplitAtNewline()
+        Dim data() As String = file.ReadAllLines()
 
         For Each line As String In data
             If line.StartsWith("{") = True And line.EndsWith("}") = True Then
