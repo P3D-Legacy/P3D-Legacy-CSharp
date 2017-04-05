@@ -1,6 +1,4 @@
 Imports P3D.Legacy.Core
-Imports P3D.Legacy.Core.Dialogues
-Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
 

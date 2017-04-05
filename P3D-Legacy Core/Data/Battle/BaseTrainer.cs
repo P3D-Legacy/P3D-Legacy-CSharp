@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using P3D.Legacy.Core.Extensions;
 using P3D.Legacy.Core.Pokemon;
 using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Resources.Managers;
 using P3D.Legacy.Core.Security;
 using PCLExt.FileStorage;
 

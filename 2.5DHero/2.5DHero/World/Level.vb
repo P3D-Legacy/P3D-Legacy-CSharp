@@ -6,6 +6,9 @@ Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.World
@@ -866,7 +869,7 @@ Public Class Level
 
             'Check if the enter sound should be played by checking if CanDig or CanFly properties are different from the last map.
             If tempProperties <> Me.CanDig.ToString(NumberFormatInfo.InvariantInfo) & "," & Me.CanFly.ToString(NumberFormatInfo.InvariantInfo) Then
-                SoundManager.PlaySound("enter", False)
+                SoundEffectManager.PlaySound("enter", False)
             End If
 
             'Unlock the yaw on the camera.

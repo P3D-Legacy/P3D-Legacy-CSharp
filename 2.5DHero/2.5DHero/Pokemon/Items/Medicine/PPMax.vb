@@ -1,5 +1,6 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -36,7 +37,7 @@ Namespace Items.Medicine
             Next
 
             If raisedPP = True Then
-                SoundManager.PlaySound("single_heal", False)
+                SoundEffectManager.PlaySound("single_heal", False)
                 Dim t As String = "Raised PP of~" & Pokemon.Attacks(AttackIndex).Name & "." & RemoveItem()
                 PlayerStatistics.Track("[17]Medicine Items used", 1)
 

@@ -2,6 +2,9 @@
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -167,7 +170,7 @@ Public Class EvolutionScreen
 
         EvolvePokemon()
 
-        Me.SavedMusic = MusicManager.GetCurrentSong()
+        Me.SavedMusic = MusicManager.GetCurrentMusic()
         MusicManager.PlayMusic("nomusic", False)
     End Sub
 
@@ -197,7 +200,7 @@ Public Class EvolutionScreen
         TextBox.Update()
 
         If evolutionStarted = False Then
-            SoundManager.PlayPokemonCry(currentPokemon.Number)
+            SoundEffectManager.PlayPokemonCry(currentPokemon.Number)
             TextBox.Show("What?*" & currentPokemon.GetDisplayName() & " is evolving!", {}, False, False)
             evolutionStarted = True
             For i = 0 To Core.Random.Next(200, 250)
@@ -205,7 +208,7 @@ Public Class EvolutionScreen
             Next
         Else
             If evolutionReady = False And TextBox.Showing = False Then
-                If MusicManager.GetCurrentSong() <> "evolution" Then
+                If MusicManager.GetCurrentMusic() <> "evolution" Then
                     MusicManager.PlayMusic("evolution", True)
                 End If
 
@@ -252,7 +255,7 @@ Public Class EvolutionScreen
                         Core.Player.PokedexData = Pokedex.ChangeEntry(Core.Player.PokedexData, evolvedPokemon.Number, type)
 
                         evolvedPokemon.PlayCry()
-                        SoundManager.PlaySound("success", True)
+                        SoundEffectManager.PlaySound("success", True)
 
                         evolutionReady = True
                         Dim t As String = "Congratulations!*Your " & currentPokemon.GetDisplayName() & " evolved into a~" & evolvedPokemon.GetName() & "!"

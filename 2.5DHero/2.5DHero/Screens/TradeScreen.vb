@@ -3,6 +3,8 @@ Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -661,7 +663,7 @@ Public Class TradeScreen
 
             Me.LoadBuyItemsList()
 
-            SoundManager.PlaySound("buy2")
+            SoundEffectManager.PlaySound("buy2")
 
             If Me.BuyItemsList.Count = 0 Then
                 Me.MenuState = MenuStates.BuyItemsCategory
@@ -1176,7 +1178,7 @@ Public Class TradeScreen
         Core.Player.Inventory.RemoveItem(tradeItem.ItemID, Me.SellItemsAmount)
         Me.LoadSellItemsList()
         Me.SellItemsClampCursor()
-        SoundManager.PlaySound("buy2")
+        SoundEffectManager.PlaySound("buy2")
 
         If Me.SellItemsList.Count = 0 Then
             Me.MenuState = MenuStates.SellItemsCategory

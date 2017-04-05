@@ -3,6 +3,8 @@ Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Dialogues
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -177,7 +179,7 @@ Namespace ScriptVersion2
                     If IsNumeric(argument) = True Then
                         If Core.Player.Badges.Contains(int(argument)) = False Then
                             Core.Player.Badges.Add(int(argument))
-                            SoundManager.PlaySound("badge_acquired", True)
+                            SoundEffectManager.PlaySound("badge_acquired", True)
                             Screen.TextBox.TextColor = TextBox.PlayerColor
                             Screen.TextBox.Show(Core.Player.Name & " received the~" & Badge.GetBadgeName(int(argument)) & "badge.", {}, False, False)
 

@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -96,7 +97,7 @@ Namespace Items
         End Sub
 
         Public Overrides Sub Use()
-            SoundManager.PlaySound("PC\pc_logon", False)
+            SoundEffectManager.PlaySound("PC\pc_logon", False)
             Core.SetScreen(New ChoosePokemonScreen(Core.CurrentScreen, Me, AddressOf UseOnPokemon, "Teach " & Attack.Name, True))
             CType(Core.CurrentScreen, ChoosePokemonScreen).SetupLearnAttack(Attack, 1, Me)
         End Sub
@@ -117,7 +118,7 @@ Namespace Items
                     End If
                     p.Attacks.Add(BattleSystem.Attack.GetAttackByID(a.ID))
 
-                    SoundManager.PlaySound("success_small", False)
+                    SoundEffectManager.PlaySound("success_small", False)
                     Screen.TextBox.Show(p.GetDisplayName() & " learned~" & a.Name & "!", {}, False, False)
                     PlayerStatistics.Track("TMs/HMs used", 1)
 

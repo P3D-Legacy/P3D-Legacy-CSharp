@@ -1,5 +1,6 @@
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -39,7 +40,7 @@ Namespace Items.Berries
                 Dim t As String = "Restored PP of~" & Pokemon.Attacks(AttackIndex).Name & "."
                 t &= RemoveItem()
 
-                SoundManager.PlaySound("single_heal", False)
+                SoundEffectManager.PlaySound("single_heal", False)
                 Screen.TextBox.Show(t, {}, True, True)
             Else
                 Screen.TextBox.Show("The move already has~full PP.", {}, True, True)

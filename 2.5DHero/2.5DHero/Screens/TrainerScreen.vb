@@ -5,6 +5,7 @@ Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 
@@ -21,7 +22,7 @@ Public Class TrainerScreen
         Me.Identification = Identifications.TrainerScreen
         Me.PreScreen = currentScreen
 
-        Me.mainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
+        Me.mainTexture = TextureManager.GetTexture("GUI|Menus|Menu")
 
         If Screen.Level.IsSurfing = True Then
             Me.charTexture = TextureManager.GetTexture("Textures\NPC\" & Core.Player.TempSurfSkin)

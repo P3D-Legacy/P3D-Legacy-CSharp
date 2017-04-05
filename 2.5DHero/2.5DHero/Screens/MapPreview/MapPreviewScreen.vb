@@ -6,6 +6,7 @@ Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 
 Public Class MapPreviewScreen
 

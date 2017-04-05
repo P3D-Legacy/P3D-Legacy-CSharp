@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -84,7 +85,7 @@ Public Class ScriptBlock
                 If Me.CorrectRotation() = True Then
                     If Me.clickedToActivate = True Then
                         Me.clickedToActivate = False
-                        SoundManager.PlaySound("select")
+                        SoundEffectManager.PlaySound("select")
                     End If
 
                     oS.ActionScript.StartScript(Me._scriptID, GetActivationID())

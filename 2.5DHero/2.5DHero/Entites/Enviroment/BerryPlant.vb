@@ -4,6 +4,8 @@ Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Pokemon.Items
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Models
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
@@ -185,7 +187,7 @@ Public Class BerryPlant
         End Select
 
         Screen.TextBox.Show(text, {Me})
-        SoundManager.PlaySound("select")
+        SoundEffectManager.PlaySound("select")
     End Sub
 
     Public Overrides Sub ResultFunction(ByVal Result As Integer)
@@ -203,7 +205,7 @@ Public Class BerryPlant
                     Core.Player.AddPoints(2, "Picked berries.")
                     PlayerStatistics.Track("[2006]Berries picked", Me.Berries)
 
-                    SoundManager.PlaySound("item_found", True)
+                    SoundEffectManager.PlaySound("item_found", True)
                     Screen.TextBox.TextColor = TextBox.PlayerColor
                     Screen.TextBox.Show(Text, {Me})
                     RemoveBerry()

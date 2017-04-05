@@ -8,6 +8,7 @@ Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Objects
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Server

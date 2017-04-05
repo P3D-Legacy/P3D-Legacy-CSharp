@@ -6,6 +6,9 @@ Imports P3D.Legacy.Core.GameModes
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -66,7 +69,7 @@ Public Class NewGameScreen
 
         If GameModeManager.ActiveGameMode.IsDefaultGamemode = False Then
             MusicManager.LoadMusic(True)
-            SoundManager.LoadSounds(True)
+            SoundEffectManager.LoadSounds(True)
         End If
         SmashRock.Load()
         Badge.Load()

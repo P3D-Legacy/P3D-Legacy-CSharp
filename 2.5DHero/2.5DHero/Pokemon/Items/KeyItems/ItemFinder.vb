@@ -1,6 +1,7 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -39,7 +40,7 @@ Namespace Items.KeyItems
             If found = False Then
                 Screen.TextBox.Show("No hidden items.", {}, True, False)
             Else
-                SoundManager.PlaySound("itemfinder", False)
+                SoundEffectManager.PlaySound("itemfinder", False)
             End If
         End Sub
 

@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 
@@ -53,7 +54,7 @@ Public Class TeachMovesScreen
 
         LearnedMove = False
 
-        Me.mainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
+        Me.mainTexture = TextureManager.GetTexture("GUI|Menus|Menu")
     End Sub
 
     Public Sub New(ByVal currentScreen As Screen, ByVal PokemonIndex As Integer, ByVal MovesList() As BattleSystem.Attack)
@@ -109,7 +110,7 @@ Public Class TeachMovesScreen
 
         LearnedMove = False
 
-        Me.mainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
+        Me.mainTexture = TextureManager.GetTexture("GUI|Menus|Menu")
     End Sub
 
     Public Overrides Sub Draw()
@@ -154,10 +155,10 @@ Public Class TeachMovesScreen
 
         Dim p As New Vector2(x, 160 + y * (64 + 32))
 
-        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 0, 48, 48), "")
 
         If Me.index = i And isLearnMove = True Then
-            CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
+            CanvasTexture = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 48, 48, 48), "")
         End If
 
         Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(p.X - 18), CInt(p.Y), 256, 64))

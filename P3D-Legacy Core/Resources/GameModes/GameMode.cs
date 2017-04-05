@@ -299,7 +299,8 @@ namespace P3D.Legacy.Core.GameModes
             public T GetValue<T>(string ruleName) where T : GameRuleObject => (T) GameRuleDictionary[ruleName];
             public T GetValueOrDefault<T>(string ruleName, T defaultValue) where T : GameRuleObject
             {
-                if (GameRuleDictionary.TryGetValue(ruleName, out GameRuleObject value))
+				GameRuleObject value;
+                if (GameRuleDictionary.TryGetValue(ruleName, out value))
                     return (T) value;
 
                 GameRuleDictionary.Add(ruleName, defaultValue);

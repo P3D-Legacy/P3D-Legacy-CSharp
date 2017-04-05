@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using P3D.Legacy.Core.Input;
 using P3D.Legacy.Core.Pokemon;
 using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Resources.Managers;
 using P3D.Legacy.Core.Screens.GUI;
 
 namespace P3D.Legacy.Core.Dialogues

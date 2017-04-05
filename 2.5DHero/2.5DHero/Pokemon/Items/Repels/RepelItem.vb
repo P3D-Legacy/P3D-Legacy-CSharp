@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -18,7 +19,7 @@ Namespace Items.Repels
                 Core.Player.Inventory.RemoveItem(ID, 1)
                 Player.Temp.LastUsedRepel = ID
 
-                SoundManager.PlaySound("repel_use", False)
+                SoundEffectManager.PlaySound("repel_use", False)
                 Screen.TextBox.Show(Core.Player.Name & " used a~" & Name, {}, True, True)
                 Core.Player.RepelSteps = RepelSteps
                 PlayerStatistics.Track("[42]Repels used", 1)

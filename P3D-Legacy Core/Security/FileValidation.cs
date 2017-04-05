@@ -77,7 +77,8 @@ namespace P3D.Legacy.Core.Security
                 System.IO.File.WriteAllText(GameController.GamePath + "\\meta", s);
                 Logger.Log(Logger.LogTypes.Debug, "FileValidation.vb: Meta created! Expected Size: " + measuredSize + "|MetaHash: " + StringObfuscation.Obfuscate(GetMd5FromFile(GameController.GamePath + "\\meta")));
 
-                Core.GameInstance.Exit();
+                // TODO
+                //Core.GameInstance.Exit();
             }
             else
             {

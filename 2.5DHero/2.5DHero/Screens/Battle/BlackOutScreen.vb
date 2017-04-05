@@ -2,6 +2,9 @@
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -56,7 +59,7 @@ Public Class BlackOutScreen
                 End If
             Else
                 If Controls.Accept(True, True) = True Then
-                    SoundManager.PlaySound("pokemon_heal")
+                    SoundEffectManager.PlaySound("pokemon_heal")
 
                     If FromBattle = True Then
                         Core.Player.HealParty()

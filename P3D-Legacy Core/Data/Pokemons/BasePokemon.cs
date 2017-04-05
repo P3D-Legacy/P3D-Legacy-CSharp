@@ -12,7 +12,8 @@ using Microsoft.Xna.Framework.Graphics;
 using P3D.Legacy.Core.Extensions;
 using P3D.Legacy.Core.Pokemon.Resource;
 using P3D.Legacy.Core.Resources;
-using P3D.Legacy.Core.Resources.Sound;
+using P3D.Legacy.Core.Resources.Managers;
+using P3D.Legacy.Core.Resources.Managers.Sound;
 using P3D.Legacy.Core.Screens;
 
 namespace P3D.Legacy.Core.Pokemon
@@ -1258,16 +1259,16 @@ namespace P3D.Legacy.Core.Pokemon
                 switch (index)
                 {
                     case 0:
-                        Textures[index] = TextureManager.GetTexture("Pokemon\\Sprites\\" + AnimationName, new Microsoft.Xna.Framework.Rectangle(0, 0, 128, 128), "");
+                        Textures[index] = TextureManager.GetTexture("Pokemon|Sprites|" + AnimationName, new Microsoft.Xna.Framework.Rectangle(0, 0, 128, 128), "");
                         break;
                     case 1:
-                        Textures[index] = TextureManager.GetTexture("Pokemon\\Sprites\\" + AnimationName, new Microsoft.Xna.Framework.Rectangle(128, 0, 128, 128), "");
+                        Textures[index] = TextureManager.GetTexture("Pokemon|Sprites|" + AnimationName, new Microsoft.Xna.Framework.Rectangle(128, 0, 128, 128), "");
                         break;
                     case 2:
-                        Textures[index] = TextureManager.GetTexture("Pokemon\\Sprites\\" + AnimationName, new Microsoft.Xna.Framework.Rectangle(0, 128, 128, 128), "");
+                        Textures[index] = TextureManager.GetTexture("Pokemon|Sprites|" + AnimationName, new Microsoft.Xna.Framework.Rectangle(0, 128, 128, 128), "");
                         break;
                     case 3:
-                        Textures[index] = TextureManager.GetTexture("Pokemon\\Sprites\\" + AnimationName, new Microsoft.Xna.Framework.Rectangle(128, 128, 128, 128), "");
+                        Textures[index] = TextureManager.GetTexture("Pokemon|Sprites|" + AnimationName, new Microsoft.Xna.Framework.Rectangle(128, 128, 128, 128), "");
                         break;
                     case 4:
                         Vector2 v = BasePokemonForms.GetMenuImagePosition(this);
@@ -1279,48 +1280,48 @@ namespace P3D.Legacy.Core.Pokemon
                             shiny = "Shiny";
                         }
 
-                        Textures[index] = TextureManager.GetTexture("GUI\\PokemonMenu" + shiny, new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(v.X) * 32, Convert.ToInt32(v.Y) * 32, s.Width, s.Height), "");
+                        Textures[index] = TextureManager.GetTexture("GUI|PokemonMenu" + shiny, new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(v.X) * 32, Convert.ToInt32(v.Y) * 32, s.Width, s.Height), "");
                         break;
                     case 5:
                         if (Number == 490)
                         {
-                            Textures[index] = TextureManager.GetTexture("GUI\\PokemonMenu", new Microsoft.Xna.Framework.Rectangle(928, 992, 32, 32), "");
+                            Textures[index] = TextureManager.GetTexture("GUI|PokemonMenu", new Microsoft.Xna.Framework.Rectangle(928, 992, 32, 32));
                         }
                         else
                         {
-                            Textures[index] = EggCreator.CreateEggSprite(this, TextureManager.GetTexture("GUI\\PokemonMenu", new Microsoft.Xna.Framework.Rectangle(992, 992, 32, 32), ""), TextureManager.GetTexture("Pokemon\\Egg\\Templates\\Menu"));
+                            Textures[index] = EggCreator.CreateEggSprite(this, TextureManager.GetTexture("GUI|PokemonMenu", new Microsoft.Xna.Framework.Rectangle(992, 992, 32, 32)), TextureManager.GetTexture("Pokemon|Egg|Templates|Menu"));
                         }
                         break;
                     case 6:
                         if (Number == 490)
                         {
-                            Textures[index] = TextureManager.GetTexture("Pokemon\\Egg\\Egg_manaphy_front");
+                            Textures[index] = TextureManager.GetTexture("Pokemon|Egg|Egg_manaphy_front");
                         }
                         else
                         {
-                            Textures[index] = EggCreator.CreateEggSprite(this, TextureManager.GetTexture("Pokemon\\Egg\\Egg_front"), TextureManager.GetTexture("Pokemon\\Egg\\Templates\\Front"));
+                            Textures[index] = EggCreator.CreateEggSprite(this, TextureManager.GetTexture("Pokemon|Egg|Egg_front"), TextureManager.GetTexture("Pokemon|Egg|Templates|Front"));
                         }
                         break;
                     case 7:
                         if (Number == 490)
                         {
-                            Textures[index] = TextureManager.GetTexture("Pokemon\\Egg\\Egg_manaphy_back");
+                            Textures[index] = TextureManager.GetTexture("Pokemon|Egg|Egg_manaphy_back");
                         }
                         else
                         {
-                            Textures[index] = EggCreator.CreateEggSprite(this, TextureManager.GetTexture("Pokemon\\Egg\\Egg_back"), TextureManager.GetTexture("Pokemon\\Egg\\Templates\\Back"));
+                            Textures[index] = EggCreator.CreateEggSprite(this, TextureManager.GetTexture("Pokemon|Egg|Egg_back"), TextureManager.GetTexture("Pokemon|Egg|Templates|Back"));
                         }
                         break;
                     case 8:
                     {
                         string addition = BasePokemonForms.GetOverworldAddition(this);
-                        Textures[index] = TextureManager.GetTexture("Pokemon\\Overworld\\Normal\\" + Number + addition);
+                        Textures[index] = TextureManager.GetTexture("Pokemon|Overworld|Normal|" + Number + addition);
                     }
                         break;
                     case 9:
                     {
                         string addition = BasePokemonForms.GetOverworldAddition(this);
-                        Textures[index] = TextureManager.GetTexture("Pokemon\\Overworld\\Shiny\\" + Number + addition);
+                        Textures[index] = TextureManager.GetTexture("Pokemon|Overworld|Shiny|" + Number + addition);
                     }
                         break;
                 }
@@ -1600,7 +1601,7 @@ namespace P3D.Legacy.Core.Pokemon
                 Pitch = -1f;
             }
 
-            SoundManager.PlayPokemonCry(Number, Pitch, 0f);
+            SoundEffectManager.PlayPokemonCry(Number, Pitch, 0f);
         }
 
         /// <summary>

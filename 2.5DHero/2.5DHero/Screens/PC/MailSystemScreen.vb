@@ -3,6 +3,7 @@ Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 
@@ -30,9 +31,9 @@ Public Class MailSystemScreen
         Canvas.DrawRectangle(Core.windowSize, Microsoft.Xna.Framework.Color.White)
 
         Core.SpriteBatch.DrawString(FontManager.InGameFont, "Inbox", New Vector2(42, 28), Microsoft.Xna.Framework.Color.Black)
-        Canvas.DrawImageBorder(TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), ""), 2, New Microsoft.Xna.Framework.Rectangle(32, 64, 320, 576))
+        Canvas.DrawImageBorder(TextureManager.GetTexture("GUI|Menus|Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), ""), 2, New Microsoft.Xna.Framework.Rectangle(32, 64, 320, 576))
 
-        Canvas.DrawImageBorder(TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), ""), 2, New Microsoft.Xna.Framework.Rectangle(400, 64, 672, 576))
+        Canvas.DrawImageBorder(TextureManager.GetTexture("GUI|Menus|Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), ""), 2, New Microsoft.Xna.Framework.Rectangle(400, 64, 672, 576))
 
         For i = scrollIndex To scrollIndex + 8
             If i = 0 Then
@@ -71,7 +72,7 @@ Public Class MailSystemScreen
                 End If
             End If
 
-            Canvas.DrawImageBorder(TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(x, y, 48, 48), ""), 1, New Microsoft.Xna.Framework.Rectangle(CInt(P.X), CInt(P.Y), 288, 32))
+            Canvas.DrawImageBorder(TextureManager.GetTexture("GUI|Menus|Menu", New Microsoft.Xna.Framework.Rectangle(x, y, 48, 48), ""), 1, New Microsoft.Xna.Framework.Rectangle(CInt(P.X), CInt(P.Y), 288, 32))
             Core.SpriteBatch.DrawString(FontManager.MiniFont, "Write new mail.", New Vector2(CInt(P.X) + 13, CInt(P.Y) + 14), Microsoft.Xna.Framework.Color.Black)
         Else
             Dim item As Item = Item.GetItemByID(mail.MailID)
@@ -87,7 +88,7 @@ Public Class MailSystemScreen
                 End If
             End If
 
-            Canvas.DrawImageBorder(TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(x, y, 48, 48), ""), 1, New Microsoft.Xna.Framework.Rectangle(CInt(P.X), CInt(P.Y), 288, 32))
+            Canvas.DrawImageBorder(TextureManager.GetTexture("GUI|Menus|Menu", New Microsoft.Xna.Framework.Rectangle(x, y, 48, 48), ""), 1, New Microsoft.Xna.Framework.Rectangle(CInt(P.X), CInt(P.Y), 288, 32))
             Core.SpriteBatch.Draw(item.Texture, New Microsoft.Xna.Framework.Rectangle(CInt(P.X), CInt(P.Y), 48, 48), Microsoft.Xna.Framework.Color.White)
 
             Core.SpriteBatch.DrawString(FontManager.MiniFont, mail.MailHeader, New Vector2(CInt(P.X) + 52, CInt(P.Y) + 14), Microsoft.Xna.Framework.Color.Black)
@@ -148,16 +149,16 @@ Public Class MailSystemScreen
             Core.SpriteBatch.DrawString(FontManager.MiniFont, "Mail OT: " & mail.MailSender & " (" & mail.MailOriginalTrainerOT & ")", New Vector2(430, yPlus + 260), Microsoft.Xna.Framework.Color.Black)
 
             If EditMailIndex = 3 Then
-                Canvas.DrawImageBorder(TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), ""), 1, New Microsoft.Xna.Framework.Rectangle(440, yPlus + 320, 160, 32))
+                Canvas.DrawImageBorder(TextureManager.GetTexture("GUI|Menus|Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), ""), 1, New Microsoft.Xna.Framework.Rectangle(440, yPlus + 320, 160, 32))
             Else
-                Canvas.DrawImageBorder(TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), ""), 1, New Microsoft.Xna.Framework.Rectangle(440, yPlus + 320, 160, 32))
+                Canvas.DrawImageBorder(TextureManager.GetTexture("GUI|Menus|Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), ""), 1, New Microsoft.Xna.Framework.Rectangle(440, yPlus + 320, 160, 32))
             End If
             Core.SpriteBatch.DrawString(FontManager.MiniFont, "Attach", New Vector2(496, yPlus + 334), Microsoft.Xna.Framework.Color.Black)
 
             If EditMailIndex = 4 Then
-                Canvas.DrawImageBorder(TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), ""), 1, New Microsoft.Xna.Framework.Rectangle(640, yPlus + 320, 160, 32))
+                Canvas.DrawImageBorder(TextureManager.GetTexture("GUI|Menus|Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), ""), 1, New Microsoft.Xna.Framework.Rectangle(640, yPlus + 320, 160, 32))
             Else
-                Canvas.DrawImageBorder(TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), ""), 1, New Microsoft.Xna.Framework.Rectangle(640, yPlus + 320, 160, 32))
+                Canvas.DrawImageBorder(TextureManager.GetTexture("GUI|Menus|Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), ""), 1, New Microsoft.Xna.Framework.Rectangle(640, yPlus + 320, 160, 32))
             End If
             Core.SpriteBatch.DrawString(FontManager.MiniFont, "Cancel", New Vector2(696, yPlus + 334), Microsoft.Xna.Framework.Color.Black)
         Else

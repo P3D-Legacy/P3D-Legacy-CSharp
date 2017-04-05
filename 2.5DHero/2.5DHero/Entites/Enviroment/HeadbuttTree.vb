@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.World
@@ -39,7 +40,7 @@ Public Class HeadbuttTree
             If pName <> "" And Core.Player.Badges.Contains(10) Then
                 Dim text As String = "This tree could have~a Pokémon in it.*Do you want to~use Headbutt?%Yes|No%"
                 Screen.TextBox.Show(text, {Me})
-                SoundManager.PlaySound("select")
+                SoundEffectManager.PlaySound("select")
             End If
         End If
     End Sub

@@ -34,13 +34,17 @@ namespace P3D.Legacy.Core.GameModes.YamlConverters
         }
         private static GameRuleObject ParseGameRuleObject(string value)
         {
-            if (bool.TryParse(value, out bool b))
+			bool b;
+			int i;
+			double d;
+
+            if (bool.TryParse(value, out b))
                 return new GameRuleBoolean(b);
 
-            if (int.TryParse(value, out int i))
+            if (int.TryParse(value, out i))
                 return new GameRuleInteger(i);
 
-            if (double.TryParse(value, out double d))
+            if (double.TryParse(value, out d))
                 return new GameRuleDouble(d);
 
             return new GameRuleString(value);

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 
 using P3D.Legacy.Core.Input;
 using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Resources.Managers;
 using P3D.Legacy.Core.Screens;
 using P3D.Legacy.Core.Screens.GUI;
 using P3D.Legacy.Core.Server;
@@ -63,15 +64,15 @@ namespace P3D.Legacy.Core.Network
                                 {
                                     case 1:
                                         //Battle
-                                        Core.SpriteBatch.Draw(TextureManager.GetTexture("Textures\\emoticons", new Rectangle(48, 16, 16, 16), ""), new Rectangle(startX + (x - 1) * 256 + 222, startY + (y - 1) * 40 + 6, 32, 32), Color.White);
+                                        Core.SpriteBatch.Draw(TextureManager.GetTexture("Textures|emoticons", new Rectangle(48, 16, 16, 16), ""), new Rectangle(startX + (x - 1) * 256 + 222, startY + (y - 1) * 40 + 6, 32, 32), Color.White);
                                         break;
                                     case 2:
                                         //Chat
-                                        Core.SpriteBatch.Draw(TextureManager.GetTexture("Textures\\emoticons", new Rectangle(0, 0, 16, 16), ""), new Rectangle(startX + (x - 1) * 256 + 222, startY + (y - 1) * 40 + 6, 32, 32), Color.White);
+                                        Core.SpriteBatch.Draw(TextureManager.GetTexture("Textures|emoticons", new Rectangle(0, 0, 16, 16), ""), new Rectangle(startX + (x - 1) * 256 + 222, startY + (y - 1) * 40 + 6, 32, 32), Color.White);
                                         break;
                                     case 3:
                                         //AFK
-                                        Core.SpriteBatch.Draw(TextureManager.GetTexture("Textures\\emoticons", new Rectangle(0, 48, 16, 16), ""), new Rectangle(startX + (x - 1) * 256 + 222, startY + (y - 1) * 40 + 6, 32, 32), Color.White);
+                                        Core.SpriteBatch.Draw(TextureManager.GetTexture("Textures|emoticons", new Rectangle(0, 48, 16, 16), ""), new Rectangle(startX + (x - 1) * 256 + 222, startY + (y - 1) * 40 + 6, 32, 32), Color.White);
                                         break;
                                 }
                             }

@@ -1,5 +1,6 @@
 ﻿Imports System.Globalization
 Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 
 Namespace BattleSystem
@@ -38,9 +39,9 @@ Namespace BattleSystem
 
         Private Sub InternalPlaySound()
             If _isPokemonSound = True Then
-                SoundManager.PlayPokemonCry(CInt(_sound))
+                SoundEffectManager.PlayPokemonCry(CInt(_sound))
             Else
-                SoundManager.PlaySound(Me._sound, False)
+                SoundEffectManager.PlaySound(Me._sound, False)
             End If
         End Sub
 

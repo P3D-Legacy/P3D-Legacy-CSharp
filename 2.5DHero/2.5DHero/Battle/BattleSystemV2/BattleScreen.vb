@@ -8,6 +8,9 @@ Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Objects
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Models
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
@@ -204,11 +207,11 @@ Namespace BattleSystem
 
             PlayerStatistics.Track("Wild battles", 1)
 
-            If CustomBattleMusic = "" OrElse MusicManager.SongExists(CustomBattleMusic) = False Then
-                If RoamingBattle = True AndAlso RoamingPokemonStorage.MusicLoop <> "" AndAlso MusicManager.SongExists(RoamingPokemonStorage.MusicLoop) = True Then
+            If CustomBattleMusic = "" OrElse MusicManager.MusicExists(CustomBattleMusic) = False Then
+                If RoamingBattle = True AndAlso RoamingPokemonStorage.MusicLoop <> "" AndAlso MusicManager.MusicExists(RoamingPokemonStorage.MusicLoop) = True Then
                     MusicManager.PlayMusic(RoamingPokemonStorage.MusicLoop, True, 0.0F, 0.0F)
                 Else
-                    If MusicManager.SongExists(SavedOverworld.Level.CurrentRegion.Split(CChar(","))(0) & "_wild") = True Then
+                    If MusicManager.MusicExists(SavedOverworld.Level.CurrentRegion.Split(CChar(","))(0) & "_wild") = True Then
                         MusicManager.PlayMusic(SavedOverworld.Level.CurrentRegion.Split(CChar(","))(0) & "_wild", True, 0.0F, 0.0F)
                     Else
                         MusicManager.PlayMusic("johto_wild", True, 0.0F, 0.0F)
@@ -491,7 +494,7 @@ Namespace BattleSystem
 
             PlayerStatistics.Track("Safari battles", 1)
 
-            If MusicManager.SongExists(SavedOverworld.Level.CurrentRegion.Split(CChar(","))(0) & "_wild") = True Then
+            If MusicManager.MusicExists(SavedOverworld.Level.CurrentRegion.Split(CChar(","))(0) & "_wild") = True Then
                 MusicManager.PlayMusic(SavedOverworld.Level.CurrentRegion.Split(CChar(","))(0) & "_wild", True, 0.0F, 0.0F)
             Else
                 MusicManager.PlayMusic("johto_wild", True, 0.0F, 0.0F)
@@ -607,7 +610,7 @@ Namespace BattleSystem
 
             PlayerStatistics.Track("Bug-Catching contest battles", 1)
 
-            If MusicManager.SongExists(SavedOverworld.Level.CurrentRegion.Split(CChar(","))(0) & "_wild") = True Then
+            If MusicManager.MusicExists(SavedOverworld.Level.CurrentRegion.Split(CChar(","))(0) & "_wild") = True Then
                 MusicManager.PlayMusic(SavedOverworld.Level.CurrentRegion.Split(CChar(","))(0) & "_wild", True, 0.0F, 0.0F)
             Else
                 MusicManager.PlayMusic("johto_wild", True, 0.0F, 0.0F)

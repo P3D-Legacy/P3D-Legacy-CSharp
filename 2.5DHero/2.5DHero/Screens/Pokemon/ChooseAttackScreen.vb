@@ -2,6 +2,7 @@
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 
@@ -41,7 +42,7 @@ Public Class ChooseAttackScreen
         Me.PreScreen = currentScreen
         Me.Pokemon = Pokemon
 
-        mainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
+        mainTexture = TextureManager.GetTexture("GUI|Menus|Menu")
 
         Me.canChooseHMMove = canChooseHmMove
         Me.canExit = canExit
@@ -74,7 +75,7 @@ Public Class ChooseAttackScreen
     Public Overrides Sub Draw()
         Me.PreScreen.Draw()
         Canvas.DrawRectangle(Core.windowSize, New Color(0, 0, 0, 150))
-        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 0, 48, 48), "")
 
         Dim p As Vector2 = New Vector2(40, 50)
 
@@ -135,9 +136,9 @@ Public Class ChooseAttackScreen
             p.Y += 32
         End If
 
-        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 0, 48, 48), "")
         If Me.AttackIndex = i Then
-            CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(48, 0, 48, 48), "")
+            CanvasTexture = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(48, 0, 48, 48), "")
         End If
 
         Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(p.X) + 12, CInt(p.Y), 256, 64))

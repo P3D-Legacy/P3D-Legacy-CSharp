@@ -8,6 +8,9 @@ Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -921,7 +924,7 @@ Public Class ScriptV1
             stopMusic = CBool(Me.Value.GetSplit(1))
         End If
 
-        SoundManager.PlaySound(sound, stopMusic)
+        SoundEffectManager.PlaySound(sound, stopMusic)
 
         Me.IsReady = True
     End Sub
@@ -1677,7 +1680,7 @@ Public Class ScriptV1
         End If
 
         Core.Player.Inventory.AddItem(ItemID, Amount)
-        SoundManager.PlaySound("item_found", True)
+        SoundEffectManager.PlaySound("item_found", True)
 
         Screen.TextBox.reDelay = 0.0F
         Screen.TextBox.Show(Message, {})
@@ -1710,7 +1713,7 @@ Public Class ScriptV1
         If IsNumeric(Value) = True Then
             If Core.Player.Badges.Contains(CInt(Value)) = False Then
                 Core.Player.Badges.Add(CInt(Value))
-                SoundManager.PlaySound("badge_acquired", True)
+                SoundEffectManager.PlaySound("badge_acquired", True)
                 Screen.TextBox.Show(Core.Player.Name & " received the~" & Badge.GetBadgeName(CInt(Value)) & "badge.", {}, False, False)
 
                 Core.Player.AddPoints(10, "Got a badge (V1 script!).")

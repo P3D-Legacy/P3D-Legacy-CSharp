@@ -2,6 +2,9 @@
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -52,8 +55,8 @@ Public Class OptionScreen
         Me.FOV = C.FOV
         Me.TextSpeed = TextBox.TextSpeed
         Me.MouseSpeed = CInt(C.RotationSpeed * 10000)
-        Me.Music = CInt(MusicManager.MasterVolume * 100)
-        Me.Sound = CInt(SoundManager.Volume * 100)
+        Me.Music = CInt(MusicManager.Volume * 100)
+        Me.Sound = CInt(SoundEffectManager.Volume * 100)
         Me.RenderDistance = Core.GameOptions.RenderDistance
         Me.GraphicStyle = Core.GameOptions.GraphicStyle
         Me.ShowBattleAnimations = Core.Player.ShowBattleAnimations
@@ -77,7 +80,7 @@ Public Class OptionScreen
     Public Overrides Sub Draw()
         Me.PreScreen.Draw()
 
-        Canvas.DrawImageBorder(TextureManager.GetTexture(TextureManager.GetTexture("GUI\Menus\Menu"), New Rectangle(0, 0, 48, 48)), 2, New Rectangle(60, 100, 800, 480))
+        Canvas.DrawImageBorder(TextureManager.GetTexture(TextureManager.GetTexture("GUI|Menus|Menu"), New Rectangle(0, 0, 48, 48)), 2, New Rectangle(60, 100, 800, 480))
 
         Core.SpriteBatch.DrawString(FontManager.InGameFont, Me.CurrentPath, New Vector2(80, 130), Color.Black)
         If savedOptions = False Then
@@ -222,10 +225,10 @@ Public Class OptionScreen
         C.CreateNewProjection(Me.FOV)
         TextBox.TextSpeed = Me.TextSpeed
         C.RotationSpeed = CSng(Me.MouseSpeed / 10000)
-        MusicManager.MasterVolume = CSng(Me.Music / 100)
-        SoundManager.Volume = CSng(Me.Sound / 100)
+        MusicManager.Volume = CSng(Me.Music / 100)
+        SoundEffectManager.Volume = CSng(Me.Sound / 100)
         MusicManager.Mute(CBool(Me.Muted))
-        SoundManager.Mute(CBool(Me.Muted))
+        SoundEffectManager.Mute(CBool(Me.Muted))
         Core.GameOptions.RenderDistance = Me.RenderDistance
         Core.GameOptions.GraphicStyle = Me.GraphicStyle
         Screen.Level.World.Initialize(Screen.Level.EnvironmentType, Screen.Level.WeatherType)
@@ -244,7 +247,7 @@ Public Class OptionScreen
         Core.GameOptions.ViewBobbing = Me.ViewBobbing
         Options.SaveOptions(Core.GameOptions)
 
-        SoundManager.PlaySound("save")
+        SoundEffectManager.PlaySound("save")
 
         Me.PreScreen.Update()
     End Sub
@@ -421,9 +424,9 @@ Public Class OptionScreen
 
     Private Sub ApplyMusicChange()
         MusicManager.Mute(CBool(Me.Muted))
-        SoundManager.Mute(CBool(Me.Muted))
-        MusicManager.MasterVolume = CSng(Me.Music / 100)
-        SoundManager.Volume = CSng(Me.Sound / 100)
+        SoundEffectManager.Mute(CBool(Me.Muted))
+        MusicManager.Volume = CSng(Me.Music / 100)
+        SoundEffectManager.Volume = CSng(Me.Sound / 100)
     End Sub
 
 #End Region

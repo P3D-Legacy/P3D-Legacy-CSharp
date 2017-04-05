@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -41,7 +42,7 @@ Public Class CutDownTree
         End If
 
         Screen.TextBox.Show(text, {Me})
-        SoundManager.PlaySound("select")
+        SoundEffectManager.PlaySound("select")
     End Sub
 
     Public Overrides Sub ResultFunction(Result As Integer)

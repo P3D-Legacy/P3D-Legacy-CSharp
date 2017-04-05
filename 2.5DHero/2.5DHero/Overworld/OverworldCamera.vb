@@ -2,6 +2,9 @@ Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -747,7 +750,7 @@ Public Class OverworldCamera
                         End If
                         If _bumpSoundDelay = 0 Then
                             If _didWalkAgainst = True Then
-                                SoundManager.PlaySound("bump")
+                                SoundEffectManager.PlaySound("bump")
                             End If
                             _bumpSoundDelay = 35
                         End If

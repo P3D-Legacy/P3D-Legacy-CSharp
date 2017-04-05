@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Dialogues
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -93,7 +94,7 @@ Namespace ScriptVersion2
                             receiveString = "Received " & Amount & "~" & Item.PluralName & ".*"
                         End If
 
-                        SoundManager.PlaySound("item_found", True)
+                        SoundEffectManager.PlaySound("item_found", True)
 
                         Screen.TextBox.reDelay = 0.0F
                         Screen.TextBox.TextColor = TextBox.PlayerColor

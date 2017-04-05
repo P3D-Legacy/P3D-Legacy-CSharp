@@ -1,5 +1,6 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -22,7 +23,7 @@ Namespace Items.Wings
             If CanUseWing(p.EVSpeed, p) = True Then
                 p.EVSpeed += 1
 
-                SoundManager.PlaySound("single_heal", False)
+                SoundEffectManager.PlaySound("single_heal", False)
                 Screen.TextBox.Show("Raised " & p.GetDisplayName() & "'s~Speed.", {}, False, False)
                 PlayerStatistics.Track("[254]Wings used", 1)
 

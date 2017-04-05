@@ -6,6 +6,7 @@ Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Interfaces
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Resources.Models
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -178,7 +179,7 @@ Public Class NetworkPlayer
             If r <> lastRectangle Then
                 lastRectangle = r
 
-                Textures(0) = TextureManager.GetTexture(Me.Texture, r, 1)
+                Textures(0) = TextureManager.GetTexture(Me.Texture, r)
             End If
         End If
     End Sub

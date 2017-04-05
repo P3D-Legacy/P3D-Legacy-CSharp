@@ -1,6 +1,9 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -37,7 +40,7 @@ Public Class BattleIntroScreen
             End If
         End If
 
-        If MusicManager.SongExists(musicLoop) = False Then
+        If MusicManager.MusicExists(musicLoop) = False Then
             musicLoop = "johto_wild_intro"
         End If
         musicLoop = musicLoop
@@ -48,13 +51,13 @@ Public Class BattleIntroScreen
     Public Sub New(ByVal OldScreen As Screen, ByVal NewScreen As Screen, ByVal IntroType As Integer, ByVal MusicLoop As String)
         If MusicLoop = "" Then
             MusicLoop = Screen.Level.CurrentRegion.Split(CChar(","))(0) & "_wild_intro"
-            If MusicManager.SongExists(MusicLoop) = False Then
+            If MusicManager.MusicExists(MusicLoop) = False Then
                 If BattleSystem.BattleScreen.RoamingBattle = True Then
                     If BattleSystem.BattleScreen.RoamingPokemonStorage.MusicLoop <> "" Then
                         MusicLoop = BattleSystem.BattleScreen.RoamingPokemonStorage.MusicLoop & "_intro"
                     End If
                 End If
-                If MusicManager.SongExists(MusicLoop) = False Then
+                If MusicManager.MusicExists(MusicLoop) = False Then
                     MusicLoop = "johto_wild_intro"
                 End If
             End If
@@ -515,9 +518,9 @@ Public Class BattleIntroScreen
         MusicManager.PlayMusic(MusicLoop)
         MediaPlayer.IsRepeating = False
 
-        Dim s As MusicManager.CSong = MusicManager.GetSong(MusicLoop, True)
+        Dim s = MusicManager.GetMusic(MusicLoop, True)
         If Not s Is Nothing Then
-            Me.duration = s.Song.Duration
+            Me.duration = s.Duration
         Else
             Me.duration = New TimeSpan(0)
         End If

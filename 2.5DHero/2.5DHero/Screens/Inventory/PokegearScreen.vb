@@ -8,6 +8,9 @@ Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Objects
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -99,7 +102,7 @@ Namespace GameJolt
 
             Select Case EntryMode
                 Case EntryModes.MainMenu
-                    SoundManager.PlaySound("Pokegear\pokegear_on")
+                    SoundEffectManager.PlaySound("Pokegear\pokegear_on")
                     Me.menuIndex = Player.Temp.LastPokegearPage
                 Case EntryModes.DisplayUser
                     InitializeUserView(Data)
@@ -129,7 +132,7 @@ Namespace GameJolt
             menuIndex = MenuScreens.TradeRequest
             Me.TradeRequestNetworkID = CInt(Data(0))
             Me.TradeRequestGameJoltID = CStr(Data(1))
-            SoundManager.PlaySound("single_heal", False)
+            SoundEffectManager.PlaySound("single_heal", False)
             TradeRequestData = -1
         End Sub
 
@@ -139,7 +142,7 @@ Namespace GameJolt
             menuIndex = MenuScreens.BattleRequest
             Me.BattleRequestNetworkID = CInt(Data(0))
             Me.BattleRequestGameJoltID = CStr(Data(1))
-            SoundManager.PlaySound("single_heal", False)
+            SoundEffectManager.PlaySound("single_heal", False)
             BattleRequestData = -1
         End Sub
 
@@ -199,7 +202,7 @@ Namespace GameJolt
             If Me.menuIndex <> MenuScreens.TradeRequest Then
                 If KeyBoardHandler.KeyPressed(Core.KeyBindings.Special) = True Or ControllerHandler.ButtonPressed(Buttons.Y) = True Then
                     If Me.menuIndex <> MenuScreens.UserView Then Player.Temp.LastPokegearPage = Me.menuIndex
-                    SoundManager.PlaySound("Pokegear\pokegear_off")
+                    SoundEffectManager.PlaySound("Pokegear\pokegear_off")
                     Core.SetScreen(Me.PreScreen)
                 End If
             End If
@@ -342,7 +345,7 @@ Namespace GameJolt
             End If
 
             If Controls.Dismiss(True, True) = True Then
-                SoundManager.PlaySound("Pokegear\pokegear_off")
+                SoundEffectManager.PlaySound("Pokegear\pokegear_off")
                 Core.SetScreen(Me.PreScreen)
             End If
         End Sub

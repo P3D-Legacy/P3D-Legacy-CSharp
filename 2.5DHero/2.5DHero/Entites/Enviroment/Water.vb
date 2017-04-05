@@ -3,6 +3,9 @@ Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Objects
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.World
@@ -154,7 +157,7 @@ Public Class Water
                             End Select
 
                             Screen.TextBox.Show(message, {Me}, True, True)
-                            SoundManager.PlaySound("select")
+                            SoundEffectManager.PlaySound("select")
                         End If
                     End If
                 End If
@@ -247,7 +250,7 @@ Public Class Water
 
                 .UpdateEntity()
 
-                SoundManager.PlayPokemonCry(pokemonNumber)
+                SoundEffectManager.PlayPokemonCry(pokemonNumber)
 
                 If Screen.Level.IsRadioOn = False OrElse GameJolt.PokegearScreen.StationCanPlay(Screen.Level.SelectedRadioStation) = False Then
                     MusicManager.PlayMusic("surf", True)

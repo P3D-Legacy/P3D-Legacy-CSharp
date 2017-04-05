@@ -2,6 +2,7 @@
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Security
 Imports PCLExt.FileStorage
 

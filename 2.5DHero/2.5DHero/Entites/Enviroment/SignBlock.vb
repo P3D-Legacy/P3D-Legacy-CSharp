@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -41,7 +42,7 @@ Public Class SignBlock
         If canRead = True Then
             Dim oScreen As OverworldScreen = CType(Core.CurrentScreen, OverworldScreen)
             If oScreen.ActionScript.IsReady = True Then
-                SoundManager.PlaySound("select")
+                SoundEffectManager.PlaySound("select")
                 Select Case Me.ActionValue
                     Case 0, 3
                         oScreen.ActionScript.StartScript(Me.AdditionalValue, 1)

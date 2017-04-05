@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 
 using Microsoft.Xna.Framework.Graphics;
 
 using P3D.Legacy.Core.Data;
 using P3D.Legacy.Core.Storage;
-using PCLExt.FileStorage;
 
 //IO:
-namespace P3D.Legacy.Core.Resources
+namespace P3D.Legacy.Core.Resources.Managers
 {
     public static class FontManager
     {
@@ -18,67 +17,40 @@ namespace P3D.Legacy.Core.Resources
         //this sub looks for all fonts that should be in the system (base files, mode files, pack files) and shoves them into FontList
         public static void LoadFonts()
         {
+            HasLoaded = false;
             FontList.Clear();
+
             //because the pack manager will hoover up replacements from packs and mods already we just load every font name contained in our base files
-            var p0 = Path.Combine(GameController.GamePath, "Content", "Fonts", "BMP");
-            foreach (string file in Directory.GetFiles(p0))
+            foreach (var fontFile in StorageInfo.ContentFolder.FontFolder.GetFontFiles())
             {
-                if (file.EndsWith(".xnb"))
-                {
-                    string name = Path.GetFileNameWithoutExtension(file);
-                    if (!FontList.ContainsKey(name.ToLower()))
-                    {
-                        var p1 = Path.Combine("Fonts", "BMP", name);
-                        SpriteFont font = ContentPackManager.GetContentManager(p1, ".xnb").Load<SpriteFont>(p1);
-                        FontList.Add(name.ToLower(), new FontContainer(name, font));
-                    }
-                }
+                var fileName = fontFile.InContentLocalPathWithoutExtension.Replace("\\", "|").ToLowerInvariant();
+                FontList.Add(fileName, fontFile);
             }
             //then look for ADDITIONAL fonts in packs, the ones that exist will have the user's prefered copy already
-            foreach (string c in Core.GameOptions.ContentPackNames)
+            if (Core.GameOptions.ContentPackNames.Any())
             {
-                var p1 = Path.Combine(GameController.GamePath, "ContentPacks", c, "Content", "Fonts", "BMP");
-                if (Directory.Exists(p1))
+                foreach (var contentPackName in Core.GameOptions.ContentPackNames)
                 {
-                    foreach (var file in Directory.GetFiles(p1))
+                    var contentPackFontFolder = StorageInfo.ContentPacksFolder.GetContentPack(contentPackName).FontFolder;
+                    foreach (var fontFile in contentPackFontFolder.GetFontFiles())
                     {
-                        if (file.EndsWith(".xnb"))
-                        {
-                            var name = Path.GetFileNameWithoutExtension(file);
-                            if (!FontList.ContainsKey(name.ToLower()))
-                            {
-                                var p2 = Path.Combine("Fonts", "BMP", name);
-                                SpriteFont font = ContentPackManager.GetContentManager(p2, ".xnb").Load<SpriteFont>(p2);
-                                FontList.Add(name.ToLower(), new FontContainer(name, font));
-                            }
-                        }
+                        var fileName = fontFile.InContentLocalPathWithoutExtension.Replace("\\", "|").ToLowerInvariant();
+                        FontList.Add(fileName, fontFile);
                     }
                 }
             }
             //if there's a game mode loaded, look in that too for additional fonts
-            if (!GameModeManager.ActiveGameMode.IsDefaultGamemode)
+            if (!GameModeManager.ActiveGameMode.IsDefaultGamemode && !Equals(GameModeManager.ActiveGameMode.ContentFolder, StorageInfo.ContentFolder))
             {
-                if (!Equals(GameModeManager.ActiveGameMode.ContentFolder, StorageInfo.ContentFolder))
+                var gameModeFontFolder = GameModeManager.ActiveGameMode.ContentFolder.FontFolder;
+                foreach (var fontFile in gameModeFontFolder.GetFontFiles())
                 {
-                    var p1 = GameModeManager.ActiveGameMode.ContentFolder
-                        .CreateFolder("Fonts", CreationCollisionOption.OpenIfExists)
-                        .CreateFolder("BMP", CreationCollisionOption.OpenIfExists);
-
-                    foreach (var file in p1.GetFiles())
-                    {
-                        if (file.Name.EndsWith(".xnb"))
-                        {
-                            var name = Path.GetFileNameWithoutExtension(file.Name);
-                            if (!FontList.ContainsKey(name.ToLower()))
-                            {
-                                var p2 = Path.Combine("Fonts", "BMP", name);
-                                var font = ContentPackManager.GetContentManager(p2, ".xnb").Load<SpriteFont>(p2);
-                                FontList.Add(name.ToLower(), new FontContainer(name, font));
-                            }
-                        }
-                    }
+                    var fileName = fontFile.InContentLocalPathWithoutExtension.Replace("\\", "|").ToLowerInvariant();
+                    FontList.Add(fileName, fontFile);
                 }
             }
+
+            HasLoaded = true;
         }
 
         /// <summary>
@@ -101,5 +73,7 @@ namespace P3D.Legacy.Core.Resources
         public static SpriteFont ChatFont => GetFont("chatfont");
         public static SpriteFont UnownFont => GetFont("unown");
         public static SpriteFont BrailleFont => GetFont("braille");
+
+        public static bool HasLoaded { get; set; }
     }
 }

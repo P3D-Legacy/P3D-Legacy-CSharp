@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core.Resources.Sound
+﻿Imports P3D.Legacy.Core.Resources.Managers.Sound
+Imports P3D.Legacy.Core.Resources.Sound
 
 Namespace ScriptVersion2
 
@@ -22,7 +23,7 @@ Namespace ScriptVersion2
                         stopMusic = CBool(argument.GetSplit(1))
                     End If
 
-                    SoundManager.PlaySound(sound, stopMusic)
+                    SoundEffectManager.PlaySound(sound, stopMusic)
                 Case "playadvanced"
                     Dim args() As String = argument.Split(CChar(","))
 
@@ -32,7 +33,7 @@ Namespace ScriptVersion2
                     Dim pan As Single = sng(args(3))
                     Dim volume As Single = sng(args(4))
 
-                    SoundManager.PlaySound(sound, pitch, pan, volume, stopMusic)
+                    SoundEffectManager.PlaySound(sound, pitch, pan, volume, stopMusic)
             End Select
 
             IsReady = True

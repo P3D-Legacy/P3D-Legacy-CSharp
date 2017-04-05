@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Resources.Models
 Imports P3D.Legacy.Core.Screens
 

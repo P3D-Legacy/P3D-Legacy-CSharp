@@ -1,6 +1,8 @@
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -34,7 +36,7 @@ Namespace Items.Medicine
                 Pokemon.Status = BasePokemon.StatusProblems.None
                 Pokemon.HP = Pokemon.MaxHP
 
-                SoundManager.PlaySound("single_heal", False)
+                SoundEffectManager.PlaySound("single_heal", False)
                 Screen.TextBox.Show(Pokemon.GetDisplayName() & "~is revitalized.", {}, False, False)
                 PlayerStatistics.Track("[17]Medicine Items used", 1)
 

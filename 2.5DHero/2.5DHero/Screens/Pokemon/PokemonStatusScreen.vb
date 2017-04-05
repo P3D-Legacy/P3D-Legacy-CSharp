@@ -4,6 +4,7 @@ Imports P3D.Legacy.Core.Battle
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 
@@ -35,7 +36,7 @@ Public Class PokemonStatusScreen
         Me.BoxIndex = Index
         Me.viewParty = viewParty
 
-        Me.MainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
+        Me.MainTexture = TextureManager.GetTexture("GUI|Menus|Menu")
 
         Me.pageIndex = Player.Temp.PokemonStatusPageIndex
     End Sub
@@ -168,7 +169,7 @@ Public Class PokemonStatusScreen
     Public Overrides Sub Draw()
         PreScreen.Draw()
 
-        Canvas.DrawImageBorder(TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), ""), 2, New Rectangle(60, 100, 800, 480))
+        Canvas.DrawImageBorder(TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 0, 48, 48), ""), 2, New Rectangle(60, 100, 800, 480))
         DrawHeader()
 
         Dim TexturePositionPage As Vector2
@@ -202,7 +203,7 @@ Public Class PokemonStatusScreen
     End Sub
 
     Private Sub DrawHeader()
-        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 0, 48, 48), "")
 
         'EVColors:
         With Me.Pokemon
@@ -289,7 +290,7 @@ Public Class PokemonStatusScreen
     End Sub
 
     Private Sub DrawPage1()
-        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 0, 48, 48), "")
 
         Dim p As Vector2 = New Vector2(140, 180)
 
@@ -410,7 +411,7 @@ Public Class PokemonStatusScreen
     End Sub
 
     Private Sub DrawPage2()
-        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 0, 48, 48), "")
         Dim p As Vector2 = New Vector2(140, 180)
 
         'Catchinfos
@@ -455,7 +456,7 @@ Public Class PokemonStatusScreen
     End Sub
 
     Private Sub DrawPage3()
-        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 0, 48, 48), "")
         Dim p As Vector2 = New Vector2(140, 180)
 
         If Pokemon.Attacks.Count > 0 Then
@@ -509,12 +510,12 @@ Public Class PokemonStatusScreen
     Private Sub DrawAttack(ByVal i As Integer, ByVal A As BattleSystem.Attack)
         Dim p As New Vector2(240, 210 + i * (64 + 32))
 
-        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 0, 48, 48), "")
         If Me.AttackToggle = True And Me.AttackIndex = i Then
-            CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(48, 0, 48, 48), "")
+            CanvasTexture = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(48, 0, 48, 48), "")
         Else
             If SwitchIndex <> -1 And i = SwitchIndex Then
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 48, 48, 48), "")
             End If
         End If
 

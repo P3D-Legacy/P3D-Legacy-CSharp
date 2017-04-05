@@ -3,6 +3,8 @@ Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -38,7 +40,7 @@ Public Class LearnAttackScreen
         Me.newAttack = newAttack
         Me.MachineItemID = MachineItemID
 
-        mainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
+        mainTexture = TextureManager.GetTexture("GUI|Menus|Menu")
     End Sub
 
     Public Overrides Sub Update()
@@ -109,7 +111,7 @@ Public Class LearnAttackScreen
     Public Overrides Sub Draw()
         Me.PreScreen.Draw()
         Canvas.DrawRectangle(Core.windowSize, New Color(0, 0, 0, 150))
-        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 0, 48, 48), "")
         DrawText()
 
         If currentCharIndex < GetText().Length Then
@@ -206,9 +208,9 @@ Public Class LearnAttackScreen
                 End If
 
                 If i = index Then
-                    CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
+                    CanvasTexture = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 48, 48, 48), "")
                 Else
-                    CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+                    CanvasTexture = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 0, 48, 48), "")
                 End If
 
                 Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(Core.windowSize.Width / 2) - 182 + i * 192 + 22, 550, 128, 64))
@@ -248,9 +250,9 @@ Public Class LearnAttackScreen
             p.Y += 32
         End If
 
-        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+        Dim CanvasTexture As Texture2D = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 0, 48, 48), "")
         If Me.AttackIndex = i Then
-            CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(48, 0, 48, 48), "")
+            CanvasTexture = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(48, 0, 48, 48), "")
         End If
 
         Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(CInt(p.X) + 12, CInt(p.Y), 256, 64))
@@ -311,7 +313,7 @@ Public Class LearnAttackScreen
 
     Private Sub FollowUpText()
         TextBox.Show("... " & Pokemon.GetDisplayName() & " learned~" & newAttack.Name & "!")
-        SoundManager.PlaySound("success_small", False)
+        SoundEffectManager.PlaySound("success_small", False)
     End Sub
 
 End Class

@@ -5,6 +5,9 @@ Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.World
@@ -131,7 +134,7 @@ Public Class BattleCatchScreen
 
             If Me._playIntroSound = False Then
                 Me._playIntroSound = True
-                SoundManager.PlaySound("Battle\throw")
+                SoundEffectManager.PlaySound("Battle\throw")
             End If
 
             UpdateAnimations()
@@ -143,7 +146,7 @@ Public Class BattleCatchScreen
                     If Me.Animations.Count = 0 Then
                         Select Case Me.AnimationIndex
                             Case 0
-                                SoundManager.PlaySound("PokeballOpen")
+                                SoundEffectManager.PlaySound("PokeballOpen")
                                 InBall = True
                                 AnimationIndex = 1
                                 AnimationStarted = False
@@ -154,10 +157,10 @@ Public Class BattleCatchScreen
                                 SetupAnimation()
                             Case 2, 3, 4, 5
                                 If StayInBall() = True Then
-                                    SoundManager.PlaySound("Battle\ballshake")
+                                    SoundEffectManager.PlaySound("Battle\ballshake")
                                     AnimationIndex += 1
                                 Else
-                                    SoundManager.PlaySound("PokeballOpen")
+                                    SoundEffectManager.PlaySound("PokeballOpen")
                                     AnimationIndex = 21
                                     InBall = False
                                 End If
@@ -239,7 +242,7 @@ Public Class BattleCatchScreen
         p.SetCatchInfos(Me.Ball, "caught at")
 
         MusicManager.PlayMusic("wild_defeat", True, 0.0F, 0.0F)
-        SoundManager.PlaySound("success", True)
+        SoundEffectManager.PlaySound("success", True)
         TextBox.Show(s, {}, False, False)
     End Sub
 

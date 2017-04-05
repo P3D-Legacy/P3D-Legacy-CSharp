@@ -1,4 +1,6 @@
-﻿Imports P3D.Legacy.Core.Resources.Sound
+﻿Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
+Imports P3D.Legacy.Core.Resources.Sound
 
 Namespace BattleSystem
 

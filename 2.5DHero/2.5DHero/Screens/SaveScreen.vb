@@ -5,6 +5,8 @@ Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Objects
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -25,7 +27,7 @@ Public Class SaveScreen
         Me.Identification = Identifications.SaveScreen
         Me.PreScreen = currentScreen
 
-        Me.mainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
+        Me.mainTexture = TextureManager.GetTexture("GUI|Menus|Menu")
         ChooseBox.Show({Localization.GetString("save_screen_yes"), Localization.GetString("save_screen_no")}, 0, {})
 
         SaveGameHelpers.ResetSaveCounter()
@@ -85,7 +87,7 @@ Public Class SaveScreen
                 If SaveGameHelpers.EncounteredErrors = True Then
                     Me.saveSessionFailed = True
                 Else
-                    SoundManager.PlaySound("save")
+                    SoundEffectManager.PlaySound("save")
                 End If
 
                 SaveGameHelpers.ResetSaveCounter()
@@ -115,7 +117,7 @@ Public Class SaveScreen
 
                         If Core.Player.IsGameJoltSave = False Then
                             ready = True
-                            SoundManager.PlaySound("save")
+                            SoundEffectManager.PlaySound("save")
                         End If
                     End If
                 Else

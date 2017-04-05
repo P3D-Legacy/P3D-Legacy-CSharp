@@ -3,6 +3,7 @@ Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 
@@ -16,7 +17,7 @@ Public Class NameObjectScreen
 
     Private _pokemon As Pokemon 'Temporarly stores the Pokémon to rename.
     Private _currentText As String = "" 'The current Text in the textbox.
-    Private _mainTexture As Texture2D 'The temporary texture. Loads "GUI\Menus\Menu"
+    Private _mainTexture As Texture2D 'The temporary texture. Loads "GUI|Menus|Menu"
 
     Private _index As Integer = 0 'the button index (0 or 1)
     Private _askedRename As Boolean = False 'If the question to rename is answered or not.
@@ -53,7 +54,7 @@ Public Class NameObjectScreen
         Me._renamePokemon = True
 
         'Load texture:
-        Me._mainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
+        Me._mainTexture = TextureManager.GetTexture("GUI|Menus|Menu")
 
         'Show the Pokémon image:
         PokemonImageView.Show(Pokemon, True)
@@ -63,7 +64,7 @@ Public Class NameObjectScreen
         Me.Identification = Identifications.NameObjectScreen
         Me.PreScreen = CurrentScreen
 
-        Me._mainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
+        Me._mainTexture = TextureManager.GetTexture("GUI|Menus|Menu")
 
         Me._acceptName = AcceptName
         Me._canChooseNo = canExit
@@ -99,9 +100,9 @@ Public Class NameObjectScreen
             End If
 
             If i = _index Then
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 48, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 48, 48, 48), "")
             Else
-                CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Rectangle(0, 0, 48, 48), "")
+                CanvasTexture = TextureManager.GetTexture("GUI|Menus|Menu", New Rectangle(0, 0, 48, 48), "")
             End If
 
             If i = 1 And _canChooseNo = True Or i = 0 Then

@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.Xna.Framework;
 
 using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Resources.Managers;
 
 namespace P3D.Legacy.Core.World
 {

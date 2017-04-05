@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 using P3D.Legacy.Core.Dialogues;
 using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Resources.Managers;
 using P3D.Legacy.Core.World;
 
 namespace P3D.Legacy.Core.Screens
@@ -370,7 +371,7 @@ namespace P3D.Legacy.Core.Screens
                 var valueArray = descriptions.Values.ToArray();
                 for (var i = 0; i <= descriptions.Count - 1; i++)
                 {
-                    string t = "GUI\\GamePad\\xboxController";
+                    string t = "GUI|GamePad|xboxController";
                     //Store the texture path.
                     int width = 32;
                     //Store the width of the image.

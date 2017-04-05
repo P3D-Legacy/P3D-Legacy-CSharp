@@ -11,6 +11,7 @@ using P3D.Legacy.Core.Battle.BattleSystemV2;
 using P3D.Legacy.Core.Debug;
 using P3D.Legacy.Core.Extensions;
 using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Resources.Managers;
 using P3D.Legacy.Core.Resources.Models;
 using P3D.Legacy.Core.Screens;
 using P3D.Legacy.Core.World;

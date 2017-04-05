@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -8,7 +9,8 @@ using P3D.Legacy.Core.Data;
 using P3D.Legacy.Core.Entities;
 using P3D.Legacy.Core.Input;
 using P3D.Legacy.Core.Resources;
-using P3D.Legacy.Core.Resources.Sound;
+using P3D.Legacy.Core.Resources.Managers;
+using P3D.Legacy.Core.Resources.Managers.Sound;
 using P3D.Legacy.Core.Screens;
 
 namespace P3D.Legacy.Core.Dialogues
@@ -228,7 +230,7 @@ namespace P3D.Legacy.Core.Dialogues
                     {
                         if (Controls.Accept() || Controls.Dismiss())
                         {
-                            SoundManager.PlaySound("select");
+                            SoundEffectManager.PlaySound("select");
                             if (Text.Length <= _currentChar)
                             {
                                 if (CanProceed == true)
@@ -314,7 +316,7 @@ namespace P3D.Legacy.Core.Dialogues
             if (Showing == true)
             {
                 var with1 = Core.SpriteBatch;
-                with1.Draw(TextureManager.GetTexture("GUI\\Overworld\\TextBox"), new Rectangle(Convert.ToInt32(Core.WindowSize.Width / 2) - 240, Convert.ToInt32(PositionY), 480, 144), new Rectangle(0, 0, 160, 48), Color.White);
+                with1.Draw(TextureManager.GetTexture("GUI|Overworld|TextBox"), new Rectangle(Convert.ToInt32(Core.WindowSize.Width / 2) - 240, Convert.ToInt32(PositionY), 480, 144), new Rectangle(0, 0, 160, 48), Color.White);
 
                 float m = 1f;
                 switch (TextFont.FontName.ToLower())
@@ -330,7 +332,7 @@ namespace P3D.Legacy.Core.Dialogues
 
                 if (CanProceed == true && _through == true)
                 {
-                    with1.Draw(TextureManager.GetTexture("GUI\\Overworld\\TextBox"), new Rectangle(Convert.ToInt32(Core.WindowSize.Width / 2) + 192, Convert.ToInt32(PositionY) + 128, 16, 16), new Rectangle(0, 48, 16, 16), Color.White);
+                    with1.Draw(TextureManager.GetTexture("GUI|Overworld|TextBox"), new Rectangle(Convert.ToInt32(Core.WindowSize.Width / 2) + 192, Convert.ToInt32(PositionY) + 128, 16, 16), new Rectangle(0, 48, 16, 16), Color.White);
                 }
             }
         }

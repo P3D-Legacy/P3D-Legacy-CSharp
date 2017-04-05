@@ -6,6 +6,9 @@ Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Objects
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -145,9 +148,9 @@ Namespace GameJolt
                         Core.SpriteBatch.DrawString(FontManager.MainFont, p.GetDisplayName(), New Vector2(CInt(Core.windowSize.Width / 2 - 298), 355), Color.White)
 
                         If p.Gender = BasePokemon.Genders.Female Then
-                            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Menu"), New Rectangle(CInt(Core.WindowSize.Width / 2 - 100), 358, 12, 20), New Rectangle(102, 0, 6, 10), Color.White)
+                            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu"), New Rectangle(CInt(Core.WindowSize.Width / 2 - 100), 358, 12, 20), New Rectangle(102, 0, 6, 10), Color.White)
                         ElseIf p.Gender = BasePokemon.Genders.Male Then
-                            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\Menus\Menu"), New Rectangle(CInt(Core.windowSize.Width / 2 - 100), 358, 12, 20), New Rectangle(96, 0, 6, 10), Color.White)
+                            Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu"), New Rectangle(CInt(Core.windowSize.Width / 2 - 100), 358, 12, 20), New Rectangle(96, 0, 6, 10), Color.White)
                         End If
 
                         Core.SpriteBatch.DrawString(FontManager.MainFont, "Lv. " & p.Level, New Vector2(CInt(Core.windowSize.Width / 2 - 50), 355), Color.White)
@@ -367,7 +370,7 @@ Namespace GameJolt
                         If ownPokemonPosition <= CInt(Core.windowSize.Height / 2 - 128) Then
                             ownPokemonPosition = CInt(Core.windowSize.Height / 2 - 128)
                             tState = 1
-                            SoundManager.PlayPokemonCry(SelectedPokemon.Number)
+                            SoundEffectManager.PlayPokemonCry(SelectedPokemon.Number)
                         End If
                     End If
                 Case 1
@@ -393,14 +396,14 @@ Namespace GameJolt
                         If oppPokemonPosition >= CInt(Core.windowSize.Height / 2 - 128) Then
                             oppPokemonPosition = CInt(Core.windowSize.Height / 2 - 128)
                             tState = 4
-                            SoundManager.PlayPokemonCry(WonderTradePokemon.Number)
+                            SoundEffectManager.PlayPokemonCry(WonderTradePokemon.Number)
                         End If
                     End If
                 Case 4
                     If messageDelay > 0 Then
                         messageDelay -= 1
                         If messageDelay = 180 Then
-                            SoundManager.PlaySound("success", True)
+                            SoundEffectManager.PlaySound("success", True)
                         End If
                         If messageDelay <= 0 Then
                             messageDelay = 220

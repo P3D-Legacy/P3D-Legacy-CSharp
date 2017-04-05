@@ -7,7 +7,6 @@ using P3D.Legacy.Core.Data;
 using P3D.Legacy.Core.Entities;
 using P3D.Legacy.Core.Input;
 using P3D.Legacy.Core.Resources;
-using P3D.Legacy.Core.Resources.Sound;
 using P3D.Legacy.Core.Screens;
 
 namespace P3D.Legacy.Core.Dialogues

@@ -3,6 +3,8 @@ Imports P3D.Legacy.Core.Dialogues
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.World
@@ -138,7 +140,7 @@ Public Class ApricornPlant
         End If
 
         Screen.TextBox.Show(text, {Me})
-        SoundManager.PlaySound("select")
+        SoundEffectManager.PlaySound("select")
     End Sub
 
     Public Overrides Sub ResultFunction(Result As Integer)
@@ -147,7 +149,7 @@ Public Class ApricornPlant
 
             Core.Player.Inventory.AddItem(Item.ID, 1)
             PlayerStatistics.Track("[85]Apricorns picked", 1)
-            SoundManager.PlaySound("item_found", True)
+            SoundEffectManager.PlaySound("item_found", True)
             Screen.TextBox.TextColor = TextBox.PlayerColor
             Screen.TextBox.Show(Core.Player.Name & " picked the~" & Item.Name & ".*" & Core.Player.Inventory.GetMessageReceive(Item, 1), {Me})
             AddApriconSave()

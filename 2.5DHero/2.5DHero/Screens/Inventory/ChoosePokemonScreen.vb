@@ -4,6 +4,7 @@ Imports P3D.Legacy.Core.Battle
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 
@@ -54,7 +55,7 @@ Public Class ChoosePokemonScreen
         Me.CanChooseFainted = canChooseFainted
 
         MainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
-        Texture = TextureManager.GetTexture(MainTexture, New Rectangle(0, 0, 48, 48), ContentPackManager.GetTextureResolution("GUI\Menus\Menu"))
+        Texture = TextureManager.GetTexture(MainTexture, New Rectangle(0, 0, 48, 48))
 
 
         Me.index = Player.Temp.PokemonScreenIndex
@@ -250,15 +251,15 @@ Public Class ChoosePokemonScreen
         Dim BorderTexture As Texture2D
         If i = index Then
             If Pokemon.Status = BasePokemon.StatusProblems.Fainted Then
-                BorderTexture = TextureManager.GetTexture(MainTexture, New Rectangle(0, 128, 48, 48), ContentPackManager.GetTextureResolution("GUI\Menus\Menu"))
+                BorderTexture = TextureManager.GetTexture(MainTexture, New Rectangle(0, 128, 48, 48))
             Else
-                BorderTexture = TextureManager.GetTexture(MainTexture, New Rectangle(48, 0, 48, 48), ContentPackManager.GetTextureResolution("GUI\Menus\Menu"))
+                BorderTexture = TextureManager.GetTexture(MainTexture, New Rectangle(48, 0, 48, 48))
             End If
         Else
             If Pokemon.Status = BasePokemon.StatusProblems.Fainted Then
-                BorderTexture = TextureManager.GetTexture(MainTexture, New Rectangle(48, 48, 48, 48), ContentPackManager.GetTextureResolution("GUI\Menus\Menu"))
+                BorderTexture = TextureManager.GetTexture(MainTexture, New Rectangle(48, 48, 48, 48))
             Else
-                BorderTexture = TextureManager.GetTexture(MainTexture, New Rectangle(0, 0, 48, 48), ContentPackManager.GetTextureResolution("GUI\Menus\Menu"))
+                BorderTexture = TextureManager.GetTexture(MainTexture, New Rectangle(0, 0, 48, 48))
             End If
         End If
 

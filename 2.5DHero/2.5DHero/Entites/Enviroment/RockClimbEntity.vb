@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -29,7 +30,7 @@ Public Class RockClimbEntity
             Else
                 Screen.TextBox.Show("A Pokémon could~climb this rock.*Do you want to~use Rock Climb?%Yes|No%", {Me}, True, True)
             End If
-            SoundManager.PlaySound("select")
+            SoundEffectManager.PlaySound("select")
         Else
             Screen.TextBox.Show("A path is engraved~into this rock...", {Me}, True, True)
         End If

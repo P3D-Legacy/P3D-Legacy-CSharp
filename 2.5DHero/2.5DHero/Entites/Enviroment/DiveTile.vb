@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Input
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -40,19 +41,19 @@ Public Class DiveTile
                 t &= "*Do you want to~use Dive?%Yes|No%"
             End If
             Screen.TextBox.Show(t, {Me})
-            SoundManager.PlaySound("select")
+            SoundEffectManager.PlaySound("select")
         ElseIf diveUp = 1 Then
             'Up
             Dim t As String = "Light shines down from~the surface.*Do you want to~use Dive?%Yes|No%"
 
             Screen.TextBox.Show(t, {Me})
-            SoundManager.PlaySound("select")
+            SoundEffectManager.PlaySound("select")
         ElseIf diveUp = 2 Then
             'Up
             Dim t As String = "The boat's shadow is cast~upon the ocean floor.*Do you want to~use Dive?%Yes|No%"
 
             Screen.TextBox.Show(t, {Me})
-            SoundManager.PlaySound("select")
+            SoundEffectManager.PlaySound("select")
         End If
     End Sub
 

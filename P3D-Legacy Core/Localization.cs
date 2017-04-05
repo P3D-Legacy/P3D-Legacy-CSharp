@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 
 using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Resources.Managers;
 using P3D.Legacy.Core.Storage;
 using P3D.Legacy.Core.Storage.Folders;
 

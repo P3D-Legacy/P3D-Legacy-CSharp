@@ -1,11 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using P3D.Legacy.Core.Resources;
-using P3D.Legacy.Core.Screens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using P3D.Legacy.Core.Resources.Sound;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Screens;
 
 namespace P3D.Legacy.Core.World
 {
@@ -372,44 +373,44 @@ namespace P3D.Legacy.Core.World
                     Core.BackgroundColor = GetWeatherBackgroundColor(SkyDome.GetDaytimeColor(false));
                     Screen.Effect.FogColor = Core.BackgroundColor.ToVector3();
                     if (IsAurora)
-                        Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource\\AuroraBoralis");
+                        Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource|AuroraBoralis");
                     else
-                        Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource\\Clouds1");
-                    Screen.SkyDome.TextureDown = TextureManager.GetTexture("SkyDomeResource\\Stars");
+                        Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource|Clouds1");
+                    Screen.SkyDome.TextureDown = TextureManager.GetTexture("SkyDomeResource|Stars");
                     break;
 
                 case EnvironmentTypeEnum.Inside:
                     Core.BackgroundColor = GetWeatherBackgroundColor(new Color(173, 216, 255));
                     Screen.Effect.FogColor = Core.BackgroundColor.ToVector3();
-                    Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource\\Clouds");
+                    Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource|Clouds");
                     Screen.SkyDome.TextureDown = null;
                     break;
 
                 case EnvironmentTypeEnum.Dark:
                     Core.BackgroundColor = GetWeatherBackgroundColor(new Color(29, 29, 50));
                     Screen.Effect.FogColor = Core.BackgroundColor.ToVector3();
-                    Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource\\Dark");
+                    Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource|Dark");
                     Screen.SkyDome.TextureDown = null;
                     break;
 
                 case EnvironmentTypeEnum.Cave:
                     Core.BackgroundColor = GetWeatherBackgroundColor(new Color(34, 19, 12));
                     Screen.Effect.FogColor = Core.BackgroundColor.ToVector3();
-                    Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource\\Cave");
+                    Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource|Cave");
                     Screen.SkyDome.TextureDown = null;
                     break;
 
                 case EnvironmentTypeEnum.Underwater:
                     Core.BackgroundColor = GetWeatherBackgroundColor(new Color(19, 54, 117));
                     Screen.Effect.FogColor = Core.BackgroundColor.ToVector3();
-                    Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource\\Underwater");
-                    Screen.SkyDome.TextureDown = TextureManager.GetTexture("SkyDomeResource\\UnderwaterGround");
+                    Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource|Underwater");
+                    Screen.SkyDome.TextureDown = TextureManager.GetTexture("SkyDomeResource|UnderwaterGround");
                     break;
 
                 case EnvironmentTypeEnum.Forest:
                     Core.BackgroundColor = GetWeatherBackgroundColor(new Color(30, 66, 21));
                     Screen.Effect.FogColor = Core.BackgroundColor.ToVector3();
-                    Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource\\Forest");
+                    Screen.SkyDome.TextureUp = TextureManager.GetTexture("SkyDomeResource|Forest");
                     Screen.SkyDome.TextureDown = null;
                     break;
             }
@@ -453,14 +454,14 @@ namespace P3D.Legacy.Core.World
                     switch (mapWeather)
                     {
                         case WeatherEnum.Rain:
-                            T = TextureManager.GetTexture("Textures\\Weather\\rain");
+                            T = TextureManager.GetTexture("Textures|Weather|rain");
 
                             _weatherOffset.X += 8;
                             _weatherOffset.Y += 16;
                             break;
 
                         case WeatherEnum.Thunderstorm:
-                            T = TextureManager.GetTexture("Textures\\Weather\\rain");
+                            T = TextureManager.GetTexture("Textures|Weather|rain");
 
                             _weatherOffset.X += 12;
                             _weatherOffset.Y += 20;
@@ -469,14 +470,14 @@ namespace P3D.Legacy.Core.World
                             break;
 
                         case WeatherEnum.Snow:
-                            T = TextureManager.GetTexture("Textures\\Weather\\snow");
+                            T = TextureManager.GetTexture("Textures|Weather|snow");
 
                             _weatherOffset.X += 1;
                             _weatherOffset.Y += 1;
                             break;
 
                         case WeatherEnum.Blizzard:
-                            T = TextureManager.GetTexture("Textures\\Weather\\snow");
+                            T = TextureManager.GetTexture("Textures|Weather|snow");
 
                             _weatherOffset.X += 8;
                             _weatherOffset.Y += 2;
@@ -485,7 +486,7 @@ namespace P3D.Legacy.Core.World
                             break;
 
                         case WeatherEnum.Sandstorm:
-                            T = TextureManager.GetTexture("Textures\\Weather\\sand");
+                            T = TextureManager.GetTexture("Textures|Weather|sand");
 
                             _weatherOffset.X += 4;
                             _weatherOffset.Y += 1;
@@ -495,7 +496,7 @@ namespace P3D.Legacy.Core.World
                             break;
 
                         case WeatherEnum.Underwater:
-                            T = TextureManager.GetTexture("Textures\\Weather\\bubble");
+                            T = TextureManager.GetTexture("Textures|Weather|bubble");
 
                             if (Core.Random.Next(0, 100) == 0)
                             {
@@ -513,7 +514,7 @@ namespace P3D.Legacy.Core.World
                             break;
 
                         case WeatherEnum.Ash:
-                            T = TextureManager.GetTexture("Textures\\Weather\\ash2");
+                            T = TextureManager.GetTexture("Textures|Weather|ash2");
 
                             _weatherOffset.Y += 1;
                             opacity = 65;
@@ -590,7 +591,7 @@ namespace P3D.Legacy.Core.World
                     {
                         case WeatherEnum.Rain:
                             speed = 0.1f;
-                            T = TextureManager.GetTexture("Textures\\Weather\\rain3");
+                            T = TextureManager.GetTexture("Textures|Weather|rain3");
                             if (chance > -1)
                                 chance = 3;
                             scale = new Vector3(0.03f, 0.06f, 0.1f);
@@ -600,11 +601,11 @@ namespace P3D.Legacy.Core.World
                             switch (Core.Random.Next(0, 4))
                             {
                                 case 0:
-                                    T = TextureManager.GetTexture("Textures\\Weather\\rain2");
+                                    T = TextureManager.GetTexture("Textures|Weather|rain2");
                                     scale = new Vector3(0.1f, 0.1f, 0.1f);
                                     break;
                                 default:
-                                    T = TextureManager.GetTexture("Textures\\Weather\\rain3");
+                                    T = TextureManager.GetTexture("Textures|Weather|rain3");
                                     scale = new Vector3(0.03f, 0.06f, 0.1f);
                                     break;
                             }
@@ -613,14 +614,14 @@ namespace P3D.Legacy.Core.World
                             break;
                         case WeatherEnum.Snow:
                             speed = 0.02f;
-                            T = TextureManager.GetTexture("Textures\\Weather\\snow2");
+                            T = TextureManager.GetTexture("Textures|Weather|snow2");
                             if (chance > -1)
                                 chance = 5;
                             scale = new Vector3(0.03f, 0.03f, 0.1f);
                             break;
                         case WeatherEnum.Underwater:
                             speed = -0.02f;
-                            T = TextureManager.GetTexture("Textures\\Weather\\bubble");
+                            T = TextureManager.GetTexture("Textures|Weather|bubble");
                             if (chance > -1)
                                 chance = 60;
                             scale = new Vector3(0.5f);
@@ -628,21 +629,21 @@ namespace P3D.Legacy.Core.World
                             break;
                         case WeatherEnum.Sandstorm:
                             speed = 0.1f;
-                            T = TextureManager.GetTexture("Textures\\Weather\\sand");
+                            T = TextureManager.GetTexture("Textures|Weather|sand");
                             if (chance > -1)
                                 chance = 4;
                             scale = new Vector3(0.03f, 0.03f, 0.1f);
                             break;
                         case WeatherEnum.Ash:
                             speed = 0.02f;
-                            T = TextureManager.GetTexture("Textures\\Weather\\ash");
+                            T = TextureManager.GetTexture("Textures|Weather|ash");
                             if (chance > -1)
                                 chance = 20;
                             scale = new Vector3(0.03f, 0.03f, 0.1f);
                             break;
                         case WeatherEnum.Blizzard:
                             speed = 0.1f;
-                            T = TextureManager.GetTexture("Textures\\Weather\\snow");
+                            T = TextureManager.GetTexture("Textures|Weather|snow");
                             if (chance > -1)
                                 chance = 1;
                             scale = new Vector3(0.12f, 0.12f, 0.1f);

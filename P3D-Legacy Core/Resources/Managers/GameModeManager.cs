@@ -8,7 +8,7 @@ using PCLExt.FileStorage;
 
 using GameRuleObject = P3D.Legacy.Core.GameModes.GameMode.GameRuleList.GameRuleObject;
 
-namespace P3D.Legacy.Core.Resources
+namespace P3D.Legacy.Core.Resources.Managers
 {
     public static class GameModeManager
     {

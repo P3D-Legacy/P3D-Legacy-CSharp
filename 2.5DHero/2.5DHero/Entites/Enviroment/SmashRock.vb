@@ -2,6 +2,8 @@
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Security
@@ -38,7 +40,7 @@ Public Class SmashRock
             End If
 
             Screen.TextBox.Show(text, {Me})
-            SoundManager.PlaySound("select")
+            SoundEffectManager.PlaySound("select")
         End If
     End Sub
 

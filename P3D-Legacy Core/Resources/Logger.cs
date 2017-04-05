@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using P3D.Legacy.Core.Debug;
 using P3D.Legacy.Core.Extensions;
+using P3D.Legacy.Core.Resources.Managers;
 using P3D.Legacy.Core.Screens;
 using P3D.Legacy.Core.Screens.GUI;
 
@@ -288,28 +289,21 @@ namespace P3D.Legacy.Core.Resources
         {
             string stackTraceEntry = Environment.StackTrace.SplitAtNewline()[3];
 
-            while (stackTraceEntry.StartsWith(" ") == true)
-            {
+            while (stackTraceEntry.StartsWith(" "))
                 stackTraceEntry = stackTraceEntry.Remove(0, 1);
-            }
-            stackTraceEntry = stackTraceEntry.Remove(0, stackTraceEntry.IndexOf(" ") + 1);
-            stackTraceEntry = stackTraceEntry.Remove(stackTraceEntry.IndexOf("("));
-            string pointString = stackTraceEntry.Remove(stackTraceEntry.LastIndexOf("."));
-            stackTraceEntry = stackTraceEntry.Remove(0, pointString.LastIndexOf(".") + 1);
+
+            stackTraceEntry = stackTraceEntry.Remove(0, stackTraceEntry.IndexOf(" ", StringComparison.Ordinal) + 1);
+            stackTraceEntry = stackTraceEntry.Remove(stackTraceEntry.IndexOf("(", StringComparison.Ordinal));
+            string pointString = stackTraceEntry.Remove(stackTraceEntry.LastIndexOf(".", StringComparison.Ordinal));
+            stackTraceEntry = stackTraceEntry.Remove(0, pointString.LastIndexOf(".", StringComparison.Ordinal) + 1);
 
             string stackOutput = stackTraceEntry;
 
             if (stackOutput.Length > longestStackEntryName.Length)
-            {
                 longestStackEntryName = stackOutput;
-            }
             else
-            {
                 while (stackOutput.Length < longestStackEntryName.Length)
-                {
                     stackOutput += " ";
-                }
-            }
 
             //Debug.Print(stackOutput + Constants.vbTab + "| " + message);
             History.Add("(" + GetLogTime(System.DateTime.Now) + ") " + message);

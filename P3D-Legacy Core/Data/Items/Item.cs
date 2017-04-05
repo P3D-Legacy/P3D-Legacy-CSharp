@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Resources.Managers;
 
 namespace P3D.Legacy.Core.Pokemon
 {

@@ -7,6 +7,9 @@ Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Objects
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -469,7 +472,7 @@ Public Class DirectTradeScreen
                     If ownPokemonPosition <= CInt(Core.windowSize.Height / 2 - 128) Then
                         ownPokemonPosition = CInt(Core.windowSize.Height / 2 - 128)
                         tState = 1
-                        SoundManager.PlayPokemonCry(OfferPokemon.Number)
+                        SoundEffectManager.PlayPokemonCry(OfferPokemon.Number)
                     End If
                 End If
             Case 1
@@ -495,14 +498,14 @@ Public Class DirectTradeScreen
                     If oppPokemonPosition >= CInt(Core.windowSize.Height / 2 - 128) Then
                         oppPokemonPosition = CInt(Core.windowSize.Height / 2 - 128)
                         tState = 4
-                        SoundManager.PlayPokemonCry(TradePokemon.Number)
+                        SoundEffectManager.PlayPokemonCry(TradePokemon.Number)
                     End If
                 End If
             Case 4
                 If messageDelay > 0 Then
                     messageDelay -= 1
                     If messageDelay = 180 Then
-                        SoundManager.PlaySound("success", True)
+                        SoundEffectManager.PlaySound("success", True)
                     End If
                     If messageDelay <= 0 Then
                         messageDelay = 220

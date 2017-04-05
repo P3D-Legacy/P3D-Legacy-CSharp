@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -17,7 +18,7 @@ Public Class StrengthRock
         If Screen.Level.UsedStrength = True Then
             Dim text As String = "Pokémon with Strength are~able to move this."
             Screen.TextBox.Show(text, {Me})
-            SoundManager.PlaySound("select")
+            SoundEffectManager.PlaySound("select")
         Else
             Dim pName As String = ""
 
@@ -43,7 +44,7 @@ Public Class StrengthRock
             End If
 
             Screen.TextBox.Show(text, {Me})
-            SoundManager.PlaySound("select")
+            SoundEffectManager.PlaySound("select")
         End If
     End Sub
 
@@ -76,7 +77,7 @@ Public Class StrengthRock
 
             Screen.Level.UsedStrength = True
 
-            SoundManager.PlayPokemonCry(pNumber)
+            SoundEffectManager.PlayPokemonCry(pNumber)
             Screen.TextBox.Show(pName & " used~Strength!", {}, True, False)
             PlayerStatistics.Track("Strength used", 1)
         End If
@@ -92,7 +93,7 @@ Public Class StrengthRock
             If CheckCollision(newPosition) = True Then
                 Me.Moved = 1
                 Me.FaceDirection = Screen.Camera.GetPlayerFacingDirection()
-                SoundManager.PlaySound("destroy", False)
+                SoundEffectManager.PlaySound("destroy", False)
             End If
         End If
 

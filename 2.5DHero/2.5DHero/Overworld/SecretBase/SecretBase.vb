@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Resources.Models
 
 Public Class SecretBase

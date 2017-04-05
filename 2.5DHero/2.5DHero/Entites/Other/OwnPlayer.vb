@@ -5,6 +5,7 @@ Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Resources.Models
 Imports P3D.Legacy.Core.Screens
 
@@ -178,7 +179,7 @@ Public Class OwnPlayer
 
                 ' TODO TRY
                 'Try
-                    Dim t As Texture2D = TextureManager.GetTexture(Me.Texture, r, 1)
+                    Dim t As Texture2D = TextureManager.GetTexture(Me.Texture, r)
                     Textures(0) = t
                 'Catch
                 '    Logger.Log(Logger.LogTypes.Warning, "OwnPlayer.vb: Error assigning a new texture to the player.")

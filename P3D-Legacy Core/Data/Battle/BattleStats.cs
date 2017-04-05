@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using P3D.Legacy.Core.Pokemon;
 using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Resources.Managers;
 
 namespace P3D.Legacy.Core.Battle
 {
@@ -37,7 +38,7 @@ namespace P3D.Legacy.Core.Battle
                     return null;
             }
 
-            return TextureManager.GetTexture("GUI\\Menus\\Types", r, "");
+            return TextureManager.GetTexture("GUI|Menus|Types", r, "");
         }
 
         public static Color GetStatColor(BasePokemon.StatusProblems Status)

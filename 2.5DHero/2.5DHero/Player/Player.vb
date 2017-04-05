@@ -9,6 +9,9 @@ Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Interfaces
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Security
@@ -386,7 +389,7 @@ Public Class Player
     Private _repelSteps As Integer = 0
     Private _saveCreated As String = "Pre 0.21"
     Private _daycareSteps As Integer = 0
-    Private _gameMode As String = "Kolben"
+    Private _gameMode As String = "Pokemon 3D"
     Private _skin As String = "Hilbert"
     Private _visitedMaps As String = ""
     Private _GTSStars As Integer = 8
@@ -489,13 +492,13 @@ Public Class Player
         Me.filePrefix = filePrefix
         _userSaveFolder = StorageInfo.SaveFolder.GetUserSaveFolder(filePrefix)
         PokeFiles.Clear()
-        GameMode = "Kolben"
+        GameMode = "Pokemon 3D"
 
         LoadPlayer()
 
         If GameModeManager.GameModeExists(GameMode) = False Then
-            GameMode = "Kolben"
-            GameModeManager.SetGameModePointer("Kolben")
+            GameMode = "Pokemon 3D"
+            GameModeManager.SetGameModePointer("Pokemon 3D")
         Else
             GameModeManager.SetGameModePointer(GameMode)
         End If
@@ -510,7 +513,7 @@ Public Class Player
 
         If GameModeManager.ActiveGameMode.IsDefaultGamemode = False Then
             MusicManager.LoadMusic(True)
-            SoundManager.LoadSounds(True)
+            SoundEffectManager.LoadSounds(True)
         End If
         SmashRock.Load()
         Badge.Load()
@@ -1737,7 +1740,7 @@ Public Class Player
     End Sub
 
     Private Sub PlayWildPokemonNoise(ByVal number As Integer)
-        SoundManager.PlayPokemonCry(number, Core.Random.Next(0, 6) / 10.0F, Core.Random.Next(0, 20) / 10.0F - 1, SoundManager.Volume * 0.35F)
+        SoundEffectManager.PlayPokemonCry(number, Core.Random.Next(0, 6) / 10.0F, Core.Random.Next(0, 20) / 10.0F - 1, SoundEffectManager.Volume * 0.35F)
     End Sub
 
 #End Region
@@ -1933,7 +1936,7 @@ Public Class Player
             SaveCreated = "Pre 0.21"
             LastPokemonPosition = New Vector3(999)
             DaycareSteps = 0
-            GameMode = "Kolben"
+            GameMode = "Pokemon 3D"
             VisitedMaps = ""
             TempSurfSkin = "Hilbert"
             TempRideSkin = ""

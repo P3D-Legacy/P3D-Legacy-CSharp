@@ -16,12 +16,14 @@ using P3D.Legacy.Core.Interfaces;
 using P3D.Legacy.Core.Network;
 using P3D.Legacy.Core.Objects;
 using P3D.Legacy.Core.Resources;
-using P3D.Legacy.Core.Resources.Sound;
+using P3D.Legacy.Core.Resources.Managers;
+using P3D.Legacy.Core.Resources.Managers.Music;
+using P3D.Legacy.Core.Resources.Managers.Sound;
 using P3D.Legacy.Core.Screens;
 using P3D.Legacy.Core.Screens.GUI;
 using P3D.Legacy.Core.Server;
 using P3D.Legacy.Core.Settings;
-using P3D.Legacy.Shared.Extensions;
+
 using Keyboard = P3D.Legacy.Core.Settings.Keyboard;
 
 namespace P3D.Legacy.Core
@@ -118,9 +120,8 @@ namespace P3D.Legacy.Core
             Logger.Debug("Loaded fonts.");
 
             TextureManager.InitializeTextures();
-            MusicManager.Setup();
-            MusicManager.LoadMusic(false);
-            SoundManager.LoadSounds(false);
+            MusicManager.LoadMusic();
+            SoundEffectManager.LoadSounds(false);
             Logger.Debug("Loaded content.");
 
             Logger.Debug("Validated files. Result: " + Security.FileValidation.IsValid(true));
@@ -184,7 +185,7 @@ namespace P3D.Legacy.Core
             }
 
             MainGameFunctions.FunctionKeys();
-            MusicManager.Update();
+            MusicManager.Update(gameTime);
 
             GameMessage.Update();
             Controls.MakeMouseVisible();
@@ -291,6 +292,11 @@ namespace P3D.Legacy.Core
             GraphicsManager.ApplyChanges();
 
             WindowSize = new Rectangle(0, 0, Convert.ToInt32(size.X), Convert.ToInt32(size.Y));
+        }
+
+        public static void Exit()
+        {
+            GameInstance.Exit();
         }
     }
 }

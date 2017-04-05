@@ -12,6 +12,7 @@ using P3D.Legacy.Core.Extensions;
 using P3D.Legacy.Core.Network;
 using P3D.Legacy.Core.Pokemon;
 using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Resources.Managers;
 using P3D.Legacy.Core.Screens;
 using P3D.Legacy.Core.Screens.GUI;
 
@@ -219,7 +220,7 @@ namespace P3D.Legacy.Core.GameJolt.Profiles
 
                 for (var i = 0; i <= 5; i++)
                 {
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\\Menus\\Menu", new Microsoft.Xna.Framework.Rectangle(192, 0, 32, 32), ""), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(32 * Scale + (10 / 4) * Scale + Position.X + i * (10 * Scale)), Convert.ToInt32(Position.Y + 22.5f * Scale), Convert.ToInt32(Scale * 8), Convert.ToInt32(Scale * 8)), Microsoft.Xna.Framework.Color.White);
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(192, 0, 32, 32)), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(32 * Scale + (10 / 4) * Scale + Position.X + i * (10 * Scale)), Convert.ToInt32(Position.Y + 22.5f * Scale), Convert.ToInt32(Scale * 8), Convert.ToInt32(Scale * 8)), Microsoft.Xna.Framework.Color.White);
 
                     if (PokemonList.Count - 1 >= i)
                     {
@@ -233,20 +234,20 @@ namespace P3D.Legacy.Core.GameJolt.Profiles
             {
                 if (IsFriend(ID) == true)
                 {
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\\Menus\\Menu", new Microsoft.Xna.Framework.Rectangle(80, 144, 32, 32), ""), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(80, 144, 32, 32)), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
                 }
                 if (SentRequest(ID) == true)
                 {
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\\Menus\\Menu", new Microsoft.Xna.Framework.Rectangle(112, 176, 32, 32), ""), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(112, 176, 32, 32)), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
                 }
                 if (ReceivedRequest(ID) == true)
                 {
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\\Menus\\Menu", new Microsoft.Xna.Framework.Rectangle(80, 176, 32, 32), ""), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(80, 176, 32, 32)), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
                 }
             }
             else
             {
-                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI\\Menus\\Menu", new Microsoft.Xna.Framework.Rectangle(144, 176, 32, 32), ""), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
+                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(144, 176, 32, 32)), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
             }
         }
 
@@ -314,7 +315,7 @@ namespace P3D.Legacy.Core.GameJolt.Profiles
             {
                 if (staffMember.GameJoltID.ToLower() == id.ToLower() && !string.IsNullOrEmpty(staffMember.Sprite))
                 {
-                    return TextureManager.GetTexture("Textures\\NPC\\" + staffMember.Sprite);
+                    return TextureManager.GetTexture("Textures|NPC|" + staffMember.Sprite);
                 }
             }
 
@@ -331,13 +332,13 @@ namespace P3D.Legacy.Core.GameJolt.Profiles
                 tFile = tFile.Remove(0, 2);
             }
 
-            return TextureManager.GetTexture("Textures\\NPC\\" + tFile);
+            return TextureManager.GetTexture("Textures|NPC|" + tFile);
         }
 
         private static Texture2D GetEmblemBackgroundTexture(string emblemName)
         {
             //Don't load from TextureManager, because ContentPack emblems are not allowed.
-            return Core.Content.Load<Texture2D>("Textures\\Emblem\\" + emblemName);
+            return Core.Content.Load<Texture2D>("Textures|Emblem|" + emblemName);
         }
 
         public static Microsoft.Xna.Framework.Color GetEmblemFontColor(string emblemName)
@@ -1166,7 +1167,7 @@ namespace P3D.Legacy.Core.GameJolt.Profiles
                     Core.SpriteBatch.Draw(achieved_emblem_Texture, new Microsoft.Xna.Framework.Rectangle(emblemPositionX + 2, 2, 75, 75), Microsoft.Xna.Framework.Color.White);
                 }
 
-                Core.SpriteBatch.Draw(TextureManager.GetTexture("Textures\\Emblem\\border"), new Microsoft.Xna.Framework.Rectangle(emblemPositionX, 0, 79, 98), Microsoft.Xna.Framework.Color.White);
+                Core.SpriteBatch.Draw(TextureManager.GetTexture("Textures|Emblem|border"), new Microsoft.Xna.Framework.Rectangle(emblemPositionX, 0, 79, 98), Microsoft.Xna.Framework.Color.White);
 
                 Microsoft.Xna.Framework.Color fontColor = Microsoft.Xna.Framework.Color.White;
                 switch (achieved_emblem_difficulty.ToLower())

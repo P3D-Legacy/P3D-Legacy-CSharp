@@ -1,4 +1,6 @@
 ﻿Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -26,11 +28,11 @@ Namespace ScriptVersion2
                         Screen.Level.MusicLoop = argument
                     End If
                 Case "stop"
-                    MusicManager.StopMusic()
+                    MusicManager.[Stop]()
                 Case "pause"
                     MusicManager.Pause()
                 Case "resume"
-                    MusicManager.ResumeMusic()
+                    MusicManager.[Resume]()
             End Select
 
             IsReady = True

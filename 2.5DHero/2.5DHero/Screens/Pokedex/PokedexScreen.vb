@@ -5,6 +5,8 @@ Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -1339,7 +1341,7 @@ Public Class PokedexViewScreen
         For Each file As String In System.IO.Directory.GetFiles(GameModeManager.ActiveGameMode.PokeFolder.Path, "*.*", IO.SearchOption.AllDirectories)
             If file.EndsWith(".poke") = True Then
                 Dim fileName As String = file.Remove(0, (GameModeManager.ActiveGameMode.PokeFolder.Path & "\").Length - 1)
-                Dim newHabitat As New PokedexScreen.Habitat(file)
+                Dim newHabitat As New PokedexScreen.Habitat(FileSystem.Current.GetFileFromPath(file))
                 Dim exists As Boolean = False
                 For Each h As PokedexScreen.Habitat In Me.HabitatList
                     If h.Name.ToLower() = newHabitat.Name.ToLower() Then
@@ -1349,7 +1351,7 @@ Public Class PokedexViewScreen
                     End If
                 Next
                 If exists = False AndAlso Core.Player.PokeFiles.Contains(fileName) = True Then
-                    HabitatList.Add(New PokedexScreen.Habitat(file))
+                    HabitatList.Add(New PokedexScreen.Habitat(FileSystem.Current.GetFileFromPath(file)))
                 End If
             End If
         Next
@@ -1713,7 +1715,7 @@ Public Class PokedexViewScreen
                 fadeMainImage = 255
                 If playedCry = False Then
                     playedCry = True
-                    SoundManager.PlayPokemonCry(Pokemon.Number)
+                    SoundEffectManager.PlayPokemonCry(Pokemon.Number)
                 End If
             End If
         Else

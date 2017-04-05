@@ -8,6 +8,9 @@ Imports P3D.Legacy.Core.GameModes
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Objects
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Security
@@ -59,7 +62,7 @@ Public Class MainMenuScreen
     End Function
 
     Public Sub New()
-        GameModeManager.SetGameModePointer("Kolben")
+        GameModeManager.SetGameModePointer("Pokemon 3D")
 
         Me.Identification = Identifications.MainMenuScreen
         Me.CanBePaused = False
@@ -563,7 +566,7 @@ Public Class MainMenuScreen
 
     Private Sub CloseGameButton()
         Options.SaveOptions(Core.GameOptions)
-        Core.GameInstance.Exit()
+        Core.Exit()
     End Sub
 
     Private Sub GameJoltButton()
@@ -646,7 +649,7 @@ Public Class MainMenuScreen
             Dim dispBadges As String = "(Unknown)"
             Dim dispPlayTime As String = "(Unknown)"
             Dim dispLocation As String = "(Unknown)"
-            Dim dispGameMode As String = "Kolben"
+            Dim dispGameMode As String = "Pokemon 3D"
 
             Dim userFolder = StorageInfo.SaveFolder.GetUserSaveFolder(Saves(loadMenuIndex(0)).TrimEnd("/").TrimEnd("\"))
             Dim Data() As String = userFolder.PlayerFile.ReadAllLines()
@@ -1649,7 +1652,7 @@ Public Class MainMenuScreen
     Public Sub NewGameButton()
         If Core.GameOptions.StartedOfflineGame = True Then
             If GameModeManager.GameModeCount < 2 Then
-                GameModeManager.SetGameModePointer("Kolben")
+                GameModeManager.SetGameModePointer("Pokemon 3D")
                 Core.SetScreen(New TransitionScreen(Me, New NewGameScreen(), Microsoft.Xna.Framework.Color.Black, False))
             Else
                 GetGameModes()

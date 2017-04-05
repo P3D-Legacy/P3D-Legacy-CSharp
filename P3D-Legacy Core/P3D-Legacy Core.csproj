@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWS,DESKTOPGL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -45,12 +45,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
     <Reference Include="YamlDotNet, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\YamlDotNet.4.1.0\lib\net35\YamlDotNet.dll</HintPath>
     </Reference>
@@ -76,6 +71,11 @@
     <Compile Include="Data\Entities\Other\BaseParticle.cs" />
     <Compile Include="Data\Entities\Entity.cs" />
     <Compile Include="Extensions\BoundingFrustumExtension.cs" />
+    <Compile Include="Resources\Managers\Sound\SoundEffectManager.cs" />
+    <Compile Include="Resources\Managers\Music\MusicClip.cs" />
+    <Compile Include="Resources\Managers\Music\MusicTrack.cs" />
+    <Compile Include="Resources\Managers\Sound\SoundEffectClip.cs" />
+    <Compile Include="Resources\Managers\Sound\SoundTrack.cs" />
     <Compile Include="Services\GameJolt\API.cs" />
     <Compile Include="Services\GameJolt\APICall.cs" />
     <Compile Include="Services\GameJolt\BaseRegisterBattleScreen.cs" />
@@ -105,12 +105,23 @@
     <Compile Include="Server\PlayerCollection.cs" />
     <Compile Include="Server\BaseOnlinePlayer.cs" />
     <Compile Include="Server\ServerManager.cs" />
+    <Compile Include="Storage\Files\ContentFiles\BaseChildContentFile.cs" />
+    <Compile Include="Storage\Files\ContentFiles\FontFile.cs" />
+    <Compile Include="Storage\Files\ContentFiles\SoundEffectFile.cs" />
+    <Compile Include="Storage\Files\ContentFiles\MusicFile.cs" />
+    <Compile Include="Storage\Files\ContentFiles\TextureFile.cs" />
+    <Compile Include="Storage\Folders\ContentFolders\FontFolder.cs" />
+    <Compile Include="Storage\Folders\ContentFolders\TextureFolder.cs" />
+    <Compile Include="Storage\Folders\ContentPacksFolder.cs" />
+    <Compile Include="Storage\Folders\ContentFolders\MusicFolder.cs" />
+    <Compile Include="Storage\Folders\ContentFolders\BaseChildContentFolder.cs" />
     <Compile Include="Storage\Folders\SaveFolder.cs" />
     <Compile Include="Storage\Folders\ContentFolder.cs" />
     <Compile Include="Storage\Folders\MapsFolder.cs" />
     <Compile Include="Storage\Folders\PokeFolder.cs" />
     <Compile Include="Storage\Folders\PokemonsFolder.cs" />
     <Compile Include="Storage\Folders\ScriptsFolder.cs" />
+    <Compile Include="Storage\Folders\ContentFolders\SoundEffectsFolder.cs" />
     <Compile Include="TimeHelpers.cs" />
     <Compile Include="Data\Objects\Animation.cs" />
     <Compile Include="Data\Objects\LoadingDots.cs" />
@@ -193,8 +204,7 @@
     <Compile Include="Resources\Managers\FontManager.cs" />
     <Compile Include="Localization.cs" />
     <Compile Include="Resources\Models\BaseModel.cs" />
-    <Compile Include="Resources\Managers\Sound\MusicManager.cs" />
-    <Compile Include="Resources\Managers\Sound\SoundManager.cs" />
+    <Compile Include="Resources\Managers\Music\MusicManager.cs" />
     <Compile Include="Resources\Textures\TextureSource.cs" />
     <Compile Include="Screens\_SplashScreen.cs" />
     <Compile Include="Screens\GUI\Canvas.cs" />

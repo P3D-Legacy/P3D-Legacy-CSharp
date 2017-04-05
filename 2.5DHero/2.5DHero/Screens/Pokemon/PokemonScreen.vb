@@ -6,6 +6,9 @@ Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
@@ -24,7 +27,7 @@ Public Class PokemonScreen
     Public Sub New(ByVal currentScreen As Screen, ByVal PokeIndex As Integer)
         Me.Identification = Identifications.PokemonScreen
         Me.PreScreen = currentScreen
-        MainTexture = TextureManager.GetTexture("GUI\Menus\Menu")
+        MainTexture = TextureManager.GetTexture("GUI|Menus|Menu")
 
         Me.index = PokeIndex
 
@@ -575,7 +578,7 @@ Public Class PokemonScreen
 
                 Screen.Level.OwnPlayer.SetTexture(skin, False)
 
-                SoundManager.PlayPokemonCry(Core.Player.Pokemons(index).Number)
+                SoundEffectManager.PlayPokemonCry(Core.Player.Pokemons(index).Number)
 
                 TextBox.Show(Core.Player.Pokemons(index).GetDisplayName() & " used~Ride!", {}, True, False)
                 PlayerStatistics.Track("Ride used", 1)

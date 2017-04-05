@@ -1,6 +1,8 @@
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Models
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
@@ -271,7 +273,7 @@ Public Class World
             If Core.Random.Next(0, 250) = 0 Then
                 Dim pitch As Single = -(Core.Random.Next(8, 11) / 10.0F)
                 'Debug.Print(pitch.ToString(CultureInfo.InvariantCulture))
-                SoundManager.PlaySound("Battle\Effects\effect_thunderbolt", pitch, 0F, SoundManager.Volume, False)
+                SoundEffectManager.PlaySound("Battle\Effects\effect_thunderbolt", pitch, 0F, SoundEffectManager.Volume, False)
             End If
         End If
 

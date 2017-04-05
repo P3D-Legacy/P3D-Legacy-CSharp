@@ -4,6 +4,8 @@ Imports P3D.Legacy.Core.Dialogues
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -143,7 +145,7 @@ Public Class ChooseBox
 
     Private Sub PlayClickSound()
         If Screen.TextBox.Showing = False Then
-            SoundManager.PlaySound("select")
+            SoundEffectManager.PlaySound("select")
         End If
     End Sub
 

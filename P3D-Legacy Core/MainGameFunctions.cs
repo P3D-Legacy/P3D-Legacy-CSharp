@@ -9,7 +9,9 @@ using Microsoft.Xna.Framework.Media;
 using P3D.Legacy.Core.Entities.Other;
 using P3D.Legacy.Core.Input;
 using P3D.Legacy.Core.Resources;
-using P3D.Legacy.Core.Resources.Sound;
+using P3D.Legacy.Core.Resources.Managers;
+using P3D.Legacy.Core.Resources.Managers.Music;
+using P3D.Legacy.Core.Resources.Managers.Sound;
 using P3D.Legacy.Core.Settings;
 using P3D.Legacy.Core.Storage;
 
@@ -40,7 +42,7 @@ namespace P3D.Legacy.Core
             if (KeyBoardHandler.KeyPressed(Core.KeyBindings.MuteMusic) && Core.CurrentScreen.CanMuteMusic)
             {
                 MusicManager.Mute(!MediaPlayer.IsMuted);
-                SoundManager.Mute(MediaPlayer.IsMuted);
+                SoundEffectManager.Mute(MediaPlayer.IsMuted);
                 Options.SaveOptions(Core.GameOptions);
                 Core.CurrentScreen.ToggledMute();
             }
@@ -76,34 +78,7 @@ namespace P3D.Legacy.Core
             {
                 Core.GameMessage.HideMessage();
 
-                string fileName = "";
-                var _with1 = DateTime.Now.ToLocalTime().Date;
-                string month = _with1.Month.ToString(NumberFormatInfo.InvariantInfo);
-                if (month.Length == 1)
-                {
-                    month = "0" + month;
-                }
-                string day = _with1.Day.ToString(NumberFormatInfo.InvariantInfo);
-                if (day.Length == 1)
-                {
-                    day = "0" + day;
-                }
-                string hour = _with1.Hour.ToString(NumberFormatInfo.InvariantInfo);
-                if (hour.Length == 1)
-                {
-                    hour = "0" + hour;
-                }
-                string minute = _with1.Minute.ToString(NumberFormatInfo.InvariantInfo);
-                if (minute.Length == 1)
-                {
-                    minute = "0" + minute;
-                }
-                string second = _with1.Second.ToString(NumberFormatInfo.InvariantInfo);
-                if (second.Length == 1)
-                {
-                    second = "0" + second;
-                }
-                fileName = _with1.Year + "-" + month + "-" + day + "_" + hour + "." + minute + "." + second + ".png";
+                var fileName = $"{DateTime.Now:yyyy-MM-dd_HH.mm.ss}.png";
                 var file = StorageInfo.ScreenshotsFolder.CreateFile(fileName, CreationCollisionOption.ReplaceExisting);
 
                 if (!Core.GraphicsManager.IsFullScreen)
@@ -129,13 +104,10 @@ namespace P3D.Legacy.Core
                     }
                 }
 
-                Core.GameMessage.SetupText(Localization.GetString("game_message_screenshot") + fileName, FontManager.MainFont, Color.White);
+                Core.GameMessage.SetupText($"{Localization.GetString("game_message_screenshot")}{fileName}", FontManager.MainFont, Color.White);
                 Core.GameMessage.ShowMessage(12, Core.GraphicsDevice);
             }
-            catch (Exception ex)
-            {
-                Logger.Log(Logger.LogTypes.ErrorMessage, "Basic.vb: " + Localization.GetString("game_message_screenshot_failed") + ". More information: " + ex.Message);
-            }
+            catch (Exception ex) { Logger.Log(Logger.LogTypes.ErrorMessage, $"Basic.vb: {Localization.GetString("game_message_screenshot_failed")}. More information: {ex.Message}"); }
         }
 
         private static void ToggleFullScreen()

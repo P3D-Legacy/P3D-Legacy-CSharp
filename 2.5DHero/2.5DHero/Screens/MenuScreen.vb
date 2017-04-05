@@ -3,6 +3,7 @@ Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Screens
 
 Public Class MenuScreen

@@ -4,6 +4,7 @@ using System.IO;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using P3D.Legacy.Core.Debug;
 using P3D.Legacy.Core.Entities.Other;
 using P3D.Legacy.Core.GameJolt;
@@ -85,7 +86,7 @@ namespace P3D.Legacy.Core
         }
         private void Graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
         {
-            e.GraphicsDeviceInformation.GraphicsProfile = GraphicsProfile.HiDef;
+            e.GraphicsDeviceInformation.GraphicsProfile = GraphicsProfile.Reach;
             e.GraphicsDeviceInformation.PresentationParameters.MultiSampleCount = 2;
         }
 

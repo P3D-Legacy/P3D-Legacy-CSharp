@@ -3,7 +3,7 @@
 using Microsoft.Xna.Framework;
 
 using P3D.Legacy.Core.Entities;
-using P3D.Legacy.Core.Resources.Sound;
+using P3D.Legacy.Core.Resources.Managers.Sound;
 using P3D.Legacy.Core.Screens;
 
 namespace P3D.Legacy.Core.Pokemon
@@ -62,7 +62,7 @@ namespace P3D.Legacy.Core.Pokemon
                     string t = "Restored " + pokemon.GetDisplayName() + "'s~HP by " + diff + ".";
                     t += RemoveItem();
 
-                    SoundManager.PlaySound("single_heal", false);
+                    SoundEffectManager.PlaySound("single_heal", false);
                     Screen.TextBox.Show(t, new Entity[] { });
                     PlayerStatistics.Track("[17]Medicine Items used", 1);
 
@@ -101,7 +101,7 @@ namespace P3D.Legacy.Core.Pokemon
                 t += RemoveItem();
                 PlayerStatistics.Track("[17]Medicine Items used", 1);
 
-                SoundManager.PlaySound("single_heal", false);
+                SoundEffectManager.PlaySound("single_heal", false);
                 Screen.TextBox.Show(t, new Entity[] { });
 
                 return true;
@@ -144,7 +144,7 @@ namespace P3D.Legacy.Core.Pokemon
                 string t = "Cures the sleep of " + pokemon.GetDisplayName() + ".";
                 t += RemoveItem();
 
-                SoundManager.PlaySound("single_heal", false);
+                SoundEffectManager.PlaySound("single_heal", false);
                 Screen.TextBox.Show(t, new Entity[] { });
                 PlayerStatistics.Track("[17]Medicine Items used", 1);
 
@@ -188,7 +188,7 @@ namespace P3D.Legacy.Core.Pokemon
                 string t = "Cures the burn of " + pokemon.GetDisplayName() + ".";
                 t += RemoveItem();
 
-                SoundManager.PlaySound("single_heal", false);
+                SoundEffectManager.PlaySound("single_heal", false);
                 Screen.TextBox.Show(t, new Entity[] { });
                 PlayerStatistics.Track("[17]Medicine Items used", 1);
 
@@ -234,7 +234,7 @@ namespace P3D.Legacy.Core.Pokemon
                 string t = "Cures the ice of " + pokemon.GetDisplayName() + ".";
                 t += RemoveItem();
 
-                SoundManager.PlaySound("single_heal", false);
+                SoundEffectManager.PlaySound("single_heal", false);
                 Screen.TextBox.Show(t, new Entity[] { });
                 PlayerStatistics.Track("[17]Medicine Items used", 1);
 
@@ -280,7 +280,7 @@ namespace P3D.Legacy.Core.Pokemon
                 string t = "Cures the paralyzis~of " + pokemon.GetDisplayName() + ".";
                 t += RemoveItem();
 
-                SoundManager.PlaySound("single_heal", false);
+                SoundEffectManager.PlaySound("single_heal", false);
                 Screen.TextBox.Show(t, new Entity[] { });
                 PlayerStatistics.Track("[17]Medicine Items used", 1);
 

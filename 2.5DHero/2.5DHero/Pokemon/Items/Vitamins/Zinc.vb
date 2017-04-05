@@ -1,5 +1,6 @@
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -23,7 +24,7 @@ Namespace Items.Vitamins
                 p.EVSpDefense += 10
                 p.ChangeFriendShip(BasePokemon.FriendShipCauses.Vitamin)
 
-                SoundManager.PlaySound("single_heal", False)
+                SoundEffectManager.PlaySound("single_heal", False)
                 Screen.TextBox.Show("Raised " & p.GetDisplayName() & "'s~Special Defense.", {}, False, False)
                 PlayerStatistics.Track("[25]Vitamins used", 1)
 

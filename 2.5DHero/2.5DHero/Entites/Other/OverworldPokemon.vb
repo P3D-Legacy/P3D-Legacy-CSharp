@@ -2,6 +2,7 @@
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Resources.Models
 Imports P3D.Legacy.Core.Screens
 
@@ -68,7 +69,7 @@ Public Class OverworldPokemon
         If r <> lastRectangle Then
             lastRectangle = r
 
-            Dim t As Texture2D = TextureManager.GetTexture(Me.Texture, r, 1)
+            Dim t As Texture2D = TextureManager.GetTexture(Me.Texture, r)
             Textures(0) = t
         End If
     End Sub

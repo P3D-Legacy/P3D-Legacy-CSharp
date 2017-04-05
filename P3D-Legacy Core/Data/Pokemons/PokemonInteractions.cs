@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Microsoft.Xna.Framework;
+
 using P3D.Legacy.Core.Entities;
 using P3D.Legacy.Core.Entities.Other;
 using P3D.Legacy.Core.Extensions;
 using P3D.Legacy.Core.Resources;
-using P3D.Legacy.Core.Resources.Sound;
+using P3D.Legacy.Core.Resources.Managers;
+using P3D.Legacy.Core.Resources.Managers.Sound;
 using P3D.Legacy.Core.Screens;
 using P3D.Legacy.Core.Security;
 using P3D.Legacy.Core.World;
+
 using PCLExt.FileStorage;
 
 namespace P3D.Legacy.Core.Pokemon
@@ -1498,7 +1500,7 @@ namespace P3D.Legacy.Core.Pokemon
                                 Logger.Debug("Pokémon picks up item (" + Item.GetItemByID(newItemID).Name + ")");
                                 PickupItemID = newItemID;
                                 PickupIndividualValue = Core.Player.GetWalkPokemon().IndividualValue;
-                                SoundManager.PlaySound("pickup");
+                                SoundEffectManager.PlaySound("pickup");
                             }
                         }
                     }

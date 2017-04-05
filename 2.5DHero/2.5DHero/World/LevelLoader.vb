@@ -4,6 +4,7 @@ Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Resources.Models
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Security
@@ -99,6 +100,7 @@ Public Class LevelLoader
 
         Dim levelFile = GameModeManager.GetMapFile(levelPath)
         levelPath = levelFile.Path
+        ' TODO: IFile
         Logger.Debug("Loading map: " & levelPath)
         ' TODO
         'FileValidation.CheckFileValid(levelPath, False, "LevelLoader.vb")

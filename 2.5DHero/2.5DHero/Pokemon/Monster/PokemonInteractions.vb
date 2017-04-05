@@ -4,6 +4,8 @@ Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Security
@@ -1061,7 +1063,7 @@ Public Class PokemonInteractions
                             Logger.Debug("Pokémon picks up item (" & Item.GetItemById(newItemID).Name & ")")
                             PickupItemID = newItemID
                             PickupIndividualValue = Core.Player.GetWalkPokemon().IndividualValue
-                            SoundManager.PlaySound("pickup")
+                            SoundEffectManager.PlaySound("pickup")
                         End If
                     End If
                 End If

@@ -1,5 +1,6 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -37,7 +38,7 @@ Namespace Items.Medicine
                 t &= RemoveItem()
                 PlayerStatistics.Track("[17]Medicine Items used", 1)
 
-                SoundManager.PlaySound("single_heal", False)
+                SoundEffectManager.PlaySound("single_heal", False)
                 Screen.TextBox.Show(t, {}, True, True)
                 Return True
             Else

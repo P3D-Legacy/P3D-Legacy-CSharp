@@ -6,6 +6,9 @@ Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.HelperClasses
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Security
@@ -286,7 +289,7 @@ Public Class NPC
             If r <> lastRectangle Then
                 lastRectangle = r
 
-                Textures(0) = TextureManager.GetTexture(Me.Texture, r, 1)
+                Textures(0) = TextureManager.GetTexture(Me.Texture, r)
             End If
         End If
     End Sub
@@ -294,7 +297,7 @@ Public Class NPC
     Public Sub ActivateScript()
         Dim oScreen As OverworldScreen = CType(Core.CurrentScreen, OverworldScreen)
         If oScreen.ActionScript.IsReady = True Then
-            SoundManager.PlaySound("select")
+            SoundEffectManager.PlaySound("select")
             Select Case Me.ActionValue
                 Case 0
                     oScreen.ActionScript.StartScript(Me.AdditionalValue, 1)

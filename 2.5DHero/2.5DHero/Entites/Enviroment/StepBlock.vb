@@ -1,4 +1,5 @@
 ﻿Imports P3D.Legacy.Core.Entities
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -23,7 +24,7 @@ Public Class StepBlock
             Screen.Level.OverworldPokemon.Visible = False
             Screen.Level.OverworldPokemon.warped = True
 
-            SoundManager.PlaySound("jump_ledge", False)
+            SoundEffectManager.PlaySound("jump_ledge", False)
 
             Return False
         End If

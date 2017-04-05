@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Media;
 
 using P3D.Legacy.Core.Resources;
-using P3D.Legacy.Core.Resources.Sound;
+using P3D.Legacy.Core.Resources.Managers.Music;
+using P3D.Legacy.Core.Resources.Managers.Sound;
 using P3D.Legacy.Core.Settings.YamlConverters;
 using P3D.Legacy.Core.Storage;
 
@@ -25,7 +24,7 @@ namespace P3D.Legacy.Core.Settings
 
         public static Options Default => new Options
         {
-            Music = 0.0f, Sound = 0.0f, Muted = false, ForceMusic = false,
+            Music = 50.0f, Sound = 50.0f, Muted = false, ForceMusic = false,
             RenderDistance = 3, LoadOffsetMaps = 0, MaxOffsetLevel = 0,
             ViewBobbing = true,  LightingEnabled = true, GamePadEnabled = true, StartedOfflineGame = false, PreferMultiSampling = false,
             ContentPackNames = { },
@@ -101,12 +100,12 @@ namespace P3D.Legacy.Core.Settings
                 WindowSize = new Vector2(1200, 680);
 
 
-            MusicManager.MasterVolume = Music / 100.0f;
+            MusicManager.Volume = Music / 100.0f;
 
-            SoundManager.Volume = Sound / 100.0f;
+            SoundEffectManager.Volume = Sound / 100.0f;
 
-            SoundManager.Mute(Muted);
-            MediaPlayer.IsMuted = Muted;
+            SoundEffectManager.Mute(Muted);
+            MusicManager.Mute(Muted);
 
             Localization.Load(Language);
 

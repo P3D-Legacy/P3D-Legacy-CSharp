@@ -9,18 +9,21 @@ using Microsoft.Xna.Framework.Content;
 using P3D.Legacy.Core.Data;
 using P3D.Legacy.Core.Extensions;
 using P3D.Legacy.Core.GameModes;
-using P3D.Legacy.Core.Resources.Sound;
+using P3D.Legacy.Core.Resources.Managers;
+using P3D.Legacy.Core.Resources.Managers.Music;
+using P3D.Legacy.Core.Resources.Managers.Sound;
 using P3D.Legacy.Core.Storage;
+
 using PCLExt.FileStorage;
 
 namespace P3D.Legacy.Core.Resources
 {
     public static class ContentPackManager
     {
-        private static Dictionary<TextureSource, TextureSource> _textureReplacements = new Dictionary<TextureSource, TextureSource>();
-        private static Dictionary<string, bool> _filesExist = new Dictionary<string, bool>();
+        private static Dictionary<TextureSource, TextureSource> TextureReplacements { get; } = new Dictionary<TextureSource, TextureSource>();
+        private static Dictionary<string, bool> FilesExist { get; } = new Dictionary<string, bool>();
+        private static Dictionary<string, int> TextureResolutions { get; } = new Dictionary<string, int>();
 
-        private static Dictionary<string, int> _textureResolutions = new Dictionary<string, int>();
         public static void Load(string contentPackFile)
         {
             if (Directory.Exists(Path.Combine(GameController.GamePath, "ContentPacks")))
@@ -36,8 +39,8 @@ namespace P3D.Legacy.Core.Resources
                             var textureName = line.GetSplit(0, "|");
                             var resolution = Convert.ToInt32(line.GetSplit(1, "|"));
 
-                            if (!_textureResolutions.ContainsKey(textureName))
-                                _textureResolutions.Add(textureName, resolution);
+                            if (!TextureResolutions.ContainsKey(textureName))
+                                TextureResolutions.Add(textureName, resolution);
                             break;
                         case 4:
                             //TextureReplacement
@@ -51,39 +54,13 @@ namespace P3D.Legacy.Core.Resources
                             var oldTextureSource = new TextureSource(oldTextureName, new Rectangle(Convert.ToInt32(oRs.GetSplit(0)), Convert.ToInt32(oRs.GetSplit(1)), Convert.ToInt32(oRs.GetSplit(2)), Convert.ToInt32(oRs.GetSplit(3))));
                             var newTextureSource = new TextureSource(newTextureName, new Rectangle(Convert.ToInt32(nRs.GetSplit(0)), Convert.ToInt32(nRs.GetSplit(1)), Convert.ToInt32(nRs.GetSplit(2)), Convert.ToInt32(nRs.GetSplit(3))));
 
-                            if (!_textureReplacements.ContainsKey(oldTextureSource))
-                                _textureReplacements.Add(oldTextureSource, newTextureSource);
+                            if (!TextureReplacements.ContainsKey(oldTextureSource))
+                                TextureReplacements.Add(oldTextureSource, newTextureSource);
 
                             break;
                     }
                 }
             }
-        }
-
-        public static TextureSource GetTextureReplacement(string texturePath, Rectangle r)
-        {
-            var textureSource = new TextureSource(texturePath, r);
-            var keyArray = _textureReplacements.Keys.ToArray();
-            var valueArray = _textureReplacements.Values.ToArray();
-            for (var i = 0; i <= _textureReplacements.Count - 1; i++)
-            {
-                if (keyArray[i].IsEqual(textureSource))
-                    return valueArray[i];
-            }
-            return textureSource;
-        }
-
-        public static int GetTextureResolution(string textureName)
-        {
-            var keyArray = _textureResolutions.Keys.ToArray();
-            var valueArray = _textureResolutions.Values.ToArray();
-            for (var i = 0; i <= _textureResolutions.Count - 1; i++)
-            {
-                if (keyArray[i].ToLower() == textureName.ToLower())
-                    return valueArray[i];
-            }
-
-            return 1;
         }
 
         public static ContentManager GetContentManager(string file, string fileEndings)
@@ -98,10 +75,10 @@ namespace P3D.Legacy.Core.Resources
                     {
                         var path = Path.Combine(GameController.GamePath, contentPath, file + fileEnding);
 
-                        if (!_filesExist.ContainsKey(path))
-                            _filesExist.Add(path, File.Exists(path));
+                        if (!FilesExist.ContainsKey(path))
+                            FilesExist.Add(path, File.Exists(path));
 
-                        if (_filesExist[path])
+                        if (FilesExist[path])
                             return new ContentManager(Core.GameInstance.Services, contentPath);
                     }
                 }
@@ -130,11 +107,11 @@ namespace P3D.Legacy.Core.Resources
 
         public static void Clear()
         {
-            _textureReplacements.Clear();
-            _textureResolutions.Clear();
-            _filesExist.Clear();
+            TextureReplacements.Clear();
+            TextureResolutions.Clear();
+            FilesExist.Clear();
             MusicManager.ReloadMusic();
-            SoundManager.ReloadSounds();
+            SoundEffectManager.ReloadSounds();
             ModelManager.Clear();
             TextureManager.TextureList.Clear();
             // TODO

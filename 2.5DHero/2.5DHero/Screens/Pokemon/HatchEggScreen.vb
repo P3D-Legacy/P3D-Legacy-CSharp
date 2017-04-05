@@ -1,5 +1,8 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.Resources.Managers
+Imports P3D.Legacy.Core.Resources.Managers.Music
+Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 
@@ -75,9 +78,9 @@ Public Class HatchEggScreen
                     Stage += 1
 
                     If Stage = 6 Then
-                        SoundManager.PlaySound("egg_hatch")
+                        SoundEffectManager.PlaySound("egg_hatch")
                     Else
-                        SoundManager.PlaySound("Battle\Effects\effect_pound")
+                        SoundEffectManager.PlaySound("Battle\Effects\effect_pound")
                     End If
 
                     Egg = GetEggTexture()
@@ -88,7 +91,7 @@ Public Class HatchEggScreen
                 Else
                     MusicManager.PlayMusic("wild_defeat")
                     cPokemon.PlayCry()
-                    SoundManager.PlaySound("success", True)
+                    SoundEffectManager.PlaySound("success", True)
                     Stage = 7
                     TextBox.Show("Congratulations!~Your egg hatched into~a " & cPokemon.GetName() & "!*Do you want to give~a nickname to the freshly~hatched " & cPokemon.GetName() & "?%Yes|No%", AddressOf Me.ResultFunction, False, False, TextBox.DefaultColor)
                 End If
