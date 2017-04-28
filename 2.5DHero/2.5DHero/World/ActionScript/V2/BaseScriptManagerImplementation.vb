@@ -1,4 +1,5 @@
-﻿Imports P3D.Legacy.Core.ScriptSystem
+﻿Imports net.Pokemon3D.Game.ScriptVersion2
+Imports P3D.Legacy.Core.ScriptSystem
 
 Public Class BaseScriptManagerImplementation
     Inherits Script.BaseScriptManager
@@ -8,6 +9,6 @@ Public Class BaseScriptManagerImplementation
     End Function
 
     Public Overrides Function EvaluateConstruct(ByVal construct As Object) as Object
-
+        Return ScriptComparer.EvaluateConstruct(construct)
     End Function
 End Class
