@@ -1667,7 +1667,7 @@
       <Project>{de8ca995-ecc0-45b4-ad84-75ef6fc05b8b}</Project>
       <Name>P3D-Legacy Core</Name>
     </ProjectReference>
-    <ProjectReference Include="E:\GitHub\P3D-Legacy Project\P3D-Legacy-CSharp\\P3D-Legacy-Shared\P3D-Legacy Shared.csproj">
+    <ProjectReference Include="$(SolutionDir)\P3D-Legacy-Shared\P3D-Legacy Shared.csproj">
       <Project>{73ff082b-42b5-4e0c-a1a2-0b908fba1406}</Project>
       <Name>P3D-Legacy Shared</Name>
     </ProjectReference>
