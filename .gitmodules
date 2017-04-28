@@ -1,3 +1,6 @@
 [submodule "P3D-Legacy-Shared"]
 	path = P3D-Legacy-Shared
 	url = https://github.com/P3D-Legacy/P3D-Legacy-Shared.git
+[submodule "kolben"]
+	path = kolben
+	url = https://github.com/nilllzz/kolben
