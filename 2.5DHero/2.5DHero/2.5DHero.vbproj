@@ -1671,6 +1671,10 @@
       <Project>{73ff082b-42b5-4e0c-a1a2-0b908fba1406}</Project>
       <Name>P3D-Legacy Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\kolben\Kolben\Kolben.csproj">
+      <Project>{ed665f9b-07f4-4415-bd72-a728cf1ea909}</Project>
+      <Name>Kolben</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
