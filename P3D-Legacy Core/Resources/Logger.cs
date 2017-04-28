@@ -79,9 +79,9 @@ namespace P3D.Legacy.Core.Resources
 
                 string Log = "";
 
-                if (File.Exists(GameController.GamePath + "\\log.dat") == true)
+				if (File.Exists(Path.Combine(GameController.GamePath + "log.dat")))
                 {
-                    Log = File.ReadAllText(GameController.GamePath + "\\log.dat");
+                    Log = File.ReadAllText(Path.Combine(GameController.GamePath + "log.dat"));
                 }
 
                 if (string.IsNullOrEmpty(Log))
@@ -93,7 +93,7 @@ namespace P3D.Legacy.Core.Resources
                     Log += Environment.NewLine + LogString;
                 }
 
-                File.WriteAllText(GameController.GamePath + "\\log.dat", Log);
+                File.WriteAllText(Path.Combine(GameController.GamePath + "log.dat"), Log);
             }
             catch (Exception ex)
             {
@@ -287,6 +287,7 @@ namespace P3D.Legacy.Core.Resources
         static string longestStackEntryName = "GameModeManager.SetGameModePointer";
         public static void Debug(string message)
         {
+			return;
             string stackTraceEntry = Environment.StackTrace.SplitAtNewline()[3];
 
             while (stackTraceEntry.StartsWith(" "))

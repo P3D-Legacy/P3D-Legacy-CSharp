@@ -74,7 +74,7 @@ Public Class OverworldPokemon
         End If
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Not Core.Player.GetWalkPokemon() Is Nothing Then
             Dim differentAdditionalData As Boolean = False
             Dim differentShinyState As Boolean = False
@@ -108,14 +108,14 @@ Public Class OverworldPokemon
         Return MyBase.CalculateCameraDistance(CPosition) - 0.2F
     End Function
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         If Me.Rotation.Y <> Screen.Camera.Yaw Then
             Me.Rotation.Y = Screen.Camera.Yaw
         End If
         Me.Scale = New Vector3(1.0F)
         Me.Position.Y = Me.GetYPosition()
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Public Overrides Sub Render(effect As BasicEffect)

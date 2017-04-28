@@ -32,11 +32,11 @@ Public Class SecretBaseScreen
         MusicManager.PlayMusic(Level.MusicLoop, True)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         'Lighting.UpdateLighting(Screen.Effect)
 
-        Camera.Update()
-        Level.Update()
+        Camera.Update(gameTime)
+        Level.Update(gameTime)
     End Sub
 
     Public Overrides Sub Draw()

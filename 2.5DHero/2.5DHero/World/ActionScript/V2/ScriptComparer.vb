@@ -1,21 +1,11 @@
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.ScriptSystem.V2
 
 Namespace ScriptVersion2
 
     Partial Class ScriptComparer
 
 #Region "DefaultReturn"
-
-        ''' <summary>
-        ''' Represents the default void return, if the contruct could not return anything else.
-        ''' </summary>
-        Public Class DefaultNullObj
-
-            Public Overrides Function ToString() As String
-                Return "return:void" 'Just return "void" when this gets used as string to indicate that this type got returned.
-            End Function
-
-        End Class
 
         Private Shared ReadOnly _defaultNull As DefaultNullObj = New DefaultNullObj()
         Public Shared ReadOnly Property DefaultNull() As DefaultNullObj

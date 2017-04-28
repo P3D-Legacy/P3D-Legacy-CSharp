@@ -23,7 +23,8 @@ using P3D.Legacy.Core.Screens;
 using P3D.Legacy.Core.Screens.GUI;
 using P3D.Legacy.Core.Server;
 using P3D.Legacy.Core.Settings;
-
+using P3D.Legacy.Core.Storage.Folders;
+using PCLExt.FileStorage;
 using Keyboard = P3D.Legacy.Core.Settings.Keyboard;
 
 namespace P3D.Legacy.Core
@@ -174,7 +175,7 @@ namespace P3D.Legacy.Core
                     CurrentScreen.EscapePressed();
             }
 
-            CurrentScreen?.Update();
+            CurrentScreen?.Update(gameTime);
             if (CurrentScreen.CanChat)
             {
                 if (KeyBoardHandler.KeyPressed(KeyBindings.Chat) || ControllerHandler.ButtonPressed(Buttons.RightShoulder))

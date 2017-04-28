@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Media;
 
 using P3D.Legacy.Core.Storage;
 using P3D.Legacy.Core.Storage.Files.ContentFiles;
-
+using P3D.Legacy.Core.Storage.Folders;
 using PCLExt.FileStorage;
 
 namespace P3D.Legacy.Core.Resources.Managers.Music
@@ -124,7 +124,7 @@ namespace P3D.Legacy.Core.Resources.Managers.Music
 
         public void LoadMusic(bool forceReplace = false)
         {
-            foreach (var musicFile in StorageInfo.ContentFolder.MusicFolder.GetAllMusicFiles())
+            foreach (var musicFile in new ContentFolder().MusicFolder.GetAllMusicFiles())
             {
                 var fileName = musicFile.InContentLocalPathWithoutExtension.Replace("\\", "|").ToLowerInvariant();
                 AddMusic(fileName, musicFile, forceReplace);
@@ -134,7 +134,7 @@ namespace P3D.Legacy.Core.Resources.Managers.Music
             {
                 foreach (var contentPackName in Core.GameOptions.ContentPackNames)
                 {
-                    var contentPackMusicFolder = StorageInfo.ContentPacksFolder.GetContentPack(contentPackName).MusicFolder;
+                    var contentPackMusicFolder = new ContentPacksFolder().GetContentPack(contentPackName).MusicFolder;
                     foreach (var musicFile in contentPackMusicFolder.GetAllMusicFiles())
                     {
                         var fileName = musicFile.InContentLocalPathWithoutExtension.Replace("\\", "|").ToLowerInvariant();
@@ -142,7 +142,7 @@ namespace P3D.Legacy.Core.Resources.Managers.Music
                     }
                 }
             }
-            if (!GameModeManager.ActiveGameMode.IsDefaultGamemode && !Equals(GameModeManager.ActiveGameMode.ContentFolder, StorageInfo.ContentFolder))
+            if (!GameModeManager.ActiveGameMode.IsDefaultGamemode && !Equals(GameModeManager.ActiveGameMode.ContentFolder, new ContentFolder()))
             {
                 var gameModeMusicFolder = GameModeManager.ActiveGameMode.ContentFolder.MusicFolder;
                 foreach (var musicFile in gameModeMusicFolder.GetAllMusicFiles())

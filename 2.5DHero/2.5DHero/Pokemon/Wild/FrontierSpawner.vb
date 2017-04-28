@@ -8,7 +8,7 @@ Public Class FrontierSpawner
     Public Shared Function GetPokemon(ByVal level As Integer, ByVal pokemon_class As Integer, ByVal IDPreset As List(Of Integer)) As Pokemon
         Dim validIDs As New List(Of Integer)
 
-        Dim files() As String = System.IO.Directory.GetFiles(GameController.GamePath & "\Content\Pokemon\Data", "*.dat", IO.SearchOption.TopDirectoryOnly)
+        Dim files() As String = System.IO.Directory.GetFiles(Path.Combine(GameController.GamePath, "Content", "Pokemon", "Data"), "*.dat", IO.SearchOption.TopDirectoryOnly)
         For Each f As String In files
             If IsNumeric(System.IO.Path.GetFileNameWithoutExtension(f)) = True Then
                 Dim newID As Integer = CInt(System.IO.Path.GetFileNameWithoutExtension(f))
@@ -32,7 +32,7 @@ Public Class FrontierSpawner
     End Function
 
     Private Shared Function GetPredeterminedPokemon(ByVal ID As Integer, ByVal level As Integer, ByVal pokemon_class As Integer) As Pokemon
-        Dim path As String = GameController.GamePath & "\Content\Pokemon\Data\frontier\" & pokemon_class.ToString(NumberFormatInfo.InvariantInfo) & ".dat"
+        Dim path As String = IO.Path.Combine(GameController.GamePath, "Content", "Pokemon", "Data", "frontier", pokemon_class.ToString(NumberFormatInfo.InvariantInfo) & ".dat")
         FileValidation.CheckFileValid(path, False, "FrontierSpawner.vb")
 
         Dim data As List(Of String) = System.IO.File.ReadAllLines(path).ToList()

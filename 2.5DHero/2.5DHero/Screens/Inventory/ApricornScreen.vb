@@ -92,7 +92,7 @@ Public Class ApricornScreen
         End If
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         TextBox.Update()
         InitializeScreen()
 

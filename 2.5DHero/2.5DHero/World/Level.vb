@@ -657,7 +657,7 @@ Public Class Level
     ''' <summary>
     ''' Updates the level's logic.
     ''' </summary>
-    Public Sub Update() Implements ILevel.Update
+    Public Sub Update(gameTime As GameTime) Implements ILevel.Update
         Me._backdropRenderer.Update()
 
         Me.UpdatePlayerWarp()
@@ -679,17 +679,17 @@ Public Class Level
 
         If(_offsetMapUpdateDelay > 20)
             _offsetMapUpdateDelay = 0
-            MapOffsetRenderer.Update()
+            MapOffsetRenderer.Update(gameTime)
         End If
         _offsetMapUpdateDelay = _offsetMapUpdateDelay + 1
 
-        MapRenderer.Update()
+        MapRenderer.Update(gameTime)
     End Sub
 
     ''' <summary>
     ''' Updates all entities on the map and offset map and sorts the enumarations.
     ''' </summary>
-    Public Sub UpdateEntities() Implements ILevel.UpdateEntities
+    Public Sub UpdateEntities(gameTime as GameTime) Implements ILevel.UpdateEntities
         'Update and remove entities:
         If LevelLoader.IsBusy = False Then
             For i = 0 To Entities.Count - 1
@@ -699,7 +699,7 @@ Public Class Level
                         i -= 1
                     Else
                         If Entities(i).NeedsUpdate = True Then
-                            Entities(i).Update()
+                            Entities(i).Update(gameTime)
                         End If
                     End If
                 Else
@@ -711,14 +711,14 @@ Public Class Level
         'UpdateEntity for all entities:
         For i = 0 To Me.Entities.Count - 1
             If i <= Me.Entities.Count - 1 Then
-                Me.Entities(i).UpdateEntity()
+                Me.Entities(i).UpdateEntity(gameTime)
             End If
         Next
 
         'UpdateEntity for all floors:
         For i = 0 To Me.Floors.Count - 1
             If i <= Me.Floors.Count - 1 Then
-                Me.Floors(i).UpdateEntity()
+                Me.Floors(i).UpdateEntity(gameTime)
             End If
         Next
 
@@ -877,7 +877,8 @@ Public Class Level
             NetworkPlayer.ScreenRegionChanged()
 
             'If a warp occured, update the camera:
-            Screen.Camera.Update()
+            'TODO
+            'Screen.Camera.Update(TODO)
 
             'Disable the warp check:
             WarpData.DoWarpInNextTick = False

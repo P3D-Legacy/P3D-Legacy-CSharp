@@ -118,12 +118,12 @@ Public Class ApricornPlant
         Return CType(ApricornColor, Integer)
     End Function
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         If Rotation.Y <> Screen.Camera.Yaw Then
             Rotation.Y = Screen.Camera.Yaw
         End If
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Public Overrides Sub Render(effect As BasicEffect)

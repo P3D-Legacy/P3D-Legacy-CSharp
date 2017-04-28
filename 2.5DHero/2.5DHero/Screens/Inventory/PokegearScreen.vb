@@ -14,6 +14,7 @@ Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.ScriptSystem
 Imports P3D.Legacy.Core.Security
 Imports P3D.Legacy.Core.World
 Imports PCLExt.FileStorage
@@ -177,7 +178,7 @@ Namespace GameJolt
             End Select
         End Sub
 
-        Public Overrides Sub Update()
+        Public Overrides Sub Update(gameTime As GameTime)
             Select Case Me.menuIndex
                 Case MenuScreens.Main
                     UpdateMainMenu()
@@ -1282,7 +1283,7 @@ Namespace GameJolt
 
             Dim reg() As String = Core.Player.RegisterData.Split(CChar(","))
 
-            Dim contactData() As String = System.IO.File.ReadAllLines(GameController.GamePath & "\Scripts\phone\contacts.dat")
+            Dim contactData() As String = System.IO.File.ReadAllLines(Path.Combine(GameController.GamePath, "Scripts", "phone", "contacts.dat"))
 
             For Each r As String In reg
                 If r.StartsWith("phone_contact_") = True Then
@@ -1316,7 +1317,7 @@ Namespace GameJolt
 
             'TODO
             'FileValidation.CheckFileValid(GameController.GamePath & "\Scripts\phone\contacts.dat", False, "PokegearScreen.vb")
-            Dim contactData() As String = System.IO.File.ReadAllLines(GameController.GamePath & "\Scripts\phone\contacts.dat")
+            Dim contactData() As String = System.IO.File.ReadAllLines(Path.Combine(GameController.GamePath, "Scripts", "phone", "contacts.dat"))
 
             Dim tempContacs As New List(Of Contact)
 
@@ -1368,8 +1369,9 @@ Namespace GameJolt
 
             Dim reg() As String = Core.Player.RegisterData.Split(CChar(","))
 
-            FileValidation.CheckFileValid(GameController.GamePath & "\Scripts\phone\contacts.dat", False, "PokegearScreen.vb")
-            Dim contactData() As String = System.IO.File.ReadAllLines(GameController.GamePath & "\Scripts\phone\contacts.dat")
+            'TODO
+            'FileValidation.CheckFileValid(GameController.GamePath & "\Scripts\phone\contacts.dat", False, "PokegearScreen.vb")
+            Dim contactData() As String = System.IO.File.ReadAllLines(Path.Combine(GameController.GamePath, "Scripts", "phone", "contacts.dat"))
 
             Dim tempContacs As New List(Of Contact)
 

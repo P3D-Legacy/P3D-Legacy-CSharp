@@ -135,7 +135,7 @@ Public MustInherit Class WindowScreen
     ''' <summary>
     ''' Updates the fade in of the gradients.
     ''' </summary>
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Me._drawingGradient = False And IsDrawingGradients = False Then
             Me._drawingGradient = True
             IsDrawingGradients = True

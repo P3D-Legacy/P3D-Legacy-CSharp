@@ -73,11 +73,11 @@ Public Class TransitionScreen
         Canvas.DrawRectangle(New Rectangle(0, 0, Core.windowSize.Width, Core.windowSize.Height), New Color(Color.R, Color.G, Color.B, alpha))
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If reduce = False Then
             alpha += Speed
             If OldScreen.UpdateFadeOut = True Then
-                OldScreen.Update()
+                OldScreen.Update(gameTime)
             End If
             If alpha >= 255 Then
                 Me.CanBePaused = NewScreen.CanBePaused
@@ -89,7 +89,7 @@ Public Class TransitionScreen
         Else
             alpha -= Speed
             If NewScreen.UpdateFadeIn = True Then
-                NewScreen.Update()
+                NewScreen.Update(gameTime)
             End If
             If alpha = 0 Then
                 ChangeScreen()

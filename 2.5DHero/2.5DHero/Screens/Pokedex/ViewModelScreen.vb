@@ -49,8 +49,8 @@ Public Class ViewModelScreen
 
     Dim turnDelay As Single = 10.0F
 
-    Public Overrides Sub Update()
-        Camera.Update()
+    Public Overrides Sub Update(gameTime As GameTime)
+        Camera.Update(gameTime)
         SkyDome.Update()
 
         turnDelay -= 0.1F
@@ -87,11 +87,11 @@ Public Class ViewModelScreen
             End If
         End If
 
-        Me.Model.UpdateEntity()
-        Me.Model.Update()
+        Me.Model.UpdateEntity(gameTime)
+        Me.Model.Update(gameTime)
 
-        Me.Ground.UpdateEntity()
-        Me.Ground.Update()
+        Me.Ground.UpdateEntity(gameTime)
+        Me.Ground.Update(gameTime)
 
         If Controls.Dismiss(True, True, True) = True Then
             Screen.Camera = c

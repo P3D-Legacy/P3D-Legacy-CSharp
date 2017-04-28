@@ -66,7 +66,7 @@ Public Class MenuScreen
         TextBox.Draw()
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         TextBox.Update()
         If TextBox.Showing = False Then
             If drawRight = True Then

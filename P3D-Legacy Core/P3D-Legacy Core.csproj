@@ -31,14 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="MonoGame.Framework">
       <HintPath>$(SolutionDir)\packages\MonoGame.Framework.Portable.3.6.0.1625\lib\portable-net45+win8+wpa81\MonoGame.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="PCLExt.FileStorage, Version=1.0.9.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\PCLExt.FileStorage.1.0.9.1\lib\net45\PCLExt.FileStorage.dll</HintPath>
+    <Reference Include="PCLExt.FileStorage, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\PCLExt.FileStorage.1.1.3.0\lib\net45\PCLExt.FileStorage.dll</HintPath>
     </Reference>
-    <Reference Include="PCLExt.FileStorage.Abstractions, Version=1.0.9.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\PCLExt.FileStorage.1.0.9.1\lib\net45\PCLExt.FileStorage.Abstractions.dll</HintPath>
+    <Reference Include="PCLExt.FileStorage.Abstractions, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\PCLExt.FileStorage.1.1.3.0\lib\net45\PCLExt.FileStorage.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -70,12 +71,20 @@
     <Compile Include="Data\Entities\Other\BaseOwnPlayer.cs" />
     <Compile Include="Data\Entities\Other\BaseParticle.cs" />
     <Compile Include="Data\Entities\Entity.cs" />
+    <Compile Include="DebugC\DebugScreen.cs" />
+    <Compile Include="DebugC\MngStringBuilder.cs" />
     <Compile Include="Extensions\BoundingFrustumExtension.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Resources\Managers\Sound\SoundEffectManager.cs" />
     <Compile Include="Resources\Managers\Music\MusicClip.cs" />
     <Compile Include="Resources\Managers\Music\MusicTrack.cs" />
     <Compile Include="Resources\Managers\Sound\SoundEffectClip.cs" />
     <Compile Include="Resources\Managers\Sound\SoundTrack.cs" />
+    <Compile Include="ScriptSystem\ActionScript.cs" />
+    <Compile Include="ScriptSystem\Script.cs" />
+    <Compile Include="ScriptSystem\V2\DefaultNullObj.cs" />
+    <Compile Include="ScriptSystem\V2\ScriptConversion.cs" />
+    <Compile Include="ScriptSystem\V2\ScriptStorage.cs" />
     <Compile Include="Services\GameJolt\API.cs" />
     <Compile Include="Services\GameJolt\APICall.cs" />
     <Compile Include="Services\GameJolt\BaseRegisterBattleScreen.cs" />
@@ -105,23 +114,29 @@
     <Compile Include="Server\PlayerCollection.cs" />
     <Compile Include="Server\BaseOnlinePlayer.cs" />
     <Compile Include="Server\ServerManager.cs" />
-    <Compile Include="Storage\Files\ContentFiles\BaseChildContentFile.cs" />
-    <Compile Include="Storage\Files\ContentFiles\FontFile.cs" />
-    <Compile Include="Storage\Files\ContentFiles\SoundEffectFile.cs" />
-    <Compile Include="Storage\Files\ContentFiles\MusicFile.cs" />
-    <Compile Include="Storage\Files\ContentFiles\TextureFile.cs" />
-    <Compile Include="Storage\Folders\ContentFolders\FontFolder.cs" />
-    <Compile Include="Storage\Folders\ContentFolders\TextureFolder.cs" />
-    <Compile Include="Storage\Folders\ContentPacksFolder.cs" />
-    <Compile Include="Storage\Folders\ContentFolders\MusicFolder.cs" />
-    <Compile Include="Storage\Folders\ContentFolders\BaseChildContentFolder.cs" />
-    <Compile Include="Storage\Folders\SaveFolder.cs" />
-    <Compile Include="Storage\Folders\ContentFolder.cs" />
-    <Compile Include="Storage\Folders\MapsFolder.cs" />
-    <Compile Include="Storage\Folders\PokeFolder.cs" />
-    <Compile Include="Storage\Folders\PokemonsFolder.cs" />
-    <Compile Include="Storage\Folders\ScriptsFolder.cs" />
-    <Compile Include="Storage\Folders\ContentFolders\SoundEffectsFolder.cs" />
+    <Compile Include="Storage\Files\GameFiles\ContentFiles\BaseChildContentFile.cs" />
+    <Compile Include="Storage\Files\GameFiles\ContentFiles\FontFile.cs" />
+    <Compile Include="Storage\Files\GameFiles\ContentFiles\SoundEffectFile.cs" />
+    <Compile Include="Storage\Files\GameFiles\ContentFiles\MusicFile.cs" />
+    <Compile Include="Storage\Files\GameFiles\ContentFiles\TextureFile.cs" />
+    <Compile Include="Storage\Folders\GameFolder\BaseGameChildFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\ContentFolders\FontFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\ContentFolders\TextureFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\ContentPacksFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\ContentFolders\MusicFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\ContentFolders\BaseChildContentFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\GameModeFolders\BaseGameFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\GameModesFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\GameModeFolders\SaveFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\ContentFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\GameModeFolders\MapsFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\GameModeFolders\PokeFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\a\PokemonDataFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\a\PokemonFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\ScreenshotsFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\GameModeFolders\ScriptsFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\ContentFolders\SoundEffectsFolder.cs" />
     <Compile Include="TimeHelpers.cs" />
     <Compile Include="Data\Objects\Animation.cs" />
     <Compile Include="Data\Objects\LoadingDots.cs" />
@@ -214,9 +229,7 @@
     <Compile Include="Settings\YamlConverters\CultureInfoConverter.cs" />
     <Compile Include="Settings\Keyboard.cs" />
     <Compile Include="Settings\Options.cs" />
-    <Compile Include="Storage\StorageInfo.cs" />
-    <Compile Include="Storage\Files\TokensFile.cs" />
-    <Compile Include="Storage\Folders\TokensFolder.cs" />
+    <Compile Include="Storage\Folders\GameFolder\GameModeFolders\LocalizationsFolder.cs" />
     <Compile Include="Data\World\BaseLevelLoader.cs" />
     <Compile Include="Data\World\BaseWorld.cs" />
     <Compile Include="Data\World\Enums\DayTime.cs" />
@@ -294,7 +307,9 @@
   <ItemGroup>
     <Compile Include="Resources\Models\Steps\StepModel.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Storage\Files\GameFiles\GameModeFiles\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)\P3D-Legacy-Shared\P3D-Legacy Shared.csproj">
       <Project>{73ff082b-42b5-4e0c-a1a2-0b908fba1406}</Project>

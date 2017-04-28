@@ -37,12 +37,12 @@ namespace P3D.Legacy.Core.GameModes
             Version = GameController.GAMEVERSION,
             Author = "The P3D Team",
 
-            MapFolder = StorageInfo.MapFolder,
-            ScriptFolder = StorageInfo.ScriptFolder,
-            PokeFolder = StorageInfo.PokeFolder,
-            PokemonDataFolder = StorageInfo.PokemonDataFolder,
-            ContentFolder = StorageInfo.ContentFolder,
-            LocalizationFolder = StorageInfo.LocalizationFolder,
+            MapFolder = new MapsFolder(),
+            ScriptFolder = new ScriptsFolder(),
+            PokeFolder = new PokeFolder(),
+            PokemonDataFolder = new PokemonDataFolder(),
+            ContentFolder = new ContentFolder(),
+            LocalizationFolder = new LocalizationsFolder(),
 
             GameRules =
             {
@@ -102,7 +102,7 @@ namespace P3D.Legacy.Core.GameModes
         public static void SaveGameModeYaml(GameModeYaml gameModeYaml)
         {
             var serializer = SerializerBuilder.Build();
-            var gameModeFolder = StorageInfo.GameModesFolder.CreateFolder(gameModeYaml.Name, CreationCollisionOption.OpenIfExists);
+            var gameModeFolder = new GameModesFolder().CreateFolder(gameModeYaml.Name, CreationCollisionOption.OpenIfExists);
             var gameModeFile = gameModeFolder.CreateFile(GameModeFilename, CreationCollisionOption.ReplaceExisting);
             gameModeFile.WriteAllText(serializer.Serialize(gameModeYaml));
         }
@@ -111,7 +111,7 @@ namespace P3D.Legacy.Core.GameModes
             var deserializer = DeserializerBuilder.Build();
             try
             {
-                var gameModeFolder = StorageInfo.GameModesFolder.CreateFolder(gameModeName, CreationCollisionOption.OpenIfExists);
+                var gameModeFolder = new GameModesFolder().CreateFolder(gameModeName, CreationCollisionOption.OpenIfExists);
                 var gameModeFile = gameModeFolder.GetFile(GameModeFilename);
                 var data = gameModeFile.ReadAllText();
                 var deserialized = deserializer.Deserialize<GameModeYaml>(data);
@@ -150,32 +150,32 @@ namespace P3D.Legacy.Core.GameModes
         /// <summary>
         /// The MapPath used from this GameMode to load maps from.
         /// </summary>
-        public MapsFolder MapFolder { get; set; } = StorageInfo.MapFolder;
+        public MapsFolder MapFolder { get; set; } = new MapsFolder();
 
         /// <summary>
         /// The ScriptPath from this GameMode to load scripts from.
         /// </summary>
-        public ScriptsFolder ScriptFolder { get; set; } = StorageInfo.ScriptFolder;
+        public ScriptsFolder ScriptFolder { get; set; } = new ScriptsFolder();
 
         /// <summary>
         /// The .poke file directory from this GameMode.
         /// </summary>
-        public PokeFolder PokeFolder { get; set; } = StorageInfo.PokeFolder;
+        public PokeFolder PokeFolder { get; set; } = new PokeFolder();
 
         /// <summary>
         /// The Pokemon Data path to load Pokemon data from.
         /// </summary>
-        public PokemonDataFolder PokemonDataFolder { get; set; } = StorageInfo.PokemonDataFolder;
+        public PokemonDataFolder PokemonDataFolder { get; set; } = new PokemonDataFolder();
 
         /// <summary>
         /// The Content path to load images, sounds and music from.
         /// </summary>
-        public ContentFolder ContentFolder { get; set; } = StorageInfo.ContentFolder;
+        public ContentFolder ContentFolder { get; set; } = new ContentFolder();
 
         /// <summary>
         /// The Localizations path to load additional tokens from. Tokens that are already existing get overritten.
         /// </summary>
-        public TokensFolder LocalizationFolder { get; set; } = StorageInfo.LocalizationFolder;
+        public LocalizationsFolder LocalizationFolder { get; set; } = new LocalizationsFolder();
 
 
         /// <summary>

@@ -63,10 +63,10 @@ Public Class ChatScreen
     Shared RightButtonDownDelay As Single = 3.0F
     Shared LeftButtonDownDelay As Single = 3.0F
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         'Updates the level screen so online player entities get drawn.
         If PreScreen.Identification = Identifications.OverworldScreen And JoinServerScreen.Online = True Then
-            Screen.Level.Update()
+            Screen.Level.Update(gameTime)
         End If
 
         If Controls.Dismiss(True, False) = True Or (JoinServerScreen.Online = False And Core.Player.SandBoxMode = False And GameController.IS_DEBUG_ACTIVE = False) = True Then

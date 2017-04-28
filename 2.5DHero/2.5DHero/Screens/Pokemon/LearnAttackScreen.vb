@@ -43,7 +43,7 @@ Public Class LearnAttackScreen
         mainTexture = TextureManager.GetTexture("GUI|Menus|Menu")
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Me.currentCharIndex < GetText().Length Then
             Me.currentCharIndex += 1
             Exit Sub

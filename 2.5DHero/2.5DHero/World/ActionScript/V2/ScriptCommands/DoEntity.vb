@@ -13,7 +13,7 @@ Namespace ScriptVersion2
         'Contains the @entity commands.
         '--------------------------------------------------------------------------------------------------------------------------
 
-        Private Shared Sub DoEntity(ByVal subClass As String)
+        Private Shared Sub DoEntity(gameTime As GameTime, ByVal subClass As String)
             Dim command As String = ScriptComparer.GetSubClassArgumentPair(subClass).Command
             Dim argument As String = ScriptComparer.GetSubClassArgumentPair(subClass).Argument
 
@@ -47,7 +47,7 @@ Namespace ScriptVersion2
                     Screen.Level.SortEntities()
                     For Each e As Entity In Screen.Level.Entities
                         If e.EntityID = "MessageBulb" Then
-                            e.Update()
+                            e.Update(gameTime)
                             contains = True
                         End If
                     Next

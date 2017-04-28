@@ -8,6 +8,7 @@ Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.ScriptSystem.V2
 
 Public Class TradeScreen
 
@@ -201,7 +202,7 @@ Public Class TradeScreen
         End Select
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         Select Case Me.MenuState
             Case MenuStates.MainPage
                 Me.UpdateMain()

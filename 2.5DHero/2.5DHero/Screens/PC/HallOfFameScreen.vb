@@ -274,10 +274,10 @@ Public Class HallOfFameScreen
 
     Public Shared TileOffset As Integer = 0
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         Lighting.UpdateLighting(Screen.Effect)
-        Camera.Update()
-        Level.Update()
+        Camera.Update(gameTime)
+        Level.Update(gameTime)
 
         Select Case menuState
             Case 0 'Menu updates

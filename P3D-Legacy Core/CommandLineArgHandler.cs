@@ -2,7 +2,7 @@
 
 using P3D.Legacy.Core.GameJolt;
 using P3D.Legacy.Core.Resources;
-using P3D.Legacy.Shared;
+using P3D.Legacy.Shared.Utils;
 
 namespace P3D.Legacy.Core
 {

@@ -1,4 +1,5 @@
-﻿using P3D.Legacy.Core.Screens;
+﻿using Microsoft.Xna.Framework;
+using P3D.Legacy.Core.Screens;
 
 namespace P3D.Legacy.Core.Battle.BattleSystemV2
 {
@@ -21,7 +22,7 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
         }
 
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
         }
 

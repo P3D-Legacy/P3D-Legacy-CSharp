@@ -48,7 +48,7 @@ Friend Class SplashScreen
                                                                             CSng(Core.windowSize.Height - _licenseTextSize.Y - 50)), Color.White)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If _startedLoad = False Then
             _startedLoad = True
 
@@ -77,7 +77,7 @@ Friend Class SplashScreen
     Private Sub LoadContent()
         Logger.Debug("---Start loading content---")
 
-        Core.LoadContent()
+        'Core.LoadContent()
     End Sub
 
 End Class

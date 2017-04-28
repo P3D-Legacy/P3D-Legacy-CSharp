@@ -49,14 +49,14 @@ Public Class MapPreviewScreen
         Me.ParticlesTexture = TextureManager.GetTexture("GUI\Overworld\Particles")
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         Me.ControlMap()
 
         Lighting.UpdateLighting(Screens.Screen.Effect)
-        Camera.Update()
+        Camera.Update(gameTime)
         Me.PickWarp()
         Me.UpdateHiddenItems()
-        Level.Update()
+        Level.Update(gameTime)
         SkyDome.Update()
 
         Screens.Screen.Level.World.Initialize(Screens.Screen.Level.EnvironmentType, Screens.Screen.Level.WeatherType)

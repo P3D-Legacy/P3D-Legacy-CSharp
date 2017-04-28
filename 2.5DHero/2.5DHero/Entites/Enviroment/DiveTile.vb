@@ -17,7 +17,7 @@ Public Class DiveTile
         Me.NeedsUpdate = True
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Screen.Level.IsSurfing = True Then
             If CInt(Me.Position.X) = CInt(Screen.Camera.Position.X) And CInt(Me.Position.Y) = CInt(Screen.Camera.Position.Y) And CInt(Me.Position.Z) = CInt(Screen.Camera.Position.Z) Then
                 If Controls.Accept(True, True, True) = True Then

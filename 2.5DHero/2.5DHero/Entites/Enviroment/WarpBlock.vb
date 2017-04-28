@@ -20,7 +20,7 @@ Public Class WarpBlock
 
     Public Function Warp(ByVal MapViewMode As Boolean) As Boolean
         If IsValidLink(Me.AdditionalValue) = True And ScriptBlock.TriggeredScriptBlock = False Then
-            Dim destination As String = Me.AdditionalValue.GetSplit(0)
+            Dim destination As String = Me.AdditionalValue.GetSplit(0).Replace("\", "/") 'TODO
 
             Dim link As String = Me.AdditionalValue
             Dim c As Integer = 0
@@ -42,7 +42,7 @@ Public Class WarpBlock
             End If
 
             Dim t0 = GameModeManager.ActiveGameMode.MapFolder.CheckExists(destination) = ExistenceCheckResult.FileExists
-            If t0 = True Or System.IO.File.Exists(GameController.GamePath & "\maps\" & destination) = True Then
+            If t0 = True Or System.IO.File.Exists(Path.Combine(GameController.GamePath, "maps", destination)) = True Then
                 If MapViewMode = False Then
                     Screen.Level.WarpData.WarpDestination = Me.AdditionalValue.GetSplit(0)
                     Screen.Level.WarpData.WarpPosition = New Vector3(Single.Parse(Me.AdditionalValue.GetSplit(1), NumberFormatInfo.InvariantInfo), Single.Parse(Me.AdditionalValue.GetSplit(2), NumberFormatInfo.InvariantInfo), Single.Parse(Me.AdditionalValue.GetSplit(3), NumberFormatInfo.InvariantInfo))

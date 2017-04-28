@@ -14,8 +14,8 @@ Public Class testWindowScreen
         t = New KeyboardInput.Textbox(FontManager.TextFont)
     End Sub
 
-    Public Overrides Sub Update()
-        MyBase.Update()
+    Public Overrides Sub Update(gameTime As GameTime)
+        MyBase.Update(gameTime)
 
         Me.t.Update()
     End Sub

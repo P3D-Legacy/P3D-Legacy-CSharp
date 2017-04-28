@@ -87,7 +87,7 @@ Public Class ItemDetailScreen
         Next
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         TextBox.Update()
 
         If TextBox.Showing = False Then

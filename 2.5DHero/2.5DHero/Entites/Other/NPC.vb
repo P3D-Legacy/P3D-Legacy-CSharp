@@ -11,6 +11,7 @@ Imports P3D.Legacy.Core.Resources.Managers.Music
 Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.ScriptSystem
 Imports P3D.Legacy.Core.Security
 Imports PCLExt.FileStorage
 
@@ -457,25 +458,25 @@ Public Class NPC
         End If
     End Sub
 
-    Public Overrides Sub Update()
-        NPCMovement()
-        Move()
+    Public Overrides Sub Update(gameTime As GameTime)
+        NPCMovement(gameTime)
+        Move(gameTime)
 
         ChangeTexture()
 
-        MyBase.Update()
+        MyBase.Update(gameTime)
     End Sub
 
     Protected Overrides Function CalculateCameraDistance(CPosition As Vector3) As Single
         Return MyBase.CalculateCameraDistance(CPosition) - 0.2F
     End Function
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         If Me.Rotation.Y <> Screen.Camera.Yaw Then
             Me.Rotation.Y = Screen.Camera.Yaw
         End If
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Public Overrides Sub Render(effect As BasicEffect)
@@ -487,7 +488,9 @@ Public Class NPC
 
 #Region "Movement and Camera"
 
-    Private Sub NPCMovement()
+    Private Sub NPCMovement(gameTime As GameTime)
+        Dim delta = CSng(gameTime.ElapsedGameTime.TotalSeconds * 60D)
+
         If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
             If CType(Core.CurrentScreen, OverworldScreen).ActionScript.IsReady = False Then
                 Exit Sub
@@ -556,7 +559,7 @@ Public Class NPC
                             Me.FaceRotation = newRotation
                         End If
                         Dim contains As Boolean = False
-                        Dim newPosition As Vector3 = (GetMove() / Speed) + Me.Position
+                        Dim newPosition As Vector3 = (GetMove(gameTime) / Speed) + Me.Position
                         If CheckCollision(newPosition) = True Then
                             For Each r As Rectangle In Me.MoveRectangles
                                 If r.Contains(New Point(CInt(newPosition.X), CInt(newPosition.Z))) = True Then
@@ -580,7 +583,7 @@ Public Class NPC
                         Me.FaceRotation = newRotation
                     End If
                     Dim contains As Boolean = False
-                    Dim newPosition As Vector3 = (GetMove() / Speed) + Me.Position
+                    Dim newPosition As Vector3 = (GetMove(gameTime) / Speed) + Me.Position
                     If CheckCollision(newPosition) = True Then
                         For Each r As Rectangle In Me.MoveRectangles
                             If r.Contains(New Point(CInt(newPosition.X), CInt(newPosition.Z))) = True Then
@@ -637,29 +640,31 @@ Public Class NPC
         Return True
     End Function
 
-    Private Sub Move()
+    Private Sub Move(gameTime As GameTime)
+        Dim delta = CSng(gameTime.ElapsedGameTime.TotalSeconds * 60D)
+
         If Moved > 0.0F Then
-            Me.Position += GetMove()
+            Me.Position += GetMove(gameTime) * delta
 
             If Me.Speed < 0 Then
-                Moved += Me.Speed
+                Moved += Me.Speed * delta
             Else
-                Moved -= Me.Speed
+                Moved -= Me.Speed * delta
             End If
 
             If Me.MoveY < 0.0F Then
-                Me.MoveY += Me.Speed
+                Me.MoveY += Me.Speed * delta
                 If MoveY >= 0.0F Then
                     Me.MoveY = 0.0F
                 End If
             ElseIf Me.MoveY > 0.0F Then
-                Me.MoveY -= Me.Speed
+                Me.MoveY -= Me.Speed * delta
                 If MoveY <= 0.0F Then
                     Me.MoveY = 0.0F
                 End If
             End If
 
-            Me.AnimationDelay -= CSng(0.13 * (Math.Abs(Me.Speed) / NPC.STANDARD_SPEED))
+            Me.AnimationDelay -= CSng(0.13 * (Math.Abs(Me.Speed) / NPC.STANDARD_SPEED)) * delta
             If AnimationDelay <= 0.0F Then
                 AnimationDelay = AnimationDelayLenght
                 AnimationX += 1
@@ -681,7 +686,7 @@ Public Class NPC
             End If
         Else
             If Me.AnimateIdle = True Then
-                Me.AnimationDelay -= 0.1F
+                Me.AnimationDelay -= 0.1F * delta
                 If AnimationDelay <= 0.0F Then
                     AnimationDelay = AnimationDelayLenght
                     AnimationX += 1
@@ -693,7 +698,7 @@ Public Class NPC
         End If
     End Sub
 
-    Private Function GetMove() As Vector3
+    Private Function GetMove(gameTime As GameTime) As Vector3
         Dim moveVector As Vector3
         Select Case Me.FaceRotation
             Case 0
@@ -706,7 +711,7 @@ Public Class NPC
                 moveVector = New Vector3(1, 0, 0) * Speed
         End Select
         If MoveY <> 0.0F Then
-            Dim multi As Single = Me.Speed
+            Dim multi As Single = Speed
             If multi < 0.0F Then
                 multi *= -1
             End If

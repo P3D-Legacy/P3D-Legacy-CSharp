@@ -13,7 +13,7 @@ using P3D.Legacy.Core.Resources.Managers;
 using P3D.Legacy.Core.Resources.Managers.Music;
 using P3D.Legacy.Core.Resources.Managers.Sound;
 using P3D.Legacy.Core.Storage;
-
+using P3D.Legacy.Core.Storage.Folders;
 using PCLExt.FileStorage;
 
 namespace P3D.Legacy.Core.Resources
@@ -85,7 +85,7 @@ namespace P3D.Legacy.Core.Resources
             }
 
             GameMode gameMode = GameModeManager.ActiveGameMode;
-            if (!Equals(gameMode.ContentFolder, StorageInfo.ContentFolder))
+            if (!Equals(gameMode.ContentFolder, new ContentFolder()))
             {
                 if (fileEndings.Split(Convert.ToChar(",")).Any(fileEnding => gameMode.ContentFolder.CheckExists(file + fileEnding) == ExistenceCheckResult.FileExists))
                     return new ContentManager(Core.GameInstance.Services, gameMode.ContentFolder.Path);

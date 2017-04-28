@@ -12,6 +12,7 @@ Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.ScriptSystem
 
 ''' <summary>
 ''' The screen to display the default Overworld gameplay.
@@ -126,7 +127,7 @@ Public Class OverworldScreen
     ''' <summary>
     ''' Updates the OverworldScreen.
     ''' </summary>
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         'If the MapScript has a value loaded from the MapScript map tag and there is no script running, start that script:
         If LevelLoader.MapScript <> "" And ActionScript.IsReady = True Then
             ActionScript.reDelay = 0.0F
@@ -160,8 +161,8 @@ Public Class OverworldScreen
             'If no script is running and no MapScript is in the queue, update camera and the level.
             If ActionScript.IsReady = True And LevelLoader.MapScript = "" Then
                 If Me.HandleServerRequests() = True Then
-                    Camera.Update()
-                    Level.Update()
+                    Camera.Update(gameTime)
+                    Level.Update(gameTime)
                 End If
             Else
                 'Because other players (and their Pokémon) are moving around while you are standing still and no level update occurs,
@@ -190,7 +191,7 @@ Public Class OverworldScreen
                 End If
             End If
 
-            ActionScript.Update() 'Update the action script.
+            ActionScript.Update(gameTime) 'Update the action script.
         Else 'Dialogues are showing:
             'Update some parts of the camera:
             If Camera.Name = "Overworld" Then
@@ -202,12 +203,12 @@ Public Class OverworldScreen
                             CType(Camera, OverworldCamera).SetAimDirection(Camera.GetFacingDirection())
                         End If
 
-                        CType(Camera, OverworldCamera).AimCamera()
-                        Level.UpdateEntities()
+                        CType(Camera, OverworldCamera).AimCamera(gameTime)
+                        Level.UpdateEntities(gameTime)
                     End If
                 End If
 
-                CType(Camera, OverworldCamera).PitchForward()
+                CType(Camera, OverworldCamera).PitchForward(gameTime)
                 CType(Camera, OverworldCamera).UpdateViewMatrix()
                 CType(Camera, OverworldCamera).UpdateFrustum()
             End If
@@ -215,12 +216,12 @@ Public Class OverworldScreen
             'If it's online play (on Servers), update network entities, because Level.Update doesn't get called.
             If JoinServerScreen.Online = True Then
                 For Each p As NetworkPlayer In Level.NetworkPlayers
-                    p.UpdateEntity()
-                    p.Update()
+                    p.UpdateEntity(gameTime)
+                    p.Update(gameTime)
                 Next
                 For Each p As NetworkPokemon In Level.NetworkPokemon
-                    p.UpdateEntity()
-                    p.Update()
+                    p.UpdateEntity(gameTime)
+                    p.Update(gameTime)
                 Next
             End If
         End If

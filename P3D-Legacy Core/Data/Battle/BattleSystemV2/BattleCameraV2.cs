@@ -54,20 +54,22 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
             CreateRay();
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             Ray = CreateRay();
 
-            UpdateCamera();
+            UpdateCamera(gameTime);
 
             UpdateMatrices();
             UpdateFrustum();
         }
 
-        public void UpdateCamera()
+        public void UpdateCamera(GameTime gameTime)
         {
-            if (TargetMode == true)
+            if (TargetMode)
             {
+                var delta = (float) (gameTime.ElapsedGameTime.TotalSeconds * 60D);
+
                 if (this.Position != this.TargetPosition)
                 {
                     float MoveX = 0f;
@@ -140,14 +142,14 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                         }
                     }
 
-                    this.Position = new Vector3(this.Position.X + MoveX, this.Position.Y + MoveY, this.Position.Z + MoveZ);
+                    this.Position = new Vector3(this.Position.X + MoveX * delta, this.Position.Y + MoveY * delta, this.Position.Z + MoveZ * delta);
                 }
 
                 if (this.TargetYaw != this.Yaw)
                 {
                     if (this.Yaw < this.TargetYaw)
                     {
-                        this.Yaw += this.RotationSpeed;
+                        this.Yaw += this.RotationSpeed * delta;
                         if (this.Yaw > this.TargetYaw)
                         {
                             this.Yaw = this.TargetYaw;
@@ -155,7 +157,7 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                     }
                     if (this.Yaw > this.TargetYaw)
                     {
-                        this.Yaw -= this.RotationSpeed;
+                        this.Yaw -= this.RotationSpeed * delta;
                         if (this.Yaw < this.TargetYaw)
                         {
                             this.Yaw = this.TargetYaw;
@@ -167,7 +169,7 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                 {
                     if (this.Pitch < this.TargetPitch)
                     {
-                        this.Pitch += this.RotationSpeed;
+                        this.Pitch += this.RotationSpeed * delta;
                         if (this.Pitch > this.TargetPitch)
                         {
                             this.Pitch = this.TargetPitch;
@@ -175,7 +177,7 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                     }
                     if (this.Pitch > this.TargetPitch)
                     {
-                        this.Pitch -= this.RotationSpeed;
+                        this.Pitch -= this.RotationSpeed * delta;
                         if (this.Pitch < this.TargetPitch)
                         {
                             this.Pitch = this.TargetPitch;
@@ -187,7 +189,7 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                 {
                     if (this.Speed < this.TargetSpeed)
                     {
-                        this.Speed += 0.005f;
+                        this.Speed += 0.005f * delta;
                         if (this.Speed > this.TargetSpeed)
                         {
                             this.Speed = this.TargetSpeed;
@@ -195,7 +197,7 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                     }
                     if (this.Speed > this.TargetSpeed)
                     {
-                        this.Speed -= 0.005f;
+                        this.Speed -= 0.005f * delta;
                         if (this.Speed < this.TargetSpeed)
                         {
                             this.Speed = this.TargetSpeed;
@@ -207,7 +209,7 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                 {
                     if (this.RotationSpeed < this.TargetRotationSpeed)
                     {
-                        this.RotationSpeed += 0.005f;
+                        this.RotationSpeed += 0.005f * delta;
                         if (this.RotationSpeed > this.TargetRotationSpeed)
                         {
                             this.RotationSpeed = this.TargetRotationSpeed;
@@ -215,7 +217,7 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                     }
                     if (this.RotationSpeed > this.TargetRotationSpeed)
                     {
-                        this.RotationSpeed -= 0.005f;
+                        this.RotationSpeed -= 0.005f * delta;
                         if (this.RotationSpeed < this.TargetRotationSpeed)
                         {
                             this.RotationSpeed = this.TargetRotationSpeed;

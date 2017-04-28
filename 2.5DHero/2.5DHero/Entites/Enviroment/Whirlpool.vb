@@ -36,7 +36,7 @@ Public Class Whirlpool
         End If
     End Sub
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         If Not WaterAnimation Is Nothing Then
             WaterAnimation.Update(0.01)
             If currentRectangle <> WaterAnimation.TextureRectangle Then
@@ -46,7 +46,7 @@ Public Class Whirlpool
             End If
         End If
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Private Sub ChangeTexture()

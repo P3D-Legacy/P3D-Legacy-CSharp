@@ -86,7 +86,7 @@ Public Class ChoosePokemonScreen
         End If
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         TextBox.Update()
         yOffset += 0.45F
 

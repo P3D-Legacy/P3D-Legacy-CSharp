@@ -37,7 +37,7 @@ namespace P3D.Legacy.Core
         public Ray Ray = new Ray();
 
         public bool Turning = false;
-        public float Speed = 0.04f;
+        public float Speed = 0.25f;
 
         public float RotationSpeed = 0.003f;
         public float FarPlane = 30;
@@ -51,7 +51,7 @@ namespace P3D.Legacy.Core
             this.Name = Name;
         }
 
-        public virtual void Update()
+        public virtual void Update(GameTime gameTime)
         {
             throw new NotImplementedException();
         }
@@ -112,15 +112,12 @@ namespace P3D.Legacy.Core
             throw new NotImplementedException();
         }
 
-        public virtual bool IsMoving
-        {
-            get { return false; }
-        }
+        public virtual bool IsMoving => false;
 
         public void CreateNewProjection(float newFOV)
         {
-            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(newFOV), Core.GraphicsDevice.Viewport.AspectRatio, 0.01f, this.FarPlane);
-            this.FOV = newFOV;
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(newFOV), Core.GraphicsDevice.Viewport.AspectRatio, 0.01f, FarPlane);
+            FOV = newFOV;
         }
 
     }

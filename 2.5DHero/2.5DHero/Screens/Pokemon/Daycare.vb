@@ -3,6 +3,7 @@ Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.ScriptSystem
 
 Public Class Daycare
 

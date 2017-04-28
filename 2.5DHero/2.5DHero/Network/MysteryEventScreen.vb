@@ -181,7 +181,7 @@ Public Class MysteryEventScreen
         End If
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Controls.Up(True, True, True, True, True, True) = True Then
             cursor -= 1
         End If

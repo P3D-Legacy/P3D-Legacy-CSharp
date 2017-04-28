@@ -2,6 +2,7 @@
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.ScriptSystem
 
 Public Class StrengthTrigger
 
@@ -47,7 +48,7 @@ Public Class StrengthTrigger
         Me.NeedsUpdate = True
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Activated = False Then
             For Each sRock As Entity In Screen.Level.Entities
                 If sRock.EntityID = "StrengthRock" Then
@@ -70,7 +71,7 @@ Public Class StrengthTrigger
             Next
         End If
 
-        MyBase.Update()
+        MyBase.Update(gameTime)
     End Sub
 
     Public Overrides Sub Render(effect As BasicEffect)

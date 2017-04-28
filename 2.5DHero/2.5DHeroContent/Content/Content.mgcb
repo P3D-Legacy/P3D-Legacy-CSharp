@@ -67,61 +67,6 @@
 /processorParam:DebugMode=Auto
 /build:Effects/Toon.fx
 
-#begin Fonts/BMP/Braille.png
-/importer:TextureImporter
-/processor:FontTextureProcessor
-/processorParam:FirstCharacter= 
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Color
-/build:Fonts/BMP/Braille.png
-
-#begin Fonts/BMP/chatFont.png
-/importer:TextureImporter
-/processor:FontTextureProcessor
-/processorParam:FirstCharacter= 
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Color
-/build:Fonts/BMP/chatFont.png
-
-#begin Fonts/BMP/InGame.png
-/importer:TextureImporter
-/processor:FontTextureProcessor
-/processorParam:FirstCharacter= 
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Color
-/build:Fonts/BMP/InGame.png
-
-#begin Fonts/BMP/mainFont.png
-/importer:TextureImporter
-/processor:FontTextureProcessor
-/processorParam:FirstCharacter= 
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Color
-/build:Fonts/BMP/mainFont.png
-
-#begin Fonts/BMP/miniFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/BMP/miniFont.spritefont
-
-#begin Fonts/BMP/TextFont.png
-/importer:TextureImporter
-/processor:FontTextureProcessor
-/processorParam:FirstCharacter= 
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Color
-/build:Fonts/BMP/TextFont.png
-
-#begin Fonts/BMP/Unown.png
-/importer:TextureImporter
-/processor:FontTextureProcessor
-/processorParam:FirstCharacter= 
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Color
-/build:Fonts/BMP/Unown.png
-
 #begin GUI/Badges.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1045,30 +990,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Items/Plates.png
-
-#begin Localization/Tokens_de.dat
-/copy:Localization/Tokens_de.dat
-
-#begin Localization/Tokens_en.dat
-/copy:Localization/Tokens_en.dat
-
-#begin Localization/Tokens_fr.dat
-/copy:Localization/Tokens_fr.dat
-
-#begin Localization/Tokens_id.dat
-/copy:Localization/Tokens_id.dat
-
-#begin Localization/Tokens_it.dat
-/copy:Localization/Tokens_it.dat
-
-#begin Localization/Tokens_lt.dat
-/copy:Localization/Tokens_lt.dat
-
-#begin Localization/Tokens_sv.dat
-/copy:Localization/Tokens_sv.dat
-
-#begin Localization/Tokens_tr.dat
-/copy:Localization/Tokens_tr.dat
 
 #begin Models/boat2/Boat.fbx
 /importer:FbxImporter
@@ -45275,4 +45196,97 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sound Effects/menu_open.mp3
+
+#begin Fonts/Unown.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:Fonts/Unown.png
+
+#begin Fonts/Braille.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:Fonts/Braille.png
+
+#begin Fonts/chatFont.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:Fonts/chatFont.png
+
+#begin Fonts/defaultfont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/defaultfont.spritefont
+
+#begin Fonts/InGame.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:Fonts/InGame.png
+
+#begin Fonts/mainFont.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:Fonts/mainFont.png
+
+#begin Fonts/miniFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/miniFont.spritefont
+
+#begin Fonts/monospace.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/monospace.spritefont
+
+#begin Fonts/TextFont.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:Fonts/TextFont.png
+
+#begin Localization/de/Tokens_de.dat
+/copy:Localization/de/Tokens_de.dat
+
+#begin Localization/en/Tokens_en.dat
+/copy:Localization/en/Tokens_en.dat
+
+#begin Localization/fr/Tokens_fr.dat
+/copy:Localization/fr/Tokens_fr.dat
+
+#begin Localization/id/Tokens_id.dat
+/copy:Localization/id/Tokens_id.dat
+
+#begin Localization/it/Tokens_it.dat
+/copy:Localization/it/Tokens_it.dat
+
+#begin Localization/lt/Tokens_lt.dat
+/copy:Localization/lt/Tokens_lt.dat
+
+#begin Localization/sv/Tokens_sv.dat
+/copy:Localization/sv/Tokens_sv.dat
+
+#begin Localization/tr/Tokens_tr.dat
+/copy:Localization/tr/Tokens_tr.dat
 

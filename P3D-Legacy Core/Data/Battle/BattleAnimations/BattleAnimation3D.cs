@@ -47,7 +47,7 @@ namespace P3D.Legacy.Core.Battle.BattleAnimations
             this.DropUpdateUnlessDrawn = false;
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             if (CanRemove == false)
             {
@@ -85,10 +85,10 @@ namespace P3D.Legacy.Core.Battle.BattleAnimations
                 }
             }
 
-            base.Update();
+            base.Update(gameTime);
         }
 
-        public override void UpdateEntity()
+        public override void UpdateEntity(GameTime gameTime)
         {
             if (this.Rotation.Y != Screen.Camera.Yaw)
             {
@@ -97,7 +97,7 @@ namespace P3D.Legacy.Core.Battle.BattleAnimations
 
             DoActionUpdate();
 
-            base.UpdateEntity();
+            base.UpdateEntity(gameTime);
         }
 
         public virtual void DoActionUpdate()

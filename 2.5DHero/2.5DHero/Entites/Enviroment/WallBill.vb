@@ -9,13 +9,13 @@ Public Class WallBill
         Return MyBase.CalculateCameraDistance(CPosition) - 0.4F
     End Function
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         If Me.Rotation.Y <> Screen.Camera.Yaw Then
             Me.Rotation.Y = Screen.Camera.Yaw
             CreatedWorld = False
         End If
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Public Overrides Sub Render(effect As BasicEffect)

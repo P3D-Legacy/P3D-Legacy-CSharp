@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using P3D.Legacy.Core.Data;
 using P3D.Legacy.Core.Storage;
+using P3D.Legacy.Core.Storage.Folders;
 
 //IO:
 namespace P3D.Legacy.Core.Resources.Managers
@@ -21,7 +22,7 @@ namespace P3D.Legacy.Core.Resources.Managers
             FontList.Clear();
 
             //because the pack manager will hoover up replacements from packs and mods already we just load every font name contained in our base files
-            foreach (var fontFile in StorageInfo.ContentFolder.FontFolder.GetFontFiles())
+            foreach (var fontFile in new ContentFolder().FontFolder.GetFontFiles())
             {
                 var fileName = fontFile.InContentLocalPathWithoutExtension.Replace("\\", "|").ToLowerInvariant();
                 FontList.Add(fileName, fontFile);
@@ -31,7 +32,7 @@ namespace P3D.Legacy.Core.Resources.Managers
             {
                 foreach (var contentPackName in Core.GameOptions.ContentPackNames)
                 {
-                    var contentPackFontFolder = StorageInfo.ContentPacksFolder.GetContentPack(contentPackName).FontFolder;
+                    var contentPackFontFolder = new ContentPacksFolder().GetContentPack(contentPackName).FontFolder;
                     foreach (var fontFile in contentPackFontFolder.GetFontFiles())
                     {
                         var fileName = fontFile.InContentLocalPathWithoutExtension.Replace("\\", "|").ToLowerInvariant();
@@ -40,7 +41,7 @@ namespace P3D.Legacy.Core.Resources.Managers
                 }
             }
             //if there's a game mode loaded, look in that too for additional fonts
-            if (!GameModeManager.ActiveGameMode.IsDefaultGamemode && !Equals(GameModeManager.ActiveGameMode.ContentFolder, StorageInfo.ContentFolder))
+            if (!GameModeManager.ActiveGameMode.IsDefaultGamemode && !Equals(GameModeManager.ActiveGameMode.ContentFolder, new ContentFolder()))
             {
                 var gameModeFontFolder = GameModeManager.ActiveGameMode.ContentFolder.FontFolder;
                 foreach (var fontFile in gameModeFontFolder.GetFontFiles())

@@ -81,7 +81,7 @@ Public Class PokemonScreen
         TextBox.Draw()
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         TextBox.ReDelay = 0.0F
         yOffset += 0.45F
 
@@ -98,7 +98,7 @@ Public Class PokemonScreen
 
                 If Controls.Accept() Then
                     mPressed = True
-                    AcceptKeyPressed()
+                    AcceptKeyPressed(gameTime)
                 End If
             Else
                 If mState.LeftButton = ButtonState.Released And MouseHandler.ButtonUp(MouseHandler.MouseButtons.LeftButton) = True Then
@@ -112,7 +112,7 @@ Public Class PokemonScreen
         End If
     End Sub
 
-    Private Sub AcceptKeyPressed()
+    Private Sub AcceptKeyPressed(gameTime as GameTime)
         If ChooseBox.Showing = True Then
             Select Case MenuID
                 Case 0
@@ -163,8 +163,8 @@ Public Class PokemonScreen
                 switchIndex = -1
 
                 Screen.Level.OverworldPokemon.ForceTextureChange()
-                Screen.Level.OverworldPokemon.Update()
-                Screen.Level.OverworldPokemon.UpdateEntity()
+                Screen.Level.OverworldPokemon.Update(gameTime)
+                Screen.Level.OverworldPokemon.UpdateEntity(gameTime)
                 Screen.Level.OverworldPokemon.Render(Screen.Effect)
             End If
         End If

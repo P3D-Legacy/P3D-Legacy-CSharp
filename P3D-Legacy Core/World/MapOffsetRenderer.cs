@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using P3D.Legacy.Core.Entities;
@@ -24,10 +24,10 @@ namespace P3D.Legacy.Core.World
         }
 
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             foreach (var mapRenderer in OffsetMaps)
-                mapRenderer.Value.Update();
+                mapRenderer.Value.Update(gameTime);
 
             SortEntities();
         }

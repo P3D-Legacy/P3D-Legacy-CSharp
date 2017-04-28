@@ -23,7 +23,7 @@ Public Class MessageBulb
         Me.DropUpdateUnlessDrawn = False
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Me.delay > 0.0F Then
             Me.delay -= 0.1F
             If Me.delay <= 0.0F Then
@@ -77,13 +77,13 @@ Public Class MessageBulb
         End If
     End Sub
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         If Me.Rotation.Y <> Screen.Camera.Yaw Then
             Me.Rotation.Y = Screen.Camera.Yaw
             CreatedWorld = False
         End If
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Public Overrides Sub Render(effect As BasicEffect)

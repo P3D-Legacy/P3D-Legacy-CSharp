@@ -169,7 +169,7 @@ Public Class Water
         Return MyBase.CalculateCameraDistance(CPosition) - 0.2F
     End Function
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         If Not WaterAnimation Is Nothing Then
             WaterAnimation.Update(0.01)
             If currentRectangle <> WaterAnimation.TextureRectangle Then
@@ -179,7 +179,7 @@ Public Class Water
             End If
         End If
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Private Sub ChangeTexture()
@@ -248,7 +248,8 @@ Public Class Water
 
                 .SetTexture(SkinName, False)
 
-                .UpdateEntity()
+                ' TODO
+                '.UpdateEntity(gameTime)
 
                 SoundEffectManager.PlayPokemonCry(pokemonNumber)
 

@@ -36,7 +36,7 @@ Public Class CreditsCamera
         CreateRay()
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         Ray = CreateRay()
 
         MoveCamera()

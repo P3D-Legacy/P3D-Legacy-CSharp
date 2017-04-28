@@ -193,7 +193,7 @@ Public Class MailSystemScreen
         End If
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If message <> "" Then
             If Controls.Accept(True, True, True) = True Or Controls.Dismiss(True, True, True) = True Then
                 message = ""

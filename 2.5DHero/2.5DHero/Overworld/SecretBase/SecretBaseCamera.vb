@@ -27,7 +27,7 @@ Public Class SecretBaseCamera
         ResetCursor()
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         Ray = CreateRay()
 
         MoveCamera()

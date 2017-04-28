@@ -38,7 +38,7 @@ Public Class DonationScreen
         DonatorList = l.ToArray()
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Controls.Up(True, True, True, True) = True Then
             OffsetY -= 1
         End If

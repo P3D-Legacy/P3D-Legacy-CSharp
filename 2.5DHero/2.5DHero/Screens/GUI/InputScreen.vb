@@ -188,7 +188,7 @@ Public Class InputScreen
         Me.DrawGamePadControls(d)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Controls.Right(True, True, False, False, True) = True Then
             Dim currentX As Integer = CInt(Me.ButtonSelector.X)
             Dim newX As Integer = 1000

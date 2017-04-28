@@ -14,6 +14,8 @@ Imports P3D.Legacy.Core.Resources.Managers.Music
 Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.ScriptSystem
+Imports P3D.Legacy.Core.ScriptSystem.V2
 Imports P3D.Legacy.Core.Security
 Imports P3D.Legacy.Core.Server
 Imports P3D.Legacy.Core.Storage
@@ -476,7 +478,7 @@ Public Class Player
 
     Public Sub LoadGame(ByVal filePrefix As String) Implements IPlayer.LoadGame
         For Each s As String In Core.GameOptions.ContentPackNames
-            ContentPackManager.Load(GameController.GamePath & "\ContentPacks\" & s & "\exceptions.dat")
+            ContentPackManager.Load(Path.Combine(GameController.GamePath, "ContentPacks", s, "exceptions.dat"))
         Next
 
         GameModeManager.CreateDefaultGameMode()
@@ -490,7 +492,7 @@ Public Class Player
         World.RegionWeatherSet = False
 
         Me.filePrefix = filePrefix
-        _userSaveFolder = StorageInfo.SaveFolder.GetUserSaveFolder(filePrefix)
+        _userSaveFolder = new SaveFolder().GetUserSaveFolder(filePrefix)
         PokeFiles.Clear()
         GameMode = "Pokemon 3D"
 
@@ -542,7 +544,7 @@ Public Class Player
         Chat.ClearChat()
 
         If AutosaveUsed = True Then
-            IO.Directory.Delete(GameController.GamePath & "\Save\" & Me.filePrefix, True)
+            IO.Directory.Delete(Path.Combine(GameController.GamePath, "Save", Me.filePrefix), True)
 
             Me.filePrefix = newFilePrefix
             AutosaveUsed = False
@@ -1009,7 +1011,7 @@ Public Class Player
 
         Dim oldUserSaveFolder = _userSaveFolder
         If IsAutosave = True Then
-            _userSaveFolder = StorageInfo.SaveFolder.AutosaveFolder
+            _userSaveFolder = new SaveFolder().AutosaveFolder
         End If
 
         GameJoltTempStoreString.Clear()
@@ -1872,7 +1874,7 @@ Public Class Player
         If IO.Directory.Exists(folder) = True Then
             Dim files() As String = {"Apricorns", "Berries", "Box", "Daycare", "HallOfFame", "ItemData", "Items", "NPC", "Options", "Party", "Player", "Pokedex", "Register", "RoamingPokemon", "SecretBase"}
             For Each file As String In files
-                If IO.File.Exists(folder & "\" & file & ".dat") = False Then
+                If IO.File.Exists(Path.Combine(folder,file & ".dat")) = False Then
                     Return False
                 End If
             Next

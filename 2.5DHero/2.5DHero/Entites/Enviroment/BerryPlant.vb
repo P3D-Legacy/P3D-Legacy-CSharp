@@ -80,7 +80,7 @@ Public Class BerryPlant
         End If
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Me.LastUpdateDate.Year = 1 Then
             Me.LastUpdateDate = Date.Now
         End If
@@ -105,12 +105,12 @@ Public Class BerryPlant
         Me.LastUpdateDate = Date.Now
     End Sub
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         If Me.Rotation.Y <> Screen.Camera.Yaw Then
             Me.Rotation.Y = Screen.Camera.Yaw
         End If
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Private Sub NewTexture()

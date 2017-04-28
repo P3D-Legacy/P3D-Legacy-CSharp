@@ -42,7 +42,7 @@ Public Class BlackOutScreen
         FromBattle = False
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Me.IsGameOver = True Then
             If Controls.Accept(True, False) = True Then
                 Core.SetScreen(New MainMenuScreen())

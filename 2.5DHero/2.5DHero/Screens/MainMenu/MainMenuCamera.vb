@@ -15,13 +15,16 @@ Public Class MainMenuCamera
         View = Matrix.CreateLookAt(Position, Vector3.Zero, Vector3.Up)
         Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45.0), Core.GraphicsDevice.Viewport.AspectRatio, 0.01, 16)
 
-        Update()
+        'TODO
+        'Update()
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
+        Dim delta = CSng(gameTime.ElapsedGameTime.TotalSeconds * 60D)
+
         Ray = createRay()
 
-        Yaw -= Me.Speed
+        Yaw -= Speed * delta
         While Yaw <= 0
             Yaw = MathHelper.TwoPi
         End While

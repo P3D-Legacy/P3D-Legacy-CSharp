@@ -179,7 +179,7 @@ Namespace GameJolt
             End If
         End Sub
 
-        Public Overrides Sub Update()
+        Public Overrides Sub Update(gameTime As GameTime)
             For i = 0 To Furrs.Count - 1
                 If i < Furrs.Count Then
                     Dim f As Furr = Furrs(i)

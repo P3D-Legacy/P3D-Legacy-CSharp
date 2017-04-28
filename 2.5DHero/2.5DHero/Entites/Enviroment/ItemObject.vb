@@ -31,7 +31,7 @@ Public Class ItemObject
         Me.NeedsUpdate = True
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If checkedExistence = False Then
             checkedExistence = True
 
@@ -50,16 +50,16 @@ Public Class ItemObject
             End If
         End If
 
-        MyBase.Update()
+        MyBase.Update(gameTime)
     End Sub
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         If Me.Rotation.Y <> Screen.Camera.Yaw Then
             Me.Rotation.Y = Screen.Camera.Yaw
             Me.CreatedWorld = False
         End If
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Public Overrides Sub ClickFunction()

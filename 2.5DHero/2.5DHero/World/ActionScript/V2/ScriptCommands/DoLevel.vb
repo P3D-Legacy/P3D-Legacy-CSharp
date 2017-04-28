@@ -11,7 +11,7 @@ Namespace ScriptVersion2
         'Contains the @level commands.
         '--------------------------------------------------------------------------------------------------------------------------
 
-        Private Shared Sub DoLevel(ByVal subClass As String)
+        Private Shared Sub DoLevel(gameTime As GameTime, ByVal subClass As String)
             Dim command As String = ScriptComparer.GetSubClassArgumentPair(subClass).Command
             Dim argument As String = ScriptComparer.GetSubClassArgumentPair(subClass).Argument
 
@@ -41,9 +41,10 @@ Namespace ScriptVersion2
                         IsReady = True
                     End If
                 Case "update"
-                    Screen.Level.Update()
-                    Screen.Level.UpdateEntities()
-                    Screen.Camera.Update()
+                    Screen.Level.Update(gameTime)
+                    Screen.Level.UpdateEntities(gameTime)
+                    'TODO
+                    'Screen.Camera.Update(TODO)
 
                     IsReady = True
                 Case "waitforevents"

@@ -92,7 +92,7 @@ Public Class OptionScreen
         Next
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If CanYScroll = True Then
             If Controls.Down(True, False, True, False, False) = True Then
                 YScroll += 1
@@ -249,7 +249,8 @@ Public Class OptionScreen
 
         SoundEffectManager.PlaySound("save")
 
-        Me.PreScreen.Update()
+        'TODO
+        'Me.PreScreen.Update(TODO)
     End Sub
 
     Public Overrides Sub ToggledMute()

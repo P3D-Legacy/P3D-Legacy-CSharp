@@ -121,9 +121,9 @@ Public Class CreditsScreen
         End If
     End Sub
 
-    Public Overrides Sub Update()
-        Camera.Update()
-        Level.Update()
+    Public Overrides Sub Update(gameTime As GameTime)
+        Camera.Update(gameTime)
+        Level.Update(gameTime)
 
         CreditsPages(CurrentPageIndex).Update()
 

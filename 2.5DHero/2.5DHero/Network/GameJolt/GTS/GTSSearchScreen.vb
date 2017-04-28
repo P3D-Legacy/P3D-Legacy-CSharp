@@ -247,7 +247,7 @@ Namespace GameJolt
             End If
         End Sub
 
-        Public Overrides Sub Update()
+        Public Overrides Sub Update(gameTime As GameTime)
             For i = 0 To GTSMainScreen.Furrs.Count - 1
                 If i < GTSMainScreen.Furrs.Count Then
                     Dim f As Furr = GTSMainScreen.Furrs(i)
@@ -503,7 +503,7 @@ Namespace GameJolt
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Microsoft.Xna.Framework.Color.Black)
             End Sub
 
-            Public Overrides Sub Update()
+            Public Overrides Sub Update(gameTime As GameTime)
                 For i = 0 To GTSMainScreen.Furrs.Count - 1
                     If i < GTSMainScreen.Furrs.Count Then
                         Dim f As Furr = GTSMainScreen.Furrs(i)
@@ -611,7 +611,7 @@ Namespace GameJolt
                 Dim noMorePokemon As Boolean = False
 
                 Dim fileList As New List(Of Integer)
-                Dim d As List(Of String) = Directory.GetFiles(GameController.GamePath & "\Content\Pokemon\Data\").ToList()
+                Dim d As List(Of String) = Directory.GetFiles(Path.Combine(GameController.GamePath, "Content", "Pokemon", "Data")).ToList()
                 For Each file As String In d
                     Dim fileName As String = Path.GetFileNameWithoutExtension(file)
                     If IsNumeric(fileName) = True Then
@@ -684,7 +684,7 @@ Namespace GameJolt
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Microsoft.Xna.Framework.Color.Black)
             End Sub
 
-            Public Overrides Sub Update()
+            Public Overrides Sub Update(gameTime As GameTime)
                 For i = 0 To GTSMainScreen.Furrs.Count - 1
                     If i < GTSMainScreen.Furrs.Count Then
                         Dim f As Furr = GTSMainScreen.Furrs(i)
@@ -821,7 +821,7 @@ Namespace GameJolt
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Microsoft.Xna.Framework.Color.Black)
             End Sub
 
-            Public Overrides Sub Update()
+            Public Overrides Sub Update(gameTime As GameTime)
                 For i = 0 To GTSMainScreen.Furrs.Count - 1
                     If i < GTSMainScreen.Furrs.Count Then
                         Dim f As Furr = GTSMainScreen.Furrs(i)
@@ -913,7 +913,7 @@ Namespace GameJolt
                 Core.SpriteBatch.DrawString(FontManager.MiniFont, Text, New Vector2(Position.X + 4, Position.Y + 32), Microsoft.Xna.Framework.Color.Black)
             End Sub
 
-            Public Overrides Sub Update()
+            Public Overrides Sub Update(gameTime As GameTime)
                 For i = 0 To GTSMainScreen.Furrs.Count - 1
                     If i < GTSMainScreen.Furrs.Count Then
                         Dim f As Furr = GTSMainScreen.Furrs(i)

@@ -169,7 +169,8 @@ namespace P3D.Legacy.Core.Entities
 
             LoadSeasonTextures();
 
-            UpdateEntity();
+            // TODO
+            //UpdateEntity();
         }
 
         public static void SetProperties(ref Entity newEnt, Entity PropertiesEnt)
@@ -231,7 +232,7 @@ namespace P3D.Legacy.Core.Entities
         }
 
 
-        public virtual void Update()
+        public virtual void Update(GameTime gameTime)
         {
         }
 
@@ -283,8 +284,10 @@ namespace P3D.Legacy.Core.Entities
 
         protected virtual float CalculateCameraDistance(Vector3 CPosition) => Vector3.Distance(GetCameraDistanceCenterPoint(), CPosition);
 
-        public virtual void UpdateEntity()
+        public virtual void UpdateEntity(GameTime gameTime)
         {
+            float delta = (float)(gameTime.ElapsedGameTime.TotalSeconds * 60d);
+
             Vector3 CPosition = Screen.Camera.Position;
             bool ActionScriptActive = false;
 
@@ -312,15 +315,15 @@ namespace P3D.Legacy.Core.Entities
 
             CameraDistance = CalculateCameraDistance(CPosition);
 
-            if (DropUpdateUnlessDrawn == true && _drawnLastFrame == false && Visible == true && ActionScriptActive == false)
+            if (DropUpdateUnlessDrawn && !_drawnLastFrame && Visible && !ActionScriptActive)
             {
                 return;
             }
 
 
-            if (Moved > 0f && CanMove == true)
+            if (Moved > 0f && CanMove)
             {
-                Moved -= Speed;
+                Moved -= Speed * delta;
 
                 Vector3 movement = Vector3.Zero;
                 switch (FaceDirection)
@@ -339,7 +342,7 @@ namespace P3D.Legacy.Core.Entities
                         break;
                 }
 
-                movement *= Speed;
+                movement *= Speed * delta;
                 Position += movement;
                 CreatedWorld = false;
 
@@ -390,21 +393,21 @@ namespace P3D.Legacy.Core.Entities
                 }
             }
 
-            if (MakeShake == true)
+            if (MakeShake)
             {
                 if (Core.Random.Next(0, 1) == 0)
                 {
-                    Rotation.X += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100);
-                    Rotation.Z += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100);
-                    Rotation.Y += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100);
+                    Rotation.X += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
+                    Rotation.Z += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
+                    Rotation.Y += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
 
-                    Position.X += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100);
-                    Position.Z += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100);
+                    Position.X += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
+                    Position.Z += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
                     Position.Y += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100);
 
-                    Scale.X += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100);
-                    Scale.Z += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100);
-                    Scale.Y += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100);
+                    Scale.X += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
+                    Scale.Z += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
+                    Scale.Y += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
 
                     CreatedWorld = false;
                 }
@@ -429,7 +432,7 @@ namespace P3D.Legacy.Core.Entities
 
             foreach (Vector3 s in Shaders)
             {
-                Shader *= s;
+                Shader *= s * delta;
             }
         }
 

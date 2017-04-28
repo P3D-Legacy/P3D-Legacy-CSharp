@@ -291,7 +291,7 @@ Public Class BattleIntroScreen
         End If
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If minDelay > 0.0F Then
             minDelay -= 0.1F
             If minDelay <= 0.0F Then

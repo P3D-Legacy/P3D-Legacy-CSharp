@@ -159,8 +159,8 @@ Public Class SmashRock
         End If
     End Sub
 
-    Public Overrides Sub UpdateEntity()
-        MyBase.UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
+        MyBase.UpdateEntity(gameTime)
 
         If Rotation.Y <> Screen.Camera.Yaw Then
             Me.Rotation.Y = Screen.Camera.Yaw

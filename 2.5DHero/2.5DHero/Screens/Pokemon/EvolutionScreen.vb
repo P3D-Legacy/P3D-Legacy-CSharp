@@ -196,7 +196,7 @@ Public Class EvolutionScreen
         TextBox.Draw()
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         TextBox.Update()
 
         If evolutionStarted = False Then

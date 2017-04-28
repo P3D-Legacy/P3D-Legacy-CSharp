@@ -41,7 +41,7 @@ Public Class PokemonStatusScreen
         Me.pageIndex = Player.Temp.PokemonStatusPageIndex
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If AttackToggle = False Then
             If Me.AttackPos > 0.0F Then
                 Me.AttackPos -= 15.0F

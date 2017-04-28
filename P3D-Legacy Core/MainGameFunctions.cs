@@ -14,7 +14,7 @@ using P3D.Legacy.Core.Resources.Managers.Music;
 using P3D.Legacy.Core.Resources.Managers.Sound;
 using P3D.Legacy.Core.Settings;
 using P3D.Legacy.Core.Storage;
-
+using P3D.Legacy.Core.Storage.Folders;
 using PCLExt.FileStorage;
 
 namespace P3D.Legacy.Core
@@ -79,7 +79,7 @@ namespace P3D.Legacy.Core
                 Core.GameMessage.HideMessage();
 
                 var fileName = $"{DateTime.Now:yyyy-MM-dd_HH.mm.ss}.png";
-                var file = StorageInfo.ScreenshotsFolder.CreateFile(fileName, CreationCollisionOption.ReplaceExisting);
+                var file = new ScreenshotsFolder().CreateFile(fileName, CreationCollisionOption.ReplaceExisting);
 
                 if (!Core.GraphicsManager.IsFullScreen)
                 {

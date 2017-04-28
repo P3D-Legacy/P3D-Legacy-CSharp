@@ -32,7 +32,7 @@ Public Class EvolutionCamera
         ResetCursor()
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         Me.Ray = createRay()
 
         Pitch = MathHelper.Clamp(Pitch, -1.5F, 1.5F)

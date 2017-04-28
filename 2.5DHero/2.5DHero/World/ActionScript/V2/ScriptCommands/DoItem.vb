@@ -4,6 +4,7 @@ Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.ScriptSystem.V2
 
 Namespace ScriptVersion2
 

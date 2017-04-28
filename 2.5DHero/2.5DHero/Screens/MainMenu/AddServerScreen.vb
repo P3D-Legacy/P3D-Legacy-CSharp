@@ -135,7 +135,7 @@ Public Class AddServerScreen
         Me.DrawGamePadControls(d)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If KeyBoardHandler.KeyPressed(Keys.Tab) = True Then
             If Controls.ShiftDown() = True Then
                 Me.Index = 0
@@ -243,18 +243,18 @@ Public Class AddServerScreen
 
     Private Sub ButtonDone()
         If IsValid() = "" Then
-            Dim data As List(Of String) = System.IO.File.ReadAllLines(GameController.GamePath & "\Save\server_list.dat").ToList()
+            Dim data As List(Of String) = System.IO.File.ReadAllLines(Path.Combine(GameController.GamePath, "Save", "server_list.dat")).ToList()
             data.Add(Me.IdentifyName & "," & Me.Address)
-            System.IO.File.WriteAllLines(GameController.GamePath & "\Save\server_list.dat", data.ToArray())
+            System.IO.File.WriteAllLines(Path.Combine(GameController.GamePath, "Save", "server_list.dat"), data.ToArray())
             Core.SetScreen(Me.PreScreen)
         End If
     End Sub
 
     Private Sub ButtonCancel()
         If NewServer = False Then
-            Dim data As List(Of String) = System.IO.File.ReadAllLines(GameController.GamePath & "\Save\server_list.dat").ToList()
+            Dim data As List(Of String) = System.IO.File.ReadAllLines(Path.Combine(GameController.GamePath, "Save", "server_list.dat")).ToList()
             data.Add(EditServer.ToString())
-            System.IO.File.WriteAllLines(GameController.GamePath & "\Save\server_list.dat", data.ToArray())
+            System.IO.File.WriteAllLines(Path.Combine(GameController.GamePath, "Save", "server_list.dat"), data.ToArray())
         End If
 
         Core.SetScreen(Me.PreScreen)

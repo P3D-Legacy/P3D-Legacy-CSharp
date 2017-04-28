@@ -67,7 +67,7 @@ Public Class ConnectScreen
         Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CSng(Core.WindowSize.Width / 2 - (FontManager.MainFont.MeasureString(t).X * 1.4F) / 2), 320), Color.White, 0.0F, New Vector2(0), 1.4F, SpriteEffects.None, 0.0F)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Me.MyMode = Modes.Disconnect Then
             If Controls.Accept(True, True, True) = True Or Controls.Dismiss(True, True, True) = True Then
                 If quitToMenu = True Then

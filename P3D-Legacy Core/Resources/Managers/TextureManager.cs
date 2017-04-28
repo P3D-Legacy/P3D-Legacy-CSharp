@@ -5,13 +5,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using P3D.Legacy.Core.Storage;
+using P3D.Legacy.Core.Storage.Folders;
 
 namespace P3D.Legacy.Core.Resources.Managers
 {
     public static class TextureManager
     {
         public static Texture2D DefaultTexture;
-        public static void InitializeTextures() => DefaultTexture = StorageInfo.ContentFolder.GetTexture("GUI|no_texture");
+        public static void InitializeTextures() => DefaultTexture = new ContentFolder().GetTexture("GUI|no_texture");
 
         public static Dictionary<string, Texture2D> TextureList { get; } = new Dictionary<string, Texture2D>();
         public static Dictionary<KeyValuePair<int, Rectangle>, Texture2D> TextureRectList { get; } = new Dictionary<KeyValuePair<int, Rectangle>, Texture2D>();
@@ -28,7 +29,7 @@ namespace P3D.Legacy.Core.Resources.Managers
 
             var key = $"{path},FULL_IMAGE";
             if (!TextureList.ContainsKey(key))
-                TextureList.Add(key, StorageInfo.ContentFolder.GetTexture(path));
+                TextureList.Add(key, new ContentFolder().GetTexture(path));
 
             return TextureList[key];
         }
@@ -89,6 +90,6 @@ namespace P3D.Legacy.Core.Resources.Managers
             return DefaultTexture;
         }
 
-        public static bool TextureExist(string name) => StorageInfo.ContentFolder.TextureExist(name);
+        public static bool TextureExist(string name) => new ContentFolder().TextureExist(name);
     }
 }

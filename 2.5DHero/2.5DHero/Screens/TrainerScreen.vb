@@ -167,7 +167,7 @@ Public Class TrainerScreen
         End If
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Controls.Right(True, True, False, True) = True Then
             index.X += 1
         End If

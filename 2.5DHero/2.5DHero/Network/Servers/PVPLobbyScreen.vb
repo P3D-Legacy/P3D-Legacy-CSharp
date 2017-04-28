@@ -117,7 +117,7 @@ Public Class PVPLobbyScreen
         End Select
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If ScreenState = ScreenStates.Idle Then
             If ConnectScreen.Connected = True Then
                 Dim partnerOnServer As Boolean = False

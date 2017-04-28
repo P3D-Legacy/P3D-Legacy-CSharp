@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using P3D.Legacy.Core.Debug;
+using P3D.Legacy.Core.DebugC;
 using P3D.Legacy.Core.Entities.Other;
 using P3D.Legacy.Core.GameJolt;
 using P3D.Legacy.Core.Resources;
@@ -62,6 +63,8 @@ namespace P3D.Legacy.Core
         public GraphicsDeviceManager Graphics;
 
         public FPSMonitor FPSMonitor;
+        public DebugScreen DebugScreen;
+
         public Action<GameController> Action;
 
         public GameController(Action<GameController> action)
@@ -70,7 +73,10 @@ namespace P3D.Legacy.Core
 
             Activated += DGame_Activated;
             Deactivated += DGame_Deactivated;
-            Graphics = new GraphicsDeviceManager(this) { PreferMultiSampling = false };
+            Graphics = new GraphicsDeviceManager(this) { PreferMultiSampling = false, SynchronizeWithVerticalRetrace = false };
+            Graphics.ApplyChanges();
+            //IsFixedTimeStep = false;
+            //TargetElapsedTime = TimeSpan.FromMilliseconds(1000d/60d);
             Graphics.PreparingDeviceSettings += Graphics_PreparingDeviceSettings;
             Content.RootDirectory = "Content";
 
@@ -79,6 +85,7 @@ namespace P3D.Legacy.Core
             Window.ClientSizeChanged += OnResize;
 
             FPSMonitor = new FPSMonitor();
+            DebugScreen = new DebugScreen();
 
             var gameHacked = File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "temp"));
             if (gameHacked)
@@ -94,10 +101,15 @@ namespace P3D.Legacy.Core
         {
             Core.Initialize(this);
             Action(this);
+            DebugScreen.Initialize(GraphicsDevice);
             base.Initialize();
         }
 
-        protected override void LoadContent() { }
+        protected override void LoadContent()
+        {
+            Core.LoadContent();
+            DebugScreen.LoadContent(Content);
+        }
         protected override void UnloadContent() { }
 
         protected override void Update(GameTime gameTime)
@@ -106,7 +118,8 @@ namespace P3D.Legacy.Core
             base.Update(gameTime);
 
             SessionManager.Update();
-            FPSMonitor.Update(gameTime);
+            DebugScreen.Update(gameTime);
+            //FPSMonitor.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -115,7 +128,8 @@ namespace P3D.Legacy.Core
 
             base.Draw(gameTime);
 
-            FPSMonitor.DrawnFrame();
+            //FPSMonitor.DrawnFrame();
+            DebugScreen.Draw(gameTime);
         }
 
         //public static string DecSeparator => new NumberFormatInfo().NumberDecimalSeparator;

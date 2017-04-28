@@ -16,6 +16,7 @@ Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Security
 Imports P3D.Legacy.Core.Settings
 Imports P3D.Legacy.Core.Storage
+Imports P3D.Legacy.Core.Storage.Folders
 Imports P3D.Legacy.Shared.Extensions
 
 Imports PCLExt.FileStorage
@@ -128,12 +129,12 @@ Public Class MainMenuScreen
         Languages.Clear()
         LanguageNames.Clear()
 
-        Dim languageFiles = StorageInfo.LocalizationFolder.GetTranslationFiles()
-        For Each localizationFile In languageFiles
-            Dim data = localizationFile.ReadAllLines()
-            Dim languageName = data(0).GetSplit(1)
+        Dim languageFolders = new LocalizationsFolder().GetTranslationFolders()
+        For Each localizationFolder In languageFolders
+            Dim data = localizationFolder.LocalizationInfo
+            Dim languageName = data.CultureInfo.NativeName
 
-            Languages.Add(localizationFile.Language)
+            Languages.Add(data.CultureInfo)
             LanguageNames.Add(languageName)
         Next
     End Sub
@@ -150,7 +151,7 @@ Public Class MainMenuScreen
         Saves.Clear()
         SaveNames.Clear()
 
-        For Each Folder As String In System.IO.Directory.GetDirectories(GameController.GamePath & "\Save")
+        For Each Folder As String In System.IO.Directory.GetDirectories(Path.Combine(GameController.GamePath, "Save"))
             If Player.IsSaveGameFolder(Folder) = True Then
                 Saves.Add(Folder)
             End If
@@ -160,7 +161,7 @@ Public Class MainMenuScreen
             If i <= Saves.Count - 1 Then
                 Dim entry As String = Saves(i)
 
-                Dim userFolder = StorageInfo.SaveFolder.GetUserSaveFolder(Path.GetFileName(entry.TrimEnd("/").TrimEnd("\")))
+                Dim userFolder = new SaveFolder().GetUserSaveFolder(Path.GetFileName(entry.TrimEnd("/").TrimEnd("\")))
                 Dim Data() As String = userFolder.PlayerFile.ReadAllLines()
 
                 Dim Name As String = "Missingno."
@@ -188,8 +189,8 @@ Public Class MainMenuScreen
     Private Sub GetGameModes()
         ModeNames.Clear()
 
-        For Each folder As String In System.IO.Directory.GetDirectories(GameController.GamePath & "\GameModes\")
-            If System.IO.File.Exists(folder & "\GameMode.dat") = True Then
+        For Each folder As String In System.IO.Directory.GetDirectories(Path.Combine(GameController.GamePath, "GameModes"))
+            If System.IO.File.Exists(Path.Combine(folder, "GameMode.dat")) = True Then
                 Dim directory As String = folder
                 If directory.EndsWith("\") = True Then
                     directory = directory.Remove(directory.Length - 1, 1)
@@ -203,7 +204,7 @@ Public Class MainMenuScreen
 
     Private Sub ChangeLevel()
         Dim levelCount As Integer = 0
-        For Each levelPath As String In System.IO.Directory.GetFiles(GameController.GamePath & "\maps\mainmenu\")
+        For Each levelPath As String In System.IO.Directory.GetFiles(Path.Combine(GameController.GamePath, "maps", "mainmenu"))
             Dim levelFile As String = System.IO.Path.GetFileName(levelPath)
             If levelFile.StartsWith("mainmenu") = True And levelFile.EndsWith(".dat") = True Then
                 levelCount += 1
@@ -231,17 +232,17 @@ Public Class MainMenuScreen
 
         If Me.currentLevel <> levelID Then
             Me.currentLevel = levelID
-            Level.Load("mainmenu\mainmenu" & levelID & ".dat")
+            Level.Load("mainmenu/mainmenu" & levelID & ".dat")
         End If
 
         levelChangeDelay = 1000
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         Lighting.UpdateLighting(Screens.Screen.Effect)
 
-        Camera.Update()
-        Level.Update()
+        Camera.Update(gameTime)
+        Level.Update(gameTime)
         SkyDome.Update()
 
         If Core.GameInstance.IsActive = True Then
@@ -352,7 +353,7 @@ Public Class MainMenuScreen
             If i = mainmenuIndex Then
                 CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 48, 48, 48), "")
             Else
-                If i < 2 And Saves.Count = 0 Or i = 0 And System.IO.Directory.Exists(GameController.GamePath & "\Save\autosave") = False Then
+                If i < 2 And Saves.Count = 0 Or i = 0 And System.IO.Directory.Exists(Path.Combine(GameController.GamePath, "Save", "autosave")) = False Then
                     CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(48, 0, 48, 48), "")
                 Else
                     CanvasTexture = TextureManager.GetTexture("GUI\Menus\Menu", New Microsoft.Xna.Framework.Rectangle(0, 0, 48, 48), "")
@@ -538,7 +539,7 @@ Public Class MainMenuScreen
     End Sub
 
     Private Sub ContinueButton()
-        If Saves.Count > 0 And Player.IsSaveGameFolder(GameController.GamePath & "\Save\autosave") = True Then
+        If Saves.Count > 0 And Player.IsSaveGameFolder(Path.Combine(GameController.GamePath, "Save", "autosave")) = True Then
             Core.Player.IsGamejoltSave = False
             Core.Player.LoadGame("autosave")
 
@@ -651,7 +652,7 @@ Public Class MainMenuScreen
             Dim dispLocation As String = "(Unknown)"
             Dim dispGameMode As String = "Pokemon 3D"
 
-            Dim userFolder = StorageInfo.SaveFolder.GetUserSaveFolder(Saves(loadMenuIndex(0)).TrimEnd("/").TrimEnd("\"))
+            Dim userFolder = new SaveFolder().GetUserSaveFolder(Saves(loadMenuIndex(0)).TrimEnd("/").TrimEnd("\"))
             Dim Data() As String = userFolder.PlayerFile.ReadAllLines()
             For Each Line As String In Data
                 If Line.Contains("|") = True Then
@@ -1300,8 +1301,9 @@ Public Class MainMenuScreen
 
         ' TODO TRY
         'Try
-            If System.IO.File.Exists(GameController.GamePath & "\ContentPacks\" & packName & "\splash.png") = True Then
-                Using stream As System.IO.Stream = System.IO.File.Open(GameController.GamePath & "\ContentPacks\" & packName & "\splash.png", IO.FileMode.OpenOrCreate)
+        	Dim splash = Path.Combine(GameController.GamePath, "ContentPacks", packName, "splash.png")
+            If System.IO.File.Exists(splash) Then
+                Using stream As System.IO.Stream = System.IO.File.Open(splash, IO.FileMode.OpenOrCreate)
                     PInfoSlpash = Texture2D.FromStream(Core.GraphicsDevice, stream)
                 End Using
             End If
@@ -1309,12 +1311,12 @@ Public Class MainMenuScreen
         '    Logger.Log(Logger.LogTypes.ErrorMessage, "MainMenuScreen.vb/ButtonPackInformation: An error occurred trying to load the splash image at """ & GameController.GamePath & "\ContentPacks\" & packName & "\splash.png" & """. This could have been caused by an invalid file header. (Exception: " & ex.Message & ")")
         'End Try
 
-        Dim contentPackPath As String = GameController.GamePath & "\ContentPacks\" & packName & "\"
-        If System.IO.Directory.Exists(contentPackPath & "Songs") = True Then
+        Dim contentPackPath As String = Path.Combine(GameController.GamePath, "ContentPacks", packName)
+        If System.IO.Directory.Exists(Path.Combine(contentPackPath, "Sound Effects")) = True Then
             Dim hasWMA As Boolean = False
             Dim hasXNB As Boolean = False
             Dim hasMP3 As Boolean = False
-            For Each file As String In System.IO.Directory.GetFiles(contentPackPath & "Songs")
+            For Each file As String In System.IO.Directory.GetFiles(Path.Combine(contentPackPath, "Sound Effects"))
                 If System.IO.Path.GetExtension(file).ToLower() = ".xnb" Then
                     hasXNB = True
                 End If
@@ -1330,11 +1332,11 @@ Public Class MainMenuScreen
                 PInfoContent = P3D.Legacy.Core.Localization.GetString("pack_menu_songs")
             End If
         End If
-        If System.IO.Directory.Exists(contentPackPath & "Sounds") = True Then
+        If System.IO.Directory.Exists(Path.Combine(contentPackPath, "Sound Effects")) = True Then
             Dim hasWMA As Boolean = False
             Dim hasXNB As Boolean = False
             Dim hasWAV As Boolean = False
-            For Each file As String In System.IO.Directory.GetFiles(contentPackPath & "Sounds")
+            For Each file As String In System.IO.Directory.GetFiles(Path.Combine(contentPackPath, "Sound Effects"))
                 If System.IO.Path.GetExtension(file).ToLower() = ".xnb" Then
                     hasXNB = True
                 End If
@@ -1357,10 +1359,10 @@ Public Class MainMenuScreen
 
         Dim textureDirectories() As String = {"Textures", "GUI", "Items", "Pokemon", "SkyDomeResource"}
         For Each folder As String In textureDirectories
-            If System.IO.Directory.Exists(contentPackPath & folder) = True Then
+            If System.IO.Directory.Exists(Path.Combine(contentPackPath, folder)) = True Then
                 Dim hasXNB As Boolean = False
                 Dim hasPNG As Boolean = False
-                For Each file As String In System.IO.Directory.GetFiles(contentPackPath & folder, "*.*", IO.SearchOption.AllDirectories)
+                For Each file As String In System.IO.Directory.GetFiles(Path.Combine(contentPackPath, folder), "*.*", IO.SearchOption.AllDirectories)
                     If System.IO.Path.GetExtension(file).ToLower() = ".xnb" Then
                         hasXNB = True
                     End If
@@ -1537,7 +1539,7 @@ Public Class MainMenuScreen
             MediaPlayer.Stop()
             ContentPackManager.Clear()
             For Each s As String In Core.GameOptions.ContentPackNames
-                ContentPackManager.Load(GameController.GamePath & "\ContentPacks\" & s & "\exceptions.dat")
+                ContentPackManager.Load(Path.Combine(GameController.GamePath, "ContentPacks", s, "exceptions.dat"))
             Next
             MusicManager.PlayNoMusic()
             Core.OffsetMaps.Clear()
@@ -1616,9 +1618,9 @@ Public Class MainMenuScreen
         System.IO.Directory.Delete(Saves(loadMenuIndex(0)), True)
 
         Dim deleteAutosave As Boolean = False
-        For Each f As String In System.IO.Directory.GetDirectories(GameController.GamePath & "\Save\")
+        For Each f As String In System.IO.Directory.GetDirectories(Path.Combine(GameController.GamePath, "Save"))
 
-            Dim userFolder = StorageInfo.SaveFolder.GetUserSaveFolder(f.TrimEnd("/").TrimEnd("\"))
+            Dim userFolder = new SaveFolder().GetUserSaveFolder(f.TrimEnd("/").TrimEnd("\"))
             Dim Data() As String = userFolder.PlayerFile.ReadAllLines()
             For Each Line As String In Data
                 If Line.StartsWith("AutoSave|") = True Then
@@ -1630,7 +1632,7 @@ Public Class MainMenuScreen
             Next
         Next
         If deleteAutosave = True Then
-            System.IO.Directory.Delete(GameController.GamePath & "\Save\autosave", True)
+            System.IO.Directory.Delete(Path.Combine(GameController.GamePath, "Save", "autosave"), True)
         End If
 
         tempLoadDisplay = ""
@@ -1816,7 +1818,7 @@ Public Class MainMenuScreen
         If GameModeSplash Is Nothing Then
             ' TODO TRY
             'Try
-                Dim fileName As String = GameController.GamePath & "\GameModes\" & ModeNames(gameModeMenuIndex(0)) & "\GameMode.png"
+                Dim fileName As String = Path.Combine(GameController.GamePath, "GameModes", ModeNames(gameModeMenuIndex(0)), "GameMode.png")
                 If System.IO.File.Exists(fileName) = True Then
                     Using stream As System.IO.Stream = System.IO.File.Open(fileName, IO.FileMode.OpenOrCreate)
                         GameModeSplash = Texture2D.FromStream(Core.GraphicsDevice, stream)

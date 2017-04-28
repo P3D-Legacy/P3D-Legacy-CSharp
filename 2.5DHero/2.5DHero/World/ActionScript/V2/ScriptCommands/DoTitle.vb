@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.ScriptSystem
 
 Namespace ScriptVersion2
 

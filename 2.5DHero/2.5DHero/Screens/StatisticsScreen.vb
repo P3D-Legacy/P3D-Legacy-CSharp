@@ -125,7 +125,7 @@ Public Class StatisticsScreen
         Core.SpriteBatch.DrawString(FontManager.MainFont, "Statistics", New Vector2(100, 24), Color.White, 0.0F, Vector2.Zero, 2.0F, SpriteEffects.None, 0.0F)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Controls.Up(False, True, False, True, True, True) = True Then
             If Controls.ShiftDown() = True Then
                 Me.Scroll += 14

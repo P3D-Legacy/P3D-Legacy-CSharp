@@ -43,7 +43,7 @@ Public Class OfflineGameWarningScreen
         DrawGamePadControls(d, New Vector2(CSng(Core.WindowSize.Width / 2) - 140, 420))
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Controls.Accept(True, True, True) = True Then
             Core.SetScreen(Me.PreScreen)
         End If

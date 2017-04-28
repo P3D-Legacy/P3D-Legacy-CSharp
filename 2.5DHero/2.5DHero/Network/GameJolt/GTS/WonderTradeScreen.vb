@@ -177,7 +177,7 @@ Namespace GameJolt
             Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
         End Sub
 
-        Public Overrides Sub Update()
+        Public Overrides Sub Update(gameTime As GameTime)
             API.KickFromOnlineScreen(Me)
 
             Select Case Me.ScreenState

@@ -1,5 +1,7 @@
 ﻿Imports System.Globalization
 Imports P3D.Legacy.Core
+Imports P3D.Legacy.Core.ScriptSystem
+Imports P3D.Legacy.Core.ScriptSystem.V2
 
 Namespace ScriptVersion2
 

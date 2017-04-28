@@ -1,39 +1,14 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.ScriptSystem
 
 Public Class ScriptV2
+    Inherits BaseScript
 
-    Public Enum ScriptTypes As Integer
-        Command = 100
-
-        [if] = 101
-        [when] = 102
-        [then] = 103
-        [else] = 104
-        [endif] = 105
-        [end] = 106
-        [select] = 107
-        [endwhen] = 108
-        [return] = 109
-        [endscript] = 110
-        [while] = 111
-        [endwhile] = 112
-        [exitwhile] = 113
-
-        Comment = 128
-    End Enum
-
-    Public ScriptType As ScriptTypes
-
-    Public Value As String = ""
-
-    Public started As Boolean = False
-    Public IsReady As Boolean = False
-    Public CanContinue As Boolean = True
     Public RawScriptLine As String = ""
 
-    Public Sub Initialize(ByVal scriptLine As String)
+    Public Overrides Sub Initialize(ByVal scriptLine As String)
         Me.RawScriptLine = scriptLine
 
         Dim firstChar As String = scriptLine(0)
@@ -110,23 +85,23 @@ Public Class ScriptV2
         End If
     End Sub
 
-    Public Sub Update()
+    Public Overrides Sub Update(gameTime as GameTime)
         Select Case Me.ScriptType
             Case ScriptTypes.Command
-                Me.DoCommand()
+                Me.DoCommand(gameTime)
 
             Case ScriptTypes.if
-                Me.DoIf()
+                Me.DoIf(gameTime)
             Case ScriptTypes.then
                 Me.IsReady = True
             Case ScriptTypes.else
                 Dim oS As OverworldScreen = CType(Core.CurrentScreen, OverworldScreen)
-                oS.ActionScript.ChooseIf(True)
+                oS.ActionScript.ChooseIf(gameTime, True)
 
                 Me.IsReady = True
             Case ScriptTypes.endif
                 Dim oS As OverworldScreen = CType(Core.CurrentScreen, OverworldScreen)
-                oS.ActionScript.ChooseIf(True)
+                oS.ActionScript.ChooseIf(gameTime, True)
 
                 Me.IsReady = True
             Case ScriptTypes.while
@@ -200,7 +175,7 @@ Public Class ScriptV2
         Me.IsReady = True
     End Sub
 
-    Private Sub DoIf()
+    Private Sub DoIf(gameTime As GameTime)
         Dim T As Boolean = CheckCondition()
 
         ActionScript.CSL().WaitingEndIf(ActionScript.CSL().IfIndex + 1) = False
@@ -208,7 +183,7 @@ Public Class ScriptV2
 
         Dim oS As OverworldScreen = CType(Core.CurrentScreen, OverworldScreen)
 
-        oS.ActionScript.ChooseIf(T)
+        oS.ActionScript.ChooseIf(gameTime, T)
 
         Me.IsReady = True
     End Sub
@@ -319,8 +294,8 @@ Public Class ScriptV2
         Me.IsReady = True
     End Sub
 
-    Private Sub DoCommand()
-        ScriptVersion2.ScriptCommander.ExecuteCommand(Me, Me.Value)
+    Private Sub DoCommand(gameTime As GameTime)
+        ScriptVersion2.ScriptCommander.ExecuteCommand(gameTime, Me, Me.Value)
     End Sub
 
     Public Shared TempReturn As String = "NULL"

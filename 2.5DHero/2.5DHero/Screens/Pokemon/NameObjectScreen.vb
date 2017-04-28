@@ -177,7 +177,7 @@ Public Class NameObjectScreen
         Core.SpriteBatch.DrawString(FontManager.MiniFont, t, TextboxPosition(), Color.Black)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If GameModeManager.GetActiveGameRuleValueOrDefault("ForceRename", False) = True Then
             Me._askedRename = True
             Me._canChooseNo = False

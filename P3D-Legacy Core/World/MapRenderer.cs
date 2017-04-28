@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using P3D.Legacy.Core.Debug;
@@ -23,7 +23,7 @@ namespace P3D.Legacy.Core.World
         }
 
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             for (var i = 0; i < Entities.Count; i++)
             {
@@ -33,15 +33,15 @@ namespace P3D.Legacy.Core.World
                     i--;
                 }
                 else if (Entities[i].NeedsUpdate)
-                    Entities[i].Update();
+                    Entities[i].Update(gameTime);
             }
 
 
             for (var i = Floors.Count - 1; i >= 0; i--)
-                Floors[i].UpdateEntity();
+                Floors[i].UpdateEntity(gameTime);
 
             for (var i = Entities.Count - 1; i >= 0; i--)
-                Entities[i].UpdateEntity();
+                Entities[i].UpdateEntity(gameTime);
 
             SortEntities();
         }

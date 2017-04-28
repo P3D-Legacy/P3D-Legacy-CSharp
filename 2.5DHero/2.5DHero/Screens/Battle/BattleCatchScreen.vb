@@ -84,7 +84,7 @@ Public Class BattleCatchScreen
         TextBox.Draw()
     End Sub
 
-    Private Sub UpdateAnimations()
+    Private Sub UpdateAnimations(gameTime As GameTime)
         Animations = (From a In Animations Order By a.CameraDistance Descending).ToList()
 
         For i = 0 To Animations.Count - 1
@@ -94,13 +94,13 @@ Public Class BattleCatchScreen
                     i -= 1
                     Animations.Remove(a)
                 Else
-                    a.Update()
+                    a.Update(gameTime)
                 End If
             End If
         Next
 
         For Each Animation As BattleAnimation3D In Animations
-            Animation.UpdateEntity()
+            Animation.UpdateEntity(gameTime)
         Next
     End Sub
 
@@ -112,7 +112,7 @@ Public Class BattleCatchScreen
 
     Dim _playIntroSound As Boolean = False
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         Lighting.UpdateLighting(Screen.Effect)
         If textboxStart = False Then
             textboxStart = True
@@ -122,10 +122,10 @@ Public Class BattleCatchScreen
 
         SkyDome.Update()
 
-        Level.Update()
+        Level.Update(gameTime)
         SetCamera()
 
-        BattleScreen.OppPokemonNPC.UpdateEntity()
+        BattleScreen.OppPokemonNPC.UpdateEntity(gameTime)
 
         CType(Camera, BattleCamera).UpdateMatrices()
         CType(Camera, BattleCamera).UpdateFrustum()
@@ -137,7 +137,7 @@ Public Class BattleCatchScreen
                 SoundEffectManager.PlaySound("Battle\throw")
             End If
 
-            UpdateAnimations()
+            UpdateAnimations(gameTime)
 
             If Me.IsCurrentScreen() = True Then
                 If AnimationStarted = False Then

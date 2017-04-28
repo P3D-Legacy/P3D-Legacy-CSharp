@@ -227,7 +227,7 @@ Public Class NetworkPlayer
         Return MyBase.CalculateCameraDistance(CPosition) - 0.2F
     End Function
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         If Me.Rotation.Y <> Screen.Camera.Yaw Then
             Me.Rotation.Y = Screen.Camera.Yaw
         End If
@@ -241,10 +241,10 @@ Public Class NetworkPlayer
 
         ChangeTexture()
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Me.Name <> Me.LastName Then
             Me.LastName = Me.Name
             Me.NameTexture = SpriteFontTextToTexture(FontManager.InGameFont, Me.Name)
@@ -258,7 +258,7 @@ Public Class NetworkPlayer
             DownloadingSprite = False
         End If
 
-        MyBase.Update()
+        MyBase.Update(gameTime)
     End Sub
 
     Public Overrides Sub Render(effect As BasicEffect)

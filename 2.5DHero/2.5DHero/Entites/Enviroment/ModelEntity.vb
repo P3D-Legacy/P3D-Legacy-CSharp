@@ -58,7 +58,7 @@ Public Class ModelEntity
         End If
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         ViewBox = New BoundingBox(
                   Vector3.Transform(New Vector3(-1, -1, -1), Matrix.CreateScale(viewBoxScale) * Matrix.CreateTranslation(Position)),
                   Vector3.Transform(New Vector3(1, 1, 1), Matrix.CreateScale(viewBoxScale) * Matrix.CreateTranslation(Position)))

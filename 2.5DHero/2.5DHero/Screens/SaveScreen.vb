@@ -77,7 +77,7 @@ Public Class SaveScreen
         Screen.ChooseBox.Draw()
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         Screen.ChooseBox.Update()
 
         If Core.Player.IsGameJoltSave = True Then

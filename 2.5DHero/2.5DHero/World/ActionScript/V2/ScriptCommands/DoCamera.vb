@@ -9,7 +9,7 @@ Namespace ScriptVersion2
         'Contains the @camera commands.
         '--------------------------------------------------------------------------------------------------------------------------
 
-        Private Shared Sub DoCamera(ByVal subClass As String)
+        Private Shared Sub DoCamera(gameTime As GameTime, ByVal subClass As String)
             Dim command As String = ScriptComparer.GetSubClassArgumentPair(subClass).Command
             Dim argument As String = ScriptComparer.GetSubClassArgumentPair(subClass).Argument
 
@@ -140,7 +140,7 @@ Namespace ScriptVersion2
                 c.UpdateFrustum()
                 c.UpdateViewMatrix()
                 Screen.Level.SortEntities()
-                Screen.Level.UpdateEntities()
+                Screen.Level.UpdateEntities(gameTime)
             End If
 
             IsReady = True

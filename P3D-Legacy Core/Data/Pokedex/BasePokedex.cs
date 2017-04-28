@@ -80,7 +80,9 @@ namespace P3D.Legacy.Core.Pokemon
                 if (pData[ID - 1].Contains(ID + "|"))
                 {
                     string entry = pData[ID - 1];
-                    return Convert.ToInt32(entry.Remove(entry.Length - 1, 1).Remove(0, entry.IndexOf("|", StringComparison.Ordinal) + 1));
+					var t = entry.Remove(entry.Length - 1, 1).Remove(0, entry.IndexOf("|") + 1).Replace("}", "");
+					Logger.Log(Logger.LogTypes.Warning, t);
+					return Convert.ToInt32(t);
                 }
             }
 
@@ -88,7 +90,7 @@ namespace P3D.Legacy.Core.Pokemon
             {
                 if (Entry.Contains(ID + "|"))
                 {
-                    return Convert.ToInt32(Entry.Remove(Entry.Length - 1, 1).Remove(0, Entry.IndexOf("|", StringComparison.Ordinal) + 1));
+					return Convert.ToInt32(Entry.Remove(Entry.Length - 1, 1).Remove(0, Entry.IndexOf("|") + 1).Replace("}", ""));
                 }
             }
 

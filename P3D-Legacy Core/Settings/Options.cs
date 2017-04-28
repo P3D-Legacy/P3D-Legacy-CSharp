@@ -9,7 +9,7 @@ using P3D.Legacy.Core.Resources.Managers.Music;
 using P3D.Legacy.Core.Resources.Managers.Sound;
 using P3D.Legacy.Core.Settings.YamlConverters;
 using P3D.Legacy.Core.Storage;
-
+using P3D.Legacy.Core.Storage.Folders;
 using PCLExt.FileStorage;
 
 using YamlDotNet.Core;
@@ -37,14 +37,14 @@ namespace P3D.Legacy.Core.Settings
         public static void SaveOptions(Options options)
         {
             var serializer = SerializerBuilder.Build();
-            StorageInfo.SaveFolder.OptionsFile.WriteAllText(serializer.Serialize(options));
+            new SaveFolder().OptionsFile.WriteAllText(serializer.Serialize(options));
         }
         public static Options LoadOptions()
         {
             var deserializer = DeserializerBuilder.Build();
             try
             {
-                var deserialized = deserializer.Deserialize<Options>(StorageInfo.SaveFolder.OptionsFile.ReadAllText());
+                var deserialized = deserializer.Deserialize<Options>(new SaveFolder().OptionsFile.ReadAllText());
                 if (deserialized == null)
                 {
                     SaveOptions(Default);
@@ -56,7 +56,7 @@ namespace P3D.Legacy.Core.Settings
             catch (YamlException)
             {
                 SaveOptions(Default);
-                var deserialized = deserializer.Deserialize<Options>(StorageInfo.SaveFolder.OptionsFile.ReadAllText());
+                var deserialized = deserializer.Deserialize<Options>(new SaveFolder().OptionsFile.ReadAllText());
                 deserialized.Parse();
                 return deserialized;
             }
@@ -114,11 +114,11 @@ namespace P3D.Legacy.Core.Settings
                 var contentPackNames = new List<string>(ContentPackNames);
                 foreach (var contentPack in ContentPackNames)
                 {
-                    if (StorageInfo.ContentPacksFolder.CheckExists(contentPack) != ExistenceCheckResult.FolderExists)
+                    if (new ContentPacksFolder().CheckExists(contentPack) != ExistenceCheckResult.FolderExists)
                         contentPackNames.Remove(contentPack);
                     else
                     {
-                        var contentPackFolder = StorageInfo.ContentPacksFolder.GetFolder(contentPack);
+                        var contentPackFolder = new ContentPacksFolder().GetFolder(contentPack);
                         var contentPackException = contentPackFolder.CreateFile("exceptions.dat", CreationCollisionOption.OpenIfExists);
                         // TODO: Check
                         ContentPackManager.Load(contentPackException.Path);

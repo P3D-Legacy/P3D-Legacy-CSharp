@@ -1,4 +1,6 @@
-﻿Namespace ScriptVersion2
+﻿Imports P3D.Legacy.Core.ScriptSystem.V2
+
+Namespace ScriptVersion2
 
     Partial Class ScriptComparer
 

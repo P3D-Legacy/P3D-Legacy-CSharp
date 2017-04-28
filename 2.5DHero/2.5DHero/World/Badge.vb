@@ -97,7 +97,7 @@ Public Class Badge
     Public Shared Sub Load()
         Badges.Clear()
 
-        Dim file As IFile = GameModeManager.GetContentFile("Data\badges.dat")
+        Dim file As IFile = GameModeManager.GetContentFile("Data/badges.dat")
         FileValidation.CheckFileValid(file, False, "Badge.vb")
         Dim data() As String = file.ReadAllLines()
         For Each line As String In data

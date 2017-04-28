@@ -178,7 +178,7 @@ Public Class StorageSystemScreen
 
 #Region "Update"
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If ControllerHandler.ButtonPressed(Buttons.Y) = True Or KeyBoardHandler.KeyPressed(Core.KeyBindings.Special) = True Then
             Core.SetScreen(New StorageSystemFilterScreen(Me))
         End If
@@ -2023,7 +2023,7 @@ Public Class StorageSystemFilterScreen
         Next
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Menu.Visible = True Then
             Menu.Update()
         Else

@@ -6,6 +6,9 @@ namespace P3D.Legacy.Core.Extensions
     {
         public static bool FastIntersect(this BoundingFrustum frustum, BoundingBox box)
         {
+            if (frustum == null || box == null)
+                return false;
+
             Vector3 normal;
             Vector3 vector2;
 

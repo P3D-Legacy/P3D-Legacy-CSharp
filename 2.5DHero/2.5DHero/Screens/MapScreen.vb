@@ -269,7 +269,7 @@ Public Class MapScreen
         End If
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If lastMousePosition <> New Vector2(MouseHandler.MousePosition.X, MouseHandler.MousePosition.Y) Then
             Me.CursorPosition = New Vector2(MouseHandler.MousePosition.X, MouseHandler.MousePosition.Y)
             Me.lastMousePosition = New Vector2(MouseHandler.MousePosition.X, MouseHandler.MousePosition.Y)

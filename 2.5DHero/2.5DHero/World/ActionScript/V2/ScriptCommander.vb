@@ -1,12 +1,16 @@
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.ScriptSystem
+Imports P3D.Legacy.Core.ScriptSystem.V2
 
 Namespace ScriptVersion2
 
+    ''' <summary>
+    ''' Keep in VB
+    ''' </summary>
     Partial Class ScriptCommander
-
-        Shared ScriptV2 As ScriptV2
+        Friend Shared ScriptV2 As ScriptV2
 
         Shared Value As String = "" 'Stores a value that the ScriptCommander keeps across script calls and scripts.
 
@@ -17,7 +21,7 @@ Namespace ScriptVersion2
         ''' <summary>
         ''' If the script finished executing. If false, the script will get executed next frame.
         ''' </summary>
-        Private Shared Property IsReady As Boolean
+        Friend Shared Property IsReady As Boolean
             Get
                 Return ScriptV2.IsReady
             End Get
@@ -41,7 +45,7 @@ Namespace ScriptVersion2
         ''' <summary>
         ''' If the ScriptController can execute the next script in the same frame once this finishes.
         ''' </summary>
-        Private Shared Property CanContinue() As Boolean
+        Friend Shared Property CanContinue() As Boolean
             Get
                 Return ScriptV2.CanContinue
             End Get
@@ -55,7 +59,7 @@ Namespace ScriptVersion2
         ''' </summary>
         ''' <param name="ScriptV2">The primitive script (v2).</param>
         ''' <param name="inputString">The input command.</param>
-        Public Shared Sub ExecuteCommand(ByRef ScriptV2 As ScriptV2, ByVal inputString As String)
+        Public Shared Sub ExecuteCommand(gameTime As GameTime, ByRef ScriptV2 As ScriptV2, ByVal inputString As String)
             ScriptCommander.ScriptV2 = ScriptV2
 
             Dim classValue As String = inputString
@@ -89,7 +93,7 @@ Namespace ScriptVersion2
                     DoScreen(subClass)
                 Case "player"
                     If InsertSpin(inputString) = False Then
-                        DoPlayer(subClass)
+                        DoPlayer(gameTime, subClass)
                     End If
                 Case "music"
                     DoMusic(subClass)
@@ -97,7 +101,7 @@ Namespace ScriptVersion2
                     DoSound(subClass)
                 Case "entity"
                     If InsertSpin(inputString) = False Then
-                        DoEntity(subClass)
+                        DoEntity(gameTime, subClass)
                     End If
                 Case "battle"
                     DoBattle(subClass)
@@ -116,10 +120,10 @@ Namespace ScriptVersion2
                         DoOptions(subClass)
                     End If
                 Case "level"
-                    DoLevel(subClass)
+                    DoLevel(gameTime, subClass)
                 Case "camera"
                     If InsertSpin(inputString) = False Then
-                        DoCamera(subClass)
+                        DoCamera(gameTime, subClass)
                     End If
                 Case "item"
                     DoItem(subClass)
@@ -127,7 +131,7 @@ Namespace ScriptVersion2
                     DoStorage(subClass)
                 Case "npc"
                     If InsertSpin(inputString) = False Then
-                        DoNPC(subClass)
+                        DoNPC(gameTime, subClass)
                     End If
                 Case "chat"
                     DoChat(subClass)

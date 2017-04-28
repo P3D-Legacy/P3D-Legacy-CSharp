@@ -3,6 +3,7 @@ Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.ScriptSystem
 
 Public Class ScriptBlock
 
@@ -67,14 +68,14 @@ Public Class ScriptBlock
         End If
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Me.ActivateScript = True And Screen.Camera.Position.X = Me.Position.X And Screen.Camera.Position.Z = Me.Position.Z And CInt(Screen.Camera.Position.Y) = CInt(Me.Position.Y) Then
             Screen.Camera.StopMovement()
             ActivateScript = False
             TriggerScript(False)
         End If
 
-        MyBase.Update()
+        MyBase.Update(gameTime)
     End Sub
 
     Public Sub TriggerScript(ByVal canAttach As Boolean)

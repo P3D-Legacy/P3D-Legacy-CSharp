@@ -7,6 +7,7 @@ Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.ScriptSystem
 
 Namespace ScriptVersion2
 
@@ -16,7 +17,7 @@ Namespace ScriptVersion2
         'Contains the @player commands.
         '--------------------------------------------------------------------------------------------------------------------------
 
-        Private Shared Sub DoPlayer(ByVal subClass As String)
+        Private Shared Sub DoPlayer(gameTime As GameTime, ByVal subClass As String)
             Dim command As String = ScriptComparer.GetSubClassArgumentPair(subClass).Command
             Dim argument As String = ScriptComparer.GetSubClassArgumentPair(subClass).Argument
 
@@ -43,7 +44,7 @@ Namespace ScriptVersion2
                         Dim TextureID As String = argument
                         .SetTexture(TextureID, False)
 
-                        .UpdateEntity()
+                        .UpdateEntity(gameTime)
                     End With
                     IsReady = True
                 Case "move"
@@ -52,8 +53,8 @@ Namespace ScriptVersion2
                         Started = True
                         Screen.Level.OverworldPokemon.Visible = False
                     Else
-                        Screen.Level.UpdateEntities()
-                        Screen.Camera.Update()
+                        Screen.Camera.Update(gameTime)
+                        Screen.Level.UpdateEntities(gameTime)
                         If Screen.Camera.IsMoving() = False Then
                             IsReady = True
                             Screen.Level.OverworldPokemon.Visible = False
@@ -69,8 +70,8 @@ Namespace ScriptVersion2
                         Started = True
                         Screen.Level.OverworldPokemon.Visible = False
                     Else
-                        Screen.Camera.Update()
-                        Screen.Level.UpdateEntities()
+                        Screen.Camera.Update(gameTime)
+                        Screen.Level.UpdateEntities(gameTime)
                         If Screen.Camera.Turning = False Then
                             IsReady = True
                         End If
@@ -107,8 +108,8 @@ Namespace ScriptVersion2
                             IsReady = True
                         End If
                     Else
-                        Screen.Camera.Update()
-                        Screen.Level.UpdateEntities()
+                        Screen.Camera.Update(gameTime)
+                        Screen.Level.UpdateEntities(gameTime)
                         If Screen.Camera.Turning = False Then
                             IsReady = True
                         End If

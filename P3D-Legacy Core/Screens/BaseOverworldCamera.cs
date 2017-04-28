@@ -13,6 +13,7 @@ namespace P3D.Legacy.Core.Screens
         public Vector3 ThirdPersonOffset = new Vector3(0F, 0.3F, 1.5F);
 
         public abstract Vector3 CPosition { get; }
+        public bool YawLocked { get; set; }
 
 
         public BaseOverworldCamera(string Name) : base(Name) { }
@@ -33,5 +34,7 @@ namespace P3D.Legacy.Core.Screens
             }
             return 0f;
         }
+
+        public abstract void ResetCursor();
     }
 }

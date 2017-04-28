@@ -38,7 +38,7 @@ Namespace GameJolt
             Me.E = New Emblem(D.FromUserID, 0)
         End Sub
 
-        Public Overrides Sub Update()
+        Public Overrides Sub Update(gameTime As GameTime)
             For i = 0 To GTSMainScreen.Furrs.Count - 1
                 If i < GTSMainScreen.Furrs.Count Then
                     Dim f As Furr = GTSMainScreen.Furrs(i)
@@ -408,7 +408,7 @@ Namespace GameJolt
                 End If
             End Sub
 
-            Public Overrides Sub Update()
+            Public Overrides Sub Update(gameTime As GameTime)
                 For i = 0 To GTSMainScreen.Furrs.Count - 1
                     If i < GTSMainScreen.Furrs.Count Then
                         Dim f As Furr = GTSMainScreen.Furrs(i)

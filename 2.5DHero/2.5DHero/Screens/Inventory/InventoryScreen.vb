@@ -79,7 +79,7 @@ Public Class InventoryScreen
         Me.New(currentScreen, {}, Player.Temp.BagIndex, Nothing)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Controls.Down(True, True, True) Then
             If Controls.ShiftDown() = True Then
                 Me.index(bagIndex) += 3

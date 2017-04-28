@@ -21,8 +21,8 @@ Public Class PokemonScreenV2
         Me.battleTexture = TextureManager.GetTexture("GUI\Battle\Interface")
     End Sub
 
-    Public Overrides Sub Update()
-        MyBase.Update()
+    Public Overrides Sub Update(gameTime As GameTime)
+        MyBase.Update(gameTime)
 
         If Controls.Dismiss() = True Then
             Me.CloseScreen()

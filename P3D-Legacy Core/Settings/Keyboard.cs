@@ -3,7 +3,7 @@
 using Microsoft.Xna.Framework.Input;
 
 using P3D.Legacy.Core.Storage;
-
+using P3D.Legacy.Core.Storage.Folders;
 using PCLExt.FileStorage;
 
 using YamlDotNet.Core;
@@ -31,14 +31,14 @@ namespace P3D.Legacy.Core.Settings
         public static void SaveKeyboard(Keyboard options)
         {
             var serializer = SerializerBuilder.Build();
-            StorageInfo.SaveFolder.KeyboardFile.WriteAllText(serializer.Serialize(options));
+            new SaveFolder().KeyboardFile.WriteAllText(serializer.Serialize(options));
         }
         public static Keyboard LoadKeyboard()
         {
             var deserializer = DeserializerBuilder.Build();
             try
             {
-                var deserialized = deserializer.Deserialize<Keyboard>(StorageInfo.SaveFolder.KeyboardFile.ReadAllText());
+                var deserialized = deserializer.Deserialize<Keyboard>(new SaveFolder().KeyboardFile.ReadAllText());
                 if (deserialized == null)
                 {
                     SaveKeyboard(Default);
@@ -49,7 +49,7 @@ namespace P3D.Legacy.Core.Settings
             catch (YamlException)
             {
                 SaveKeyboard(Default);
-                var deserialized = deserializer.Deserialize<Keyboard>(StorageInfo.SaveFolder.KeyboardFile.ReadAllText());
+                var deserialized = deserializer.Deserialize<Keyboard>(new SaveFolder().KeyboardFile.ReadAllText());
                 return deserialized;
             }
         }

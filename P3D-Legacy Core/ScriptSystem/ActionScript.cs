@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.VisualBasic;
+using Microsoft.Xna.Framework;
+
 using P3D.Legacy.Core.Resources;
+using P3D.Legacy.Core.Resources.Managers;
 using P3D.Legacy.Core.Screens;
 using P3D.Legacy.Core.World;
+
+using PCLExt.FileStorage;
 
 namespace P3D.Legacy.Core.ScriptSystem
 {
@@ -32,10 +36,7 @@ namespace P3D.Legacy.Core.ScriptSystem
         /// <summary>
         /// Returns the current ScriptLevel based on the script index.
         /// </summary>
-        public static ScriptLevel CSL()
-        {
-            return ScriptLevels[ScriptLevelIndex];
-        }
+        public static ScriptLevel CSL() => ScriptLevels[ScriptLevelIndex];
 
         public static ScriptLevel[] ScriptLevels = new ScriptLevel[100];
 
@@ -44,22 +45,19 @@ namespace P3D.Legacy.Core.ScriptSystem
         public float reDelay = 0f;
 
         ILevel LevelRef;
-        public ActionScript(ILevel LevelRef)
-        {
-            this.LevelRef = LevelRef;
-        }
+        public ActionScript(ILevel levelRef) { LevelRef = levelRef; }
 
         public static int TempInputDirection = -1;
 
         public static bool TempSpin = false;
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             nextScript:
-            bool unlock = this.IsReady;
+            bool unlock = IsReady;
 
             if (Scripts.Count > 0)
             {
-                Scripts[0].Update();
+                Scripts[0].Update(gameTime);
             }
 
             for (var i = 0; i <= Scripts.Count - 1; i++)
@@ -68,25 +66,23 @@ namespace P3D.Legacy.Core.ScriptSystem
                 {
                     Script s = Scripts[i];
 
-                    if (s.IsReady == true)
+                    if (s.IsReady)
                     {
                         i -= 1;
 
-                        this.AddToWhileQuery(s);
+                        AddToWhileQuery(s);
                         Scripts.Remove(s);
                         ScriptLevels[s.Level].CurrentLine += 1;
 
-                        if (IsReady == false & s.CanContinue == true)
-                        {
+                        if (!IsReady && s.CanContinue)
                             goto nextScript;
-                        }
                     }
                 }
             }
 
-            if (this.IsReady == true)
+            if (IsReady)
             {
-                if (unlock == false)
+                if (!unlock)
                 {
                     Logger.Debug("Unlock Camera");
                     ((BaseOverworldCamera)Screen.Camera).YawLocked = false;
@@ -97,30 +93,15 @@ namespace P3D.Legacy.Core.ScriptSystem
                     reDelay -= 0.1f;
 
                     if (reDelay <= 0f)
-                    {
                         reDelay = 0f;
-                    }
                 }
             }
         }
 
-        public bool IsReady
-        {
-            get
-            {
-                if (Scripts.Count > 0)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-        }
+        public bool IsReady => Scripts.Count <= 0;
 
 
-        public static bool IsInsightScript = false;
+        public static bool IsInsightScript;
         /// <summary>
         /// Starts a script
         /// </summary>
@@ -148,12 +129,12 @@ namespace P3D.Legacy.Core.ScriptSystem
 
             ScriptLevel l = ScriptLevels[ScriptLevelIndex];
 
-            if (ResetInsight == true)
+            if (ResetInsight)
             {
                 IsInsightScript = false;
             }
 
-            if (reDelay == 0f | CheckDelay == false)
+            if (reDelay == 0f | !CheckDelay)
             {
                 switch (InputType)
                 {
@@ -163,23 +144,24 @@ namespace P3D.Legacy.Core.ScriptSystem
                         Logger.Debug("Start script (ID: " + Input + ")");
                         l.ScriptName = "Type: Script; Input: " + Input;
 
-                        string path = GameModeManager.GetScriptPath(Input + ".dat");
-                        Security.FileValidation.CheckFileValid(path, false, "ActionScript.vb");
+                        var file = GameModeManager.GetScriptFile(Input + ".dat");
+                        Security.FileValidation.CheckFileValid(file, false, "ActionScript.vb");
 
 
-                        if (System.IO.File.Exists(path) == true)
-                        {
-                            string Data = System.IO.File.ReadAllText(path);
+                        // TODO:
+                        //if (System.IO.File.Exists(path) == true)
+                        //{
+                            string Data = file.ReadAllText();
 
-                            Data = Data.Replace(Constants.vbNewLine, "^");
+                            Data = Data.Replace(Environment.NewLine, "^");
                             string[] ScriptData = Data.Split(Convert.ToChar("^"));
 
                             AddScriptLines(ScriptData);
-                        }
-                        else
-                        {
-                            Logger.Log(Logger.LogTypes.ErrorMessage, "ActionScript.vb: The script file \"" + path + "\" doesn't exist!");
-                        }
+                        //}
+                        //else
+                        //{
+                        //    Logger.Log(Logger.LogTypes.ErrorMessage, "ActionScript.vb: The script file \"" + path + "\" doesn't exist!");
+                        //}
                     }
                         break;
                     case 1:
@@ -204,7 +186,7 @@ namespace P3D.Legacy.Core.ScriptSystem
                         Logger.Debug("Start Script (DirectInput; " + activator + ")");
                         l.ScriptName = "Type: Direct; Input: " + Input;
 
-                        string Data = Input.Replace(Constants.vbNewLine, "^");
+                        string Data = Input.Replace(Environment.NewLine, "^");
 
                         string[] ScriptData = Data.Split(Convert.ToChar("^"));
 
@@ -221,7 +203,7 @@ namespace P3D.Legacy.Core.ScriptSystem
             ScriptLevel l = ScriptLevels[ScriptLevelIndex];
             for (var index = 0; index < ScriptData.Length; index++)
             {
-                if (i == 0 & ScriptData[index].ToLower().StartsWith("version="))
+                if (i == 0 && ScriptData[index].ToLower().StartsWith("version="))
                 {
                     l.ScriptVersion = Convert.ToInt32(ScriptData[index].Remove(0, ("version=").Length));
                     l.CurrentLine += 1;
@@ -238,7 +220,7 @@ namespace P3D.Legacy.Core.ScriptSystem
                     }
                     if (!string.IsNullOrEmpty(ScriptData[index]))
                     {
-                        this.Scripts.Insert(i, new Script(ScriptData[index], ScriptLevelIndex));
+                        Scripts.Insert(i, new Script(ScriptData[index], ScriptLevelIndex));
                         i += 1;
                     }
                 }
@@ -251,7 +233,7 @@ namespace P3D.Legacy.Core.ScriptSystem
             bool proceed = false;
             bool first = true;
 
-            while (proceed == false)
+            while (!proceed)
             {
                 if (Scripts.Count == 0)
                 {
@@ -263,24 +245,23 @@ namespace P3D.Legacy.Core.ScriptSystem
 
                 switch (s.ScriptType)
                 {
-                    case Script.ScriptTypes.@select:
-                        if (first == false)
+                    case BaseScript.ScriptTypes.@select:
+                        if (!first)
                         {
                             l.WhenIndex += 1;
                             l.WaitingEndWhen[l.WhenIndex] = true;
                             l.Switched[l.WhenIndex] = true;
                         }
                         break;
-                    case Script.ScriptTypes.Command:
-                        if (s.ScriptV2.Value.ToLower().StartsWith("options.show(") == true & first == false)
+                    case BaseScript.ScriptTypes.Command:
+                        if (s.ScriptV2.Value.ToLower().StartsWith("options.show(") == true && first == false)
                         {
                             l.WhenIndex += 1;
                             l.WaitingEndWhen[l.WhenIndex] = true;
                             l.Switched[l.WhenIndex] = true;
                         }
                         break;
-                    case Script.ScriptTypes.SwitchWhen:
-                    case Script.ScriptTypes.when:
+                    case BaseScript.ScriptTypes.when:
                         if (l.Switched[l.WhenIndex] == false)
                         {
                             bool equal = false;
@@ -288,14 +269,14 @@ namespace P3D.Legacy.Core.ScriptSystem
 
                             foreach (string arg in args)
                             {
-                                if ((ScriptVersion2.ScriptComparer.EvaluateConstruct(arg).Equals(ScriptVersion2.ScriptComparer.EvaluateConstruct(Answer))) == true)
+                                if (Script.EvaluateConstruct(arg).Equals(Script.EvaluateConstruct(Answer)))
                                 {
                                     equal = true;
                                     break; // TODO: might not be correct. Was : Exit For
                                 }
                             }
 
-                            if (equal == true)
+                            if (equal)
                             {
                                 l.WaitingEndWhen[l.WhenIndex] = false;
                                 proceed = true;
@@ -306,12 +287,11 @@ namespace P3D.Legacy.Core.ScriptSystem
                             }
                         }
                         break;
-                    case Script.ScriptTypes.SwitchEndWhen:
-                    case Script.ScriptTypes.endwhen:
+                    case BaseScript.ScriptTypes.endwhen:
                         l.WaitingEndWhen[l.WhenIndex] = false;
                         l.Switched[l.WhenIndex] = false;
                         l.WhenIndex -= 1;
-                        if (l.WaitingEndWhen[l.WhenIndex] == false)
+                        if (!l.WaitingEndWhen[l.WhenIndex])
                         {
                             proceed = true;
                         }
@@ -325,12 +305,12 @@ namespace P3D.Legacy.Core.ScriptSystem
             }
         }
 
-        public void ChooseIf(bool T)
+        public void ChooseIf(GameTime gameTime, bool T)
         {
             ScriptLevel l = ScriptLevels[ScriptLevelIndex];
             bool proceed = false;
 
-            while (proceed == false)
+            while (!proceed)
             {
                 if (Scripts.Count == 0)
                 {
@@ -341,17 +321,16 @@ namespace P3D.Legacy.Core.ScriptSystem
 
                 switch (s.ScriptType)
                 {
-                    case Script.ScriptTypes.@if:
-                    case Script.ScriptTypes.SwitchIf:
+                    case BaseScript.ScriptTypes.@if:
                         l.IfIndex += 1;
-                        if (l.WaitingEndIf[l.IfIndex - 1] == true)
+                        if (l.WaitingEndIf[l.IfIndex - 1])
                         {
                             l.WaitingEndIf[l.IfIndex] = true;
                             l.CanTriggerElse[l.IfIndex] = false;
                         }
                         else
                         {
-                            if (T == true)
+                            if (T)
                             {
                                 proceed = true;
                                 l.WaitingEndIf[l.IfIndex] = false;
@@ -364,9 +343,8 @@ namespace P3D.Legacy.Core.ScriptSystem
                             }
                         }
                         break;
-                    case Script.ScriptTypes.@else:
-                    case Script.ScriptTypes.SwitchElse:
-                        if (l.CanTriggerElse[l.IfIndex] == true)
+                    case BaseScript.ScriptTypes.@else:
+                        if (l.CanTriggerElse[l.IfIndex])
                         {
                             l.WaitingEndIf[l.IfIndex] = false;
                             proceed = true;
@@ -376,10 +354,9 @@ namespace P3D.Legacy.Core.ScriptSystem
                             l.WaitingEndIf[l.IfIndex] = true;
                         }
                         break;
-                    case Script.ScriptTypes.endif:
-                    case Script.ScriptTypes.SwitchEndIf:
+                    case BaseScript.ScriptTypes.endif:
                         l.IfIndex -= 1;
-                        if (l.WaitingEndIf[l.IfIndex] == false)
+                        if (!l.WaitingEndIf[l.IfIndex])
                         {
                             proceed = true;
                         }
@@ -393,17 +370,17 @@ namespace P3D.Legacy.Core.ScriptSystem
 
             if (Scripts.Count > 0)
             {
-                Scripts[0].Update();
+                Scripts[0].Update(gameTime);
             }
         }
 
         public void AddToWhileQuery(Script RemovedScript)
         {
-            if (CSL().WhileQueryInitialized == true & CSL().ScriptVersion == 2)
+            if (CSL().WhileQueryInitialized && CSL().ScriptVersion == 2)
             {
                 CSL().WhileQuery.Add(RemovedScript);
 
-                if (RemovedScript.ScriptV2.ScriptType == ScriptV2.ScriptTypes.endwhile)
+                if (RemovedScript.ScriptV2.ScriptType == BaseScript.ScriptTypes.endwhile)
                 {
                     int i = 0;
 
@@ -424,23 +401,23 @@ namespace P3D.Legacy.Core.ScriptSystem
         public static bool IsRegistered(string i)
         {
             CheckTimeBasedRegisters();
-            if (Core.Player.RegisterData.Contains(",") == true)
+            if (Core.Player.RegisterData.Contains(","))
             {
                 string[] Data = Core.Player.RegisterData.Split(Convert.ToChar(","));
 
-                foreach (string d in Data)
+                for (var index = 0; index < Data.Length; index++)
                 {
-                    if (d.StartsWith("[") == true & d.EndsWith("]") == false & d.Contains("]") == true)
+                    if (Data[index].StartsWith("[") && !Data[index].EndsWith("]") && Data[index].Contains("]"))
                     {
-                        d = d.Remove(0, d.IndexOf("]") + 1);
-                        if (d == i)
+                        Data[index] = Data[index].Remove(0, Data[index].IndexOf("]") + 1);
+                        if (Data[index] == i)
                         {
                             return true;
                         }
                     }
                     else
                     {
-                        if (d == i)
+                        if (Data[index] == i)
                         {
                             return true;
                         }
@@ -451,7 +428,7 @@ namespace P3D.Legacy.Core.ScriptSystem
             }
             else
             {
-                if (Core.Player.RegisterData.StartsWith("[") == true & Core.Player.RegisterData.EndsWith("]") == false & Core.Player.RegisterData.Contains("]") == true)
+                if (Core.Player.RegisterData.StartsWith("[") && !Core.Player.RegisterData.EndsWith("]") && Core.Player.RegisterData.Contains("]"))
                 {
                     string d = Core.Player.RegisterData.Remove(0, Core.Player.RegisterData.IndexOf("]") + 1);
                     if (d == i)
@@ -476,7 +453,7 @@ namespace P3D.Legacy.Core.ScriptSystem
             if (!string.IsNullOrEmpty(Core.Player.RegisterData))
             {
                 List<string> Data = new [] { Core.Player.RegisterData }.ToList();
-                if (Core.Player.RegisterData.Contains(",") == true)
+                if (Core.Player.RegisterData.Contains(","))
                 {
                     Data = Core.Player.RegisterData.Split(Convert.ToChar(",")).ToList();
                 }
@@ -489,7 +466,7 @@ namespace P3D.Legacy.Core.ScriptSystem
                     {
                         string d = Data[i];
 
-                        if (d.StartsWith("[TIME|") == true)
+                        if (d.StartsWith("[TIME|"))
                         {
                             string timeString = d.Remove(0, ("[TIME|").Length);
                             timeString = timeString.Remove(timeString.IndexOf("]"));
@@ -506,62 +483,62 @@ namespace P3D.Legacy.Core.ScriptSystem
                             {
                                 case "days":
                                 case "day":
-                                    if (DateDiff(DateInterval.Day, regDate, System.DateTime.Now) >= value)
+                                    if (DateAndTime.DateDiff(DateInterval.Day, regDate, System.DateTime.Now) >= value)
                                     {
                                         @remove = true;
                                     }
                                     break;
                                 case "minutes":
                                 case "minute":
-                                    if (DateDiff(DateInterval.Minute, regDate, System.DateTime.Now) >= value)
+                                    if (DateAndTime.DateDiff(DateInterval.Minute, regDate, System.DateTime.Now) >= value)
                                     {
                                         @remove = true;
                                     }
                                     break;
                                 case "seconds":
                                 case "second":
-                                    if (DateDiff(DateInterval.Second, regDate, System.DateTime.Now) >= value)
+                                    if (DateAndTime.DateDiff(DateInterval.Second, regDate, System.DateTime.Now) >= value)
                                     {
                                         @remove = true;
                                     }
                                     break;
                                 case "years":
                                 case "year":
-                                    if (Convert.ToInt32(Math.Floor(DateDiff(DateInterval.Day, regDate, System.DateTime.Now) / 365)) >= value)
+                                    if (Convert.ToInt32(Math.Floor((double) DateAndTime.DateDiff(DateInterval.Day, regDate, System.DateTime.Now) / 365)) >= value)
                                     {
                                         @remove = true;
                                     }
                                     break;
                                 case "weeks":
                                 case "week":
-                                    if (Convert.ToInt32(Math.Floor(DateDiff(DateInterval.Day, regDate, System.DateTime.Now) / 7)) >= value)
+                                    if (Convert.ToInt32(Math.Floor((double) DateAndTime.DateDiff(DateInterval.Day, regDate, System.DateTime.Now) / 7)) >= value)
                                     {
                                         @remove = true;
                                     }
                                     break;
                                 case "months":
                                 case "month":
-                                    if (DateDiff(DateInterval.Month, regDate, System.DateTime.Now) >= value)
+                                    if (DateAndTime.DateDiff(DateInterval.Month, regDate, System.DateTime.Now) >= value)
                                     {
                                         @remove = true;
                                     }
                                     break;
                                 case "hours":
                                 case "hour":
-                                    if (DateDiff(DateInterval.Hour, regDate, System.DateTime.Now) >= value)
+                                    if (DateAndTime.DateDiff(DateInterval.Hour, regDate, System.DateTime.Now) >= value)
                                     {
                                         @remove = true;
                                     }
                                     break;
                                 case "dayofweek":
-                                    if (DateDiff(DateInterval.Weekday, regDate, System.DateTime.Now) >= value)
+                                    if (DateAndTime.DateDiff(DateInterval.Weekday, regDate, System.DateTime.Now) >= value)
                                     {
                                         @remove = true;
                                     }
                                     break;
                             }
 
-                            if (@remove == true)
+                            if (@remove)
                             {
                                 Data.RemoveAt(i);
                                 i -= 1;
@@ -571,7 +548,7 @@ namespace P3D.Legacy.Core.ScriptSystem
                     }
                 }
 
-                if (removedRegisters == true)
+                if (removedRegisters)
                 {
                     string s = "";
 
@@ -594,22 +571,24 @@ namespace P3D.Legacy.Core.ScriptSystem
 
         public static System.DateTime UnixToTime(string strUnixTime)
         {
-            System.DateTime functionReturnValue = default(System.DateTime);
-            functionReturnValue = DateAdd(DateInterval.Second, Conversion.Val(strUnixTime), 1 / 1 / 1970 12:00:00 AM);
-            if (functionReturnValue.IsDaylightSavingTime())
-            {
-                functionReturnValue = DateAdd(DateInterval.Hour, 1, UnixToTime());
-            }
-            return functionReturnValue;
+            return default(System.DateTime);
+            //System.DateTime functionReturnValue = default(System.DateTime);
+            //functionReturnValue = DateAdd(DateInterval.Second, Conversion.Val(strUnixTime), 1 / 1 / 1970 12:00:00 AM);
+            //if (functionReturnValue.IsDaylightSavingTime())
+            //{
+            //    functionReturnValue = DateAdd(DateInterval.Hour, 1, UnixToTime());
+            //}
+            //return functionReturnValue;
         }
 
         public static string TimeToUnix(System.DateTime dteDate)
         {
-            if (dteDate.IsDaylightSavingTime())
-            {
-                dteDate = DateAdd(DateInterval.Hour, -1, dteDate);
-            }
-            return DateDiff(DateInterval.Second, 1 / 1 / 1970 12:00:00 AM, dteDate).ToString();
+            return null;
+            //if (dteDate.IsDaylightSavingTime())
+            //{
+            //    dteDate = DateAdd(DateInterval.Hour, -1, dteDate);
+            //}
+            //return DateDiff(DateInterval.Second, 1 / 1 / 1970 12:00:00 AM, dteDate).ToString();
         }
 
         public static void RegisterID(string i)
@@ -623,7 +602,7 @@ namespace P3D.Legacy.Core.ScriptSystem
             else
             {
                 string[] checkData = Data.Split(Convert.ToChar(","));
-                if (checkData.Contains(i) == false)
+                if (!checkData.Contains(i))
                 {
                     Data += "," + i;
                 }
@@ -645,7 +624,7 @@ namespace P3D.Legacy.Core.ScriptSystem
             else
             {
                 string[] checkData = Data.Split(Convert.ToChar(","));
-                if (checkData.Contains(reg) == false)
+                if (!checkData.Contains(reg))
                 {
                     Data += "," + reg;
                 }
@@ -683,7 +662,7 @@ namespace P3D.Legacy.Core.ScriptSystem
 
             foreach (string line in Data)
             {
-                if (line.StartsWith("[") == true & line.Contains("]") == true & line.EndsWith("]") == false)
+                if (line.StartsWith("[") && line.Contains("]") && !line.EndsWith("]"))
                 {
                     string lName = line.Remove(0, line.IndexOf("]", StringComparison.Ordinal) + 1);
                     string lType = line.Remove(0, 1);
@@ -722,7 +701,7 @@ namespace P3D.Legacy.Core.ScriptSystem
                 {
                     newData += ",";
                 }
-                if (line.StartsWith("[") == true & line.Contains("]") == true & line.EndsWith("]") == false)
+                if (line.StartsWith("[") && line.Contains("]") && !line.EndsWith("]"))
                 {
                     string lName = line.Remove(0, line.IndexOf("]", StringComparison.Ordinal) + 1);
                     string lType = line.Remove(0, 1);
@@ -755,7 +734,7 @@ namespace P3D.Legacy.Core.ScriptSystem
             string[] registers = Core.Player.RegisterData.Split(Convert.ToChar(","));
             foreach (string line in registers)
             {
-                if (line.StartsWith("[") == true & line.Contains("]") == true & line.EndsWith("]") == false)
+                if (line.StartsWith("[") && line.Contains("]") && !line.EndsWith("]"))
                 {
                     string lName = line.Remove(0, line.IndexOf("]", StringComparison.Ordinal) + 1);
 
@@ -775,6 +754,7 @@ namespace P3D.Legacy.Core.ScriptSystem
         }
 
         #endregion
+
 
     }
 }

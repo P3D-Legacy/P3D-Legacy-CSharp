@@ -36,7 +36,7 @@ Public Class IntroScreen
         Me._pokemonLogoOffset = CInt(Core.windowSize.Height / 2 - Me._pokemonLogoTexture.Height)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         Select Case _introStage
             Case IntroStages.RevealPokemon
                 Me.UpdateRevealPokemon()

@@ -127,8 +127,8 @@ Public Class StrengthRock
         Return True
     End Function
 
-    Public Overrides Sub UpdateEntity()
-        MyBase.UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Public Overrides Sub Render(effect As BasicEffect)

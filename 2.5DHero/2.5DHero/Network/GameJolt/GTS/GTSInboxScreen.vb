@@ -42,7 +42,7 @@ Namespace GameJolt
             Me.Loading = True
         End Sub
 
-        Public Overrides Sub Update()
+        Public Overrides Sub Update(gameTime As GameTime)
             For i = 0 To GTSMainScreen.Furrs.Count - 1
                 If i < GTSMainScreen.Furrs.Count Then
                     Dim f As Furr = GTSMainScreen.Furrs(i)

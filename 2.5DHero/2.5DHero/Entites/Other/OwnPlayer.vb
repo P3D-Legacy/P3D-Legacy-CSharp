@@ -103,7 +103,7 @@ Public Class OwnPlayer
         Return MyBase.CalculateCameraDistance(CPosition) - 0.2F
     End Function
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         If Not Core.CurrentScreen Is Nothing Then
             If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
                 If Screen.Camera.Name = "Overworld" Then
@@ -119,7 +119,7 @@ Public Class OwnPlayer
         Move()
         ChangeTexture()
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Private Sub Move()

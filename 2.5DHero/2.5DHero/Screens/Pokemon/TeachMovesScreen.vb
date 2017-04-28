@@ -181,7 +181,7 @@ Public Class TeachMovesScreen
         End With
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Controls.Up(True, True, True, True, True) = True Then
             Me.index -= 1
         End If

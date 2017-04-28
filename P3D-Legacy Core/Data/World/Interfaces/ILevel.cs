@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using Microsoft.Xna.Framework;
 using P3D.Legacy.Core.Entities;
 using P3D.Legacy.Core.Entities.Other;
 using P3D.Legacy.Core.Pokemon;
@@ -263,12 +263,12 @@ namespace P3D.Legacy.Core.World
         /// <summary>
         /// Updates the level's logic.
         /// </summary>
-        void Update();
+        void Update(GameTime gameTime);
 
         /// <summary>
         /// Updates all entities on the map and offset map and sorts the enumarations.
         /// </summary>
-        void UpdateEntities();
+        void UpdateEntities(GameTime gameTime);
 
         /// <summary>
         /// Sorts the entity enumerations.

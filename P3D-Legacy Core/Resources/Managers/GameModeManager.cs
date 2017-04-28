@@ -3,7 +3,7 @@ using System.Linq;
 
 using P3D.Legacy.Core.GameModes;
 using P3D.Legacy.Core.Storage;
-
+using P3D.Legacy.Core.Storage.Folders;
 using PCLExt.FileStorage;
 
 using GameRuleObject = P3D.Legacy.Core.GameModes.GameMode.GameRuleList.GameRuleObject;
@@ -38,7 +38,7 @@ namespace P3D.Legacy.Core.Resources.Managers
 
             CreateDefaultGameMode();
 
-            foreach (var folder in StorageInfo.GameModesFolder.GetFolders())
+            foreach (var folder in new GameModesFolder().GetFolders())
                 if (folder.CheckExists(GameModeYaml.GameModeFilename) == ExistenceCheckResult.FileExists)
                     LoadAndAddGameMode(folder.Name);
 
@@ -105,6 +105,34 @@ namespace P3D.Legacy.Core.Resources.Managers
         public static GameRuleObject GetActiveGameRuleValueOrDefault(string ruleName, GameRuleObject defaultValue) => GetActiveGameRules().GetValueOrDefault(ruleName, defaultValue);
 
 
+        private static IFile GetFile(string file, IFolder folder)
+        {
+            file = file.Replace("\\", "|").Replace("/", "|");
+            string[] arr = file.Split('|');
+            string filename = arr.Last();
+            string[] folders = arr.Length > 1 ? arr.Take(arr.Length - 1).ToArray() : null;
+
+            if (folders != null)
+                foreach (var folderName in folders)
+                    folder = folder.GetFolder(folderName);
+
+            return folder.GetFile(filename);
+        }
+
+        private static bool FileExists(string file, IFolder folder)
+        {
+            file = file.Replace("\\", "|").Replace("/", "|");
+            string[] arr = file.Split('|');
+            string filename = arr.Last();
+            string[] folders = arr.Length > 1 ? arr.Take(arr.Length - 1).ToArray() : null;
+
+            if (folders != null)
+                foreach (var folderName in folders)
+                    folder = folder.GetFolder(folderName);
+
+            return folder.CheckExists(filename) == ExistenceCheckResult.FileExists;
+        }
+
         /// <summary>
         /// Returns the correct map path to load a map from.
         /// </summary>
@@ -112,14 +140,14 @@ namespace P3D.Legacy.Core.Resources.Managers
         public static IFile GetMapFile(string levelFile)
         {
             if (ActiveGameMode.IsDefaultGamemode)
-                return StorageInfo.MapFolder.GetFile(levelFile);
+                return GetFile(levelFile, new MapsFolder());
 
             if (ActiveGameMode.MapFolder.CheckExists(levelFile) == ExistenceCheckResult.FileExists)
-                return ActiveGameMode.MapFolder.GetFile(levelFile);
+                return GetFile(levelFile, ActiveGameMode.MapFolder);
 
             // TODO: Log
 
-            return StorageInfo.MapFolder.GetFile(levelFile);
+            return GetFile(levelFile, new MapsFolder());
         }
 
         /// <summary>
@@ -129,14 +157,14 @@ namespace P3D.Legacy.Core.Resources.Managers
         public static IFile GetScriptFile(string scriptFile)
         {
             if (ActiveGameMode.IsDefaultGamemode)
-                return StorageInfo.ScriptFolder.GetFile(scriptFile);
+                return GetFile(scriptFile, new ScriptsFolder());
 
             if (ActiveGameMode.ScriptFolder.CheckExists(scriptFile) == ExistenceCheckResult.FileExists)
-                return ActiveGameMode.ScriptFolder.GetFile(scriptFile);
+                return GetFile(scriptFile, ActiveGameMode.ScriptFolder);
 
             // TODO: Log
 
-            return StorageInfo.ScriptFolder.GetFile(scriptFile);
+            return GetFile(scriptFile, new ScriptsFolder());
         }
 
         /// <summary>
@@ -146,14 +174,14 @@ namespace P3D.Legacy.Core.Resources.Managers
         public static IFile GetPokeFile(string pokeFile)
         {
             if (ActiveGameMode.IsDefaultGamemode)
-                return StorageInfo.PokeFolder.GetFile(pokeFile);
+                return GetFile(pokeFile, new PokeFolder());
 
             if (ActiveGameMode.PokeFolder.CheckExists(pokeFile) == ExistenceCheckResult.FileExists)
-                return ActiveGameMode.PokeFolder.GetFile(pokeFile);
+                return GetFile(pokeFile, ActiveGameMode.PokeFolder);
 
             // TODO: Log
 
-            return StorageInfo.PokeFolder.GetFile(pokeFile);
+            return GetFile(pokeFile, new PokeFolder());
         }
 
         /// <summary>
@@ -163,14 +191,14 @@ namespace P3D.Legacy.Core.Resources.Managers
         public static IFile GetPokemonDataFile(string pokemonDataFile)
         {
             if (ActiveGameMode.IsDefaultGamemode)
-                return StorageInfo.PokemonDataFolder.GetFile(pokemonDataFile);
+                return GetFile(pokemonDataFile, new PokemonDataFolder());
 
             if (ActiveGameMode.PokemonDataFolder.CheckExists(pokemonDataFile) == ExistenceCheckResult.FileExists)
-                return ActiveGameMode.PokemonDataFolder.GetFile(pokemonDataFile);
+                return GetFile(pokemonDataFile, ActiveGameMode.PokemonDataFolder);
 
             // TODO: Log
 
-            return StorageInfo.PokemonDataFolder.GetFile(pokemonDataFile);
+            return GetFile(pokemonDataFile, new PokemonDataFolder());
         }
 
         /// <summary>
@@ -180,21 +208,21 @@ namespace P3D.Legacy.Core.Resources.Managers
         public static IFile GetContentFile(string contentFile)
         {
             if (ActiveGameMode.IsDefaultGamemode)
-                return StorageInfo.ContentFolder.GetFile(contentFile);
+                return GetFile(contentFile, new ContentFolder());
 
             if (ActiveGameMode.ContentFolder.CheckExists(contentFile) == ExistenceCheckResult.FileExists)
-                return ActiveGameMode.ContentFolder.GetFile(contentFile);
+                return GetFile(contentFile, ActiveGameMode.ContentFolder);
 
             // TODO: Log
 
-            return StorageInfo.ContentFolder.GetFile(contentFile);
+            return GetFile(contentFile, new ContentFolder());
         }
 
 
         public static bool PokeFileExists(string levelFile)
         {
-            var path = ActiveGameMode.PokeFolder.CheckExists(levelFile) == ExistenceCheckResult.FileExists;
-            var defaultPath = StorageInfo.PokeFolder.CheckExists(levelFile) == ExistenceCheckResult.FileExists;
+            var path = FileExists(levelFile, ActiveGameMode.PokeFolder);
+            var defaultPath = FileExists(levelFile, new PokeFolder());
             return ActiveGameMode.IsDefaultGamemode ? defaultPath : path || defaultPath;
         }
 
@@ -204,8 +232,8 @@ namespace P3D.Legacy.Core.Resources.Managers
         /// <param name="levelFile">The map file to look for.</param>
         public static bool MapFileExists(string levelFile)
         {
-            var path = ActiveGameMode.MapFolder.CheckExists(levelFile) == ExistenceCheckResult.FileExists;
-            var defaultPath = StorageInfo.MapFolder.CheckExists(levelFile) == ExistenceCheckResult.FileExists;
+            var path = FileExists(levelFile, ActiveGameMode.MapFolder);
+            var defaultPath = FileExists(levelFile, new MapsFolder());
             return ActiveGameMode.IsDefaultGamemode ? defaultPath : path || defaultPath;
         }
 
@@ -215,8 +243,8 @@ namespace P3D.Legacy.Core.Resources.Managers
         /// <param name="contentFile">The Content file to look for.</param>
         public static bool ContentFileExists(string contentFile)
         {
-            var path = ActiveGameMode.ContentFolder.CheckExists(contentFile) == ExistenceCheckResult.FileExists;
-            var defaultPath = StorageInfo.ContentFolder.CheckExists(contentFile) == ExistenceCheckResult.FileExists;
+            var path = FileExists(contentFile, ActiveGameMode.ContentFolder);
+            var defaultPath = FileExists(contentFile, new ContentFolder());
             return ActiveGameMode.IsDefaultGamemode ? defaultPath : path || defaultPath;
 
             //return ActiveGameMode.ContentFolder.CheckExists(contentFile) == ExistenceCheckResult.FileExists || StorageInfo.ContentFolder.CheckExists(contentFile) == ExistenceCheckResult.FileExists;

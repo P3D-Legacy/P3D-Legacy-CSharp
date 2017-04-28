@@ -102,11 +102,11 @@
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="PCLExt.FileStorage, Version=1.0.9.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\PCLExt.FileStorage.1.0.9.1\lib\net45\PCLExt.FileStorage.dll</HintPath>
+    <Reference Include="PCLExt.FileStorage, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\PCLExt.FileStorage.1.1.3.0\lib\net45\PCLExt.FileStorage.dll</HintPath>
     </Reference>
-    <Reference Include="PCLExt.FileStorage.Abstractions, Version=1.0.9.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\PCLExt.FileStorage.1.0.9.1\lib\net45\PCLExt.FileStorage.Abstractions.dll</HintPath>
+    <Reference Include="PCLExt.FileStorage.Abstractions, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\PCLExt.FileStorage.1.1.3.0\lib\net45\PCLExt.FileStorage.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -1603,11 +1603,7 @@
     <Compile Include="Screens\TrainerScreen.vb" />
     <Compile Include="Screens\TransitionScreen.vb" />
     <Compile Include="Screens\WindowScreen.vb" />
-    <Compile Include="World\ActionScript\ActionScript.vb" />
-    <Compile Include="World\ActionScript\Script.vb" />
-    <Compile Include="World\ActionScript\ScriptConversion.vb" />
-    <Compile Include="World\ActionScript\ScriptStorage.vb" />
-    <Compile Include="World\ActionScript\V1\ScriptV1.vb" />
+    <Compile Include="World\ActionScript\V2\BaseScriptManagerImplementation.vb" />
     <Compile Include="World\ActionScript\V2\ScriptCommander.vb" />
     <Compile Include="World\ActionScript\V2\ScriptCommands\DoBattle.vb" />
     <Compile Include="World\ActionScript\V2\ScriptCommands\DoCamera.vb" />

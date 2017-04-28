@@ -62,7 +62,7 @@ Public Class HatchEggScreen
         ChooseBox.Draw()
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         ChooseBox.Update()
         If ChooseBox.Showing = False Then
             TextBox.Update()

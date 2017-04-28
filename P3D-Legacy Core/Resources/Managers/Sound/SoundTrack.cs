@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using P3D.Legacy.Core.Resources.Managers.Music;
 using P3D.Legacy.Core.Storage;
 using P3D.Legacy.Core.Storage.Files.ContentFiles;
-
+using P3D.Legacy.Core.Storage.Folders;
 using PCLExt.FileStorage;
 
 namespace P3D.Legacy.Core.Resources.Managers.Sound
@@ -75,7 +75,7 @@ namespace P3D.Legacy.Core.Resources.Managers.Sound
 
         public void LoadSounds(bool forceReplace = false)
         {
-            foreach (var soundEffectFile in StorageInfo.ContentFolder.SoundEffectsFolder.GetAllSoundEffectFiles())
+            foreach (var soundEffectFile in new ContentFolder().SoundEffectsFolder.GetAllSoundEffectFiles())
             {
                 var fileName = soundEffectFile.InContentLocalPathWithoutExtension.Replace("\\", "|").ToLowerInvariant();
                 AddSoundEffect(fileName, soundEffectFile, forceReplace);
@@ -85,7 +85,7 @@ namespace P3D.Legacy.Core.Resources.Managers.Sound
             {
                 foreach (var contentPackName in Core.GameOptions.ContentPackNames)
                 {
-                    foreach (var soundEffectFile in StorageInfo.ContentPacksFolder.GetContentPack(contentPackName).SoundEffectsFolder.GetAllSoundEffectFiles())
+                    foreach (var soundEffectFile in new ContentPacksFolder().GetContentPack(contentPackName).SoundEffectsFolder.GetAllSoundEffectFiles())
                     {
                         var fileName = soundEffectFile.InContentLocalPathWithoutExtension.Replace("\\", "|").ToLowerInvariant();
                         AddSoundEffect(fileName, soundEffectFile, forceReplace);

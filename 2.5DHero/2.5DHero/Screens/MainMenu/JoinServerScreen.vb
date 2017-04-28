@@ -13,6 +13,7 @@ Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Server
 Imports P3D.Legacy.Core.Storage
+Imports P3D.Legacy.Core.Storage.Folders
 Imports PCLExt.FileStorage
 
 Public Class JoinServerScreen
@@ -47,10 +48,11 @@ Public Class JoinServerScreen
 
         Me.ServerList.Add(localServer)
 
-        StorageInfo.SaveFolder.ServerListFile.WriteAllText("Official Pokémon3D Server,karp.pokemon3d.net:15124" & vbNewLine & "AGN Server,p3d.aggressivegaming.org:15124")
+        dim saveFolder = new SaveFolder()
+        saveFolder.ServerListFile.WriteAllText("Official Pokémon3D Server,karp.pokemon3d.net:15124" & vbNewLine & "AGN Server,p3d.aggressivegaming.org:15124")
 
         If LoadOnlineServers = True Then        
-            Dim data() As String = StorageInfo.SaveFolder.ServerListFile.ReadAllLines()
+            Dim data() As String = new SaveFolder().ServerListFile.ReadAllLines()
             If data.Length > 0 Then
                 For Each line As String In data
                     If line.CountSeperators(",") = 1 Then
@@ -168,7 +170,7 @@ Public Class JoinServerScreen
         Next
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If LoadOnlineServers = False Then
             JoinButton()
         End If
@@ -673,7 +675,9 @@ Public Class JoinServerScreen
                 data &= s.ToString()
             End If
         Next
-        StorageInfo.SaveFolder.ServerListFile.WriteAllText(data)
+
+        dim saveFolder = new SaveFolder()
+        saveFolder.ServerListFile.WriteAllText(data)
     End Sub
 
 End Class

@@ -93,7 +93,7 @@ Public Class BattleGrowStatsScreen
         End If
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         Delay += 0.1F
 
         If Controls.Accept() = True Then

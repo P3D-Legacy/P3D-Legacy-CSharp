@@ -37,32 +37,32 @@ namespace P3D.Legacy.Core.GameModes
         /// <summary>
         /// The MapPath used from this GameMode to load maps from.
         /// </summary>
-        public MapsFolder MapFolder { get; set; } = StorageInfo.MapFolder;
+        public MapsFolder MapFolder { get; set; } = new MapsFolder();
 
         /// <summary>
         /// The ScriptPath from this GameMode to load scripts from.
         /// </summary>
-        public ScriptsFolder ScriptFolder { get; set; } = StorageInfo.ScriptFolder;
+        public ScriptsFolder ScriptFolder { get; set; } = new ScriptsFolder();
 
         /// <summary>
         /// The .poke file directory from this GameMode.
         /// </summary>
-        public PokeFolder PokeFolder { get; set; } = StorageInfo.PokeFolder;
+        public PokeFolder PokeFolder { get; set; } = new PokeFolder();
 
         /// <summary>
         /// The Pokemon Data path to load Pokemon data from.
         /// </summary>
-        public PokemonDataFolder PokemonDataFolder { get; set; } = StorageInfo.PokemonDataFolder;
+        public PokemonDataFolder PokemonDataFolder { get; set; } = new PokemonDataFolder();
 
         /// <summary>
         /// The Content path to load images, sounds and music from.
         /// </summary>
-        public ContentFolder ContentFolder { get; set; } = StorageInfo.ContentFolder;
+        public ContentFolder ContentFolder { get; set; } = new ContentFolder();
 
         /// <summary>
         /// The Localizations path to load additional tokens from. Tokens that are already existing get overritten.
         /// </summary>
-        public TokensFolder LocalizationFolder { get; set; } = StorageInfo.LocalizationFolder;
+        public LocalizationsFolder LocalizationFolder { get; set; } = new LocalizationsFolder();
 
         /// <summary>
         /// The GameRules that apply to this GameMode.

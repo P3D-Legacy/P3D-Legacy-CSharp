@@ -124,7 +124,7 @@ Namespace GameJolt
             End If
         End Sub
 
-        Public Overrides Sub Update()
+        Public Overrides Sub Update(gameTime As GameTime)
             If TeamDownloaded = True Then
                 Select Case Me.ScreenState
                     Case ScreenStates.MainMenu

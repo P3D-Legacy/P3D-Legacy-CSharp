@@ -26,7 +26,7 @@ Public Class TurningSign
         Me.CreateWorldEveryFrame = True
     End Sub
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         Select Case Me.ActionValue
             Case 1
                 Me.Rotation.X += TurningSpeed
@@ -36,7 +36,7 @@ Public Class TurningSign
                 Me.Rotation.Y += TurningSpeed
         End Select
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Public Overrides Sub Render(effect As BasicEffect)

@@ -50,7 +50,7 @@ Public Class ChooseAttackScreen
         Me.DoSub = DoSub
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If TextBox.Showing = False Then
             If Controls.Up(True, True, True, True) = True Then
                 Me.AttackIndex -= 1

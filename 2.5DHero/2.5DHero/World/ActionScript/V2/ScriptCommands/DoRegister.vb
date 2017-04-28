@@ -1,4 +1,5 @@
 ﻿Imports P3D.Legacy.Core.Resources
+Imports P3D.Legacy.Core.ScriptSystem
 
 Namespace ScriptVersion2
 

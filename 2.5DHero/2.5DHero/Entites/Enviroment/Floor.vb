@@ -117,7 +117,7 @@ Public Class Floor
 
         Me.Visible = True
         Me.CreatedWorld = False
-        Me.UpdateEntity()
+        'Me.UpdateEntity() TODO - NO updating in rendering
 
         If FloorDictionary.ContainsKey(Me.Position.ToString()) = False Then
             FloorDictionary.Add(Me.Position.ToString(), Me)
@@ -174,7 +174,7 @@ Public Class Floor
 
         Me.Visible = True
         Me.CreatedWorld = False
-        Me.UpdateEntity()
+        'Me.UpdateEntity(gameTime) TODO - NO updating in rendering
 
         If FloorDictionary.ContainsKey(Me.Position.ToString()) = False Then
             FloorDictionary.Add(Me.Position.ToString(), Me)

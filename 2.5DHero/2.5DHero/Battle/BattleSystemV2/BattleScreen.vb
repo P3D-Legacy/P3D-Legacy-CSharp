@@ -15,6 +15,7 @@ Imports P3D.Legacy.Core.Resources.Models
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.ScriptSystem
 Imports P3D.Legacy.Core.Server
 Imports PCLExt.FileStorage
 
@@ -760,7 +761,7 @@ Namespace BattleSystem
                 End If
 
                 dim t0 = GameModeManager.ActiveGameMode.MapFolder.CheckExists(Path.Combine("battle", levelfile)) = ExistenceCheckResult.FileExists
-                If File.Exists(GameController.GamePath & "\maps\battle\" & levelfile) = False And t0 = False Then
+                If File.Exists(Path.Combine(GameController.GamePath, "maps", "battle", levelfile)) = False And t0 = False Then
                     Select Case Me.defaultMapType
                         Case 0
                             levelfile = cRegion & "0.dat"
@@ -794,7 +795,7 @@ Namespace BattleSystem
             End If
 
             Dim t1 = GameModeManager.ActiveGameMode.MapFolder.CheckExists(Path.Combine("battle",levelfile)) = ExistenceCheckResult.FileExists
-            If File.Exists(GameController.GamePath & "\maps\battle\" & levelfile) = False And t1 = False Then
+            If File.Exists(Path.Combine(GameController.GamePath, "maps", "battle", levelfile)) = False And t1 = False Then
                 Select Case Me.defaultMapType
                     Case 0
                         levelfile = "battle0.dat"
@@ -857,7 +858,7 @@ nextIndex:
             End If
         End Sub
 
-        Public Overrides Sub Update()
+        Public Overrides Sub Update(gameTime As GameTime)
             If CheckNetworkPlayer() = False Then
                 Exit Sub
             End If
@@ -890,8 +891,8 @@ nextIndex:
             End If
 
             Lighting.UpdateLighting(Screen.Effect)
-            Camera.Update()
-            Level.Update()
+            Camera.Update(gameTime)
+            Level.Update(gameTime)
             SkyDome.Update()
 
             TextBox.Update()

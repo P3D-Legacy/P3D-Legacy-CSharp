@@ -13,6 +13,7 @@ Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Storage
+Imports P3D.Legacy.Core.Storage.Folders
 Imports PCLExt.FileStorage
 
 Public Class NewGameScreen
@@ -60,7 +61,7 @@ Public Class NewGameScreen
 
     Public Sub New()
         For Each s As String In Core.GameOptions.ContentPackNames
-            ContentPackManager.Load(GameController.GamePath & "\ContentPacks\" & s & "\exceptions.dat")
+            ContentPackManager.Load(Path.Combine(GameController.GamePath, "ContentPacks", s, "exceptions.dat"))
         Next
 
         GameModeAttackLoader.Load()
@@ -127,7 +128,7 @@ Public Class NewGameScreen
         End If
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Index = 5 Then
             Core.GameInstance.IsMouseVisible = True
         Else
@@ -419,7 +420,7 @@ Public Class NewGameScreen
             folderPath = "autosave0"
         End If
 
-        Dim savePath As String = GameController.GamePath & "\Save\"
+        Dim savePath As String = Path.Combine(GameController.GamePath, "Save")
 
         While System.IO.Directory.Exists(savePath & folderPath) = True
             If folderPath <> Name Then
@@ -431,7 +432,7 @@ Public Class NewGameScreen
             folderPrefix += 1
         End While
 
-        Dim playerFolder = StorageInfo.SaveFolder.GetUserSaveFolder(folderPath)
+        Dim playerFolder = new SaveFolder().GetUserSaveFolder(folderPath)
         playerFolder.PlayerFile.WriteAllText(GetPlayerData())
         playerFolder.BerriesFile.WriteAllText(GetBerryData())
         playerFolder.OptionsFile.WriteAllText(GetOptionsData())

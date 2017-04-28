@@ -38,7 +38,7 @@ Public Class Particle
         Me.NormalOpacity = 0F
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         Dim identifications() As Screen.Identifications = {Screen.Identifications.OverworldScreen, Screen.Identifications.MainMenuScreen, Screen.Identifications.BattleScreen, Screen.Identifications.BattleCatchScreen}
         If identifications.Contains(Core.CurrentScreen.Identification) = True Then
             Select Case Me.Behavior
@@ -95,7 +95,7 @@ Public Class Particle
         Return MyBase.CalculateCameraDistance(CPosition) - 1000000.0F
     End Function
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         If Me.Rotation.Y <> Screen.Camera.Yaw Then
             Me.Rotation.Y = Screen.Camera.Yaw
         End If
@@ -103,7 +103,7 @@ Public Class Particle
         Dim c_pitch As Single = Screen.Camera.Pitch
         Me.Rotation.X = c_pitch / 2.0F
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Public Overrides Sub Render(effect As BasicEffect)

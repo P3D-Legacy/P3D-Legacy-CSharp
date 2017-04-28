@@ -222,7 +222,7 @@ Public Class DirectTradeScreen
         Core.SpriteBatch.Draw(t, New Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Color.White)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If ScreenState = ScreenStates.Idle Then
             If ConnectScreen.Connected = True Then
                 Dim partnerOnServer As Boolean = False

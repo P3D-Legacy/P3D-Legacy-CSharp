@@ -117,7 +117,7 @@ Public Class PokedexSelectScreen
         Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Controls.Up(True, True, True, True, True, True) = True Then
             Me.Cursor -= 1
             If Controls.ShiftDown() = True Then
@@ -191,7 +191,7 @@ Public Class PokedexHabitatScreen
         For Each file As String In System.IO.Directory.GetFiles(GameModeManager.ActiveGameMode.PokeFolder.Path, "*.*", IO.SearchOption.AllDirectories)
             If file.EndsWith(".poke") = True Then
                 ' TODO: Fix
-                dim ifile = FileSystem.Current.GetFileFromPath(file)
+                dim ifile = FileSystem.GetFileFromPath(file)
                 Dim fileName As String = file.Remove(0, (GameModeManager.ActiveGameMode.PokeFolder.Path & "\").Length - 1)
                 Dim newHabitat As New PokedexScreen.Habitat(ifile)
                 Dim exists As Boolean = False
@@ -253,7 +253,7 @@ Public Class PokedexHabitatScreen
         Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Controls.Down(True, True, True, True, True, True) = True Then
             Me.Cursor += 1
             If Controls.ShiftDown() = True Then
@@ -712,7 +712,7 @@ Public Class PokedexScreen
         Core.SpriteBatch.Draw(t, New Microsoft.Xna.Framework.Rectangle(CInt(cPosition.X), CInt(cPosition.Y), 64, 64), Microsoft.Xna.Framework.Color.White)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If menu.Visible = True Then
             menu.Update()
         Else
@@ -1341,7 +1341,7 @@ Public Class PokedexViewScreen
         For Each file As String In System.IO.Directory.GetFiles(GameModeManager.ActiveGameMode.PokeFolder.Path, "*.*", IO.SearchOption.AllDirectories)
             If file.EndsWith(".poke") = True Then
                 Dim fileName As String = file.Remove(0, (GameModeManager.ActiveGameMode.PokeFolder.Path & "\").Length - 1)
-                Dim newHabitat As New PokedexScreen.Habitat(FileSystem.Current.GetFileFromPath(file))
+                Dim newHabitat As New PokedexScreen.Habitat(FileSystem.GetFileFromPath(file))
                 Dim exists As Boolean = False
                 For Each h As PokedexScreen.Habitat In Me.HabitatList
                     If h.Name.ToLower() = newHabitat.Name.ToLower() Then
@@ -1351,7 +1351,7 @@ Public Class PokedexViewScreen
                     End If
                 Next
                 If exists = False AndAlso Core.Player.PokeFiles.Contains(fileName) = True Then
-                    HabitatList.Add(New PokedexScreen.Habitat(FileSystem.Current.GetFileFromPath(file)))
+                    HabitatList.Add(New PokedexScreen.Habitat(FileSystem.GetFileFromPath(file)))
                 End If
             End If
         Next
@@ -1658,7 +1658,7 @@ Public Class PokedexViewScreen
         End If
     End Function
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Controls.Dismiss(True, True, True) = True Then
             If Me._transitionOut = True Then
                 Core.SetScreen(New TransitionScreen(Me, Me.PreScreen, Microsoft.Xna.Framework.Color.White, False))

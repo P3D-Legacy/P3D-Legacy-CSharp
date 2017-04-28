@@ -29,7 +29,7 @@ Public Class RotationTile
         Me.NeedsUpdate = True
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If Me.RotationType = RotationTypes.StartSpin Then
             If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
                 If CType(Core.CurrentScreen, OverworldScreen).ActionScript.IsReady = True Then

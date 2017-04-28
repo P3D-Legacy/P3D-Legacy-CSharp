@@ -33,7 +33,6 @@ Public Class OverworldCamera
     Private _moved As Single = 0F
 
     Public LastStepPosition As Vector3 = New Vector3(0, -2, 0)
-    Public YawLocked As Boolean = False
 
 #End Region
 
@@ -169,18 +168,18 @@ Public Class OverworldCamera
 
 #Region "Update"
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         Ray = CreateRay()
 
-        PlayerMovement()
+        PlayerMovement(gameTime)
 
         ScrollThirdPersonCamera()
 
         LockCamera()
 
-        CheckEntities()
+        CheckEntities(gameTime)
 
-        AimCamera()
+        AimCamera(gameTime)
 
         ControlCamera()
 
@@ -188,7 +187,7 @@ Public Class OverworldCamera
 
         SetSpeed()
 
-        ControlThirdPersonCamera()
+        ControlThirdPersonCamera(gameTime)
 
         UpdateViewMatrix()
         UpdateFrustum()
@@ -373,7 +372,7 @@ Public Class OverworldCamera
         View = Matrix.CreateLookAt(_cPosition, lookAt, Vector3.Up)
     End Sub
 
-    Public Sub ResetCursor()
+    Public Overrides Sub ResetCursor()
         If Core.GameInstance.IsActive = True Then
             Mouse.SetPosition(CInt(Core.WindowSize.Width / 2), CInt(Core.WindowSize.Height / 2))
             OldX = CInt(Core.WindowSize.Width / 2)
@@ -419,8 +418,10 @@ Public Class OverworldCamera
     End Function
 
     'Aims the camera to the set aim.
-    Public Sub AimCamera()
+    Public Sub AimCamera(gameTime As GameTime)
         If _aimDirection > -1 And Turning = True Then
+            Dim delta = CSng(gameTime.ElapsedGameTime.TotalSeconds * 60D)
+
             Dim yawAim As Single = GetAimYawFromDirection(_aimDirection)
 
             Dim clockwise As Boolean = True
@@ -435,7 +436,7 @@ Public Class OverworldCamera
                         clockwise = False
                     Case 3
                         clockwise = True
-                        yawAim -= MathHelper.TwoPi
+                        yawAim -= MathHelper.TwoPi * delta
                 End Select
             ElseIf Yaw >= MathHelper.Pi * 0.5F And Yaw < MathHelper.Pi Then
                 Select Case _aimDirection
@@ -452,7 +453,7 @@ Public Class OverworldCamera
                 Select Case _aimDirection
                     Case 0
                         clockwise = False
-                        yawAim += MathHelper.TwoPi
+                        yawAim += MathHelper.TwoPi * delta
                     Case 1
                         clockwise = True
                     Case 2
@@ -464,10 +465,10 @@ Public Class OverworldCamera
                 Select Case _aimDirection
                     Case 0
                         clockwise = False
-                        yawAim += MathHelper.TwoPi
+                        yawAim += MathHelper.TwoPi * delta
                     Case 1
                         clockwise = False
-                        yawAim += MathHelper.TwoPi
+                        yawAim += MathHelper.TwoPi * delta
                     Case 2
                         clockwise = True
                     Case 3
@@ -477,7 +478,7 @@ Public Class OverworldCamera
 
             If clockwise = True Then
                 ClampYaw()
-                Yaw -= RotationSpeed * 35.0F
+                Yaw -= RotationSpeed * 35.0F * delta
                 If Yaw <= yawAim Then
                     Turning = False
                     _aimDirection = -1
@@ -486,7 +487,7 @@ Public Class OverworldCamera
                 End If
             Else
                 ClampYaw()
-                Yaw += RotationSpeed * 35.0F
+                Yaw += RotationSpeed * 35.0F * delta
                 If Yaw >= yawAim Then
                     Turning = False
                     _aimDirection = -1
@@ -511,19 +512,21 @@ Public Class OverworldCamera
     End Sub
 
     'Changes the camera's pitch so you can see the stuff that is in front of you. Used when textboxes appear.
-    Public Sub PitchForward()
+    Public Sub PitchForward(gameTime as GameTime)
+        Dim delta = CSng(gameTime.ElapsedGameTime.TotalSeconds * 60D)
+
         Dim aim As Single = -0.1F
         If ThirdPerson = True Then
             aim = -0.25F
         End If
 
         If Pitch > aim Then
-            Pitch -= RotationSpeed * 35.0F
+            Pitch -= RotationSpeed * 35.0F * delta
             If Pitch < aim Then
                 Pitch = aim
             End If
         ElseIf Pitch < aim Then
-            Pitch += RotationSpeed * 35.0F
+            Pitch += RotationSpeed * 35.0F * delta
             If Pitch > aim Then
                 Pitch = aim
             End If
@@ -549,13 +552,13 @@ Public Class OverworldCamera
 
 #Region "PlayerMethods"
 
-    Private Sub PlayerMovement()
+    Private Sub PlayerMovement(gameTime As GameTime)
+        Dim delta = CSng(gameTime.ElapsedGameTime.TotalSeconds * 60D)
+
         If _moved > 0.0F And Turning = False Then
-            Dim v As Vector3 = PlannedMovement * Speed
+            Position += PlannedMovement * Speed * delta
 
-            Position += v
-
-            _moved -= Speed
+            _moved -= Speed * delta
             If _moved <= 0.0F Then
                 StopMovement()
 
@@ -587,22 +590,21 @@ Public Class OverworldCamera
             End If
 
             If Screen.Level.IsSurfing = False And _thirdPerson = False And _cameraFocusType = CameraFocusTypes.Player Then
-                _bobbingTemp += 0.25F
+                _bobbingTemp += 0.25F * delta
             End If
         End If
 
         Dim isActionscriptReady As Boolean = False
-        Dim OS As OverworldScreen = Nothing
         If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
-            OS = CType(Core.CurrentScreen, OverworldScreen)
+            Dim OS = CType(Core.CurrentScreen, OverworldScreen)
             isActionscriptReady = OS.ActionScript.IsReady
         End If
 
         If isActionscriptReady = True And Screen.Level.CanMove() = True Then
             If _thirdPerson = False And _cameraFocusType = CameraFocusTypes.Player Then
-                FirstPersonMovement()
+                FirstPersonMovement(gameTime)
             Else
-                ThirdPersonMovement()
+                ThirdPersonMovement(gameTime)
             End If
         End If
 
@@ -611,16 +613,18 @@ Public Class OverworldCamera
         End If
 
         If _bumpSoundDelay > 0 Then
-            _bumpSoundDelay -= 1
+            _bumpSoundDelay -= 1 * delta
         End If
     End Sub
 
-    Private Sub FirstPersonMovement()
+    Private Sub FirstPersonMovement(gameTime As GameTime)
+        Dim delta = CSng(gameTime.ElapsedGameTime.TotalSeconds * 60D)
+
         Dim pressedDirection As Integer = -1
         If YawLocked = False And Turning = False Then
             If (KeyBoardHandler.KeyDown(Core.KeyBindings.LeftMove) = True Or ControllerHandler.ButtonDown(Buttons.RightThumbstickLeft) = True) And Turning = False Then
                 If _freeCameraMode = True Then
-                    Yaw += RotationSpeed * 35.0F
+                    Yaw += RotationSpeed * 35.0F * delta
 
                     ClampYaw()
                 Else
@@ -638,7 +642,7 @@ Public Class OverworldCamera
             End If
             If (KeyBoardHandler.KeyDown(Core.KeyBindings.RightMove) = True Or ControllerHandler.ButtonDown(Buttons.RightThumbstickRight) = True) And Turning = False Then
                 If _freeCameraMode = True Then
-                    Yaw -= RotationSpeed * 35.0F
+                    Yaw -= RotationSpeed * 35.0F * delta
 
                     ClampYaw()
                 Else
@@ -662,8 +666,10 @@ Public Class OverworldCamera
         End If
     End Sub
 
-    Private Sub ThirdPersonMovement()
+    Private Sub ThirdPersonMovement(gameTime As GameTime)
         If _moved <= 0F Then
+            Dim delta = CSng(gameTime.ElapsedGameTime.TotalSeconds * 60D)
+
             Dim doMove As Boolean = False
             Dim newPlayerFacing As Integer = -1
 
@@ -725,7 +731,7 @@ Public Class OverworldCamera
         Return False
     End Function
 
-    Private _bumpSoundDelay As Integer = 35
+    Private _bumpSoundDelay As Single = 35
     Private _didWalkAgainst As Boolean = True
 
     Private Sub MoveForward()
@@ -748,7 +754,7 @@ Public Class OverworldCamera
                         If _didWalkAgainst = True Then
                             Screen.Level.OwnPlayer.Opacity = 0.5F
                         End If
-                        If _bumpSoundDelay = 0 Then
+                        If _bumpSoundDelay <= 0 Then
                             If _didWalkAgainst = True Then
                                 SoundEffectManager.PlaySound("bump")
                             End If
@@ -950,11 +956,13 @@ Public Class OverworldCamera
         End If
     End Sub
 
-    Private Sub CheckEntities()
+    Private Sub CheckEntities(gameTime As GameTime)
         If Controls.Accept() = True Then
             If _moved = 0F And Turning = False Then
+                Dim delta = CSng(gameTime.ElapsedGameTime.TotalSeconds * 60D)
+
                 Dim checkPosition As Vector3 = GetForwardMovedPosition()
-                checkPosition.Y -= 0.1F
+                checkPosition.Y -= 0.1F * delta
 
                 For i = 0 To Screen.Level.Entities.Count - 1
                     If i <= Screen.Level.Entities.Count - 1 Then
@@ -963,7 +971,7 @@ Public Class OverworldCamera
                         If result.HasValue = True Then
                             Dim minValue As Single = 1.3F
                             If _thirdPerson = True Then
-                                minValue += 1.8F
+                                minValue += 1.8F * delta
                             End If
 
                             If result.Value < minValue Then
@@ -998,27 +1006,28 @@ Public Class OverworldCamera
         _setPlannedMovement = False
     End Sub
 
-    Private Sub ControlThirdPersonCamera()
+    Private Sub ControlThirdPersonCamera(gameTime As GameTime)
         If GameController.IS_DEBUG_ACTIVE = True Then
+            Dim delta = CSng(gameTime.ElapsedGameTime.TotalSeconds * 60D)
             If Controls.CtrlPressed() = True Then
                 If KeyBoardHandler.KeyDown(Core.KeyBindings.Up) = True Then
-                    ThirdPersonOffset.Y += Speed
+                    ThirdPersonOffset.Y += Speed * delta
                 End If
                 If KeyBoardHandler.KeyDown(Core.KeyBindings.Down) = True Then
-                    ThirdPersonOffset.Y -= Speed
+                    ThirdPersonOffset.Y -= Speed * delta
                 End If
             Else
                 If KeyBoardHandler.KeyDown(Core.KeyBindings.Up) = True Then
-                    ThirdPersonOffset.Z -= Speed
+                    ThirdPersonOffset.Z -= Speed * delta
                 End If
                 If KeyBoardHandler.KeyDown(Core.KeyBindings.Down) = True Then
-                    ThirdPersonOffset.Z += Speed
+                    ThirdPersonOffset.Z += Speed * delta
                 End If
                 If KeyBoardHandler.KeyDown(Core.KeyBindings.Right) = True Then
-                    ThirdPersonOffset.X += Speed
+                    ThirdPersonOffset.X += Speed * delta
                 End If
                 If KeyBoardHandler.KeyDown(Core.KeyBindings.Left) = True Then
-                    ThirdPersonOffset.X -= Speed
+                    ThirdPersonOffset.X -= Speed * delta
                 End If
             End If
         End If

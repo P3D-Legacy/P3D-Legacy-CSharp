@@ -7,6 +7,7 @@ Imports P3D.Legacy.Core.Resources.Managers.Sound
 Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
+Imports P3D.Legacy.Core.ScriptSystem.V2
 
 Public Class PauseScreen
 
@@ -81,9 +82,9 @@ Public Class PauseScreen
         DrawGamePadControls(d)
     End Sub
 
-    Public Overrides Sub Update()
+    Public Overrides Sub Update(gameTime As GameTime)
         If PreScreen.Identification = Identifications.OverworldScreen And JoinServerScreen.Online = True Then
-            Screen.Level.Update()
+            Screen.Level.Update(gameTime)
         End If
 
         Screen.TextBox.reDelay = 0.0F

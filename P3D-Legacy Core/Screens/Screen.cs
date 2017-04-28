@@ -268,8 +268,9 @@ namespace P3D.Legacy.Core.Screens
         /// <summary>
         /// The base update fucntion of a screen.
         /// </summary>
+        /// <param name="gameTime"></param>
         /// <remarks>Contains no default code.</remarks>
-        public virtual void Update() { }
+        public virtual void Update(GameTime gameTime) { }
 
         /// <summary>
         /// An event that gets raised when this screen gets changed to.

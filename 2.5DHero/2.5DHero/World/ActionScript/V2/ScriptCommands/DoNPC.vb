@@ -13,7 +13,7 @@ Namespace ScriptVersion2
         'Contains the @npc commands.
         '--------------------------------------------------------------------------------------------------------------------------
 
-        Private Shared Sub DoNPC(ByVal subClass As String)
+        Private Shared Sub DoNPC(gameTime As GameTime, ByVal subClass As String)
             Dim command As String = ScriptComparer.GetSubClassArgumentPair(subClass).Command
             Dim argument As String = ScriptComparer.GetSubClassArgumentPair(subClass).Argument
 
@@ -34,7 +34,8 @@ Namespace ScriptVersion2
                     targetNPC.CreatedWorld = False
 
                     If targetNPC.InCameraFocus() = True Then
-                        Screen.Camera.Update()
+                        'TODO
+                        'Screen.Camera.Update(TODO)
                     End If
 
                     IsReady = True
@@ -48,7 +49,8 @@ Namespace ScriptVersion2
                     targetNPC.CreatedWorld = False
 
                     If targetNPC.InCameraFocus() = True Then
-                        Screen.Camera.Update()
+                        'TODO
+                        'Screen.Camera.Update(TODO)
                     End If
                     IsReady = True
                 Case "register"
@@ -77,7 +79,7 @@ Namespace ScriptVersion2
                     Dim targetNPC As NPC = Screen.Level.GetNPC(int(argument.GetSplit(0)))
                     Dim steps As Integer = int(argument.GetSplit(1))
 
-                    Screen.Level.UpdateEntities()
+                    Screen.Level.UpdateEntities(gameTime)
                     If ScriptV2.started = False Then
                         If steps < 0 Then
                             If targetNPC.Speed > 0 Then
@@ -100,9 +102,10 @@ Namespace ScriptVersion2
                             End If
                             IsReady = True
                         Else
-                            If targetNPC.InCameraFocus() = True Then
-                                Screen.Camera.Update()
-                            End If
+                            'TODO
+                            'If targetNPC.InCameraFocus() = True Then
+                            '    Screen.Camera.Update(TODO)
+                            'End If
                         End If
                     End If
                 Case "setmovey"
@@ -116,7 +119,7 @@ Namespace ScriptVersion2
                     Dim targetNPC As NPC = Screen.Level.GetNPC(int(argument.GetSplit(0)))
                     Dim steps As Integer = int(argument.GetSplit(1))
 
-                    Screen.Level.UpdateEntities()
+                    Screen.Level.UpdateEntities(gameTime)
                     If steps < 0 Then
                         If targetNPC.Speed > 0 Then
                             targetNPC.Speed *= -1
@@ -137,8 +140,8 @@ Namespace ScriptVersion2
                     Dim targetNPC As NPC = Screen.Level.GetNPC(int(argument.GetSplit(0)))
 
                     targetNPC.faceRotation = int(argument.GetSplit(1))
-                    targetNPC.Update()
-                    targetNPC.UpdateEntity()
+                    targetNPC.Update(gameTime)
+                    targetNPC.UpdateEntity(gameTime)
                     IsReady = True
                 Case "spawn"
                     Dim args() As String = argument.Split(CChar(","))

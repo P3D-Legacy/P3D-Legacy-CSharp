@@ -9,13 +9,13 @@ Imports P3D.Legacy.Core.World
 Public Class HeadbuttTree
     Inherits Entity
 
-    Public Overrides Sub UpdateEntity()
+    Public Overrides Sub UpdateEntity(gameTime As GameTime)
         If Me.Rotation.Y <> Screen.Camera.Yaw Then
             Me.Rotation.Y = Screen.Camera.Yaw
             CreatedWorld = False
         End If
 
-        MyBase.UpdateEntity()
+        MyBase.UpdateEntity(gameTime)
     End Sub
 
     Public Overrides Sub ClickFunction()
