@@ -128,7 +128,14 @@ namespace P3D.Legacy.Core.Resources.Managers
 
             if (folders != null)
                 foreach (var folderName in folders)
-                    folder = folder.GetFolder(folderName);
+                    try
+                    { 
+                        folder = folder.GetFolder(folderName);
+                    }
+                    catch
+                    {
+                        return false;
+                    }
 
             return folder.CheckExists(filename) == ExistenceCheckResult.FileExists;
         }

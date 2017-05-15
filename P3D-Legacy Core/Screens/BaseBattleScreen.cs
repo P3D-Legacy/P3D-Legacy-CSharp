@@ -20,7 +20,8 @@ namespace P3D.Legacy.Core.Screens
             Sandstorm = 3,
             Hailstorm = 4,
             Foggy = 5,
-            Snow = 6
+            Snow = 6,
+            Underwater = 7
         }
 
         public static WeatherEnum GetWorldWeather(WeatherTypes FieldWeather)
@@ -41,6 +42,8 @@ namespace P3D.Legacy.Core.Screens
                     return WeatherEnum.Sunny;
                 case WeatherTypes.Snow:
                     return WeatherEnum.Snow;
+                case WeatherTypes.Underwater:
+                    return WeatherEnum.Underwater;
                 default:
                     return WeatherEnum.Clear;
             }
@@ -65,6 +68,8 @@ namespace P3D.Legacy.Core.Screens
                     return WeatherTypes.Sandstorm;
                 case WeatherEnum.Sunny:
                     return WeatherTypes.Sunny;
+                case WeatherEnum.Underwater:
+                    return WeatherTypes.Underwater;
                 default:
                     return WeatherTypes.Clear;
             }

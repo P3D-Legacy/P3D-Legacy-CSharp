@@ -1285,11 +1285,11 @@ namespace P3D.Legacy.Core.Pokemon
                     case 5:
                         if (Number == 490)
                         {
-                            Textures[index] = TextureManager.GetTexture("GUI|PokemonMenu", new Microsoft.Xna.Framework.Rectangle(928, 992, 32, 32));
+                            Textures[index] = TextureManager.GetTexture("GUI|PokemonMenu", new Microsoft.Xna.Framework.Rectangle(928, 992, 32, 32), "");
                         }
                         else
                         {
-                            Textures[index] = EggCreator.CreateEggSprite(this, TextureManager.GetTexture("GUI|PokemonMenu", new Microsoft.Xna.Framework.Rectangle(992, 992, 32, 32)), TextureManager.GetTexture("Pokemon|Egg|Templates|Menu"));
+                            Textures[index] = EggCreator.CreateEggSprite(this, TextureManager.GetTexture("GUI|PokemonMenu", new Microsoft.Xna.Framework.Rectangle(992, 992, 32, 32), ""), TextureManager.GetTexture("Pokemon|Egg|Templates|Menu"));
                         }
                         break;
                     case 6:
