@@ -22,7 +22,7 @@ Namespace BattleSystem.Moves.Water
             Me.Description = "The user attacks by shooting muddy water at the opposing team. It may also lower the targets' accuracy."
             Me.CriticalChance = 1
             Me.IsHMMove = False
-            Me.Target = Targets.OneAdjacentTarget
+            Me.Target = Targets.AllAdjacentFoes
             Me.Priority = 0
             Me.TimesToAttack = 1
             '#End

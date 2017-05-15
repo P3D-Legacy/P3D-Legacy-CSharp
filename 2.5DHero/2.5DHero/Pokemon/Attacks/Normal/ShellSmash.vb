@@ -21,7 +21,7 @@ Namespace BattleSystem.Moves.Normal
             Me.Description = "The user breaks its shell, lowering its Defense and Sp. Def stats but sharply raising Attack, Sp. Atk, and Speed stats."
             Me.CriticalChance = 1
             Me.IsHMMove = False
-            Me.Target = Targets.OneAdjacentTarget
+            Me.Target = Targets.Self
             Me.Priority = 0
             Me.TimesToAttack = 1
             '#End

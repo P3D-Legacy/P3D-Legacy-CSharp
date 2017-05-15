@@ -1383,7 +1383,16 @@ Namespace BattleSystem
                 DoesNotMiss = True
             End If
 
-            If DoesNotMiss = True And moveUsed.Target <> Attack.Targets.Self Then 'Dig check
+            Dim UseTwoTurnCheck As Boolean = True
+            If moveUsed.ProtectAffected = False Then
+                UseTwoTurnCheck = False
+                Select Case moveUsed.Name.ToLower
+                    Case "psych up", "play nice", "role play"
+                        UseTwoTurnCheck = True
+                End Select
+            End If
+
+            If DoesNotMiss = True And UseTwoTurnCheck Then 'Dig check
                 Dim dig As Integer = BattleScreen.FieldEffects.OppDigCounter
                 If own = False Then
                     dig = BattleScreen.FieldEffects.OwnDigCounter
@@ -1394,7 +1403,7 @@ Namespace BattleSystem
                 End If
             End If
 
-            If DoesNotMiss = True And moveUsed.Target <> Attack.Targets.Self Then 'Fly check
+            If DoesNotMiss = True And UseTwoTurnCheck Then 'Fly check
                 Dim fly As Integer = BattleScreen.FieldEffects.OppFlyCounter
                 If own = False Then
                     fly = BattleScreen.FieldEffects.OwnFlyCounter
@@ -1405,7 +1414,7 @@ Namespace BattleSystem
                 End If
             End If
 
-            If DoesNotMiss = True And moveUsed.Target <> Attack.Targets.Self Then 'bounce check
+            If DoesNotMiss = True And UseTwoTurnCheck Then 'bounce check
                 Dim bounce As Integer = BattleScreen.FieldEffects.OppBounceCounter
                 If own = False Then
                     bounce = BattleScreen.FieldEffects.OwnBounceCounter
@@ -1416,7 +1425,7 @@ Namespace BattleSystem
                 End If
             End If
 
-            If DoesNotMiss = True And moveUsed.Target <> Attack.Targets.Self Then 'dive check
+            If DoesNotMiss = True And UseTwoTurnCheck Then 'dive check
                 Dim dive As Integer = BattleScreen.FieldEffects.OppDiveCounter
                 If own = False Then
                     dive = BattleScreen.FieldEffects.OwnDiveCounter
@@ -1427,7 +1436,7 @@ Namespace BattleSystem
                 End If
             End If
 
-            If DoesNotMiss = True And moveUsed.Target <> Attack.Targets.Self Then 'shadowforce check
+            If DoesNotMiss = True And UseTwoTurnCheck Then 'shadowforce check
                 Dim shadowforce As Integer = BattleScreen.FieldEffects.OppShadowForceCounter
                 If own = False Then
                     shadowforce = BattleScreen.FieldEffects.OwnShadowForceCounter
@@ -1438,7 +1447,7 @@ Namespace BattleSystem
                 End If
             End If
 
-            If DoesNotMiss = True And moveUsed.Target <> Attack.Targets.Self Then 'sky drop check
+            If DoesNotMiss = True And UseTwoTurnCheck Then 'sky drop check
                 Dim skydrop As Integer = BattleScreen.FieldEffects.OppSkyDropCounter
                 If own = False Then
                     skydrop = BattleScreen.FieldEffects.OwnSkyDropCounter

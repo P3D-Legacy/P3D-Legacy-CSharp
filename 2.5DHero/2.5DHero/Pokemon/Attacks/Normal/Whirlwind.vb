@@ -29,7 +29,7 @@ Namespace BattleSystem.Moves.Normal
 
             '#SpecialDefinitions
             Me.MakesContact = False
-            Me.ProtectAffected = False
+            Me.ProtectAffected = True
             Me.MagicCoatAffected = True
             Me.SnatchAffected = False
             Me.MirrorMoveAffected = True

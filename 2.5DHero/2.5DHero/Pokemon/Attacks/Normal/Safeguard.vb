@@ -21,7 +21,7 @@ Namespace BattleSystem.Moves.Normal
             Me.Description = "The user creates a protective field that prevents status problems for five turns."
             Me.CriticalChance = 0
             Me.IsHMMove = False
-            Me.Target = Targets.AllAllies
+            Me.Target = Targets.AllOwn
             Me.Priority = 0
             Me.TimesToAttack = 1
             '#End

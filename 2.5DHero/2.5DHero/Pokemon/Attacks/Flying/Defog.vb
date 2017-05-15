@@ -28,7 +28,7 @@ Namespace BattleSystem.Moves.Flying
 
             '#SpecialDefinitions
             Me.MakesContact = False
-            Me.ProtectAffected = False
+            Me.ProtectAffected = True
             Me.MagicCoatAffected = True
             Me.SnatchAffected = True
             Me.MirrorMoveAffected = True
