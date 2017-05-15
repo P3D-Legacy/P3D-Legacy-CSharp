@@ -34640,1081 +34640,1081 @@
 #begin Music/alph.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/alph.ogg
 
 #begin Music/ancient_ruins.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/ancient_ruins.ogg
 
 #begin Music/azalea.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/azalea.ogg
 
 #begin Music/barktown.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/barktown.ogg
 
 #begin Music/battlefactory.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/battlefactory.ogg
 
 #begin Music/battletower.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/battletower.ogg
 
 #begin Music/brain_battle.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/brain_battle.ogg
 
 #begin Music/brain_battle_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/brain_battle_intro.ogg
 
 #begin Music/bugcontest.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/bugcontest.ogg
 
 #begin Music/burnedtower.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/burnedtower.ogg
 
 #begin Music/celadon.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/celadon.ogg
 
 #begin Music/center.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/center.ogg
 
 #begin Music/cerulean.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/cerulean.ogg
 
 #begin Music/cerulean_cave.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/cerulean_cave.ogg
 
 #begin Music/champion_defeat.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/champion_defeat.ogg
 
 #begin Music/cherrygrove.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/cherrygrove.ogg
 
 #begin Music/cinnabar.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/cinnabar.ogg
 
 #begin Music/credits.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/credits.ogg
 
 #begin Music/dark_cave.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/dark_cave.ogg
 
 #begin Music/diglettscave.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/diglettscave.ogg
 
 #begin Music/dragonsden.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/dragonsden.ogg
 
 #begin Music/ecruteak.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/ecruteak.ogg
 
 #begin Music/elite_defeat.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/elite_defeat.ogg
 
 #begin Music/elmslab.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/elmslab.ogg
 
 #begin Music/entei_battle.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/entei_battle.ogg
 
 #begin Music/entei_battle_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/entei_battle_intro.ogg
 
 #begin Music/eusine_encounter.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/eusine_encounter.ogg
 
 #begin Music/evolution.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/evolution.ogg
 
 #begin Music/frontier.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/frontier.ogg
 
 #begin Music/gamecorner.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/gamecorner.ogg
 
 #begin Music/Goldenrod.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/Goldenrod.ogg
 
 #begin Music/gts.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/gts.ogg
 
 #begin Music/gym.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/gym.ogg
 
 #begin Music/HallofFame.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/HallofFame.ogg
 
 #begin Music/ho-oh_battle.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/ho-oh_battle.ogg
 
 #begin Music/ho-oh_battle_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/ho-oh_battle_intro.ogg
 
 #begin Music/IlexForest.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/IlexForest.ogg
 
 #begin Music/indigo.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/indigo.ogg
 
 #begin Music/johto_champion.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_champion.ogg
 
 #begin Music/Johto_champion_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/Johto_champion_intro.ogg
 
 #begin Music/johto_elite.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_elite.ogg
 
 #begin Music/johto_elite_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_elite_intro.ogg
 
 #begin Music/johto_leader.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_leader.ogg
 
 #begin Music/johto_leader_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_leader_intro.ogg
 
 #begin Music/johto_rival.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_rival.ogg
 
 #begin Music/johto_rivalintro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_rivalintro.ogg
 
 #begin Music/johto_rival_encounter.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_rival_encounter.ogg
 
 #begin Music/johto_rocket.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_rocket.ogg
 
 #begin Music/johto_rocket_encounter.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_rocket_encounter.ogg
 
 #begin Music/johto_rocket_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_rocket_intro.ogg
 
 #begin Music/johto_trainer.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_trainer.ogg
 
 #begin Music/johto_trainer_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_trainer_intro.ogg
 
 #begin Music/johto_wild.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_wild.ogg
 
 #begin Music/johto_wild_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/johto_wild_intro.ogg
 
 #begin Music/kanto_leader.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/kanto_leader.ogg
 
 #begin Music/kanto_leader_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/kanto_leader_intro.ogg
 
 #begin Music/kanto_trainer.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/kanto_trainer.ogg
 
 #begin Music/kanto_trainer_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/kanto_trainer_intro.ogg
 
 #begin Music/kanto_wild.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/kanto_wild.ogg
 
 #begin Music/kanto_wild_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/kanto_wild_intro.ogg
 
 #begin Music/kimono.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/kimono.ogg
 
 #begin Music/kvictoryroad.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/kvictoryroad.ogg
 
 #begin Music/lavender.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/lavender.ogg
 
 #begin Music/leader_defeat.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/leader_defeat.ogg
 
 #begin Music/lighthouse.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/lighthouse.ogg
 
 #begin Music/lobby.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/lobby.ogg
 
 #begin Music/Looker_encounter.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/Looker_encounter.ogg
 
 #begin Music/lugia_battle.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/lugia_battle.ogg
 
 #begin Music/lugia_battle_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/lugia_battle_intro.ogg
 
 #begin Music/mart.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/mart.ogg
 
 #begin Music/mary_encounter.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/mary_encounter.ogg
 
 #begin Music/mtmoonsq.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/mtmoonsq.ogg
 
 #begin Music/nationalpark.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/nationalpark.ogg
 
 #begin Music/oakslab.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/oakslab.ogg
 
 #begin Music/oak_encounter.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/oak_encounter.ogg
 
 #begin Music/pallet.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/pallet.ogg
 
 #begin Music/pokeflute.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/pokeflute.ogg
 
 #begin Music/pokemon_lullaby.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/pokemon_lullaby.ogg
 
 #begin Music/pokemon_march.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/pokemon_march.ogg
 
 #begin Music/pvp.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/pvp.ogg
 
 #begin Music/raikou_battle.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/raikou_battle.ogg
 
 #begin Music/raikou_battle_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/raikou_battle_intro.ogg
 
 #begin Music/rHideout.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/rHideout.ogg
 
 #begin Music/ride.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/ride.ogg
 
 #begin Music/rocket_broadcast.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/rocket_broadcast.ogg
 
 #begin Music/RouteMusic0.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/RouteMusic0.ogg
 
 #begin Music/RouteMusic1.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/RouteMusic1.ogg
 
 #begin Music/RouteMusic10.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/RouteMusic10.ogg
 
 #begin Music/RouteMusic11.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/RouteMusic11.ogg
 
 #begin Music/RouteMusic2.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/RouteMusic2.ogg
 
 #begin Music/RouteMusic3.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/RouteMusic3.ogg
 
 #begin Music/RouteMusic4.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/RouteMusic4.ogg
 
 #begin Music/RouteMusic5.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/RouteMusic5.ogg
 
 #begin Music/RouteMusic6.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/RouteMusic6.ogg
 
 #begin Music/RouteMusic7.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/RouteMusic7.ogg
 
 #begin Music/RouteMusic8.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/RouteMusic8.ogg
 
 #begin Music/RouteMusic9.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/RouteMusic9.ogg
 
 #begin Music/safari.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/safari.ogg
 
 #begin Music/safarigate.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/safarigate.ogg
 
 #begin Music/show_me_around.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/show_me_around.ogg
 
 #begin Music/space_legend_battle.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/space_legend_battle.ogg
 
 #begin Music/space_legend_battle_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/space_legend_battle_intro.ogg
 
 #begin Music/sprout_tower.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/sprout_tower.ogg
 
 #begin Music/ssaqua.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/ssaqua.ogg
 
 #begin Music/startower.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/startower.ogg
 
 #begin Music/suicune_battle.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/suicune_battle.ogg
 
 #begin Music/suicune_battle_intro.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/suicune_battle_intro.ogg
 
 #begin Music/surf.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/surf.ogg
 
 #begin Music/tintower.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/tintower.ogg
 
 #begin Music/title.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/title.ogg
 
 #begin Music/trainer_defeat.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/trainer_defeat.ogg
 
 #begin Music/trainer_encounter.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/trainer_encounter.ogg
 
 #begin Music/unown_broadcast.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/unown_broadcast.ogg
 
 #begin Music/vermilion.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/vermilion.ogg
 
 #begin Music/violet.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/violet.ogg
 
 #begin Music/viridian_forest.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/viridian_forest.ogg
 
 #begin Music/wild_defeat.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/wild_defeat.ogg
 
 #begin Music/intro/azalea.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/azalea.ogg
 
 #begin Music/intro/barktown.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/barktown.ogg
 
 #begin Music/intro/battlefactory.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/battlefactory.ogg
 
 #begin Music/intro/bugcontest.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/bugcontest.ogg
 
 #begin Music/intro/burnedtower.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/burnedtower.ogg
 
 #begin Music/intro/celadon.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/celadon.ogg
 
 #begin Music/intro/cerulean.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/cerulean.ogg
 
 #begin Music/intro/cerulean_cave.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/cerulean_cave.ogg
 
 #begin Music/intro/champion_defeat.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/champion_defeat.ogg
 
 #begin Music/intro/cherrygrove.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/cherrygrove.ogg
 
 #begin Music/intro/diglettscave.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/diglettscave.ogg
 
 #begin Music/intro/elite_defeat.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/elite_defeat.ogg
 
 #begin Music/intro/elmslab.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/elmslab.ogg
 
 #begin Music/intro/entei_battle.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/entei_battle.ogg
 
 #begin Music/intro/evolution.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/evolution.ogg
 
 #begin Music/intro/frontier.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/frontier.ogg
 
 #begin Music/intro/gamecorner.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/gamecorner.ogg
 
 #begin Music/intro/Goldenrod.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/Goldenrod.ogg
 
 #begin Music/intro/gts.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/gts.ogg
 
 #begin Music/intro/ho-oh_battle.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/ho-oh_battle.ogg
 
 #begin Music/intro/IlexForest.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/IlexForest.ogg
 
 #begin Music/intro/johto_elite.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/johto_elite.ogg
 
 #begin Music/intro/johto_leader.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/johto_leader.ogg
 
 #begin Music/intro/johto_rival_encounter.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/johto_rival_encounter.ogg
 
 #begin Music/intro/johto_rocket.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/johto_rocket.ogg
 
 #begin Music/intro/johto_trainer.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/johto_trainer.ogg
 
 #begin Music/intro/johto_wild.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/johto_wild.ogg
 
 #begin Music/intro/kanto_leader.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/kanto_leader.ogg
 
 #begin Music/intro/kanto_trainer.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/kanto_trainer.ogg
 
 #begin Music/intro/lavender.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/lavender.ogg
 
 #begin Music/intro/leader_defeat.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/leader_defeat.ogg
 
 #begin Music/intro/lobby.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/lobby.ogg
 
 #begin Music/intro/lugia_battle.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/lugia_battle.ogg
 
 #begin Music/intro/mart.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/mart.ogg
 
 #begin Music/intro/mary_encounter.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/mary_encounter.ogg
 
 #begin Music/intro/oakslab.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/oakslab.ogg
 
 #begin Music/intro/oak_encounter.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/oak_encounter.ogg
 
 #begin Music/intro/pokeflute.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/pokeflute.ogg
 
 #begin Music/intro/pokemon_lullaby.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/pokemon_lullaby.ogg
 
 #begin Music/intro/pokemon_march.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/pokemon_march.ogg
 
 #begin Music/intro/pvp.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/pvp.ogg
 
 #begin Music/intro/raikou_battle.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/raikou_battle.ogg
 
 #begin Music/intro/ride.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/ride.ogg
 
 #begin Music/intro/RouteMusic1.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/RouteMusic1.ogg
 
 #begin Music/intro/RouteMusic10.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/RouteMusic10.ogg
 
 #begin Music/intro/RouteMusic11.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/RouteMusic11.ogg
 
 #begin Music/intro/RouteMusic2.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/RouteMusic2.ogg
 
 #begin Music/intro/RouteMusic3.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/RouteMusic3.ogg
 
 #begin Music/intro/RouteMusic4.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/RouteMusic4.ogg
 
 #begin Music/intro/RouteMusic5.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/RouteMusic5.ogg
 
 #begin Music/intro/RouteMusic6.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/RouteMusic6.ogg
 
 #begin Music/intro/RouteMusic7.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/RouteMusic7.ogg
 
 #begin Music/intro/RouteMusic8.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/RouteMusic8.ogg
 
 #begin Music/intro/safari.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/safari.ogg
 
 #begin Music/intro/show_me_around.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/show_me_around.ogg
 
 #begin Music/intro/space_legend_battle.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/space_legend_battle.ogg
 
 #begin Music/intro/sprout_tower.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/sprout_tower.ogg
 
 #begin Music/intro/ssaqua.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/ssaqua.ogg
 
 #begin Music/intro/startower.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/startower.ogg
 
 #begin Music/intro/suicune_battle.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/suicune_battle.ogg
 
 #begin Music/intro/trainer_encounter.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/trainer_encounter.ogg
 
 #begin Music/intro/vermilion.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/vermilion.ogg
 
 #begin Music/intro/violet.ogg
 /importer:OggImporter
 /processor:SongProcessor
-/processorParam:Quality=Low
+/processorParam:Quality=Best
 /build:Music/intro/violet.ogg
 
 #begin Sound Effects/badge_acquired.mp3

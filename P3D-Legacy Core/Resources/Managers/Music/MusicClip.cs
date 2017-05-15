@@ -89,7 +89,7 @@ namespace P3D.Legacy.Core.Resources.Managers.Music
             {
                 MediaPlayer.Volume = volume;
                 MediaPlayer.IsRepeating = loopPlayback;
-                //MediaPlayer.Play(MusicFile);
+                MediaPlayer.Play(MusicFile);
             }
         }
         public void Resume() => MediaPlayer.Resume();
