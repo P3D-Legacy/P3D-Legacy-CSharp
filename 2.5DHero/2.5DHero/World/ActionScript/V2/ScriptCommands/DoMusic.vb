@@ -23,6 +23,11 @@ Namespace ScriptVersion2
                     If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
                         Screen.Level.MusicLoop = argument
                     End If
+                Case "forceplay"
+                    MusicManager.Stop()
+                    MusicManager.PlayMusic(argument)
+                Case "playnomusic"
+                    MusicManager.PlayNoMusic()
                 Case "setmusicloop"
                     If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
                         Screen.Level.MusicLoop = argument

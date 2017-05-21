@@ -903,6 +903,9 @@ Namespace BattleSystem
             'Trapping: Bind, Clamp, Fire Spin, Infestation, Magma Storm, Sand Tomb, Whirlpool, Wrap
 
             If own = True Then
+                If BattleScreen.OwnPokemon.Status = Pokemon.StatusProblems.Fainted Or BattleScreen.OwnPokemon.HP <= 0 Then
+                    Return True
+                End If
                 If BattleScreen.OppPokemon.Ability.Name.ToLower() = "shadow tag" And BattleScreen.OwnPokemon.Ability.Name.ToLower() <> "shadow tag" Then
                     Return False
                 End If
@@ -932,6 +935,9 @@ Namespace BattleSystem
                     Return False
                 End If
             Else
+                If BattleScreen.OppPokemon.Status = Pokemon.StatusProblems.Fainted Or BattleScreen.OppPokemon.HP <= 0 Then
+                    Return True
+                End If
                 If BattleScreen.OwnPokemon.Ability.Name.ToLower() = "shadow tag" And BattleScreen.OppPokemon.Ability.Name.ToLower() <> "shadow tag" Then
                     Return False
                 End If
