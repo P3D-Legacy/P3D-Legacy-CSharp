@@ -860,7 +860,7 @@ Public Class MainMenuScreen
                 Dim downloadProgress As Integer = Core.GameJoltSave.DownloadProgress
                 Dim total As Integer = Core.GameJoltSave.TotalDownloadItems
 
-                Dim downloadtext As String = "Downloading profile"
+                Dim downloadtext As String = "Downloading profile..."
                 Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, downloadtext & LoadingDots.Dots, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(downloadtext).X / 2) + 2, 322), Microsoft.Xna.Framework.Color.Black)
                 Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, downloadtext & LoadingDots.Dots, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(downloadtext).X / 2), 320), Microsoft.Xna.Framework.Color.White)
 
@@ -874,7 +874,7 @@ Public Class MainMenuScreen
         End If
 
         If ControllerHandler.IsConnected() = False Then
-            Dim text As String = "Right-Click to quit to the main menu"
+            Dim text As String = "Right-Click to quit to the main menu."
             Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, text, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(text).X / 2) + 2, 502), Microsoft.Xna.Framework.Color.Black)
             Core.SpriteBatch.DrawInterfaceString(FontManager.MainFont, text, New Vector2(CSng(Core.ScreenSize.Width / 2 - FontManager.MainFont.MeasureString(text).X / 2), 500), Microsoft.Xna.Framework.Color.White)
         End If

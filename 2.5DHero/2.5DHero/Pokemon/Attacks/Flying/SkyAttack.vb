@@ -181,6 +181,21 @@ Namespace BattleSystem.Moves.Flying
             MoveFails(own, BattleScreen)
         End Sub
 
+        Public Overrides Sub IsSleeping(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub HurtItselfInConfusion(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub IsAttracted(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
         '''v0.55_update
         'Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
         '    Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)

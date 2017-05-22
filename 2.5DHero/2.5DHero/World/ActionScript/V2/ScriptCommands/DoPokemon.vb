@@ -697,6 +697,24 @@ Namespace ScriptVersion2
                             Core.Player.PokedexData = Pokedex.ChangeEntry(Core.Player.PokedexData, Pokemon.Number, pokedexType)
                         End If
                     End If
+                Case "addsteps"
+                    ' @Pokemon.AddSteps(PokemonIndex, StepsToAdd)
+
+                    Dim Index As Integer = int(argument.GetSplit(0, ","))
+                    Dim StepsToAdd As Integer = int(argument.GetSplit(1, ","))
+
+                    If Core.Player.Pokemons.Count - 1 >= Index Then
+                        Core.Player.Pokemons(Index).EggSteps += StepsToAdd
+                    End If
+                Case "setsteps"
+                    ' @Pokemon.SetSteps(PokemonIndex, StepsToSet)
+
+                    Dim Index As Integer = int(argument.GetSplit(0, ","))
+                    Dim StepsToSet As Integer = int(argument.GetSplit(1, ","))
+
+                    If Core.Player.Pokemons.Count - 1 >= Index Then
+                        Core.Player.Pokemons(Index).EggSteps = StepsToSet
+                    End If
             End Select
 
             IsReady = True

@@ -59,7 +59,7 @@ Namespace BattleSystem.Moves.Normal
             Me.AIField2 = AIField.Recharge
         End Sub
 
-        Public Overrides Sub PreAttack(own As Boolean, screen As Screen)
+        Public Overrides Sub MoveRecharge(Own As Boolean, screen As Screen)
             Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If Own = True Then
                 BattleScreen.FieldEffects.OwnRecharge += 1
