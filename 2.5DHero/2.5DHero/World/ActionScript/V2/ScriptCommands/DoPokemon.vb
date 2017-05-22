@@ -467,7 +467,7 @@ Namespace ScriptVersion2
 
                     For Each p As Pokemon In Core.Player.Pokemons
                         If p.IsEgg() = False Then
-                            Dim pData As String = p.GetSaveData()
+                            Dim pData As String = p.GetHallOfFameData()
                             newData &= vbNewLine & count & "," & pData
                         End If
                     Next
