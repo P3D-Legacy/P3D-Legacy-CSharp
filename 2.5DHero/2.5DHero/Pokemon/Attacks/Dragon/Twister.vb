@@ -2,6 +2,7 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Dragon
 
     Public Class Twister
@@ -62,23 +63,24 @@ Namespace BattleSystem.Moves.Dragon
             Me.EffectChances.Add(20)
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If Core.Random.Next(0, 100) < Me.GetEffectChance(0, own, BattleScreen) Then
                 BattleScreen.Battle.InflictFlinch(Not own, own, BattleScreen, "", "move:twister")
             End If
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim fly As Integer = 0
             Dim bounce As Integer = 0
 
             If own = True Then
-                fly = screen.FieldEffects.OppFlyCounter
-                bounce = screen.FieldEffects.OppBounceCounter
+                fly = BattleScreen.FieldEffects.OppFlyCounter
+                bounce = BattleScreen.FieldEffects.OppBounceCounter
             Else
-                fly = screen.FieldEffects.OwnFlyCounter
-                bounce = screen.FieldEffects.OwnBounceCounter
+                fly = BattleScreen.FieldEffects.OwnFlyCounter
+                bounce = BattleScreen.FieldEffects.OwnBounceCounter
             End If
 
             If fly > 0 Or bounce > 0 Then

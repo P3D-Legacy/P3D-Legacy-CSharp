@@ -1,4 +1,5 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Rock
 
@@ -57,7 +58,8 @@ Namespace BattleSystem.Moves.Rock
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim stealthrock As Integer = 0
             If own = True Then
                 stealthrock = BattleScreen.FieldEffects.OwnStealthrock

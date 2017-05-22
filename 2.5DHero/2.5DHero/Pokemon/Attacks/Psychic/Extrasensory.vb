@@ -1,5 +1,6 @@
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Psychic
 
@@ -60,7 +61,8 @@ Namespace BattleSystem.Moves.Psychic
             Me.EffectChances.Add(10)
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim substitute As Integer = BattleScreen.FieldEffects.OppSubstitute
             If own = False Then
                 substitute = BattleScreen.FieldEffects.OwnSubstitute

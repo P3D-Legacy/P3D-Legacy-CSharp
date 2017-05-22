@@ -223,7 +223,7 @@ namespace P3D.Legacy.Core.Screens
         public int OwnInfestation = 0;
         public List<int> OwnUsedMoves = new List<int>();
         public int OwnMagicCoat = 0;
-        public Item OwnLostItem = null;
+        public Item OwnConsumedItem = null;
         public bool OwnPursuit = false;
         public bool OwnMegaEvolved = false;
         //If roost got used, this is true and will get set false and revert types at the end of a turn.
@@ -354,7 +354,7 @@ namespace P3D.Legacy.Core.Screens
         public bool OppPokemonDamagedThisTurn = false;
         public bool OppPokemonDamagedLastTurn = false;
         public int OppMagicCoat = 0;
-        public Item OppLostItem = null;
+        public Item OppConsumedItem = null;
         public bool OppPursuit = false;
         public bool OppMegaEvolved = false;
         public bool OppRoostUsed = false;

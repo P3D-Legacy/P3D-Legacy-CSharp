@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Grass
 
     Public Class WoodHammer
@@ -58,18 +59,18 @@ Namespace BattleSystem.Moves.Grass
             Me.AIField2 = AIField.Recoil
         End Sub
 
-        Public Overrides Sub MoveRecoil(own As Boolean, BattleScreen As Screen)
-            Dim screen As BattleScreen = BattleScreen
-            Dim lastDamage As Integer = screen.FieldEffects.OwnLastDamage
+        Public Overrides Sub MoveRecoil(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim lastDamage As Integer = BattleScreen.FieldEffects.OwnLastDamage
             If own = False Then
-                lastDamage = screen.FieldEffects.OppLastDamage
+                lastDamage = BattleScreen.FieldEffects.OppLastDamage
             End If
             Dim recoilDamage As Integer = CInt(Math.Floor(lastDamage / 3))
             If recoilDamage <= 0 Then
                 recoilDamage = 1
             End If
 
-            screen.Battle.InflictRecoil(own, own, BattleScreen, Me, recoilDamage, "", "move:woodhammer")
+            BattleScreen.Battle.InflictRecoil(own, own, BattleScreen, Me, recoilDamage, "", "move:woodhammer")
         End Sub
 
     End Class

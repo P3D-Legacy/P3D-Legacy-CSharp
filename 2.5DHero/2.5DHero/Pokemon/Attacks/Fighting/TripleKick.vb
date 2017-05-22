@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Fighting
 
@@ -55,7 +56,8 @@ Namespace BattleSystem.Moves.Fighting
             '#End
         End Sub
 
-        Public Overloads Function GetTimesToAttack(own As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overrides Function GetTimesToAttack(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim r As Integer = Core.Random.Next(0, 100)
             If r < 73 Then
                 Return 3

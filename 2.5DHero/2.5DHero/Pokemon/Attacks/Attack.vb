@@ -1,8 +1,9 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Managers
-Imports P3D.Legacy.Core.Screens
+
 
 Namespace BattleSystem
 
@@ -1286,23 +1287,23 @@ Namespace BattleSystem
 
 
 
-        Public Overrides Function GetEffectChance(ByVal i As Integer, ByVal own As Boolean, ByVal BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
+        Public Overrides Function GetEffectChance(ByVal i As Integer, ByVal own As Boolean, ByVal screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim chance As Integer = Me.EffectChances(i)
 
             If Me.HasSecondaryEffect = True Then
-                Dim p As Pokemon = screen.OwnPokemon
+                Dim p As Pokemon = BattleScreen.OwnPokemon
                 If own = False Then
-                    p = screen.OppPokemon
+                    p = BattleScreen.OppPokemon
                 End If
 
                 If p.Ability.Name.ToLower() = "serene grace" Then
                     chance *= 2
                 End If
 
-                Dim waterPledge As Integer = screen.FieldEffects.OwnWaterPledge
+                Dim waterPledge As Integer = BattleScreen.FieldEffects.OwnWaterPledge
                 If own = False Then
-                    waterPledge = screen.FieldEffects.OppWaterPledge
+                    waterPledge = BattleScreen.FieldEffects.OppWaterPledge
                 End If
                 If waterPledge > 0 Then
                     chance *= 2
@@ -1319,7 +1320,8 @@ Namespace BattleSystem
         ''' </summary>
         ''' <param name="Own">If the own Pokémon used the move.</param>
         ''' <param name="BattleScreen">Reference to the BattleScreen.</param>
-        Public Overrides Function GetDamage(ByVal Critical As Boolean, ByVal Own As Boolean, ByVal targetPokemon As Boolean, ByVal BattleScreen As Screen) As Integer
+        Public Overrides Function GetDamage(ByVal Critical As Boolean, ByVal Own As Boolean, ByVal targetPokemon As Boolean, ByVal screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Return BattleCalculation.CalculateDamage(Me, Critical, Own, targetPokemon, BattleScreen)
         End Function
 
@@ -1328,7 +1330,8 @@ Namespace BattleSystem
         ''' </summary>
         ''' <param name="Own">If the own Pokémon used the move.</param>
         ''' <param name="BattleScreen">Reference to the BattleScreen.</param>
-        Public Overrides Sub MoveHits(ByVal own As Boolean, ByVal BattleScreen As Screen)
+        Public Overrides Sub MoveHits(ByVal own As Boolean, ByVal screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If Me.IsGameModeMove = True Then
                 AttackSpecialFunctions.ExecuteAttackFunction(Me, own, BattleScreen)
             Else

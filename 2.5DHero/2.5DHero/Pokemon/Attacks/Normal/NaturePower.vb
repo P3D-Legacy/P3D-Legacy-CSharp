@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
+
 Imports P3D.Legacy.Core.World
 
 Namespace BattleSystem.Moves.Normal
@@ -57,7 +58,7 @@ Namespace BattleSystem.Moves.Normal
         End Sub
 
         Public Shared Function GetMoveID() As Integer
-            Select Case Screen.Level.Terrain.TerrainType
+            Select Case BattleScreen.Level.Terrain.TerrainType
                 Case TerrainTypeEnums.Plain
                     Return 161
                 Case TerrainTypeEnums.Cave

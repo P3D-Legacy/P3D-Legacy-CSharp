@@ -3,6 +3,7 @@ Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Ground
 
     Public Class Magnitude
@@ -60,11 +61,11 @@ Namespace BattleSystem.Moves.Ground
 
         Shared UsedLevel As Integer = 0
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            Dim dig As Integer = screen.FieldEffects.OppDigCounter
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim dig As Integer = BattleScreen.FieldEffects.OppDigCounter
             If own = False Then
-                dig = screen.FieldEffects.OwnDigCounter
+                dig = BattleScreen.FieldEffects.OwnDigCounter
             End If
 
             Dim basepower As Integer = 0
@@ -105,7 +106,8 @@ Namespace BattleSystem.Moves.Ground
             Return basepower
         End Function
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             BattleScreen.BattleQuery.Add(New TextQueryObject("Magnitude " & UsedLevel.ToString(CultureInfo.InvariantCulture) & "!"))
         End Sub
 

@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Fighting
 
     Public Class FocusPunch
@@ -55,18 +56,18 @@ Namespace BattleSystem.Moves.Fighting
             '#End
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
+        Public Overrides Function MoveFailBeforeAttack(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If Own = True Then
-                If screen.FieldEffects.OwnPokemonDamagedThisTurn = True Then
-                    screen.BattleQuery.Add(New TextQueryObject(screen.OwnPokemon.GetDisplayName() & " lost its focus and couldn't move!"))
+                If BattleScreen.FieldEffects.OwnPokemonDamagedThisTurn = True Then
+                    BattleScreen.BattleQuery.Add(New TextQueryObject(BattleScreen.OwnPokemon.GetDisplayName() & " lost its focus and couldn't move!"))
                     Return True
                 Else
                     Return False
                 End If
             Else
-                If screen.FieldEffects.OppPokemonDamagedThisTurn = True Then
-                    screen.BattleQuery.Add(New TextQueryObject(screen.OppPokemon.GetDisplayName() & " lost its focus and couldn't move!"))
+                If BattleScreen.FieldEffects.OppPokemonDamagedThisTurn = True Then
+                    BattleScreen.BattleQuery.Add(New TextQueryObject(BattleScreen.OppPokemon.GetDisplayName() & " lost its focus and couldn't move!"))
                     Return True
                 Else
                     Return False

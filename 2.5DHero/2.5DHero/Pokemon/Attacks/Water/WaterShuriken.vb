@@ -1,5 +1,6 @@
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Water
 
@@ -58,7 +59,8 @@ Namespace BattleSystem.Moves.Water
             Me.AIField2 = AIField.HighPriority
         End Sub
 
-        Public Overloads Function GetTimesToAttack(own As Boolean, BattleScreen As BattleScreen) As Integer
+        Public Overrides Function GetTimesToAttack(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then

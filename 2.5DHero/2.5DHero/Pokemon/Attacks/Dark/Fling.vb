@@ -2,6 +2,7 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Dark
 
     Public Class Fling
@@ -59,11 +60,11 @@ Namespace BattleSystem.Moves.Dark
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
+        Public Overrides Function MoveFailBeforeAttack(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
             If Own = False Then
-                p = screen.OppPokemon
+                p = BattleScreen.OppPokemon
             End If
 
             If p.Item Is Nothing Then
@@ -73,11 +74,11 @@ Namespace BattleSystem.Moves.Dark
             End If
         End Function
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
             If own = False Then
-                p = screen.OppPokemon
+                p = BattleScreen.OppPokemon
             End If
 
             If p.Item Is Nothing Then
@@ -87,7 +88,8 @@ Namespace BattleSystem.Moves.Dark
             End If
         End Function
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             If own = False Then
                 p = BattleScreen.OppPokemon

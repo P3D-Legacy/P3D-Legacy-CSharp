@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Water
 
     Public Class Hydrocannon
@@ -58,12 +59,12 @@ Namespace BattleSystem.Moves.Water
             Me.AIField2 = AIField.Recharge
         End Sub
 
-        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As Screen)
-            Dim screen As BattleScreen = BattleScreen
+        Public Overrides Sub PreAttack(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If Own = True Then
-                screen.FieldEffects.OwnRecharge += 1
+                BattleScreen.FieldEffects.OwnRecharge += 1
             Else
-                screen.FieldEffects.OppRecharge += 1
+                BattleScreen.FieldEffects.OppRecharge += 1
             End If
         End Sub
 

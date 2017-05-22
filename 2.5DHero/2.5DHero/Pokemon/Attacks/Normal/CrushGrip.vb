@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Normal
 
     Public Class CrushGrip
@@ -55,13 +56,13 @@ Namespace BattleSystem.Moves.Normal
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen as BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
-            Dim op As Pokemon = screen.OppPokemon
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
+            Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then
-                p = screen.OppPokemon
-                op = screen.OwnPokemon
+                p = BattleScreen.OppPokemon
+                op = BattleScreen.OwnPokemon
             End If
 
             Dim basepower As Integer = 1

@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Steel
 
     Public Class HeavySlam
@@ -55,10 +56,10 @@ Namespace BattleSystem.Moves.Steel
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            Dim userWeight As Single = screen.FieldEffects.GetPokemonWeight(own, BattleScreen)
-            Dim targetWeight As Single = screen.FieldEffects.GetPokemonWeight(Not own, BattleScreen)
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim userWeight As Single = BattleScreen.FieldEffects.GetPokemonWeight(own, BattleScreen)
+            Dim targetWeight As Single = BattleScreen.FieldEffects.GetPokemonWeight(Not own, BattleScreen)
 
             If targetWeight <= (1 / 5) * userWeight Then
                 Return 120

@@ -1,4 +1,5 @@
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Poison
 
@@ -58,7 +59,8 @@ Namespace BattleSystem.Moves.Poison
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If BattleScreen.Battle.InflictPoison(Not own, own, BattleScreen, False, "", "move:poisonpowder") = False Then
                 BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
             End If

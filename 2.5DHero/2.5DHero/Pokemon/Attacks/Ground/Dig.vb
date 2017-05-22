@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Ground
 
     Public Class Dig
@@ -59,11 +60,11 @@ Namespace BattleSystem.Moves.Ground
             Me.AIField2 = AIField.MultiTurn
         End Sub
 
-        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            Dim dig As Integer = screen.FieldEffects.OwnDigCounter
+        Public Overrides Function GetUseAccEvasion(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(Screen, BattleScreen)
+            Dim dig As Integer = BattleScreen.FieldEffects.OwnDigCounter
             If own = False Then
-                dig = screen.FieldEffects.OppDigCounter
+                dig = BattleScreen.FieldEffects.OppDigCounter
             End If
 
             If dig = 0 Then
@@ -73,11 +74,11 @@ Namespace BattleSystem.Moves.Ground
             End If
         End Function
 
-        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As Screen)
-            Dim screen As BattleScreen = BattleScreen
-            Dim dig As Integer = screen.FieldEffects.OwnDigCounter
+        Public Overrides Sub PreAttack(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(Screen, BattleScreen)
+            Dim dig As Integer = BattleScreen.FieldEffects.OwnDigCounter
             If Own = False Then
-                dig = screen.FieldEffects.OppDigCounter
+                dig = BattleScreen.FieldEffects.OppDigCounter
             End If
 
             If dig = 0 Then
@@ -87,56 +88,97 @@ Namespace BattleSystem.Moves.Ground
             End If
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            Dim digCounter As Integer = screen.FieldEffects.OwnDigCounter
+        Public Overrides Function MoveFailBeforeAttack(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(Screen, BattleScreen)
+            Dim digCounter As Integer = BattleScreen.FieldEffects.OwnDigCounter
 
             If Own = False Then
-                digCounter = screen.FieldEffects.OppDigCounter
+                digCounter = BattleScreen.FieldEffects.OppDigCounter
             End If
 
-            Dim p As Pokemon = screen.OwnPokemon
+            Dim p As Pokemon = BattleScreen.OwnPokemon
             If Own = False Then
-                p = screen.OppPokemon
+                p = BattleScreen.OppPokemon
             End If
 
             Dim hasToCharge As Boolean = True
             If Not p.Item Is Nothing Then
-                If p.Item.Name.ToLower() = "power herb" And screen.FieldEffects.CanUseItem(Own) = True And screen.FieldEffects.CanUseOwnItem(Own, screen) = True Then
-                    If screen.Battle.RemoveHeldItem(Own, Own, screen, "Power Herb pushed the use of Dig!", "move:dig") = True Then
-                        hasToCharge = False
+                If p.Item.Name.ToLower() = "power herb" And BattleScreen.FieldEffects.CanUseItem(Own) = True And BattleScreen.FieldEffects.CanUseOwnItem(Own, Screen) = True Then
+                    If BattleScreen.Battle.RemoveHeldItem(Own, Own, Screen, "Power Herb pushed the use of Dig!", "move:dig") = True Then
+                        digCounter = 1
                     End If
                 End If
             End If
 
-            If digCounter = 0 And hasToCharge = True Then
+            If digCounter = 0 Then
                 If Own = True Then
-                    screen.FieldEffects.OwnDigCounter = 1
+                    BattleScreen.FieldEffects.OwnDigCounter = 1
                 Else
-                    screen.FieldEffects.OppDigCounter = 1
+                    BattleScreen.FieldEffects.OppDigCounter = 1
                 End If
 
-                screen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " burrowed its way underground!"))
+                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " burrowed its way underground!"))
 
                 Return True
             Else
                 If Own = True Then
-                    screen.FieldEffects.OwnDigCounter = 0
+                    BattleScreen.FieldEffects.OwnDigCounter = 0
                 Else
-                    screen.FieldEffects.OppDigCounter = 0
+                    BattleScreen.FieldEffects.OppDigCounter = 0
                 End If
 
                 Return False
             End If
         End Function
 
-        Public Overrides Sub MoveSelected(own As Boolean, BattleScreen As Screen)
-            Dim screen As BattleScreen = BattleScreen
+        Public Overrides Sub MoveSelected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(Screen, BattleScreen)
             If own = True Then
-                screen.FieldEffects.OwnDigCounter = 0
+                BattleScreen.FieldEffects.OwnDigCounter = 0
             Else
-                screen.FieldEffects.OppDigCounter = 0
+                BattleScreen.FieldEffects.OppDigCounter = 0
             End If
+        End Sub
+        Public Overrides Function DeductPP(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim Dig As Integer = BattleScreen.FieldEffects.OwnDigCounter
+            If own = False Then
+                Dig = BattleScreen.FieldEffects.OppDigCounter
+            End If
+
+            If Dig = 0 Then
+                Return False
+            Else
+                Return True
+            End If
+        End Function
+
+        Private Sub MoveFails(own As Boolean, BattleScreen As BattleScreen)
+            If own = True Then
+                BattleScreen.FieldEffects.OwnDigCounter = 0
+            Else
+                BattleScreen.FieldEffects.OppDigCounter = 0
+            End If
+        End Sub
+
+        Public Overrides Sub MoveMisses(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub AbsorbedBySubstitute(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub MoveProtectedDetected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub InflictedFlinch(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
         End Sub
 
     End Class

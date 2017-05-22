@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Normal
 
     Public Class SpitUp
@@ -58,32 +59,33 @@ Namespace BattleSystem.Moves.Normal
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen as BattleScreen = BattleScreen
-            Dim stockpiled As Integer = screen.FieldEffects.OwnStockpileCount
+        Public Overrides Function MoveFailBeforeAttack(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim stockpiled As Integer = BattleScreen.FieldEffects.OwnStockpileCount
             If Own = False Then
-                stockpiled = screen.FieldEffects.OppStockpileCount
+                stockpiled = BattleScreen.FieldEffects.OppStockpileCount
             End If
 
             If stockpiled = 0 Then
-                screen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
+                BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
                 Return True
             Else
                 Return False
             End If
         End Function
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen as BattleScreen = BattleScreen
-            Dim stockpiled As Integer = screen.FieldEffects.OwnStockpileCount
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim stockpiled As Integer = BattleScreen.FieldEffects.OwnStockpileCount
             If own = False Then
-                stockpiled = screen.FieldEffects.OppStockpileCount
+                stockpiled = BattleScreen.FieldEffects.OppStockpileCount
             End If
 
             Return stockpiled * 100
         End Function
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim stockpiled As Integer = BattleScreen.FieldEffects.OwnStockpileCount
             If own = False Then
                 stockpiled = BattleScreen.FieldEffects.OppStockpileCount

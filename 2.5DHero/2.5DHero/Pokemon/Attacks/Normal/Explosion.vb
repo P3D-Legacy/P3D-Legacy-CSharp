@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Normal
 
     Public Class Explosion
@@ -58,14 +59,14 @@ Namespace BattleSystem.Moves.Normal
             Me.AIField2 = AIField.Selfdestruct
         End Sub
 
-        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As Screen)
-            Dim screen as BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
+        Public Overrides Sub PreAttack(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
             If Own = False Then
-                p = screen.OppPokemon
+                p = BattleScreen.OppPokemon
             End If
 
-            screen.Battle.ReduceHP(p.HP, Own, Own, BattleScreen, p.GetDisplayName() & " exploded!", "move:explosion")
+            BattleScreen.Battle.ReduceHP(p.HP, Own, Own, BattleScreen, p.GetDisplayName() & " exploded!", "move:explosion")
         End Sub
 
     End Class

@@ -1,6 +1,7 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Water
 
     Public Class WaterSpout
@@ -55,16 +56,16 @@ Namespace BattleSystem.Moves.Water
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
             If own = False Then
-                p = screen.OppPokemon
+                p = BattleScreen.OppPokemon
             End If
 
             Return CInt(150 * (p.HP / p.MaxHP))
         End Function
 
-	End Class
+    End Class
 
 End Namespace

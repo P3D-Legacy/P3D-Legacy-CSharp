@@ -1,6 +1,7 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Normal
 
     Public Class DoubleEdge
@@ -58,18 +59,18 @@ Namespace BattleSystem.Moves.Normal
             Me.AIField2 = AIField.Recoil
         End Sub
 
-        Public Overrides Sub MoveRecoil(own As Boolean, BattleScreen As Screen)
-            Dim screen as BattleScreen = BattleScreen
-            Dim lastDamage As Integer = screen.FieldEffects.OwnLastDamage
+        Public Overrides Sub MoveRecoil(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim lastDamage As Integer = BattleScreen.FieldEffects.OwnLastDamage
             If own = False Then
-                lastDamage = screen.FieldEffects.OppLastDamage
+                lastDamage = BattleScreen.FieldEffects.OppLastDamage
             End If
             Dim recoilDamage As Integer = CInt(Math.Floor(lastDamage / 3))
             If recoilDamage <= 0 Then
                 recoilDamage = 1
             End If
 
-            screen.Battle.InflictRecoil(own, own, screen, Me, recoilDamage, "", "move:doubleedge")
+            BattleScreen.Battle.InflictRecoil(own, own, screen, Me, recoilDamage, "", "move:doubleedge")
         End Sub
 
     End Class

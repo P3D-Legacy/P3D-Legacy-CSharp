@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Dark
 
     Public Class Assurance
@@ -58,14 +59,14 @@ Namespace BattleSystem.Moves.Dark
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If own = True Then
-                If screen.FieldEffects.OwnPokemonDamagedThisTurn = True Then
+                If BattleScreen.FieldEffects.OwnPokemonDamagedThisTurn = True Then
                     Return Me.Power * 2
                 End If
             Else
-                If screen.FieldEffects.OppPokemonDamagedThisTurn = True Then
+                If BattleScreen.FieldEffects.OppPokemonDamagedThisTurn = True Then
                     Return Me.Power * 2
                 End If
             End If

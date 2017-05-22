@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Ghost
 
     Public Class Hex
@@ -55,11 +56,11 @@ Namespace BattleSystem.Moves.Ghost
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            Dim op As Pokemon = screen.OppPokemon
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then
-                op = screen.OwnPokemon
+                op = BattleScreen.OwnPokemon
             End If
 
             If op.Status <> BasePokemon.StatusProblems.None And op.Status <> BasePokemon.StatusProblems.Fainted Then

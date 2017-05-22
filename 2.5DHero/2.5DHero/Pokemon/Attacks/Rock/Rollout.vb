@@ -1,6 +1,7 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Rock
 
     Public Class Rollout
@@ -58,11 +59,11 @@ Namespace BattleSystem.Moves.Rock
             Me.AIField2 = AIField.MultiTurn
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            Dim rollout As Integer = screen.FieldEffects.OwnRolloutCounter
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim rollout As Integer = BattleScreen.FieldEffects.OwnRolloutCounter
             If own = False Then
-                rollout = screen.FieldEffects.OppRolloutCounter
+                rollout = BattleScreen.FieldEffects.OppRolloutCounter
             End If
 
             Dim p As Integer = Me.Power
@@ -73,9 +74,9 @@ Namespace BattleSystem.Moves.Rock
                 Next
             End If
 
-            Dim defensecurl As Integer = screen.FieldEffects.OwnDefenseCurl
+            Dim defensecurl As Integer = BattleScreen.FieldEffects.OwnDefenseCurl
             If own = False Then
-                defensecurl = screen.FieldEffects.OppDefenseCurl
+                defensecurl = BattleScreen.FieldEffects.OppDefenseCurl
             End If
 
             If defensecurl > 0 Then
@@ -85,7 +86,8 @@ Namespace BattleSystem.Moves.Rock
             Return p
         End Function
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim rollout As Integer = BattleScreen.FieldEffects.OwnRolloutCounter
             If own = False Then
                 rollout = BattleScreen.FieldEffects.OppRolloutCounter
@@ -114,15 +116,23 @@ Namespace BattleSystem.Moves.Rock
             End If
         End Sub
 
-        Public Overloads Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHasNoEffect(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 
-        Public Overloads Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveProtectedDetected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 
-        Public Overloads Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveMisses(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Interruption(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub InflictedFlinch(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 

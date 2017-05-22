@@ -1,4 +1,5 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Normal
 
@@ -57,7 +58,8 @@ Namespace BattleSystem.Moves.Normal
             Me.AIField2 = AIField.RaiseSpAttack
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             BattleScreen.Battle.LowerStat(own, own, BattleScreen, "Defense", 1, "", "move:shellsmash")
             BattleScreen.Battle.LowerStat(own, own, BattleScreen, "Special Defense", 1, "", "move:shellsmash")
             BattleScreen.Battle.RaiseStat(own, own, BattleScreen, "Attack", 2, "", "move:shellsmash")

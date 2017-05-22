@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Normal
 
     Public Class FalseSwipe
@@ -58,19 +59,19 @@ Namespace BattleSystem.Moves.Normal
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As Screen) As Integer
-            Dim screen as BattleScreen = BattleScreen
+        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim d As Integer = MyBase.GetDamage(Critical, Own, targetPokemon, BattleScreen)
 
-            Dim subst As Integer = screen.FieldEffects.OppSubstitute
+            Dim subst As Integer = BattleScreen.FieldEffects.OppSubstitute
             If Own = False Then
-                subst = screen.FieldEffects.OwnSubstitute
+                subst = BattleScreen.FieldEffects.OwnSubstitute
             End If
 
             If subst = 0 Then
-                Dim op As Pokemon = screen.OppPokemon
+                Dim op As Pokemon = BattleScreen.OppPokemon
                 If Own = False Then
-                    op = screen.OwnPokemon
+                    op = BattleScreen.OwnPokemon
                 End If
 
                 If d >= op.HP Then

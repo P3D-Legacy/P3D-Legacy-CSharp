@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Normal
 
     Public Class Uproar
@@ -55,7 +56,8 @@ Namespace BattleSystem.Moves.Normal
             '#End
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If own = True Then
                 If BattleScreen.FieldEffects.OwnUproar = 0 Then
                     BattleScreen.FieldEffects.OwnUproar = 3
@@ -67,7 +69,7 @@ Namespace BattleSystem.Moves.Normal
             End If
         End Sub
 
-        Private Sub StopMove(own As Boolean, BattleScreen As BattleScreen)
+        Private Sub Interruption(own As Boolean, BattleScreen As BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             If own = False Then
                 p = BattleScreen.OppPokemon
@@ -81,12 +83,29 @@ Namespace BattleSystem.Moves.Normal
             BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & "'s uproar stopped."))
         End Sub
 
-        Public Overloads Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
-            Me.StopMove(own, BattleScreen)
+        Public Overrides Sub MoveHasNoEffect(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Interruption(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub MoveFailsSoundproof(own As Boolean, BattleScreen As Screen)
-            Me.StopMove(own, BattleScreen)
+        Public Overrides Sub MoveFailsSoundproof(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Interruption(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub MoveProtectedDetected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Interruption(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub InflictedFlinch(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Interruption(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub MoveMisses(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Interruption(own, BattleScreen)
         End Sub
 
     End Class

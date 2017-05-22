@@ -1,4 +1,5 @@
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Normal
 
@@ -57,42 +58,46 @@ Namespace BattleSystem.Moves.Normal
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then
                 p = BattleScreen.OppPokemon
                 op = BattleScreen.OwnPokemon
             End If
+
+            'Conditions
+            If op.Item Is Nothing Then
+                Exit Sub
+            End If
             If op.Item.IsMegaStone = True Then
                 Exit Sub
             End If
-            Dim canSteal As Boolean = True
-            If op.Ability.Name.ToLower() = "multitype" Then
-                canSteal = False
+            If op.Ability.Name.ToLower() = "multitype" AndAlso op.Item.Name.ToLower().EndsWith(" plate") Then
+                Exit Sub
             End If
-            If Not op.Item Is Nothing AndAlso op.Item.Name.ToLower() = "griseous orb" And op.Number = 487 Then
-                canSteal = False
+            If op.Item.Name.ToLower() = "griseous orb" And op.Number = 487 Then
+                Exit Sub
+            End If
+            If op.Item.Name.ToLower().EndsWith(" drive") = True AndAlso op.Number = 649 Then
+                Exit Sub
             End If
 
-            If canSteal = True Then
-                If p.Item Is Nothing And Not op.Item Is Nothing Then
-                    Dim ItemID As Integer = op.Item.ID
+            If p.Item Is Nothing Then
+                Dim ItemID As Integer = op.Item.Id
 
-                    op.OriginalItem = Item.GetItemByID(op.Item.ID)
-                    op.OriginalItem.AdditionalData = op.Item.AdditionalData
+                op.OriginalItem = Item.GetItemByID(op.Item.Id)
+                op.OriginalItem.AdditionalData = op.Item.AdditionalData
 
-                    If BattleScreen.Battle.RemoveHeldItem(Not own, own, BattleScreen, "Covet stole the item " & op.Item.Name & " from " & op.GetDisplayName() & "!", "move:covet") = True Then
-                        If own = False Then
-                            BattleScreen.FieldEffects.StolenItemIDs.Add(ItemID)
-                        End If
-
-                        p.Item = Item.GetItemByID(ItemID)
+                If BattleScreen.Battle.RemoveHeldItem(Not own, own, BattleScreen, "Covet stole the item " & op.Item.Name & " from " & op.GetDisplayName() & "!", "move:covet") Then
+                    If own = False Then
+                        BattleScreen.FieldEffects.StolenItemIDs.Add(ItemID)
                     End If
+                    p.Item = Item.GetItemByID(ItemID)
                 End If
             End If
         End Sub
-
     End Class
 
 End Namespace

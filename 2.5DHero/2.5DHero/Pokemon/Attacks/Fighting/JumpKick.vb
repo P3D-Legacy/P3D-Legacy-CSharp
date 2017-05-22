@@ -1,4 +1,5 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Fighting
 
@@ -66,15 +67,18 @@ Namespace BattleSystem.Moves.Fighting
             BattleScreen.Battle.InflictRecoil(own, own, BattleScreen, Me, CInt(Math.Floor(p.HP / 2)), p.GetDisplayName() & " struggled and crashed!", "move:jumpkick")
         End Sub
 
-        Public Overloads Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveMisses(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             InflictCrashDamage(own, BattleScreen)
         End Sub
 
-        Public Overloads Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveProtectedDetected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             InflictCrashDamage(own, BattleScreen)
         End Sub
 
-        Public Overloads Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHasNoEffect(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             InflictCrashDamage(own, BattleScreen)
         End Sub
 

@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Water
 
@@ -60,7 +61,8 @@ Namespace BattleSystem.Moves.Water
             Me.EffectChances.Add(10)
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If Core.Random.Next(0, 100) < GetEffectChance(0, own, BattleScreen) Then
                 BattleScreen.Battle.LowerStat(Not own, own, BattleScreen, "Speed", 1, "", "move:bubblebeam")
             End If

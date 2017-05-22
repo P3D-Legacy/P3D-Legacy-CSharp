@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Normal
 
     Public Class SkullBash
@@ -59,11 +60,11 @@ Namespace BattleSystem.Moves.Normal
             Me.AIField3 = AIField.MultiTurn
         End Sub
 
-        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen as BattleScreen = BattleScreen
-            Dim SkullBash As Integer = screen.FieldEffects.OwnSkullBashCounter
+        Public Overrides Function GetUseAccEvasion(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim SkullBash As Integer = BattleScreen.FieldEffects.OwnSkullBashCounter
             If own = False Then
-                SkullBash = screen.FieldEffects.OppSkullBashCounter
+                SkullBash = BattleScreen.FieldEffects.OppSkullBashCounter
             End If
 
             If SkullBash = 0 Then
@@ -73,11 +74,11 @@ Namespace BattleSystem.Moves.Normal
             End If
         End Function
 
-        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As Screen)
-            Dim screen as BattleScreen = BattleScreen
-            Dim SkullBash As Integer = screen.FieldEffects.OwnSkullBashCounter
+        Public Overrides Sub PreAttack(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim SkullBash As Integer = BattleScreen.FieldEffects.OwnSkullBashCounter
             If Own = False Then
-                SkullBash = screen.FieldEffects.OppSkullBashCounter
+                SkullBash = BattleScreen.FieldEffects.OppSkullBashCounter
             End If
 
             If SkullBash = 0 Then
@@ -87,52 +88,61 @@ Namespace BattleSystem.Moves.Normal
             End If
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(ByVal Own As Boolean, ByVal BattleScreen As Screen) As Boolean
-            Dim screen as BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
-            Dim op As Pokemon = screen.OppPokemon
+        Public Overrides Function MoveFailBeforeAttack(ByVal own As Boolean, ByVal screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
+            Dim op As Pokemon = BattleScreen.OppPokemon
             If Own = False Then
-                p = screen.OppPokemon
-                op = screen.OwnPokemon
+                p = BattleScreen.OppPokemon
+                op = BattleScreen.OwnPokemon
             End If
 
-            Dim skullBash As Integer = screen.FieldEffects.OwnSkullBashCounter
+            Dim skullBash As Integer = BattleScreen.FieldEffects.OwnSkullBashCounter
             If Own = False Then
-                skullBash = screen.FieldEffects.OppSkullBashCounter
+                skullBash = BattleScreen.FieldEffects.OppSkullBashCounter
             End If
 
             If Not p.Item Is Nothing Then
-                If p.Item.Name.ToLower() = "power herb" And screen.FieldEffects.CanUseItem(Own) = True And screen.FieldEffects.CanUseOwnItem(Own, screen) = True Then
-                    If screen.Battle.RemoveHeldItem(Own, Own, screen, "Power Herb pushed the use of Skull Bash!", "move:skullbash") = True Then
+                If p.Item.Name.ToLower() = "power herb" And BattleScreen.FieldEffects.CanUseItem(Own) = True And BattleScreen.FieldEffects.CanUseOwnItem(Own, screen) = True Then
+                    If BattleScreen.Battle.RemoveHeldItem(Own, Own, screen, "Power Herb pushed the use of Skull Bash!", "move:skullbash") = True Then
                         skullBash = 1
                     End If
                 End If
             End If
 
             If skullBash = 0 Then
-                screen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " tucked in its head!"))
+                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " tucked in its head!"))
                 If Own = True Then
-                    screen.FieldEffects.OwnSkullBashCounter = 1
+                    BattleScreen.FieldEffects.OwnSkullBashCounter = 1
                 Else
-                    screen.FieldEffects.OppSkullBashCounter = 1
+                    BattleScreen.FieldEffects.OppSkullBashCounter = 1
                 End If
-                screen.Battle.RaiseStat(Own, Own, screen, "Defense", 1, "", "move:skullbash")
+                BattleScreen.Battle.RaiseStat(Own, Own, screen, "Defense", 1, "", "move:skullbash")
                 Return True
             Else
                 If Own = True Then
-                    screen.FieldEffects.OwnSkullBashCounter = 0
+                    BattleScreen.FieldEffects.OwnSkullBashCounter = 0
                 Else
-                    screen.FieldEffects.OppSkullBashCounter = 0
+                    BattleScreen.FieldEffects.OppSkullBashCounter = 0
                 End If
                 Return False
             End If
         End Function
 
-        Public Overrides Function DeductPp(own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen as BattleScreen = BattleScreen
-            Dim skullBash As Integer = screen.FieldEffects.OwnSkullBashCounter
+        Public Overrides Sub MoveSelected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            If own = True Then
+                BattleScreen.FieldEffects.OwnSkullBashCounter = 0
+            Else
+                BattleScreen.FieldEffects.OppSkullBashCounter = 0
+            End If
+        End Sub
+
+        Public Overrides Function DeductPp(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim skullBash As Integer = BattleScreen.FieldEffects.OwnSkullBashCounter
             If own = False Then
-                skullBash = screen.FieldEffects.OppSkullBashCounter
+                skullBash = BattleScreen.FieldEffects.OppSkullBashCounter
             End If
 
             If skullBash = 0 Then
@@ -150,15 +160,23 @@ Namespace BattleSystem.Moves.Normal
             End If
         End Sub
 
-        Public Overloads Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveMisses(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             MoveFails(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub AbsorbedBySubstitute(own As Boolean, BattleScreen As Screen)
+        Public Overrides Sub AbsorbedBySubstitute(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             MoveFails(own, BattleScreen)
         End Sub
 
-        Public Overloads Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveProtectedDetected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub InflictedFlinch(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             MoveFails(own, BattleScreen)
         End Sub
 

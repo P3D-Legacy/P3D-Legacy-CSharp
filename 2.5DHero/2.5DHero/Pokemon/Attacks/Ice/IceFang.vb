@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Ice
 
@@ -63,7 +64,8 @@ Namespace BattleSystem.Moves.Ice
             EffectChances.Add(10)
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If BattleScreen.FieldEffects.MovesFirst(own) = True Then
                 If Core.Random.Next(0, 100) < Me.GetEffectChance(1, own, BattleScreen) Then
                     BattleScreen.Battle.InflictFlinch(Not own, own, BattleScreen, "", "move:icefang")

@@ -1,4 +1,5 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Normal
 
@@ -57,12 +58,13 @@ Namespace BattleSystem.Moves.Normal
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If own = True Then
                 Dim p As Pokemon = BattleScreen.OwnPokemon
 
-                If Not BattleScreen.FieldEffects.OwnLostItem Is Nothing Then
-                    p.Item = BattleScreen.FieldEffects.OwnLostItem
+                If Not BattleScreen.FieldEffects.OwnConsumedItem Is Nothing Then
+                    p.Item = BattleScreen.FieldEffects.OwnConsumedItem
                     BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " found one " & p.Item.Name & "!"))
                 Else
                     BattleScreen.BattleQuery.Add(New TextQueryObject("Recycle failed!"))
@@ -70,8 +72,8 @@ Namespace BattleSystem.Moves.Normal
             Else
                 Dim p As Pokemon = BattleScreen.OppPokemon
 
-                If Not BattleScreen.FieldEffects.OppLostItem Is Nothing Then
-                    p.Item = BattleScreen.FieldEffects.OppLostItem
+                If Not BattleScreen.FieldEffects.OppConsumedItem Is Nothing Then
+                    p.Item = BattleScreen.FieldEffects.OppConsumedItem
                     BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " found one " & p.Item.Name & "!"))
                 Else
                     BattleScreen.BattleQuery.Add(New TextQueryObject("Recycle failed!"))

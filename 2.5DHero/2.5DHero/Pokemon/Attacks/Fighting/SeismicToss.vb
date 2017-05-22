@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Fighting
 
     Public Class SeismicToss
@@ -55,11 +56,11 @@ Namespace BattleSystem.Moves.Fighting
             '#End
         End Sub
 
-        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
+        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
             If Own = False Then
-                p = screen.OppPokemon
+                p = BattleScreen.OppPokemon
             End If
 
             Return p.Level

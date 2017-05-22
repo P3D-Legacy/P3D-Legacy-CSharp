@@ -152,11 +152,11 @@ Public Class Pokemon
             Me._originalAbility = Nothing
         End If
 
-        If Not Me._originalItem Is Nothing Then
-            Me.Item = P3D.Legacy.Core.Pokemon.Item.GetItemById(Me._originalItem.Id)
-            Me.Item.AdditionalData = Me._originalItem.AdditionalData
-            Me._originalItem = Nothing
-        End If
+        'If Not Me._originalItem Is Nothing Then
+        '    Me.Item = P3D.Legacy.Core.Pokemon.Item.GetItemById(Me._originalItem.Id)
+        '    Me.Item.AdditionalData = Me._originalItem.AdditionalData
+        '    Me._originalItem = Nothing
+        'End If
 
         Me.IsTransformed = False
 

@@ -2,6 +2,7 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Fire
 
     Public Class FlareBlitz
@@ -61,25 +62,26 @@ Namespace BattleSystem.Moves.Fire
             Me.EffectChances.Add(10)
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim chance As Integer = GetEffectChance(0, own, BattleScreen)
             If Core.Random.Next(0, 100) < chance Then
                 BattleScreen.Battle.InflictBurn(Not own, own, BattleScreen, "", "move:flareblitz")
             End If
         End Sub
         
-        Public Overrides Sub MoveRecoil(own As Boolean, BattleScreen As Screen)
-            Dim screen As BattleScreen = BattleScreen
-            Dim lastDamage As Integer = screen.FieldEffects.OwnLastDamage
+        Public Overrides Sub MoveRecoil(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim lastDamage As Integer = BattleScreen.FieldEffects.OwnLastDamage
             If own = False Then
-                lastDamage = screen.FieldEffects.OppLastDamage
+                lastDamage = BattleScreen.FieldEffects.OppLastDamage
             End If
             Dim recoilDamage As Integer = CInt(Math.Floor(lastDamage / 3))
             If recoilDamage <= 0 Then
                 recoilDamage = 1
             End If
 
-            screen.Battle.InflictRecoil(own, own, BattleScreen, Me, recoilDamage, "", "move:flareblitz")
+            BattleScreen.Battle.InflictRecoil(own, own, BattleScreen, Me, recoilDamage, "", "move:flareblitz")
         End Sub
 
     End Class

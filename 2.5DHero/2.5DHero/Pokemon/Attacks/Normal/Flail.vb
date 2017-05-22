@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Normal
 
     Public Class Flail
@@ -58,11 +59,11 @@ Namespace BattleSystem.Moves.Normal
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen as BattleScreen = BattleScreen
-            Dim ownP As Pokemon = screen.OwnPokemon
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim ownP As Pokemon = BattleScreen.OwnPokemon
             If own = False Then
-                ownP = screen.OppPokemon
+                ownP = BattleScreen.OppPokemon
             End If
 
             Dim P As Double = (48 * ownP.HP) / ownP.MaxHP
