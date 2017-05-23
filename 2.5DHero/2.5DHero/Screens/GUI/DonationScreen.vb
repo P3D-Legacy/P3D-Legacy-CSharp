@@ -45,7 +45,7 @@ Public Class DonationScreen
         If Controls.Down(True, True, True, True) = True Then
             OffsetY += 1
         End If
-        OffsetY = CInt(MathHelper.Clamp(OffsetY, 0, DonatorList.Count - 13))
+        OffsetY = CInt(MathHelper.Clamp(OffsetY, 0, DonatorList.Count - 12))
 
         If Controls.Dismiss() = True Then
             Core.SetScreen(Me.PreScreen)
@@ -58,7 +58,7 @@ Public Class DonationScreen
         Core.SpriteBatch.Draw(mainTexture, New Microsoft.Xna.Framework.Rectangle(CInt(Core.windowSize.Width / 2) - 285, 0, 570, 680), Microsoft.Xna.Framework.Color.White)
 
         Dim t As String = ""
-        For i = OffsetY To 12 + OffsetY
+        For i = OffsetY To 11 + OffsetY
             If i <> OffsetY Then
                 t &= vbNewLine & vbNewLine
             End If
@@ -67,8 +67,8 @@ Public Class DonationScreen
             End If
         Next
 
-        If DonatorList.Count > 13 Then
-            Canvas.DrawScrollBar(New Vector2(CInt(Core.windowSize.Width / 2) + 180, 100), DonatorList.Count, 13, OffsetY, New Size(4, 500), False, TextureManager.GetTexture(scrollTexture, New Microsoft.Xna.Framework.Rectangle(112, 12, 1, 1)), TextureManager.GetTexture(scrollTexture, New Microsoft.Xna.Framework.Rectangle(113, 12, 1, 1)))
+        If DonatorList.Count > 12 Then
+            Canvas.DrawScrollBar(New Vector2(CInt(Core.WindowSize.Width / 2) + 180, 100), DonatorList.Count, 13, OffsetY, New Size(4, 500), False, TextureManager.GetTexture(scrollTexture, New Microsoft.Xna.Framework.Rectangle(112, 12, 1, 1)), TextureManager.GetTexture(scrollTexture, New Microsoft.Xna.Framework.Rectangle(113, 12, 1, 1)))
         End If
 
         Core.SpriteBatch.DrawString(FontManager.MainFont, t, New Vector2(CInt(Core.windowSize.Width / 2) - 180, 100), Microsoft.Xna.Framework.Color.Black)

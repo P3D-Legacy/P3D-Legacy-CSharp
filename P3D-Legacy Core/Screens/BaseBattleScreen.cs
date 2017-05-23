@@ -79,6 +79,9 @@ namespace P3D.Legacy.Core.Screens
 
     public class FieldEffects
     {
+        //Client side stuff in PvP
+        public bool ClientCanSwitch = true; //Calculated by the host, sent to the client
+
         //Own stuff
         //Sleep turns
         public int OwnSleepTurns = 0;
