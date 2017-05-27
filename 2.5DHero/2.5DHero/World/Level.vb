@@ -701,19 +701,16 @@ Public Class Level
                         If Entities(i).NeedsUpdate = True Then
                             Entities(i).Update(gameTime)
                         End If
+
+                        ' UpdateEntity for all entities:
+                        Me.Entities(i).UpdateEntity(gameTime)
+
                     End If
                 Else
                     Exit For
                 End If
             Next
         End If
-
-        'UpdateEntity for all entities:
-        For i = 0 To Me.Entities.Count - 1
-            If i <= Me.Entities.Count - 1 Then
-                Me.Entities(i).UpdateEntity(gameTime)
-            End If
-        Next
 
         'UpdateEntity for all floors:
         For i = 0 To Me.Floors.Count - 1
