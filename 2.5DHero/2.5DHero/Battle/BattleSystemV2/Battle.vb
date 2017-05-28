@@ -1279,8 +1279,7 @@ Namespace BattleSystem
                 If p.HasVolatileStatus(BasePokemon.VolatileStatus.Infatuation) = True Then
                     If Core.Random.Next(0, 2) = 0 Then
                         BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " is in love with " & op.GetDisplayName() & "!"))
-                        'v0.55_update
-                        'moveUsed.IsAttracted(own, BattleScreen)
+                        moveUsed.IsAttracted(own, BattleScreen)
                         Exit Sub
                     End If
                 End If

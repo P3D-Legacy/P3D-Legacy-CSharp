@@ -21,7 +21,7 @@ Namespace BattleSystem.Moves.Normal
             Me.Name = "Pain Split"
             Me.Description = "The user adds its HP to the target's HP, then equally shares the combined HP with the target."
             Me.CriticalChance = 0
-            Me.IsHMMove = True
+            Me.IsHmMove = False
             Me.Target = Targets.OneAdjacentTarget
             Me.Priority = 0
             Me.TimesToAttack = 1

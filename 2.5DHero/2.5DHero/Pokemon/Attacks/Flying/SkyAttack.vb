@@ -196,13 +196,12 @@ Namespace BattleSystem.Moves.Flying
             MoveFails(own, BattleScreen)
         End Sub
 
-        '''v0.55_update
-        'Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
-        '    Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
-        '    If Core.Random.Next(0, 100) < Me.GetEffectChance(0, own, BattleScreen) Then
-        '        BattleScreen.Battle.InflictFlinch(Not own, own, BattleScreen, "", "move:skyattack")
-        '    End If
-        'End Sub
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            If Core.Random.Next(0, 100) < Me.GetEffectChance(0, own, BattleScreen) Then
+                BattleScreen.Battle.InflictFlinch(Not own, own, BattleScreen, "", "move:skyattack")
+            End If
+        End Sub
 
     End Class
 

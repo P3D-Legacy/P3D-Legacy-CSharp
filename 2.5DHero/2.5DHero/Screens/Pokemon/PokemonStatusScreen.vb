@@ -14,9 +14,9 @@ Public Class PokemonStatusScreen
     Dim pageIndex As Integer = 0
     Dim PokeIndex As Integer = 0
     Dim BoxIndex As Integer = 0
-    Dim BoxPokemon() As Pokemon
+    Dim BoxPokemon() As BasePokemon
     Dim MainTexture As Texture2D
-    Dim Pokemon As Pokemon
+    Dim Pokemon As BasePokemon
     Dim FrontView As Boolean = True
     Dim AttackIndex As Integer = 0
     Dim AttackToggle As Boolean = False
@@ -27,7 +27,7 @@ Public Class PokemonStatusScreen
 
     Dim EVColors As List(Of Color) = {New Color(0, 210, 0), New Color(253, 83, 0), New Color(0, 154, 226), New Color(253, 183, 97), New Color(100, 201, 226), New Color(178, 108, 204)}.ToList()
 
-    Public Sub New(ByVal currentScreen As Screen, ByVal Index As Integer, ByVal BoxPokemon() As Pokemon, ByVal Pokemon As Pokemon, ByVal viewParty As Boolean)
+    Public Sub New(ByVal currentScreen As Screen, ByVal Index As Integer, ByVal BoxPokemon() As BasePokemon, ByVal Pokemon As BasePokemon, ByVal viewParty As Boolean)
         Me.Identification = Identifications.PokemonStatusScreen
         Me.PreScreen = currentScreen
         Me.PokeIndex = Index

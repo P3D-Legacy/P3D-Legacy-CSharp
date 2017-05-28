@@ -891,7 +891,7 @@ Public Class StorageSystemScreen
                         SetupMenu({e}, "Can't remove last Pokémon from party.")
                     End If
                 Else
-                    Dim l As New List(Of Pokemon)
+                    Dim l As New List(Of BasePokemon)
                     l.AddRange(Core.Player.Pokemons.ToArray())
                     l.RemoveAt(CInt(CursorPosition.Y))
                     Dim hasPokemon As Boolean = False
@@ -1029,7 +1029,7 @@ Public Class StorageSystemScreen
         Dim hasPokemon As Boolean = False
 
         If Me.CursorPosition.X = 6 Then
-            Dim l As New List(Of Pokemon)
+            Dim l As New List(Of BasePokemon)
             l.AddRange(Core.Player.Pokemons.ToArray())
             l.RemoveAt(CInt(CursorPosition.Y))
 

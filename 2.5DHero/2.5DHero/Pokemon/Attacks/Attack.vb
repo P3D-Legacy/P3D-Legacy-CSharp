@@ -1258,6 +1258,8 @@ Namespace BattleSystem
                         returnMove = New Moves.Ground.LandsWrath()
                     'Case 617
                     'Light of Ruin
+                    'Case 618
+                    'Hyperspace Fury
                     Case 999
                         If GameController.IS_DEBUG_ACTIVE = True Or Core.Player.SandBoxMode = True Then
                             returnMove = New Moves.Special.TheDerpMove()

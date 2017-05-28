@@ -16,8 +16,8 @@ Namespace BattleSystem.Moves.Fighting
             Me.CurrentPP = 5
             Me.MaxPP = 5
             Me.Power = 120
-            Me.Accuracy = 100
-            Me.Category = Categories.Physical
+            Me.Accuracy = 70
+            Me.Category = Categories.Special
             Me.ContestCategory = ContestCategories.Smart
             Me.Name = "Focus Blast"
             Me.Description = "The user heightens its mental focus and unleashes its power. It may also lower the target’s Sp. Def."

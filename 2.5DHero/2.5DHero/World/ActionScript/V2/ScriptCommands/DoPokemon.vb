@@ -31,7 +31,7 @@ Namespace ScriptVersion2
                         Core.Player.Pokemons.RemoveAt(index)
                     End If
                 Case "add"
-                    'PokemonID,Level,Method,Ball,Location,IsEgg,TrainerName
+                    'PokemonID,Level,Method,Ball,Location,IsEgg,TrainerName,AdditionalData
 
                     If argument.StartsWith("{") = True Or argument.Remove(0, 1).StartsWith(",{") = True Then
                         Dim insertIndex As Integer = Core.Player.Pokemons.Count
@@ -64,31 +64,38 @@ Namespace ScriptVersion2
                         Dim Level As Integer = int(argument.GetSplit(1))
 
                         Dim catchMethod As String = "random reason"
-                        If commas > 1 Then
+                        If commas > 1 AndAlso argument.GetSplit(2) <> "" Then
                             catchMethod = argument.GetSplit(2)
                         End If
 
                         Dim catchBall As Item = Item.GetItemByID(1)
-                        If commas > 2 Then
+                        If commas > 2 AndAlso argument.GetSplit(3) <> "" Then
                             catchBall = Item.GetItemByID(int(argument.GetSplit(3)))
                         End If
 
                         Dim catchLocation As String = Screen.Level.MapName
-                        If commas > 3 Then
+                        If commas > 3 AndAlso argument.GetSplit(4) <> "" Then
                             catchLocation = argument.GetSplit(4)
                         End If
 
                         Dim isEgg As Boolean = False
-                        If commas > 4 Then
+                        If commas > 4 AndAlso argument.GetSplit(5) <> "" Then
                             isEgg = CBool(argument.GetSplit(5))
                         End If
 
                         Dim catchTrainer As String = Core.Player.Name
-                        If commas > 5 And argument.GetSplit(6) <> "<playername>" Then
+                        If commas > 5 AndAlso argument.GetSplit(6) <> "" And argument.GetSplit(6) <> "<playername>" Then
                             catchTrainer = argument.GetSplit(6)
                         End If
 
-                        Dim Pokemon As Pokemon = Pokemon.GetPokemonByID(PokemonID)
+                        'Experimental parameter, use with caution. DO NOT introduce non valid values, as the consequences are unknown.
+                        Dim additionalData As String = ""
+                        If commas > 6 AndAlso argument.GetSplit(7) <> "" Then
+                            additionalData = argument.GetSplit(7)
+                            additionalData = additionalData.ToLower()
+                        End If
+
+                        Dim Pokemon As Pokemon = Pokemon.GetPokemonByID(PokemonID, additionalData)
                         Pokemon.Generate(Level, True)
 
                         Pokemon.CatchTrainerName = catchTrainer
@@ -97,6 +104,9 @@ Namespace ScriptVersion2
                         Pokemon.CatchLocation = catchLocation
                         Pokemon.CatchBall = catchBall
                         Pokemon.CatchMethod = catchMethod
+                        If additionalData <> "" Then
+                            Pokemon.AdditionalData = additionalData
+                        End If
 
                         If isEgg = True Then
                             Pokemon.EggSteps = 1
