@@ -868,7 +868,7 @@ Public Class StorageSystemScreen
         If CursorPosition.X = 6 Then
             If Core.Player.Pokemons.Count - 1 >= CursorPosition.Y Then
                 If Not Me.MovingPokemon Is Nothing Then
-                    Dim l As New List(Of Pokemon)
+                    Dim l As New List(Of BasePokemon)
                     l.AddRange(Core.Player.Pokemons.ToArray())
                     l.RemoveAt(CInt(CursorPosition.Y))
                     l.Add(Me.MovingPokemon)
@@ -985,7 +985,7 @@ Public Class StorageSystemScreen
     Private Sub DepositPokemon()
         If GetBox(CurrentBox).Pokemon.Count < 30 Then
             If Core.Player.Pokemons.Count - 1 >= CInt(Me.CursorPosition.Y) Then
-                Dim l As New List(Of Pokemon)
+                Dim l As New List(Of BasePokemon)
                 l.AddRange(Core.Player.Pokemons.ToArray())
                 l.RemoveAt(CInt(CursorPosition.Y))
                 Dim hasPokemon As Boolean = False
