@@ -1619,123 +1619,94 @@ namespace P3D.Legacy.Core.Pokemon
         /// Adds Effort values (EV) to this Pokémon after defeated another Pokémon, if possible.
         /// </summary>
         /// <param name="DefeatedPokemon">The defeated Pokémon.</param>
-        public void GainEffort(BasePokemon pokemon, BasePokemon DefeatedPokemon)
+        public void GainEffort(BasePokemon DefeatedPokemon)
         {
-            int allEV = EVHP + EVAttack + EVDefense + EVSpeed + EVSpAttack + EVSpDefense;
-            if (allEV < 510)
+            int allEV = EVHP + EVAttack + EVDefense + EVSpAttack + EVSpDefense + EVSpeed;
+            if (allEV >= 510)
+                return;
+            int maxEVgain = 510 - allEV;
+            int totalEVgain = 0;
+            
+            //EV gains
+            int gainEVHP = DefeatedPokemon.GiveEVHP;
+            int gainEVAttack = DefeatedPokemon.GiveEVAttack;
+            int gainEVDefense = DefeatedPokemon.GiveEVDefense;
+            int gainEVSpAttack = DefeatedPokemon.GiveEVSpAttack;
+            int gainEVSpDefense = DefeatedPokemon.GiveEVSpDefense;
+            int gainEVSpeed = DefeatedPokemon.GiveEVSpeed;
+
+            int EVfactor = 1;
+
+            int itemNumber = 0;
+            if (Item != null)
+                itemNumber = Item.Id;
+
+            switch (itemNumber)
             {
-                int maxGainEV = 0;
-                if (allEV < 510)
-                {
-                    maxGainEV = 510 - allEV;
-                }
-
-                int EVfactor = 1;
-
-                if (maxGainEV > 0)
-                {
-                    maxGainEV = Convert.ToInt32(MathHelper.Clamp(maxGainEV, 1, 6));
-                    if ((pokemon.Item != null))
-                    {
-                        switch (pokemon.Item.Id)
-                        {
-                            case 582:
-                            case 583:
-                            case 584:
-                            case 585:
-                            case 586:
-                            case 587:
-                                //EV Items
-
-                                if (EVHP < 252 && pokemon.Item.Id == 582)
-                                {
-                                    EVHP += Convert.ToInt32(MathHelper.Clamp(4, 0, 252 - EVHP));
-                                }
-
-                                if (EVAttack < 252 && pokemon.Item.Id == 583)
-                                {
-                                    EVAttack += Convert.ToInt32(MathHelper.Clamp(4, 0, 252 - EVHP));
-                                }
-
-                                if (EVDefense < 252 && pokemon.Item.Id == 584)
-                                {
-                                    EVDefense += Convert.ToInt32(MathHelper.Clamp(4, 0, 252 - EVHP));
-                                }
-
-                                if (EVSpAttack < 252 && pokemon.Item.Id == 585)
-                                {
-                                    EVSpAttack += Convert.ToInt32(MathHelper.Clamp(4, 0, 252 - EVHP));
-                                }
-
-                                if (EVSpDefense < 252 && pokemon.Item.Id == 586)
-                                {
-                                    EVSpDefense += Convert.ToInt32(MathHelper.Clamp(4, 0, 252 - EVHP));
-                                }
-
-                                if (Speed < 252 && pokemon.Item.Id == 587)
-                                {
-                                    Speed += Convert.ToInt32(MathHelper.Clamp(4, 0, 252 - EVHP));
-                                }
-
-                                return;
-
-                                break;
-                            case 581:
-                                //Item 581 is Macho Brace
-                                EVfactor = 2;
-                                break;
-                        }
-                    }
-
-                    if (EVHP < 252 && DefeatedPokemon.GiveEVHP > 0)
-                    {
-                        int gainHPEV = DefeatedPokemon.GiveEVHP;
-                        gainHPEV = gainHPEV * EVfactor;
-                        gainHPEV = Convert.ToInt32(MathHelper.Clamp(gainHPEV, 0, 252 - EVHP));
-                        EVHP += gainHPEV;
-                    }
-
-                    if (EVAttack < 252 && DefeatedPokemon.GiveEVAttack > 0)
-                    {
-                        int gainAttackEV = DefeatedPokemon.GiveEVAttack;
-                        gainAttackEV = gainAttackEV * EVfactor;
-                        gainAttackEV = Convert.ToInt32(MathHelper.Clamp(gainAttackEV, 0, 252 - EVAttack));
-                        EVAttack += gainAttackEV;
-                    }
-
-                    if (EVDefense < 252 && DefeatedPokemon.GiveEVDefense > 0)
-                    {
-                        int gainDefenseEV = DefeatedPokemon.GiveEVDefense;
-                        gainDefenseEV = gainDefenseEV * EVfactor;
-                        gainDefenseEV = Convert.ToInt32(MathHelper.Clamp(gainDefenseEV, 0, 252 - EVDefense));
-                        EVDefense += gainDefenseEV;
-                    }
-
-                    if (EVSpAttack < 252 && DefeatedPokemon.GiveEVSpAttack > 0)
-                    {
-                        int gainSpAttackEV = DefeatedPokemon.GiveEVSpAttack;
-                        gainSpAttackEV = gainSpAttackEV * EVfactor;
-                        gainSpAttackEV = Convert.ToInt32(MathHelper.Clamp(gainSpAttackEV, 0, 252 - EVSpAttack));
-                        EVSpAttack += gainSpAttackEV;
-                    }
-
-                    if (EVSpDefense < 252 && DefeatedPokemon.GiveEVSpDefense > 0)
-                    {
-                        int gainSpDefenseEV = DefeatedPokemon.GiveEVSpDefense;
-                        gainSpDefenseEV = gainSpDefenseEV * EVfactor;
-                        gainSpDefenseEV = Convert.ToInt32(MathHelper.Clamp(gainSpDefenseEV, 0, 252 - EVSpDefense));
-                        EVSpDefense += gainSpDefenseEV;
-                    }
-
-                    if (EVSpeed < 252 && DefeatedPokemon.GiveEVSpeed > 0)
-                    {
-                        int gainSpeedEV = DefeatedPokemon.GiveEVSpeed;
-                        gainSpeedEV = gainSpeedEV * EVfactor;
-                        gainSpeedEV = Convert.ToInt32(MathHelper.Clamp(gainSpeedEV, 0, 252 - EVSpeed));
-                        EVSpeed += gainSpeedEV;
-                    }
-
-                }
+                //Macho Brace
+                case 581: EVfactor *= 2; break; 
+                //Power Items
+                case 582: gainEVHP += 4; break;
+                case 583: gainEVAttack += 4; break;
+                case 584: gainEVDefense += 4; break;
+                case 585: gainEVSpAttack += 4; break;
+                case 586: gainEVSpDefense += 4; break;
+                case 587: gainEVSpeed += 4; break;
+            }
+            
+            //HP gain
+            if (gainEVHP > 0 && EVHP < 252 && maxEVgain - totalEVgain > 0)
+            {
+                gainEVHP *= EVfactor;
+                gainEVHP = MathHelper.Clamp(gainEVHP, 0, 252 - EVHP);
+                gainEVHP = MathHelper.Clamp(gainEVHP, 0, maxEVgain - totalEVgain);
+                EVHP += gainEVHP;
+                totalEVgain += gainEVHP;
+            }
+            //Attack gain
+            if (gainEVAttack > 0 && EVAttack < 252 && maxEVgain - totalEVgain > 0)
+            {
+                gainEVAttack *= EVfactor;
+                gainEVAttack = MathHelper.Clamp(gainEVAttack, 0, 252 - EVAttack);
+                gainEVAttack = MathHelper.Clamp(gainEVAttack, 0, maxEVgain - totalEVgain);
+                EVAttack += gainEVAttack;
+                totalEVgain += gainEVAttack;
+            }
+            //Defense gain
+            if (gainEVDefense > 0 && EVDefense < 252 && maxEVgain - totalEVgain > 0)
+            {
+                gainEVDefense *= EVfactor;
+                gainEVDefense = MathHelper.Clamp(gainEVDefense, 0, 252 - EVDefense);
+                gainEVDefense = MathHelper.Clamp(gainEVDefense, 0, maxEVgain - totalEVgain);
+                EVDefense += gainEVDefense;
+                totalEVgain += gainEVDefense;
+            }
+            //SpAttack gain
+            if (gainEVSpAttack > 0 && EVSpAttack < 252 && maxEVgain - totalEVgain > 0)
+            {
+                gainEVSpAttack *= EVfactor;
+                gainEVSpAttack = MathHelper.Clamp(gainEVSpAttack, 0, 252 - EVSpAttack);
+                gainEVSpAttack = MathHelper.Clamp(gainEVSpAttack, 0, maxEVgain - totalEVgain);
+                EVSpAttack += gainEVSpAttack;
+                totalEVgain += gainEVSpAttack;
+            }
+            //SpDefense gain
+            if (gainEVSpDefense > 0 && EVSpDefense < 252 && maxEVgain - totalEVgain > 0)
+            {
+                gainEVSpDefense *= EVfactor;
+                gainEVSpDefense = MathHelper.Clamp(gainEVSpDefense, 0, 252 - EVSpDefense);
+                gainEVSpDefense = MathHelper.Clamp(gainEVSpDefense, 0, maxEVgain - totalEVgain);
+                EVSpDefense += gainEVSpDefense;
+                totalEVgain += gainEVSpDefense;
+            }
+            //Speed gain
+            if (gainEVSpeed > 0 && EVSpeed < 252 && maxEVgain - totalEVgain > 0)
+            {
+                gainEVSpeed *= EVfactor;
+                gainEVSpeed = MathHelper.Clamp(gainEVSpeed, 0, 252 - EVSpeed);
+                gainEVSpeed = MathHelper.Clamp(gainEVSpeed, 0, maxEVgain - totalEVgain);
+                EVSpeed += gainEVSpeed;
+                totalEVgain += gainEVSpeed;
             }
         }
 
