@@ -2947,15 +2947,15 @@ Public Class PokemonForms
         Public Overrides Function GetAnimationName(ByVal P As BasePokemon) As String
             Select Case P.AdditionalData
                 Case "yellow"
-                    Return "_yellow"
+                    Return "flabebe_yellow"
                 Case "blue"
-                    Return "_blue"
+                    Return "flabebe_blue"
                 Case "orange"
-                    Return "_orange"
+                    Return "flabebe_orange"
                 Case "white"
-                    Return "_white"
+                    Return "flabebe_white"
                 Case Else
-                    Return "_red"
+                    Return "flabebe"
             End Select
         End Function
 
@@ -3001,17 +3001,17 @@ Public Class PokemonForms
         Public Overrides Function GetAnimationName(ByVal P As BasePokemon) As String
             Select Case P.AdditionalData
                 Case "yellow"
-                    Return "_yellow"
+                    Return P.OriginalName & "_yellow"
                 Case "blue"
-                    Return "_blue"
+                    Return P.OriginalName & "_blue"
                 Case "orange"
-                    Return "_orange"
+                    Return P.OriginalName & "_orange"
                 Case "white"
-                    Return "_white"
+                    Return P.OriginalName & "_white"
                 Case "eternal"
-                    Return "_eternal"
+                    Return P.OriginalName & "_eternal"
                 Case Else
-                    Return "_red"
+                    Return P.OriginalName
             End Select
         End Function
 
@@ -3066,15 +3066,15 @@ Public Class PokemonForms
         Public Overrides Function GetAnimationName(ByVal P As BasePokemon) As String
             Select Case P.AdditionalData
                 Case "yellow"
-                    Return "_yellow"
+                    Return P.OriginalName & "_yellow"
                 Case "blue"
-                    Return "_blue"
+                    Return P.OriginalName & "_blue"
                 Case "orange"
-                    Return "_orange"
+                    Return P.OriginalName & "_orange"
                 Case "white"
-                    Return "_white"
+                    Return P.OriginalName & "_white"
                 Case Else
-                    Return "_red"
+                    Return P.OriginalName
             End Select
         End Function
 

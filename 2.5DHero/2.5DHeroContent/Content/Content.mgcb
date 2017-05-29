@@ -45941,3 +45941,8 @@
 /processorParam:TextureFormat=Color
 /build:Pokemon/Sprites/Hoopa_unbound.png
 
+#begin Pokemon/Data/670_eternal.dat
+/importer:
+/processor:
+/build:Pokemon/Data/670_eternal.dat
+
