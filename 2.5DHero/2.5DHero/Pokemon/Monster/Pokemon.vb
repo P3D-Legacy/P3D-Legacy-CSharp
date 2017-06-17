@@ -152,11 +152,11 @@ Public Class Pokemon
             Me._originalAbility = Nothing
         End If
 
-        If Not Me._originalItem Is Nothing Then
-            Me.Item = P3D.Legacy.Core.Pokemon.Item.GetItemById(Me._originalItem.Id)
-            Me.Item.AdditionalData = Me._originalItem.AdditionalData
-            Me._originalItem = Nothing
-        End If
+        'If Not Me._originalItem Is Nothing Then
+        '    Me.Item = P3D.Legacy.Core.Pokemon.Item.GetItemById(Me._originalItem.Id)
+        '    Me.Item.AdditionalData = Me._originalItem.AdditionalData
+        '    Me._originalItem = Nothing
+        'End If
 
         Me.IsTransformed = False
 
@@ -567,6 +567,37 @@ Public Class Pokemon
             Me.HP = Me.HP.Clamp(0, Me.MaxHP)
         End If
     End Sub
+
+    ''' <summary>
+    ''' Returns the important save data from the Pokémon to be displayed in the Hall of Fame.
+    ''' </summary>
+    Public Function GetHallOfFameData() As String
+        Dim Data As String = ""
+        Dim SaveGender As Integer = 0
+        If Me.Gender = Genders.Female Then
+            SaveGender = 1
+        End If
+        If Me.IsGenderless = True Then
+            SaveGender = 2
+        End If
+
+        Dim shinyString As String = "0"
+        If Me.IsShiny = True Then
+            shinyString = "1"
+        End If
+
+        Data = "{""Pokemon""[" & Me.Number & "]}" &
+        "{""Gender""[" & SaveGender & "]}" &
+        "{""NickName""[" & Me.NickName & "]}" &
+        "{""Level""[" & Me.Level & "]}" &
+        "{""OT""[" & Me.OT & "]}" &
+        "{""CatchTrainer""[" & Me.CatchTrainerName & "]}" &
+        "{""isShiny""[" & shinyString & "]}" &
+        "{""AdditionalData""[" & Me.AdditionalData & "]}" &
+        "{""IDValue""[" & Me.IndividualValue & "]}"
+
+        Return Data
+    End Function
 
     ''' <summary>
     ''' Returns the save data from the Pokémon.

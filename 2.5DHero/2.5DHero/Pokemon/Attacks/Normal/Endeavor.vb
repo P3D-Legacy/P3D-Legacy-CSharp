@@ -1,6 +1,7 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Normal
 
     Public Class Endeavor
@@ -55,23 +56,23 @@ Namespace BattleSystem.Moves.Normal
             '#End
         End Sub
 
-        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As Screen) As Integer
-            Dim screen as BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
-            Dim o As Pokemon = screen.OppPokemon
-            If own = False Then
-                p = screen.OppPokemon
-                o = screen.OwnPokemon
+        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
+            Dim o As Pokemon = BattleScreen.OppPokemon
+            If Own = False Then
+                p = BattleScreen.OppPokemon
+                o = BattleScreen.OwnPokemon
             End If
 
             If o.HP <= p.HP Then
-                screen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
+                BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
                 Return 0
             End If
 
             Return (o.HP - p.HP)
         End Function
 
-	End Class
+    End Class
 
 End Namespace

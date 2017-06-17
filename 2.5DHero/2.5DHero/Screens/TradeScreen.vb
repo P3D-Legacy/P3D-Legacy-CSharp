@@ -728,7 +728,7 @@ Public Class TradeScreen
             If selectedItem.Amount > -1 Then
                 bannerText = " | In Stock: " & selectedItem.Amount
             End If
-            Me.DrawBanner(New Vector2(665, 430), 30, "In Inventory: " & amount & bannerText, FontManager.MiniFont, 400)
+            Me.DrawBanner(New Vector2(665, 430), 30, "In Bag " & amount, FontManager.MiniFont, 400)
 
             '- button:
             Core.SpriteBatch.Draw(texture, New Rectangle(664, 484, 64, 64), New Rectangle(16, 32, 16, 16), Color.White)

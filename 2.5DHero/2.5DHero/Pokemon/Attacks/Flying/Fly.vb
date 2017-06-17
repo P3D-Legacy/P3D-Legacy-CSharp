@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Flying
 
     Public Class Fly
@@ -58,11 +59,11 @@ Namespace BattleSystem.Moves.Flying
             Me.AIField2 = AIField.MultiTurn
         End Sub
 
-        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            Dim fly As Integer = screen.FieldEffects.OwnFlyCounter
+        Public Overrides Function GetUseAccEvasion(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim fly As Integer = BattleScreen.FieldEffects.OwnFlyCounter
             If own = False Then
-                fly = screen.FieldEffects.OppFlyCounter
+                fly = BattleScreen.FieldEffects.OppFlyCounter
             End If
 
             If fly = 0 Then
@@ -72,11 +73,11 @@ Namespace BattleSystem.Moves.Flying
             End If
         End Function
 
-        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As Screen)
-            Dim screen As BattleScreen = BattleScreen
-            Dim fly As Integer = screen.FieldEffects.OwnFlyCounter
+        Public Overrides Sub PreAttack(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim fly As Integer = BattleScreen.FieldEffects.OwnFlyCounter
             If Own = False Then
-                fly = screen.FieldEffects.OppFlyCounter
+                fly = BattleScreen.FieldEffects.OppFlyCounter
             End If
 
             If fly = 0 Then
@@ -86,51 +87,60 @@ Namespace BattleSystem.Moves.Flying
             End If
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
-            Dim op As Pokemon = screen.OppPokemon
+        Public Overrides Function MoveFailBeforeAttack(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
+            Dim op As Pokemon = BattleScreen.OppPokemon
             If Own = False Then
-                p = screen.OppPokemon
-                op = screen.OwnPokemon
+                p = BattleScreen.OppPokemon
+                op = BattleScreen.OwnPokemon
             End If
 
-            Dim fly As Integer = screen.FieldEffects.OwnFlyCounter
+            Dim fly As Integer = BattleScreen.FieldEffects.OwnFlyCounter
             If Own = False Then
-                fly = screen.FieldEffects.OppFlyCounter
+                fly = BattleScreen.FieldEffects.OppFlyCounter
             End If
 
             If Not p.Item Is Nothing Then
-                If p.Item.Name.ToLower() = "power herb" And screen.FieldEffects.CanUseItem(Own) = True And screen.FieldEffects.CanUseOwnItem(Own, screen) = True Then
-                    If screen.Battle.RemoveHeldItem(Own, Own, BattleScreen, "Power Herb pushed the use of Fly!", "move:fly") = True Then
+                If p.Item.Name.ToLower() = "power herb" And BattleScreen.FieldEffects.CanUseItem(Own) = True And BattleScreen.FieldEffects.CanUseOwnItem(Own, screen) = True Then
+                    If BattleScreen.Battle.RemoveHeldItem(Own, Own, BattleScreen, "Power Herb pushed the use of Fly!", "move:fly") = True Then
                         fly = 1
                     End If
                 End If
             End If
 
             If fly = 0 Then
-                screen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " flew up high!"))
+                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " flew up high!"))
                 If Own = True Then
-                    screen.FieldEffects.OwnFlyCounter = 1
+                    BattleScreen.FieldEffects.OwnFlyCounter = 1
                 Else
-                    screen.FieldEffects.OppFlyCounter = 1
+                    BattleScreen.FieldEffects.OppFlyCounter = 1
                 End If
                 Return True
             Else
                 If Own = True Then
-                    screen.FieldEffects.OwnFlyCounter = 0
+                    BattleScreen.FieldEffects.OwnFlyCounter = 0
                 Else
-                    screen.FieldEffects.OppFlyCounter = 0
+                    BattleScreen.FieldEffects.OppFlyCounter = 0
                 End If
                 Return False
             End If
         End Function
 
-        Public Overrides Function DeductPp(own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            Dim fly As Integer = screen.FieldEffects.OwnFlyCounter
+        Public Overrides Sub MoveSelected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            If own = True Then
+                BattleScreen.FieldEffects.OwnFlyCounter = 0
+            Else
+                BattleScreen.FieldEffects.OppFlyCounter = 0
+            End If
+        End Sub
+
+        Public Overrides Function DeductPp(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim fly As Integer = BattleScreen.FieldEffects.OwnFlyCounter
             If own = False Then
-                fly = screen.FieldEffects.OppFlyCounter
+                fly = BattleScreen.FieldEffects.OppFlyCounter
             End If
 
             If fly = 0 Then
@@ -148,15 +158,38 @@ Namespace BattleSystem.Moves.Flying
             End If
         End Sub
 
-        Public Overloads Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveMisses(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             MoveFails(own, BattleScreen)
         End Sub
 
-        Public Overrides Sub AbsorbedBySubstitute(own As Boolean, BattleScreen As Screen)
+        Public Overrides Sub AbsorbedBySubstitute(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             MoveFails(own, BattleScreen)
         End Sub
 
-        Public Overloads Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveProtectedDetected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub InflictedFlinch(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub IsSleeping(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub HurtItselfInConfusion(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub IsAttracted(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             MoveFails(own, BattleScreen)
         End Sub
 

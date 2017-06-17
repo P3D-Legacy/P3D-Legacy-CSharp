@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Fighting
 
     Public Class WakeUpSlap
@@ -55,11 +56,11 @@ Namespace BattleSystem.Moves.Fighting
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            Dim op As Pokemon = screen.OppPokemon
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then
-                op = screen.OwnPokemon
+                op = BattleScreen.OwnPokemon
             End If
 
             If op.Status = BasePokemon.StatusProblems.Sleep Then
@@ -69,7 +70,8 @@ Namespace BattleSystem.Moves.Fighting
             End If
         End Function
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If own = True Then
                 If BattleScreen.OppPokemon.Status = BasePokemon.StatusProblems.Sleep Then
                     BattleScreen.Battle.CureStatusProblem(Not own, own, BattleScreen, BattleScreen.OppPokemon.GetDisplayName() & " was cured of sleep.", "move:wakeupslap")

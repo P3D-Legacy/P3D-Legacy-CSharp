@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Water
 
     Public Class WaterPledge
@@ -55,26 +56,26 @@ Namespace BattleSystem.Moves.Water
             '#End
         End Sub
 
-        Public Overrides Sub BeforeDealingDamage(own As Boolean, BattleScreen As Screen)
-            Dim screen As BattleScreen = BattleScreen
-            Dim lastMove As Attack = screen.FieldEffects.OwnLastMove
+        Public Overrides Sub BeforeDealingDamage(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim lastMove As Attack = BattleScreen.FieldEffects.OwnLastMove
             If own = False Then
-                lastMove = screen.FieldEffects.OppLastMove
+                lastMove = BattleScreen.FieldEffects.OppLastMove
             End If
 
             If Not lastMove Is Nothing Then
                 Select Case lastMove.Name.ToLower()
                     Case "grass pledge", "fire pledge"
-                        screen.BattleQuery.Add(New TextQueryObject("The two moves are joined! It's a combined move!"))
+                        BattleScreen.BattleQuery.Add(New TextQueryObject("The two moves are joined! It's a combined move!"))
                 End Select
             End If
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            Dim lastMove As Attack = screen.FieldEffects.OwnLastMove
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim lastMove As Attack = BattleScreen.FieldEffects.OwnLastMove
             If own = False Then
-                lastMove = screen.FieldEffects.OppLastMove
+                lastMove = BattleScreen.FieldEffects.OppLastMove
             End If
 
             If Not lastMove Is Nothing Then
@@ -89,7 +90,8 @@ Namespace BattleSystem.Moves.Water
             Return Me.Power
         End Function
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim lastMove As Attack = BattleScreen.FieldEffects.OwnLastMove
             If own = False Then
                 lastMove = BattleScreen.FieldEffects.OppLastMove

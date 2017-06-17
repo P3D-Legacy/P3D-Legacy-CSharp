@@ -2,6 +2,7 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Ice
 
     Public Class IceBurn
@@ -62,51 +63,51 @@ Namespace BattleSystem.Moves.Ice
             EffectChances.Add(30)
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
-            Dim op As Pokemon = screen.OppPokemon
+        Public Overrides Function MoveFailBeforeAttack(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
+            Dim op As Pokemon = BattleScreen.OppPokemon
             If Own = False Then
-                p = screen.OppPokemon
-                op = screen.OwnPokemon
+                p = BattleScreen.OppPokemon
+                op = BattleScreen.OwnPokemon
             End If
 
-            Dim iceburn As Integer = screen.FieldEffects.OwnIceBurnCounter
+            Dim iceburn As Integer = BattleScreen.FieldEffects.OwnIceBurnCounter
             If Own = False Then
-                iceburn = screen.FieldEffects.OppIceBurnCounter
+                iceburn = BattleScreen.FieldEffects.OppIceBurnCounter
             End If
 
             If Not p.Item Is Nothing Then
-                If p.Item.Name.ToLower() = "power herb" And screen.FieldEffects.CanUseItem(Own) = True And screen.FieldEffects.CanUseOwnItem(Own, BattleScreen) = True Then
-                    If screen.Battle.RemoveHeldItem(Own, Own, BattleScreen, "Power Herb pushed the use of Ice Burn!", "move:iceburn") = True Then
+                If p.Item.Name.ToLower() = "power herb" And BattleScreen.FieldEffects.CanUseItem(Own) = True And BattleScreen.FieldEffects.CanUseOwnItem(Own, BattleScreen) = True Then
+                    If BattleScreen.Battle.RemoveHeldItem(Own, Own, BattleScreen, "Power Herb pushed the use of Ice Burn!", "move:iceburn") = True Then
                         iceburn = 1
                     End If
                 End If
             End If
 
             If iceburn = 0 Then
-                screen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " became cloaked in a harsh light!"))
+                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " became cloaked in a harsh light!"))
                 If Own = True Then
-                    screen.FieldEffects.OwnIceBurnCounter = 1
+                    BattleScreen.FieldEffects.OwnIceBurnCounter = 1
                 Else
-                    screen.FieldEffects.OppIceBurnCounter = 1
+                    BattleScreen.FieldEffects.OppIceBurnCounter = 1
                 End If
                 Return True
             Else
                 If Own = True Then
-                    screen.FieldEffects.OwnIceBurnCounter = 0
+                    BattleScreen.FieldEffects.OwnIceBurnCounter = 0
                 Else
-                    screen.FieldEffects.OppIceBurnCounter = 0
+                    BattleScreen.FieldEffects.OppIceBurnCounter = 0
                 End If
                 Return False
             End If
         End Function
 
-        Public Overrides Function DeductPp(own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            Dim iceburn As Integer = screen.FieldEffects.OwnIceBurnCounter
+        Public Overrides Function DeductPp(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim iceburn As Integer = BattleScreen.FieldEffects.OwnIceBurnCounter
             If own = False Then
-                iceburn = screen.FieldEffects.OppIceBurnCounter
+                iceburn = BattleScreen.FieldEffects.OppIceBurnCounter
             End If
 
             If iceburn = 0 Then
@@ -116,7 +117,8 @@ Namespace BattleSystem.Moves.Ice
             End If
         End Function
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If Core.Random.Next(0, 100) < Me.GetEffectChance(0, own, BattleScreen) Then
                 BattleScreen.Battle.InflictBurn(Not own, own, BattleScreen, "", "move:iceburn")
             End If

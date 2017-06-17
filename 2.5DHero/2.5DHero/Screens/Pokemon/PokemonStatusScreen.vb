@@ -14,9 +14,9 @@ Public Class PokemonStatusScreen
     Dim pageIndex As Integer = 0
     Dim PokeIndex As Integer = 0
     Dim BoxIndex As Integer = 0
-    Dim BoxPokemon() As Pokemon
+    Dim BoxPokemon() As BasePokemon
     Dim MainTexture As Texture2D
-    Dim Pokemon As Pokemon
+    Dim Pokemon As BasePokemon
     Dim FrontView As Boolean = True
     Dim AttackIndex As Integer = 0
     Dim AttackToggle As Boolean = False
@@ -27,7 +27,7 @@ Public Class PokemonStatusScreen
 
     Dim EVColors As List(Of Color) = {New Color(0, 210, 0), New Color(253, 83, 0), New Color(0, 154, 226), New Color(253, 183, 97), New Color(100, 201, 226), New Color(178, 108, 204)}.ToList()
 
-    Public Sub New(ByVal currentScreen As Screen, ByVal Index As Integer, ByVal BoxPokemon() As Pokemon, ByVal Pokemon As Pokemon, ByVal viewParty As Boolean)
+    Public Sub New(ByVal currentScreen As Screen, ByVal Index As Integer, ByVal BoxPokemon() As BasePokemon, ByVal Pokemon As BasePokemon, ByVal viewParty As Boolean)
         Me.Identification = Identifications.PokemonStatusScreen
         Me.PreScreen = currentScreen
         Me.PokeIndex = Index
@@ -87,10 +87,10 @@ Public Class PokemonStatusScreen
                 End If
             End If
         Else
-            If Me.AttackPos < 320.0F Then
+            If Me.AttackPos < 340.0F Then
                 Me.AttackPos += 15.0F
-                If Me.AttackPos >= 320.0F Then
-                    Me.AttackPos = 320.0F
+                If Me.AttackPos >= 340.0F Then
+                    Me.AttackPos = 340.0F
                 End If
             End If
 
@@ -495,8 +495,8 @@ Public Class PokemonStatusScreen
                     acc = "-"
                 End If
 
-                .DrawString(FontManager.MiniFont, Localization.GetString("poke_status_screen_power") & ": " & power & vbNewLine & Localization.GetString("poke_status_screen_accuracy") & ": " & acc & vbNewLine & vbNewLine & t, New Vector2(CInt(572 - 300 + AttackPos), 218), Color.Black)
-                .Draw(A.GetDamageCategoryImage(), New Rectangle(CInt(572 - 150 + AttackPos), 222, 56, 28), Color.White)
+                .DrawString(FontManager.MiniFont, Localization.GetString("poke_status_screen_power") & ": " & power & vbNewLine & Localization.GetString("poke_status_screen_accuracy") & ": " & acc & vbNewLine & vbNewLine & t, New Vector2(CInt(552 - 300 + AttackPos), 218), Color.Black)
+                .Draw(A.GetDamageCategoryImage(), New Rectangle(CInt(552 - 150 + AttackPos), 222, 56, 28), Color.White)
             End With
 
             Canvas.DrawImageBorder(CanvasTexture, 2, New Rectangle(220, 196, 320, 384))

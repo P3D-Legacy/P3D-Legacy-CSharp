@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Dark
 
     Public Class Payback
@@ -55,15 +56,15 @@ Namespace BattleSystem.Moves.Dark
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             With screen
                 If own = True Then
-                    If screen.FieldEffects.OwnTurnCounts < screen.FieldEffects.OppTurnCounts Then
+                    If BattleScreen.FieldEffects.OwnTurnCounts < BattleScreen.FieldEffects.OppTurnCounts Then
                         Return Me.Power * 2
                     End If
                 Else
-                    If screen.FieldEffects.OppTurnCounts < screen.FieldEffects.OwnTurnCounts Then
+                    If BattleScreen.FieldEffects.OppTurnCounts < BattleScreen.FieldEffects.OwnTurnCounts Then
                         Return Me.Power * 2
                     End If
                 End If

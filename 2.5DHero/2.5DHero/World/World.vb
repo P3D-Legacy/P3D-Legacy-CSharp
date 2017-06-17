@@ -342,8 +342,14 @@ Public Class World
                 End If
 
                 Dim cameraPosition As Vector3 = Screen.Camera.Position
-                If Screen.Camera.Name = "Overworld" Then
+                'If Screen.Camera.Name = "Overworld" Then
+                '    cameraPosition = CType(Screen.Camera, OverworldCamera).CPosition
+                'End If
+
+                If Core.CurrentScreen.Identification = Screen.Identifications.OverworldScreen Then
                     cameraPosition = CType(Screen.Camera, OverworldCamera).CPosition
+                ElseIf Core.CurrentScreen.Identification = Screen.Identifications.BattleScreen Then
+                    cameraPosition = CType(Screen.Camera, Battle.BattleSystemV2.BattleCamera).CPosition
                 End If
 
                 If Core.Random.Next(0, chance) = 0 Then

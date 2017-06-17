@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Bug
 
     Public Class FuryCutter
@@ -55,11 +56,11 @@ Namespace BattleSystem.Moves.Bug
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            Dim fury As Integer = screen.FieldEffects.OwnFuryCutter
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim fury As Integer = BattleScreen.FieldEffects.OwnFuryCutter
             If own = False Then
-                fury = screen.FieldEffects.OppFuryCutter
+                fury = BattleScreen.FieldEffects.OppFuryCutter
             End If
 
             Dim p As Integer = Me.Power
@@ -73,7 +74,8 @@ Namespace BattleSystem.Moves.Bug
             Return p
         End Function
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim lastMove As Attack = BattleScreen.FieldEffects.OwnLastMove
             If own = False Then
                 lastMove = BattleScreen.FieldEffects.OppLastMove
@@ -109,15 +111,38 @@ Namespace BattleSystem.Moves.Bug
             End If
         End Sub
 
-        Public Overloads Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveMisses(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             ResetCounter(own, BattleScreen)
         End Sub
 
-        Public Overloads Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveProtectedDetected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             ResetCounter(own, BattleScreen)
         End Sub
 
-        Public Overloads Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHasNoEffect(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            ResetCounter(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub InflictedFlinch(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            ResetCounter(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub IsSleeping(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            ResetCounter(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub HurtItselfInConfusion(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            ResetCounter(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub IsAttracted(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             ResetCounter(own, BattleScreen)
         End Sub
 

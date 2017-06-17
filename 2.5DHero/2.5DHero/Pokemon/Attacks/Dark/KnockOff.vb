@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Dark
 
     Public Class KnockOff
@@ -55,31 +56,64 @@ Namespace BattleSystem.Moves.Dark
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            If screen.Battle.RemoveHeldItem(Not own, own, BattleScreen, "", "", True) = True Then
-                Return CInt(Me.Power * 1.5F)
-            End If
-
-            Return Me.Power
-        End Function
-
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(Screen, BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then
                 p = BattleScreen.OppPokemon
                 op = BattleScreen.OwnPokemon
             End If
+
+            'Conditions
+            If op.Item Is Nothing Then
+                Return Power
+            End If
+            If op.Item.IsMegaStone = True Then
+                Return Power
+            End If
+            If op.Ability.Name.ToLower() = "multitype" AndAlso op.Item.Name.ToLower().EndsWith(" plate") Then
+                Return Power
+            End If
+            If op.Item.Name.ToLower() = "griseous orb" And op.Number = 487 Then
+                Return Power
+            End If
+            If op.Item.Name.ToLower().EndsWith(" drive") = True AndAlso op.Number = 649 Then
+                Return Power
+            End If
+
+            Return CInt(Me.Power * 1.5F)
+        End Function
+
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
+            Dim op As Pokemon = BattleScreen.OppPokemon
+            If own = False Then
+                p = BattleScreen.OppPokemon
+                op = BattleScreen.OwnPokemon
+            End If
+
+            'Conditions
+            If op.Item Is Nothing Then
+                Exit Sub
+            End If
             If op.Item.IsMegaStone = True Then
                 Exit Sub
             End If
-            If BattleScreen.Battle.RemoveHeldItem(Not own, own, BattleScreen, "", "", True) = True Then
-                op.OriginalItem = Item.GetItemByID(op.Item.ID)
-                op.OriginalItem.AdditionalData = op.Item.AdditionalData
-
-                BattleScreen.Battle.RemoveHeldItem(Not own, own, BattleScreen, p.GetDisplayName() & " knocked off the " & op.GetDisplayName() & "'s " & op.OriginalItem.Name & "!", "move:knockoff")
+            If op.Ability.Name.ToLower() = "multitype" AndAlso op.Item.Name.ToLower().EndsWith(" plate") Then
+                Exit Sub
             End If
+            If op.Item.Name.ToLower() = "griseous orb" And op.Number = 487 Then
+                Exit Sub
+            End If
+            If op.Item.Name.ToLower().EndsWith(" drive") = True AndAlso p.Number = 649 Then
+                Exit Sub
+            End If
+
+            op.OriginalItem = Item.GetItemByID(op.Item.Id)
+            op.OriginalItem.AdditionalData = op.Item.AdditionalData
+            BattleScreen.Battle.RemoveHeldItem(Not own, own, BattleScreen, p.GetDisplayName() & " knocked off the " & op.GetDisplayName() & "'s " & op.OriginalItem.Name & "!", "move:knockoff")
         End Sub
 
     End Class

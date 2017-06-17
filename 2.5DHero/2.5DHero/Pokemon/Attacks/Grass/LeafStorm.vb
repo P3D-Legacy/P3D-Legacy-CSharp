@@ -1,4 +1,5 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Grass
 
@@ -54,7 +55,8 @@ Namespace BattleSystem.Moves.Grass
             '#End
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             BattleScreen.Battle.LowerStat(own, own, BattleScreen, "Special Attack", 2, "", "move:leafstorm")
         End Sub
 

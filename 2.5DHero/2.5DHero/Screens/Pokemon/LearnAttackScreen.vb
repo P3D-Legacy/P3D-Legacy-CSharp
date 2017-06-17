@@ -186,7 +186,7 @@ Public Class LearnAttackScreen
             Else
                 drawText = "Forget """ & Pokemon.Attacks(AttackIndex).Name & """ to learn """ & newAttack.Name & """?"
                 If canForget = False Then
-                    drawText = "Cannot forget the move " & Pokemon.Attacks(AttackIndex).Name & " because" & vbNewLine & "it's an HM move."
+                    drawText = "Cannot forget the move " & Pokemon.Attacks(AttackIndex).Name & " because" & vbNewLine & "it's a Hidden Machine move."
                 End If
             End If
 
@@ -281,7 +281,7 @@ Public Class LearnAttackScreen
 
             If AttackIndex <> 4 Then
                 TeachMovesScreen.LearnedMove = True
-                Text = "1...2...3...and*Poof!*" & Pokemon.GetDisplayName() & " forgot~" & Pokemon.Attacks(AttackIndex).Name & "! And..."
+                Text = "1...2...3...and*Ta-da!*" & Pokemon.GetDisplayName() & " forgot~" & Pokemon.Attacks(AttackIndex).Name & "! And..."
                 Pokemon.Attacks.RemoveAt(AttackIndex)
                 Pokemon.Attacks.Insert(AttackIndex, newAttack)
 

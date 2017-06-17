@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Normal
 
     Public Class RazorWind
@@ -58,11 +59,11 @@ Namespace BattleSystem.Moves.Normal
             Me.AIField2 = AIField.MultiTurn
         End Sub
 
-        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen as BattleScreen = BattleScreen
-            Dim RazorWind As Integer = screen.FieldEffects.OwnRazorWindCounter
+        Public Overrides Function GetUseAccEvasion(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim RazorWind As Integer = BattleScreen.FieldEffects.OwnRazorWindCounter
             If own = False Then
-                RazorWind = screen.FieldEffects.OppRazorWindCounter
+                RazorWind = BattleScreen.FieldEffects.OppRazorWindCounter
             End If
 
             If RazorWind = 0 Then
@@ -72,11 +73,11 @@ Namespace BattleSystem.Moves.Normal
             End If
         End Function
 
-        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As Screen)
-            Dim screen as BattleScreen = BattleScreen
-            Dim RazorWind As Integer = screen.FieldEffects.OwnRazorWindCounter
+        Public Overrides Sub PreAttack(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim RazorWind As Integer = BattleScreen.FieldEffects.OwnRazorWindCounter
             If Own = False Then
-                RazorWind = screen.FieldEffects.OppRazorWindCounter
+                RazorWind = BattleScreen.FieldEffects.OppRazorWindCounter
             End If
 
             If RazorWind = 0 Then
@@ -86,51 +87,60 @@ Namespace BattleSystem.Moves.Normal
             End If
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen as BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
-            Dim op As Pokemon = screen.OppPokemon
+        Public Overrides Function MoveFailBeforeAttack(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
+            Dim op As Pokemon = BattleScreen.OppPokemon
             If Own = False Then
-                p = screen.OppPokemon
-                op = screen.OwnPokemon
+                p = BattleScreen.OppPokemon
+                op = BattleScreen.OwnPokemon
             End If
 
-            Dim razorWind As Integer = screen.FieldEffects.OwnRazorWindCounter
+            Dim razorWind As Integer = BattleScreen.FieldEffects.OwnRazorWindCounter
             If Own = False Then
-                razorWind = screen.FieldEffects.OppRazorWindCounter
+                razorWind = BattleScreen.FieldEffects.OppRazorWindCounter
             End If
 
             If Not p.Item Is Nothing Then
-                If p.Item.Name.ToLower() = "power herb" And screen.FieldEffects.CanUseItem(Own) = True And screen.FieldEffects.CanUseOwnItem(Own, BattleScreen) = True Then
-                    If screen.Battle.RemoveHeldItem(Own, Own, screen, "Power Herb pushed the use of Razor Wind!", "move:razorwind") = True Then
+                If p.Item.Name.ToLower() = "power herb" And BattleScreen.FieldEffects.CanUseItem(Own) = True And BattleScreen.FieldEffects.CanUseOwnItem(Own, BattleScreen) = True Then
+                    If BattleScreen.Battle.RemoveHeldItem(Own, Own, screen, "Power Herb pushed the use of Razor Wind!", "move:razorwind") = True Then
                         razorWind = 1
                     End If
                 End If
             End If
 
             If razorWind = 0 Then
-                screen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " whipped up a whirlwind!"))
+                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " whipped up a whirlwind!"))
                 If Own = True Then
-                    screen.FieldEffects.OwnRazorWindCounter = 1
+                    BattleScreen.FieldEffects.OwnRazorWindCounter = 1
                 Else
-                    screen.FieldEffects.OppRazorWindCounter = 1
+                    BattleScreen.FieldEffects.OppRazorWindCounter = 1
                 End If
                 Return True
             Else
                 If Own = True Then
-                    screen.FieldEffects.OwnRazorWindCounter = 0
+                    BattleScreen.FieldEffects.OwnRazorWindCounter = 0
                 Else
-                    screen.FieldEffects.OppRazorWindCounter = 0
+                    BattleScreen.FieldEffects.OppRazorWindCounter = 0
                 End If
                 Return False
             End If
         End Function
 
-        Public Overrides Function DeductPp(own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen as BattleScreen = BattleScreen
-            Dim razorWind As Integer = screen.FieldEffects.OwnRazorWindCounter
+        Public Overrides Sub MoveSelected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            If own = True Then
+                BattleScreen.FieldEffects.OwnRazorWindCounter = 0
+            Else
+                BattleScreen.FieldEffects.OppRazorWindCounter = 0
+            End If
+        End Sub
+
+        Public Overrides Function DeductPp(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim razorWind As Integer = BattleScreen.FieldEffects.OwnRazorWindCounter
             If own = False Then
-                razorWind = screen.FieldEffects.OppRazorWindCounter
+                razorWind = BattleScreen.FieldEffects.OppRazorWindCounter
             End If
 
             If razorWind = 0 Then
@@ -139,6 +149,49 @@ Namespace BattleSystem.Moves.Normal
                 Return True
             End If
         End Function
+
+        Private Sub MoveFails(own As Boolean, BattleScreen As BattleScreen)
+            If own = True Then
+                BattleScreen.FieldEffects.OwnRazorWindCounter = 0
+            Else
+                BattleScreen.FieldEffects.OppRazorWindCounter = 0
+            End If
+        End Sub
+
+        Public Overrides Sub MoveMisses(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub AbsorbedBySubstitute(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub MoveProtectedDetected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub InflictedFlinch(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub IsSleeping(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub HurtItselfInConfusion(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub IsAttracted(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
 
     End Class
 

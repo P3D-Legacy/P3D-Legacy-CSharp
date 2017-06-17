@@ -1,6 +1,7 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Normal
 
     Public Class WeatherBall
@@ -56,9 +57,9 @@ Namespace BattleSystem.Moves.Normal
             '#End
         End Sub
 
-        Public Overrides Function GetAttackType(own As Boolean, BattleScreen As Screen) As Element
-            Dim screen As BattleScreen = BattleScreen
-            Dim a As BattleWeather.WeatherTypes = screen.FieldEffects.Weather
+        Public Overrides Function GetAttackType(own As Boolean, screen As Screen) As Element
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim a As BattleWeather.WeatherTypes = BattleScreen.FieldEffects.Weather
             Select Case a
                 Case BattleWeather.WeatherTypes.Sunny
                     Return New Element(Element.Types.Fire)
@@ -76,11 +77,11 @@ Namespace BattleSystem.Moves.Normal
         End Function
 
         'Temporary 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            If screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Sandstorm Or screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Hailstorm Then
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            If BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Sandstorm Or BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Hailstorm Then
                 Return CInt(Me.Power * 2)
-            ElseIf screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Sunny Or screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Rain Then
+            ElseIf BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Sunny Or BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Rain Then
                 Return CInt(Me.Power * 3)
             Else
                 Return Me.Power

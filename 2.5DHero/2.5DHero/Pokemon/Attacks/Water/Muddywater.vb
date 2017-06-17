@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Water
 
@@ -22,7 +23,7 @@ Namespace BattleSystem.Moves.Water
             Me.Description = "The user attacks by shooting muddy water at the opposing team. It may also lower the targets' accuracy."
             Me.CriticalChance = 1
             Me.IsHMMove = False
-            Me.Target = Targets.OneAdjacentTarget
+            Me.Target = Targets.AllAdjacentFoes
             Me.Priority = 0
             Me.TimesToAttack = 1
             '#End
@@ -60,7 +61,8 @@ Namespace BattleSystem.Moves.Water
             Me.EffectChances.Add(30)
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If Core.Random.Next(0, 100) < GetEffectChance(0, own, BattleScreen) Then
                 BattleScreen.Battle.InflictFlinch(Not own, own, BattleScreen, "", "move:muddywater")
             End If

@@ -207,6 +207,8 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                         case BaseAttack.Targets.OneAlly:
                         case BaseAttack.Targets.AllAllies:
                             return new[] { OwnCenter, OwnRight }.ToList();
+                        case BaseAttack.Targets.AllOwn:
+                            return new[] { OwnCenter, OwnRight, OwnLeft }.ToList();
                     }
                     break;
                 case Targets.OwnCenter:
@@ -227,6 +229,8 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                         case BaseAttack.Targets.AllAdjacentAllies:
                         case BaseAttack.Targets.AllAllies:
                             return new[] { OwnLeft, OwnRight }.ToList();
+                        case BaseAttack.Targets.AllOwn:
+                            return new[] { OwnCenter, OwnRight, OwnLeft }.ToList();
                     }
                     break;
                 case Targets.OwnRight:
@@ -250,6 +254,8 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                         case BaseAttack.Targets.OneAlly:
                         case BaseAttack.Targets.AllAllies:
                             return new[] { OwnLeft, OwnCenter }.ToList();
+                        case BaseAttack.Targets.AllOwn:
+                            return new[] { OwnCenter, OwnRight, OwnLeft }.ToList();
                     }
                     break;
                 case Targets.OppLeft:
@@ -273,6 +279,8 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                         case BaseAttack.Targets.OneAlly:
                         case BaseAttack.Targets.AllAllies:
                             return new[] { OppCenter, OppRight }.ToList();
+                        case BaseAttack.Targets.AllOwn:
+                            return new[] { OppCenter, OppRight, OppLeft }.ToList();
                     }
                     break;
                 case Targets.OppCenter:
@@ -293,6 +301,8 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                         case BaseAttack.Targets.AllAdjacentAllies:
                         case BaseAttack.Targets.AllAllies:
                             return new[] { OppLeft, OppRight }.ToList();
+                        case BaseAttack.Targets.AllOwn:
+                            return new[] { OppCenter, OppRight, OppLeft }.ToList();
                     }
                     break;
                 case Targets.OppRight:
@@ -316,6 +326,8 @@ namespace P3D.Legacy.Core.Battle.BattleSystemV2
                         case BaseAttack.Targets.OneAlly:
                         case BaseAttack.Targets.AllAllies:
                             return new[] { OppLeft, OppCenter }.ToList();
+                        case BaseAttack.Targets.AllOwn:
+                            return new[] { OppCenter, OppRight, OppLeft }.ToList();
                     }
                     break;
             }

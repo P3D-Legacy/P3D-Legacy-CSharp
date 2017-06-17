@@ -1,4 +1,5 @@
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Fairy
 
@@ -46,7 +47,7 @@ Namespace BattleSystem.Moves.Fairy
             Me.IsPunchingMove = False
             Me.IsDamagingMove = True
             Me.IsProtectMove = False
-            Me.IsSoundMove = False
+            Me.IsSoundMove = True
 
             Me.IsAffectedBySubstitute = True
             Me.IsOneHitKOMove = False

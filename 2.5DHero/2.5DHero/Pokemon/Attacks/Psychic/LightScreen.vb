@@ -1,4 +1,7 @@
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
+
+
 
 Namespace BattleSystem.Moves.Psychic
 
@@ -21,7 +24,7 @@ Namespace BattleSystem.Moves.Psychic
             Me.Description = "A wondrous wall of light is put up to suppress damage from special attacks for five turns."
             Me.CriticalChance = 0
             Me.IsHMMove = False
-            Me.Target = Targets.Self
+            Me.Target = Targets.AllOwn
             Me.Priority = 0
             Me.TimesToAttack = 1
             '#End
@@ -57,7 +60,8 @@ Namespace BattleSystem.Moves.Psychic
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             If own = False Then
                 p = BattleScreen.OppPokemon

@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Ghost
 
     Public Class Nightmare
@@ -58,11 +59,11 @@ Namespace BattleSystem.Moves.Ghost
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            Dim op As Pokemon = screen.OppPokemon
+        Public Overrides Function MoveFailBeforeAttack(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim op As Pokemon = BattleScreen.OppPokemon
             If Own = False Then
-                op = screen.OwnPokemon
+                op = BattleScreen.OwnPokemon
             End If
 
             If op.Status <> BasePokemon.StatusProblems.Sleep Then
@@ -71,7 +72,8 @@ Namespace BattleSystem.Moves.Ghost
             Return False
         End Function
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then
                 op = BattleScreen.OwnPokemon

@@ -352,17 +352,16 @@ namespace P3D.Legacy.Core.Pokemon
 
             if (Type.Type == Element.Types.Normal)
             {
-                if (p.Ability.Name.ToLower() == "pixilate")
+                switch (p.Ability.Name.ToLower())
                 {
-                    return new Element(Element.Types.Fairy);
-                }
-                if (p.Ability.Name.ToLower() == "refrigerate")
-                {
-                    return new Element(Element.Types.Ice);
-                }
-                if (p.Ability.Name.ToLower() == "aerilate")
-                {
-                    return new Element(Element.Types.Flying);
+                    case "pixilate":
+                        return new Element(Element.Types.Fairy);
+                    case "refrigerate":
+                        return new Element(Element.Types.Ice);
+                    case "aerilate":
+                        return new Element(Element.Types.Flying);
+                    case "galvanize":
+                        return new Element(Element.Types.Electric);
                 }
             }
 

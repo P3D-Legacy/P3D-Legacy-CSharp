@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Grass
 
@@ -22,7 +23,7 @@ Namespace BattleSystem.Moves.Grass
             Me.Description = "The user releases a soothing scent that heals all status conditions affecting the user's party."
             Me.CriticalChance = 0
             Me.IsHMMove = False
-            Me.Target = Targets.AllAllies
+            Me.Target = Targets.AllOwn
             Me.Priority = 0
             Me.TimesToAttack = 1
             '#End
@@ -58,7 +59,8 @@ Namespace BattleSystem.Moves.Grass
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim healed As New List(Of Pokemon)
 
             Dim p As Pokemon = BattleScreen.OwnPokemon

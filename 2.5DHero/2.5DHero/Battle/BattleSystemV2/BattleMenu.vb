@@ -615,6 +615,8 @@ Namespace BattleSystem
 
                 Case BattleSystem.BattleScreen.BattleModes.Standard
                     If BattleScreen.OwnFaint Then
+                        _mainMenuIndex = 0
+                        _mainMenuNextIndex = 0
                         _mainMenuItemList.Add(New MainMenuItem(1, "Pokémon", 0, AddressOf MainMenuOpenPokemon))
                         If BattleScreen.IsRemoteBattle AndAlso Not BattleScreen.IsHost Then
                             BattleScreen.OwnFaint = False

@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Bug
 
@@ -61,7 +62,8 @@ Namespace BattleSystem.Moves.Bug
             Me.EffectChances.Add(10)
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If Core.Random.Next(0, 100) < GetEffectChance(0, own, BattleScreen) Then
                 BattleScreen.Battle.RaiseStat(own, own, BattleScreen, "Attack", 1, "", "move:silverwind")
                 BattleScreen.Battle.RaiseStat(own, own, BattleScreen, "Defense", 1, "", "move:silverwind")

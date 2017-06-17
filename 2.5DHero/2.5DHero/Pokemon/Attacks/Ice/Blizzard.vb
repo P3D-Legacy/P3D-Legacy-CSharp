@@ -2,6 +2,7 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Ice
 
     Public Class Blizzard
@@ -61,7 +62,8 @@ Namespace BattleSystem.Moves.Ice
             EffectChances.Add(10)
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim p As Pokemon = BattleScreen.OwnPokemon
             Dim op As Pokemon = BattleScreen.OppPokemon
             If own = False Then
@@ -75,17 +77,17 @@ Namespace BattleSystem.Moves.Ice
             End If
         End Sub
 
-        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            If screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Hailstorm Then
+        Public Overrides Function GetUseAccEvasion(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            If BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Hailstorm Then
                 Return False
             End If
             Return Me.UseAccEvasion
         End Function
 
-        Public Overrides Function GetAccuracy(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            If screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Hailstorm Then
+        Public Overrides Function GetAccuracy(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            If BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Hailstorm Then
                 Return 100
             End If
             Return Me.Accuracy

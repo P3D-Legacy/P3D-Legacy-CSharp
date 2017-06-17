@@ -151,7 +151,7 @@ namespace P3D.Legacy.Core.Screens.GUI
                 int posX = 0;
                 if (allItems > seeAbleItems)
                 {
-                    sizeX = Convert.ToInt32((canSee / allItems) * size.Width);
+                    sizeX = Convert.ToInt32((canSee * size.Width) / allItems);
                     posX = Convert.ToInt32(Math.Abs(selection) * size.Width / allItems);
                 }
                 DrawRectangle(new Rectangle(Convert.ToInt32(position.X) + posX, Convert.ToInt32(position.Y), sizeX, size.Height),

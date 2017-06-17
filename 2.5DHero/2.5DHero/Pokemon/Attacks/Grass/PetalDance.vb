@@ -2,6 +2,7 @@
 Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Grass
 
     Public Class PetalDance
@@ -60,7 +61,8 @@ Namespace BattleSystem.Moves.Grass
             Me.AIField3 = AIField.ConfuseOwn
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim currentTurns As Integer = BattleScreen.FieldEffects.OwnPetalDance
             If own = False Then
                 currentTurns = BattleScreen.FieldEffects.OppPetalDance
@@ -77,24 +79,59 @@ Namespace BattleSystem.Moves.Grass
         End Sub
 
         Private Sub Interruption(ByVal own As Boolean, ByVal BattleScreen As BattleScreen)
+            Dim petalDance As Integer = 0
+            Dim p As Pokemon
+            If own = True Then
+                petalDance = BattleScreen.FieldEffects.OwnPetalDance
+                p = BattleScreen.OwnPokemon
+            Else
+                petalDance = BattleScreen.FieldEffects.OppPetalDance
+                p = BattleScreen.OppPokemon
+            End If
+
+            If petalDance = 1 Then
+                BattleScreen.Battle.InflictConfusion(own, own, BattleScreen, p.GetDisplayName() & "'s PetalDance stopped.", "move:petaldance")
+            End If
+
             If own = True Then
                 BattleScreen.FieldEffects.OwnPetalDance = 0
             Else
                 BattleScreen.FieldEffects.OppPetalDance = 0
             End If
-
-            BattleScreen.Battle.InflictConfusion(own, own, BattleScreen, "", "move:petaldance")
         End Sub
 
-        Public Overloads Sub MoveHasNoEffect(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHasNoEffect(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 
-        Public Overloads Sub MoveProtectedDetected(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveProtectedDetected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 
-        Public Overloads Sub MoveMisses(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveMisses(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Interruption(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub InflictedFlinch(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Interruption(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub IsSleeping(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Interruption(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub HurtItselfInConfusion(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Interruption(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub IsAttracted(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Interruption(own, BattleScreen)
         End Sub
 

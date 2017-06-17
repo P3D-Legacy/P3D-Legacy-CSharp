@@ -1487,11 +1487,11 @@ Namespace GameJolt
                 Me.FrontierList.Add(New FrontierSymbol() With {.Name = "Gold Ability", .Description = "You defeated the Frontier Brain of" & vbNewLine & "Battle Tower a second time and you've" & vbNewLine & "your real strength when it comes to battles.", .Texture = TextureManager.GetTexture("GUI\Badges", New Microsoft.Xna.Framework.Rectangle(50, 200, 50, 50), "")})
             Else
                 If ActionScript.IsRegistered("silver ability") = True Then
-                    Me.FrontierList.Add(New FrontierSymbol() With {.Name = "Silver Ability", .Description = "You defeated the Frontier Brain of" & vbNewLine & "Battle Tower and showed him how" & vbNewLine & "you and your POKéMON really are.", .Texture = TextureManager.GetTexture("GUI\Badges", New Microsoft.Xna.Framework.Rectangle(0, 200, 50, 50), "")})
+                    Me.FrontierList.Add(New FrontierSymbol() With {.Name = "Silver Ability", .Description = "You defeated the Frontier Brain of" & vbNewLine & "Battle Tower and showed him how" & vbNewLine & "you and your Pokémon really are.", .Texture = TextureManager.GetTexture("GUI\Badges", New Microsoft.Xna.Framework.Rectangle(0, 200, 50, 50), "")})
                 End If
             End If
             If ActionScript.IsRegistered("gold knowledge") = True Then
-                Me.FrontierList.Add(New FrontierSymbol() With {.Name = "Gold Knowledge", .Description = "This Emblem displays how great you can" & vbNewLine & "interact with POKéMON and how well" & vbNewLine & "you can adapt your strategy to a new situation.", .Texture = TextureManager.GetTexture("GUI\Badges", New Microsoft.Xna.Framework.Rectangle(150, 200, 50, 50), "")})
+                Me.FrontierList.Add(New FrontierSymbol() With {.Name = "Gold Knowledge", .Description = "This Emblem displays how great you can" & vbNewLine & "interact with Pokémon and how well" & vbNewLine & "you can adapt your strategy to a new situation.", .Texture = TextureManager.GetTexture("GUI\Badges", New Microsoft.Xna.Framework.Rectangle(150, 200, 50, 50), "")})
             Else
                 If ActionScript.IsRegistered("silver knowledge") = True Then
                     Me.FrontierList.Add(New FrontierSymbol() With {.Name = "Silver Knowledge", .Description = "Only few trainers achieved this emblem" & vbNewLine & "which shows what strength lies" & vbNewLine & "inside them.", .Texture = TextureManager.GetTexture("GUI\Badges", New Microsoft.Xna.Framework.Rectangle(100, 200, 50, 50), "")})
@@ -1712,7 +1712,7 @@ Namespace GameJolt
                         If chosenID > -1 Then
                             Dim p As Pokemon = Pokemon.GetPokemonByID(chosenID)
 
-                            output = "Welcome to the POKéDEX Show! Today, we are going to look at the entry of " & p.GetName() & "! Its entry reads:~""" & p.PokedexEntry.Text & """~Wow, that is interesting! Also, " & p.GetName() & " is " & p.PokedexEntry.Height & "m high and weights " & p.PokedexEntry.Weight & "kg.~Isn't that amazing?~" & p.GetName() & " is part of the " & p.PokedexEntry.Species & " species.~That's all the information we have. Tune in next time!"
+                            output = "Welcome to the Pokédex Show! Today, we are going to look at the entry of " & p.GetName() & "! Its entry reads:~""" & p.PokedexEntry.Text & """~Wow, that is interesting! Also, " & p.GetName() & " is " & p.PokedexEntry.Height & "m high and weights " & p.PokedexEntry.Weight & "kg.~Isn't that amazing?~" & p.GetName() & " is part of the " & p.PokedexEntry.Species & " species.~That's all the information we have. Tune in next time!"
                         End If
                     Case "[randompokemon]"
                         Dim levels() As String = {"route29.dat", "route30.dat", "route31.dat", "route32.dat", "route33.dat", "route36.dat", "route37.dat", "route38.dat", "route39.dat", "routes\route34.dat", "routes\route35.dat", "routes\route42.dat", "routes\route43.dat", "routes\route44.dat", "routes\route45.dat", "routes\route46.dat"}
@@ -1728,7 +1728,7 @@ Namespace GameJolt
                         levelName = levelName.Substring(0, 5) & " " & levelName.Remove(0, 5)
 
                         If Not p Is Nothing Then
-                            output = "Professor Oak's POKéMON Talk! With Mary!~~Professor Oak: " & p.GetName() & " has been spotted on " & levelName & ".~Mary: " & p.GetName() & "! How smart! How inspiring!"
+                            output = "Professor Oak's Pokémon Talk! With Mary!~~Professor Oak: " & p.GetName() & " has been spotted on " & levelName & ".~Mary: " & p.GetName() & "! How smart! How inspiring!"
                         End If
                     Case "[unown]"
                         Dim words() As String = {"doom", "dark", "help", "join us", "stay", "lost", "vanish", "always there", "no eyes"}

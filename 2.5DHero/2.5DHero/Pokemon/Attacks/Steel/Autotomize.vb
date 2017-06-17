@@ -1,4 +1,5 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Steel
 
@@ -17,7 +18,7 @@ Namespace BattleSystem.Moves.Steel
             Me.Accuracy = 0
             Me.Category = Categories.Status
             Me.ContestCategory = ContestCategories.Beauty
-            Me.Name = "Agility"
+            Me.Name = "Autotomize"
             Me.Description = "The user sheds part of its body to make itself lighter and sharply raise its Speed stat. "
             Me.CriticalChance = 0
             Me.IsHMMove = False
@@ -57,7 +58,8 @@ Namespace BattleSystem.Moves.Steel
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If BattleScreen.Battle.RaiseStat(own, own, BattleScreen, "Speed", 2, "", "move:autotomize") = False Then
                 BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
             End If

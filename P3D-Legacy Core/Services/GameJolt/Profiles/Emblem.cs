@@ -220,7 +220,7 @@ namespace P3D.Legacy.Core.GameJolt.Profiles
 
                 for (var i = 0; i <= 5; i++)
                 {
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(192, 0, 32, 32)), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(32 * Scale + (10 / 4) * Scale + Position.X + i * (10 * Scale)), Convert.ToInt32(Position.Y + 22.5f * Scale), Convert.ToInt32(Scale * 8), Convert.ToInt32(Scale * 8)), Microsoft.Xna.Framework.Color.White);
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(192, 0, 32, 32), ""), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(32 * Scale + (10 / 4) * Scale + Position.X + i * (10 * Scale)), Convert.ToInt32(Position.Y + 22.5f * Scale), Convert.ToInt32(Scale * 8), Convert.ToInt32(Scale * 8)), Microsoft.Xna.Framework.Color.White);
 
                     if (PokemonList.Count - 1 >= i)
                     {
@@ -234,20 +234,20 @@ namespace P3D.Legacy.Core.GameJolt.Profiles
             {
                 if (IsFriend(ID) == true)
                 {
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(80, 144, 32, 32)), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(80, 144, 32, 32), ""), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
                 }
                 if (SentRequest(ID) == true)
                 {
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(112, 176, 32, 32)), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(112, 176, 32, 32), ""), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
                 }
                 if (ReceivedRequest(ID) == true)
                 {
-                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(80, 176, 32, 32)), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
+                    Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(80, 176, 32, 32), ""), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
                 }
             }
             else
             {
-                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(144, 176, 32, 32)), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
+                Core.SpriteBatch.Draw(TextureManager.GetTexture("GUI|Menus|Menu", new Microsoft.Xna.Framework.Rectangle(144, 176, 32, 32), ""), new Microsoft.Xna.Framework.Rectangle(Convert.ToInt32(Position.X), Convert.ToInt32(Position.Y), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4)), Convert.ToInt32(32 * Convert.ToSingle(Scale / 4))), Microsoft.Xna.Framework.Color.White);
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Psychic
 
@@ -21,14 +22,14 @@ Namespace BattleSystem.Moves.Psychic
             Me.Description = "For five turns, the user prevents the opposing team from using any moves, Abilities, or held items that recover HP."
             Me.CriticalChance = 0
             Me.IsHMMove = False
-            Me.Target = Targets.OneFoe
+            Me.Target = Targets.AllFoes
             Me.Priority = 0
             Me.TimesToAttack = 1
             '#End
 
             '#SpecialDefinitions
             Me.MakesContact = False
-            Me.ProtectAffected = True
+            Me.ProtectAffected = False
             Me.MagicCoatAffected = True
             Me.SnatchAffected = False
             Me.MirrorMoveAffected = True
@@ -57,7 +58,8 @@ Namespace BattleSystem.Moves.Psychic
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If own = True Then
                 BattleScreen.FieldEffects.OwnHealBlock = 5
                 BattleScreen.BattleQuery.Add(New TextQueryObject(BattleScreen.OppPokemon.GetDisplayName() & " was prevented from healing!"))

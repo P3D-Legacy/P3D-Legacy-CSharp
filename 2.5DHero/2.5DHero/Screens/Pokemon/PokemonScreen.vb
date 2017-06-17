@@ -269,32 +269,32 @@ Public Class PokemonScreen
         Me.MenuID = 0
         ChooseBox.Show({Localization.GetString("pokemon_screen_summary"), Localization.GetString("pokemon_screen_switch"), Localization.GetString("pokemon_screen_item"), Localization.GetString("pokemon_screen_back")}, 0, {})
 
-        If (PokemonHasMove(Core.Player.Pokemons(index), "Cut") = True And Badge.CanUseHMMove(Badge.HMMoves.Cut) = True And Core.Player.Pokemons(index).IsEgg() = False) Or GameController.IS_DEBUG_ACTIVE = True Then
+        If (PokemonHasMove(Core.Player.Pokemons(index), "Cut") = True And Badge.CanUseHMMove(Badge.HMMoves.Cut) = True And Core.Player.Pokemons(index).IsEgg() = False) OrElse GameController.IS_DEBUG_ACTIVE = True OrElse Core.Player.SandBoxMode Then
             Dim options As List(Of String) = ChooseBox.Options.ToList()
             options.Insert(1, "Cut")
             ChooseBox.Options = options.ToArray()
         End If
-        If (PokemonHasMove(Core.Player.Pokemons(index), "Flash") = True And Badge.CanUseHMMove(Badge.HMMoves.Flash) = True And Core.Player.Pokemons(index).IsEgg() = False) Or GameController.IS_DEBUG_ACTIVE = True Then
+        If (PokemonHasMove(Core.Player.Pokemons(index), "Flash") = True And Badge.CanUseHMMove(Badge.HMMoves.Flash) = True And Core.Player.Pokemons(index).IsEgg() = False) OrElse GameController.IS_DEBUG_ACTIVE = True OrElse Core.Player.SandBoxMode Then
             Dim options As List(Of String) = ChooseBox.Options.ToList()
             options.Insert(1, "Flash")
             ChooseBox.Options = options.ToArray()
         End If
-        If (PokemonHasMove(Core.Player.Pokemons(index), "Ride") = True And Badge.CanUseHMMove(Badge.HMMoves.Ride) = True And Core.Player.Pokemons(index).IsEgg() = False) Or GameController.IS_DEBUG_ACTIVE = True Then
+        If (PokemonHasMove(Core.Player.Pokemons(index), "Ride") = True And Badge.CanUseHMMove(Badge.HMMoves.Ride) = True And Core.Player.Pokemons(index).IsEgg() = False) OrElse GameController.IS_DEBUG_ACTIVE = True OrElse Core.Player.SandBoxMode Then
             Dim options As List(Of String) = ChooseBox.Options.ToList()
             options.Insert(1, "Ride")
             ChooseBox.Options = options.ToArray()
         End If
-        If (PokemonHasMove(Core.Player.Pokemons(index), "Dig") = True And Core.Player.Pokemons(index).IsEgg() = False) Or GameController.IS_DEBUG_ACTIVE = True Then
+        If (PokemonHasMove(Core.Player.Pokemons(index), "Dig") = True And Core.Player.Pokemons(index).IsEgg() = False) OrElse GameController.IS_DEBUG_ACTIVE = True OrElse Core.Player.SandBoxMode Then
             Dim options As List(Of String) = ChooseBox.Options.ToList()
             options.Insert(1, "Dig")
             ChooseBox.Options = options.ToArray()
         End If
-        If (PokemonHasMove(Core.Player.Pokemons(index), "Teleport") = True And Core.Player.Pokemons(index).IsEgg() = False) Or GameController.IS_DEBUG_ACTIVE = True Then
+        If (PokemonHasMove(Core.Player.Pokemons(index), "Teleport") = True And Core.Player.Pokemons(index).IsEgg() = False) OrElse GameController.IS_DEBUG_ACTIVE = True OrElse Core.Player.SandBoxMode Then
             Dim options As List(Of String) = ChooseBox.Options.ToList()
             options.Insert(1, "Teleport")
             ChooseBox.Options = options.ToArray()
         End If
-        If (PokemonHasMove(Core.Player.Pokemons(index), "Fly") = True And Badge.CanUseHMMove(Badge.HMMoves.Fly) = True And Core.Player.Pokemons(index).IsEgg() = False) Or GameController.IS_DEBUG_ACTIVE = True Then
+        If (PokemonHasMove(Core.Player.Pokemons(index), "Fly") = True And Badge.CanUseHMMove(Badge.HMMoves.Fly) = True And Core.Player.Pokemons(index).IsEgg() = False) OrElse GameController.IS_DEBUG_ACTIVE = True OrElse Core.Player.SandBoxMode Then
             Dim options As List(Of String) = ChooseBox.Options.ToList()
             options.Insert(1, "Fly")
             ChooseBox.Options = options.ToArray()
@@ -465,7 +465,7 @@ Public Class PokemonScreen
     End Sub
 
     Private Function PokemonHasMove(ByVal p As Pokemon, ByVal moveName As String) As Boolean
-        If GameController.IS_DEBUG_ACTIVE = True Then
+        If GameController.IS_DEBUG_ACTIVE = True OrElse Core.Player.SandBoxMode Then
             Return True
         Else
             For Each a As BattleSystem.Attack In p.Attacks
@@ -518,7 +518,7 @@ Public Class PokemonScreen
                 Core.SetScreen(New TransitionScreen(Core.CurrentScreen, New MapScreen(Core.CurrentScreen, startRegion, {"Fly", Core.Player.Pokemons(index)}), Color.White, False))
             End If
         Else
-            TextBox.Show("You cannot fly~from here!", {}, True, False)
+            TextBox.Show("You cannot Fly~from here!", {}, True, False)
         End If
     End Sub
 
@@ -538,7 +538,7 @@ Public Class PokemonScreen
                 Screen.Level.Entities.Remove(e)
             Next
         Else
-            TextBox.Show("There is no grass~to be cut!", {}, True, False)
+            TextBox.Show("There is nothing~to be Cut!", {}, True, False)
         End If
     End Sub
 
@@ -587,7 +587,7 @@ Public Class PokemonScreen
                     MusicManager.PlayMusic("ride", True)
                 End If
             Else
-                TextBox.Show("You cannot ride here!", {}, True, False)
+                TextBox.Show("You cannot Ride here!", {}, True, False)
             End If
         End If
     End Sub

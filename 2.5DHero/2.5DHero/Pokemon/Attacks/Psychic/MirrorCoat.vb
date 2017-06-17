@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Psychic
 
     Public Class MirrorCoat
@@ -58,17 +59,17 @@ Namespace BattleSystem.Moves.Psychic
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            Dim damage As Integer = screen.FieldEffects.OwnLastDamage
+        Public Overrides Function MoveFailBeforeAttack(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim damage As Integer = BattleScreen.FieldEffects.OwnLastDamage
             If Own = True Then
-                damage = screen.FieldEffects.OppLastDamage
+                damage = BattleScreen.FieldEffects.OppLastDamage
             End If
 
             If damage > 0 Then
-                Dim lastMove As Attack = screen.FieldEffects.OwnLastMove
+                Dim lastMove As Attack = BattleScreen.FieldEffects.OwnLastMove
                 If Own = True Then
-                    lastMove = screen.FieldEffects.OppLastMove
+                    lastMove = BattleScreen.FieldEffects.OppLastMove
                 End If
                 If Not lastMove Is Nothing Then
                     If lastMove.Category = Categories.Special Then
@@ -80,11 +81,11 @@ Namespace BattleSystem.Moves.Psychic
             Return True
         End Function
 
-        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            Dim damage As Integer = screen.FieldEffects.OwnLastDamage
+        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim damage As Integer = BattleScreen.FieldEffects.OwnLastDamage
             If Own = True Then
-                damage = screen.FieldEffects.OppLastDamage
+                damage = BattleScreen.FieldEffects.OppLastDamage
             End If
 
             Return damage * 2

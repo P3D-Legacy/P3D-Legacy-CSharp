@@ -22,6 +22,9 @@ Namespace ScriptVersion2
                     Return ReturnBoolean(Screen.Level.IsRiding)
                 Case "surfing"
                     Return ReturnBoolean(Screen.Level.IsSurfing)
+                Case "musicloop"
+                    Dim musicloop As String = System.IO.Path.GetFileNameWithoutExtension(Screen.Level.MusicLoop)
+                    Return musicloop
             End Select
 
             Return DEFAULTNULL

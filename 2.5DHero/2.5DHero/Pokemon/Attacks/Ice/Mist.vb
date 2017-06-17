@@ -1,4 +1,5 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Ice
 
@@ -21,7 +22,7 @@ Namespace BattleSystem.Moves.Ice
             Me.Description = "The user cloaks its body with a white mist that prevents any of its stats from being cut for five turns."
             Me.CriticalChance = 0
             Me.IsHMMove = False
-            Me.Target = Targets.AllAllies
+            Me.Target = Targets.AllOwn
             Me.Priority = 0
             Me.TimesToAttack = 1
             '#End
@@ -57,7 +58,8 @@ Namespace BattleSystem.Moves.Ice
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             Dim b As Boolean = True
 
             If own = True Then

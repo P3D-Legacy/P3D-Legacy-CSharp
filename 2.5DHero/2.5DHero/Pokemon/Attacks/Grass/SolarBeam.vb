@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Grass
 
     Public Class SolarBeam
@@ -58,11 +59,11 @@ Namespace BattleSystem.Moves.Grass
             Me.AIField2 = AIField.MultiTurn
         End Sub
 
-        Public Overrides Function GetUseAccEvasion(own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            Dim SolarBeam As Integer = screen.FieldEffects.OwnSolarBeam
+        Public Overrides Function GetUseAccEvasion(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(Screen, BattleScreen)
+            Dim SolarBeam As Integer = BattleScreen.FieldEffects.OwnSolarBeam
             If own = False Then
-                SolarBeam = screen.FieldEffects.OppSolarBeam
+                SolarBeam = BattleScreen.FieldEffects.OppSolarBeam
             End If
 
             If SolarBeam = 0 Then
@@ -72,11 +73,11 @@ Namespace BattleSystem.Moves.Grass
             End If
         End Function
 
-        Public Overrides Sub PreAttack(Own As Boolean, BattleScreen As Screen)
-            Dim screen As BattleScreen = BattleScreen
-            Dim SolarBeam As Integer = screen.FieldEffects.OwnSolarBeam
+        Public Overrides Sub PreAttack(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(Screen, BattleScreen)
+            Dim SolarBeam As Integer = BattleScreen.FieldEffects.OwnSolarBeam
             If Own = False Then
-                SolarBeam = screen.FieldEffects.OppSolarBeam
+                SolarBeam = BattleScreen.FieldEffects.OppSolarBeam
             End If
 
             If SolarBeam = 0 Then
@@ -86,33 +87,33 @@ Namespace BattleSystem.Moves.Grass
             End If
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
+        Public Overrides Function MoveFailBeforeAttack(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(Screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
             If Own = False Then
-                p = screen.OppPokemon
+                p = BattleScreen.OppPokemon
             End If
 
             Dim hasToCharge As Boolean = True
 
-            Dim beam As Integer = screen.FieldEffects.OwnSolarBeam
+            Dim beam As Integer = BattleScreen.FieldEffects.OwnSolarBeam
             If Own = False Then
-                beam = screen.FieldEffects.OppSolarBeam
+                beam = BattleScreen.FieldEffects.OppSolarBeam
             End If
 
             If beam = 0 Then
-                screen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " absorbed sunlight!"))
+                BattleScreen.BattleQuery.Add(New TextQueryObject(p.GetDisplayName() & " absorbed sunlight!"))
             Else
                 hasToCharge = False
             End If
 
             If hasToCharge = True Then
-                If screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Sunny Then
+                If BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Sunny Then
                     hasToCharge = False
                 Else
                     If Not p.Item Is Nothing Then
-                        If p.Item.Name.ToLower() = "power herb" And screen.FieldEffects.CanUseItem(Own) = True And screen.FieldEffects.CanUseOwnItem(Own, BattleScreen) = True Then
-                            If screen.Battle.RemoveHeldItem(Own, Own, screen, "Power Herb pushed the use of Solar Beam!", "move:solarbeam") = True Then
+                        If p.Item.Name.ToLower() = "power herb" And BattleScreen.FieldEffects.CanUseItem(Own) = True And BattleScreen.FieldEffects.CanUseOwnItem(Own, BattleScreen) = True Then
+                            If BattleScreen.Battle.RemoveHeldItem(Own, Own, Screen, "Power Herb pushed the use of Solar Beam!", "move:solarbeam") = True Then
                                 hasToCharge = False
                             End If
                         End If
@@ -122,37 +123,94 @@ Namespace BattleSystem.Moves.Grass
 
             If hasToCharge = True Then
                 If Own = True Then
-                    screen.FieldEffects.OwnSolarBeam = 1
+                    BattleScreen.FieldEffects.OwnSolarBeam = 1
                 Else
-                    screen.FieldEffects.OppSolarBeam = 1
+                    BattleScreen.FieldEffects.OppSolarBeam = 1
                 End If
                 Return True
             Else
                 If Own = True Then
-                    screen.FieldEffects.OwnSolarBeam = 0
+                    BattleScreen.FieldEffects.OwnSolarBeam = 0
                 Else
-                    screen.FieldEffects.OppSolarBeam = 0
+                    BattleScreen.FieldEffects.OppSolarBeam = 0
                 End If
                 Return False
             End If
         End Function
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            If screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Rain Or screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Sandstorm Or screen.FieldEffects.Weather = BattleWeather.WeatherTypes.Hailstorm Then
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(Screen, BattleScreen)
+            If BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Rain Or BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Sandstorm Or BattleScreen.FieldEffects.Weather = BattleWeather.WeatherTypes.Hailstorm Then
                 Return CInt(Me.Power / 2)
             Else
                 Return Me.Power
             End If
         End Function
 
-        Public Overrides Sub MoveSelected(own As Boolean, BattleScreen As Screen)
-            Dim screen As BattleScreen = BattleScreen
+        Public Overrides Sub MoveSelected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(Screen, BattleScreen)
             If own = True Then
-                screen.FieldEffects.OwnSolarBeam = 0
+                BattleScreen.FieldEffects.OwnSolarBeam = 0
             Else
-                screen.FieldEffects.OppSolarBeam = 0
+                BattleScreen.FieldEffects.OppSolarBeam = 0
             End If
+        End Sub
+
+        Public Overrides Function DeductPP(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            Dim solarBeam As Integer = BattleScreen.FieldEffects.OwnSolarBeam
+            If own = False Then
+                SolarBeam = BattleScreen.FieldEffects.OppSolarBeam
+            End If
+
+            If SolarBeam = 0 Then
+                Return False
+            Else
+                Return True
+            End If
+        End Function
+
+        Private Sub MoveFails(own As Boolean, BattleScreen As BattleScreen)
+            If own = True Then
+                BattleScreen.FieldEffects.OwnSolarBeam = 0
+            Else
+                BattleScreen.FieldEffects.OppSolarBeam = 0
+            End If
+        End Sub
+
+        Public Overrides Sub MoveMisses(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub AbsorbedBySubstitute(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub MoveProtectedDetected(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub InflictedFlinch(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub IsSleeping(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub HurtItselfInConfusion(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
+        End Sub
+
+        Public Overrides Sub IsAttracted(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            MoveFails(own, BattleScreen)
         End Sub
 
     End Class

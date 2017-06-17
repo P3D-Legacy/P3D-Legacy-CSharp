@@ -1,6 +1,7 @@
 Imports P3D.Legacy.Core.Pokemon
-Imports P3D.Legacy.Core.Pokemon.Items
 Imports P3D.Legacy.Core.Screens
+Imports P3D.Legacy.Core.Screens.Items
+
 
 Namespace BattleSystem.Moves.Normal
 
@@ -56,11 +57,11 @@ Namespace BattleSystem.Moves.Normal
             '#End
         End Sub
 
-        Public Overrides Function GetBasePower(own As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
+        Public Overrides Function GetBasePower(own As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(Screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
             If own = False Then
-                p = screen.OppPokemon
+                p = BattleScreen.OppPokemon
             End If
 
             Dim itemID As Integer = 0
@@ -83,11 +84,11 @@ Namespace BattleSystem.Moves.Normal
             End If
         End Function
 
-        Public Overrides Function GetAttackType(own As Boolean, BattleScreen As Screen) As Element
-            Dim screen As BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
+        Public Overrides Function GetAttackType(own As Boolean, screen As Screen) As Element
+            Dim BattleScreen As BattleScreen = CType(Screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
             If own = False Then
-                p = screen.OppPokemon
+                p = BattleScreen.OppPokemon
             End If
 
             If Not p.Item Is Nothing Then
@@ -98,13 +99,13 @@ Namespace BattleSystem.Moves.Normal
             Return New Element(Element.Types.Normal)
         End Function
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen as BattleScreen = BattleScreen
-            Dim p As Pokemon = screen.OwnPokemon
-            Dim op As Pokemon = screen.OppPokemon
+        Public Overrides Function MoveFailBeforeAttack(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(Screen, BattleScreen)
+            Dim p As Pokemon = BattleScreen.OwnPokemon
+            Dim op As Pokemon = BattleScreen.OppPokemon
             If Own = False Then
-                p = screen.OppPokemon
-                op = screen.OwnPokemon
+                p = BattleScreen.OppPokemon
+                op = BattleScreen.OwnPokemon
             End If
 
             If p.Item Is Nothing Then
@@ -115,18 +116,19 @@ Namespace BattleSystem.Moves.Normal
                 End If
             End If
 
-            If op.Ability.Name.ToLower() = "unnerve" And screen.FieldEffects.CanUseAbility(Not Own, screen) = True Then
+            If op.Ability.Name.ToLower() = "unnerve" And BattleScreen.FieldEffects.CanUseAbility(Not Own, screen) = True Then
                 Return True
             End If
 
-            If screen.FieldEffects.CanUseItem(Own) = False Or screen.FieldEffects.CanUseOwnItem(Own, screen) = False Then
+            If BattleScreen.FieldEffects.CanUseItem(Own) = False Or BattleScreen.FieldEffects.CanUseOwnItem(Own, screen) = False Then
                 Return True
             End If
 
             Return False
         End Function
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             BattleScreen.Battle.RemoveHeldItem(own, own, BattleScreen, "", "move:naturalgift")
         End Sub
 

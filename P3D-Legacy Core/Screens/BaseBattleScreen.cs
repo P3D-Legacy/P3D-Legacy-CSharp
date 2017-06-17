@@ -20,7 +20,8 @@ namespace P3D.Legacy.Core.Screens
             Sandstorm = 3,
             Hailstorm = 4,
             Foggy = 5,
-            Snow = 6
+            Snow = 6,
+            Underwater = 7
         }
 
         public static WeatherEnum GetWorldWeather(WeatherTypes FieldWeather)
@@ -41,6 +42,8 @@ namespace P3D.Legacy.Core.Screens
                     return WeatherEnum.Sunny;
                 case WeatherTypes.Snow:
                     return WeatherEnum.Snow;
+                case WeatherTypes.Underwater:
+                    return WeatherEnum.Underwater;
                 default:
                     return WeatherEnum.Clear;
             }
@@ -65,6 +68,8 @@ namespace P3D.Legacy.Core.Screens
                     return WeatherTypes.Sandstorm;
                 case WeatherEnum.Sunny:
                     return WeatherTypes.Sunny;
+                case WeatherEnum.Underwater:
+                    return WeatherTypes.Underwater;
                 default:
                     return WeatherTypes.Clear;
             }
@@ -74,6 +79,9 @@ namespace P3D.Legacy.Core.Screens
 
     public class FieldEffects
     {
+        //Client side stuff in PvP
+        public bool ClientCanSwitch = true; //Calculated by the host, sent to the client
+
         //Own stuff
         //Sleep turns
         public int OwnSleepTurns = 0;
@@ -218,7 +226,7 @@ namespace P3D.Legacy.Core.Screens
         public int OwnInfestation = 0;
         public List<int> OwnUsedMoves = new List<int>();
         public int OwnMagicCoat = 0;
-        public Item OwnLostItem = null;
+        public Item OwnConsumedItem = null;
         public bool OwnPursuit = false;
         public bool OwnMegaEvolved = false;
         //If roost got used, this is true and will get set false and revert types at the end of a turn.
@@ -349,7 +357,7 @@ namespace P3D.Legacy.Core.Screens
         public bool OppPokemonDamagedThisTurn = false;
         public bool OppPokemonDamagedLastTurn = false;
         public int OppMagicCoat = 0;
-        public Item OppLostItem = null;
+        public Item OppConsumedItem = null;
         public bool OppPursuit = false;
         public bool OppMegaEvolved = false;
         public bool OppRoostUsed = false;

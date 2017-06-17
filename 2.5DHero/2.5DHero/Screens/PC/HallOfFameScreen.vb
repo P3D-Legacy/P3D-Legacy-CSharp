@@ -24,6 +24,8 @@ Public Class HallOfFameScreen
     Dim texture As Texture2D
 
     Dim Entries As New List(Of HallOfFameEntry)
+    Dim AmountOfEntries As Integer = 0
+
 
     Dim Scroll As Integer = 0
     Dim Cursor As Integer = 0
@@ -131,6 +133,7 @@ Public Class HallOfFameScreen
                 If IsNumeric(s) = True Then
                     If IDs.Contains(CInt(s)) = False Then
                         IDs.Add(CInt(s))
+                        AmountOfEntries = CInt(s) + 1
                     End If
                 End If
             End If
@@ -207,7 +210,7 @@ Public Class HallOfFameScreen
             Next
 
             Core.SpriteBatch.DrawString(FontManager.MainFont, "Entries: ", New Vector2(90 + 64 * 11, 119), New Color(0, 0, 0, alpha))
-            Core.SpriteBatch.DrawString(FontManager.MainFont, Me.Entries.Count.ToString(CultureInfo.InvariantCulture), New Vector2(190 + 64 * 11, 119), New Color(255, 255, 255, alpha))
+            Core.SpriteBatch.DrawString(FontManager.MainFont, AmountOfEntries.ToString(), New Vector2(190 + 64 * 11, 119), New Color(255, 255, 255, alpha))
 
             DrawCursor()
         End If
@@ -480,8 +483,11 @@ Public Class HallOfFameScreen
                 End If
             Next
         End If
-
-        Return (count + 1)
+        count += 1
+        If count > 21 Then
+            count = 21
+        End If
+        Return count
     End Function
 
 End Class

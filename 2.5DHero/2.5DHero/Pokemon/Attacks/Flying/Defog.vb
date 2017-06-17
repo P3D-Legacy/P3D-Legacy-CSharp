@@ -1,4 +1,5 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Flying
 
@@ -18,7 +19,7 @@ Namespace BattleSystem.Moves.Flying
             Me.Category = Categories.Status
             Me.ContestCategory = ContestCategories.Beauty
             Me.Name = "Defog"
-            Me.Description = "A strong wind blows away the target's barriers such as Reflect or Light Screen. This also lowers the target's evasiveness."
+            Me.Description = "A strong wind blows away the target's barriers such as Reflect or Light BattleScreen. This also lowers the target's evasiveness."
             Me.CriticalChance = 1
             Me.IsHMMove = False
             Me.Target = Targets.OneAdjacentTarget
@@ -28,7 +29,7 @@ Namespace BattleSystem.Moves.Flying
 
             '#SpecialDefinitions
             Me.MakesContact = False
-            Me.ProtectAffected = False
+            Me.ProtectAffected = True
             Me.MagicCoatAffected = True
             Me.SnatchAffected = True
             Me.MirrorMoveAffected = True
@@ -54,7 +55,8 @@ Namespace BattleSystem.Moves.Flying
             '#End
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If BattleScreen.Battle.LowerStat(Not own, own, BattleScreen, "Evasion", 1, "", "move:defog") = False Then
                 BattleScreen.BattleQuery.Add(New TextQueryObject(Me.Name & " failed!"))
             End If

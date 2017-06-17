@@ -31,7 +31,7 @@ Namespace ScriptVersion2
                         Core.Player.Pokemons.RemoveAt(index)
                     End If
                 Case "add"
-                    'PokemonID,Level,Method,Ball,Location,IsEgg,TrainerName
+                    'PokemonID,Level,Method,Ball,Location,IsEgg,TrainerName,AdditionalData
 
                     If argument.StartsWith("{") = True Or argument.Remove(0, 1).StartsWith(",{") = True Then
                         Dim insertIndex As Integer = Core.Player.Pokemons.Count
@@ -64,31 +64,38 @@ Namespace ScriptVersion2
                         Dim Level As Integer = int(argument.GetSplit(1))
 
                         Dim catchMethod As String = "random reason"
-                        If commas > 1 Then
+                        If commas > 1 AndAlso argument.GetSplit(2) <> "" Then
                             catchMethod = argument.GetSplit(2)
                         End If
 
                         Dim catchBall As Item = Item.GetItemByID(1)
-                        If commas > 2 Then
+                        If commas > 2 AndAlso argument.GetSplit(3) <> "" Then
                             catchBall = Item.GetItemByID(int(argument.GetSplit(3)))
                         End If
 
                         Dim catchLocation As String = Screen.Level.MapName
-                        If commas > 3 Then
+                        If commas > 3 AndAlso argument.GetSplit(4) <> "" Then
                             catchLocation = argument.GetSplit(4)
                         End If
 
                         Dim isEgg As Boolean = False
-                        If commas > 4 Then
+                        If commas > 4 AndAlso argument.GetSplit(5) <> "" Then
                             isEgg = CBool(argument.GetSplit(5))
                         End If
 
                         Dim catchTrainer As String = Core.Player.Name
-                        If commas > 5 And argument.GetSplit(6) <> "<playername>" Then
+                        If commas > 5 AndAlso argument.GetSplit(6) <> "" And argument.GetSplit(6) <> "<playername>" Then
                             catchTrainer = argument.GetSplit(6)
                         End If
 
-                        Dim Pokemon As Pokemon = Pokemon.GetPokemonByID(PokemonID)
+                        'Experimental parameter, use with caution. DO NOT introduce non valid values, as the consequences are unknown.
+                        Dim additionalData As String = ""
+                        If commas > 6 AndAlso argument.GetSplit(7) <> "" Then
+                            additionalData = argument.GetSplit(7)
+                            additionalData = additionalData.ToLower()
+                        End If
+
+                        Dim Pokemon As Pokemon = Pokemon.GetPokemonByID(PokemonID, additionalData)
                         Pokemon.Generate(Level, True)
 
                         Pokemon.CatchTrainerName = catchTrainer
@@ -97,6 +104,9 @@ Namespace ScriptVersion2
                         Pokemon.CatchLocation = catchLocation
                         Pokemon.CatchBall = catchBall
                         Pokemon.CatchMethod = catchMethod
+                        If additionalData <> "" Then
+                            Pokemon.AdditionalData = additionalData
+                        End If
 
                         If isEgg = True Then
                             Pokemon.EggSteps = 1
@@ -441,7 +451,7 @@ Namespace ScriptVersion2
                     End If
                 Case "registerhalloffame"
                     Dim count As Integer = -1
-
+                    Dim NewHallOfFameData As String = ""
                     If Core.Player.HallOfFameData <> "" Then
                         Dim data() As String = Core.Player.HallOfFameData.SplitAtNewline()
 
@@ -451,6 +461,14 @@ Namespace ScriptVersion2
                                 count = id
                             End If
                         Next
+
+                        For Each l As String In data
+                            Dim id As Integer = CInt(l.Remove(l.IndexOf(",")))
+                            If id > (count - 19) OrElse id = 0 Then 'last 20 entries saved, plus the first entry
+                                NewHallOfFameData &= l & vbNewLine
+                            End If
+                        Next
+
                     End If
 
                     count += 1
@@ -467,16 +485,14 @@ Namespace ScriptVersion2
 
                     For Each p As Pokemon In Core.Player.Pokemons
                         If p.IsEgg() = False Then
-                            Dim pData As String = p.GetSaveData()
+                            Dim pData As String = p.GetHallOfFameData()
                             newData &= vbNewLine & count & "," & pData
                         End If
                     Next
 
-                    If Core.Player.HallOfFameData <> "" Then
-                        Core.Player.HallOfFameData &= vbNewLine
-                    End If
+                    NewHallOfFameData &= newData
+                    Core.Player.HallOfFameData = NewHallOfFameData
 
-                    Core.Player.HallOfFameData &= newData
                 Case "setot"
                     Dim Index As Integer = int(argument.GetSplit(0, ","))
                     Dim OT As String = argument.GetSplit(1, ",")
@@ -696,6 +712,24 @@ Namespace ScriptVersion2
                         If Pokemon.IsEgg() = False Then
                             Core.Player.PokedexData = Pokedex.ChangeEntry(Core.Player.PokedexData, Pokemon.Number, pokedexType)
                         End If
+                    End If
+                Case "addsteps"
+                    ' @Pokemon.AddSteps(PokemonIndex, StepsToAdd)
+
+                    Dim Index As Integer = int(argument.GetSplit(0, ","))
+                    Dim StepsToAdd As Integer = int(argument.GetSplit(1, ","))
+
+                    If Core.Player.Pokemons.Count - 1 >= Index Then
+                        Core.Player.Pokemons(Index).EggSteps += StepsToAdd
+                    End If
+                Case "setsteps"
+                    ' @Pokemon.SetSteps(PokemonIndex, StepsToSet)
+
+                    Dim Index As Integer = int(argument.GetSplit(0, ","))
+                    Dim StepsToSet As Integer = int(argument.GetSplit(1, ","))
+
+                    If Core.Player.Pokemons.Count - 1 >= Index Then
+                        Core.Player.Pokemons(Index).EggSteps = StepsToSet
                     End If
             End Select
 

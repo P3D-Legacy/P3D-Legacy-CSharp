@@ -1,6 +1,7 @@
 ﻿Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Screens
 
+
 Namespace BattleSystem.Moves.Steel
 
     Public Class MetalBurst
@@ -29,7 +30,7 @@ Namespace BattleSystem.Moves.Steel
 
             '#SpecialDefinitions
             Me.MakesContact = False
-            Me.ProtectAffected = False
+            Me.ProtectAffected = True
             Me.MagicCoatAffected = False
             Me.SnatchAffected = False
             Me.MirrorMoveAffected = True
@@ -58,17 +59,35 @@ Namespace BattleSystem.Moves.Steel
             Me.AIField2 = AIField.Nothing
         End Sub
 
-        Public Overrides Function MoveFailBeforeAttack(Own As Boolean, BattleScreen As Screen) As Boolean
-            Dim screen As BattleScreen = BattleScreen
-            Return Not screen.FieldEffects.MovesFirst(Own)
+        Public Overrides Function MoveFailBeforeAttack(own As Boolean, screen As Screen) As Boolean
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
+            If BattleScreen.FieldEffects.MovesFirst(Own) Then
+                Return True
+            End If
+            Dim damage As Integer = BattleScreen.FieldEffects.OwnLastDamage
+            If Own = True Then
+                damage = BattleScreen.FieldEffects.OppLastDamage
+            End If
+            If damage > 0 Then
+                Dim lastMove As Attack = BattleScreen.FieldEffects.OwnLastMove
+                If Own = True Then
+                    lastMove = BattleScreen.FieldEffects.OppLastMove
+                End If
+                If Not lastMove Is Nothing Then
+                    If lastMove.Category = Categories.Special Or lastMove.Category = Categories.Physical Then
+                        Return False
+                    End If
+                End If
+            End If
+            Return True
         End Function
 
-        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, BattleScreen As Screen) As Integer
-            Dim screen As BattleScreen = BattleScreen
+        Public Overrides Function GetDamage(Critical As Boolean, Own As Boolean, targetPokemon As Boolean, screen As Screen) As Integer
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If Own = True Then
-                Return CInt(screen.FieldEffects.OppLastDamage * 1.5)
+                Return CInt(BattleScreen.FieldEffects.OppLastDamage * 1.5)
             Else
-                Return CInt(screen.FieldEffects.OwnLastDamage * 1.5)
+                Return CInt(BattleScreen.FieldEffects.OwnLastDamage * 1.5)
             End If
         End Function
 

@@ -13,6 +13,8 @@ Public Class EvolutionScreen
 
     Inherits Screen
 
+    ' Old Evolution System:
+
     'Private FromBattle As Boolean = False
     'Private EvolutionArgument As String = ""
     'Private EvolutionTrigger As EvolutionTrigger
@@ -233,7 +235,7 @@ Public Class EvolutionScreen
                             Sparks.Clear()
                             evolutionReady = True
                             brokeEvolution = True
-                            TextBox.Show("Your " & currentPokemon.GetDisplayName() & "~didn't evolve.", {}, False, False)
+                            TextBox.Show("Huh? " & currentPokemon.GetDisplayName() & "~stopped evolving!", {}, False, False)
                         End If
                     End If
                 Else

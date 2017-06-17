@@ -1,5 +1,6 @@
 ﻿Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Pokemon
+Imports P3D.Legacy.Core.Screens
 
 Namespace BattleSystem.Moves.Fighting
 
@@ -15,8 +16,8 @@ Namespace BattleSystem.Moves.Fighting
             Me.CurrentPP = 5
             Me.MaxPP = 5
             Me.Power = 120
-            Me.Accuracy = 100
-            Me.Category = Categories.Physical
+            Me.Accuracy = 70
+            Me.Category = Categories.Special
             Me.ContestCategory = ContestCategories.Smart
             Me.Name = "Focus Blast"
             Me.Description = "The user heightens its mental focus and unleashes its power. It may also lower the target’s Sp. Def."
@@ -61,7 +62,8 @@ Namespace BattleSystem.Moves.Fighting
             Me.EffectChances.Add(10)
         End Sub
 
-        Public Overloads Sub MoveHits(own As Boolean, BattleScreen As BattleScreen)
+        Public Overrides Sub MoveHits(own As Boolean, screen As Screen)
+            Dim BattleScreen As BattleScreen = CType(screen, BattleScreen)
             If Core.Random.Next(0, 100) < Me.GetEffectChance(0, own, BattleScreen) Then
                 BattleScreen.Battle.LowerStat(Not own, own, BattleScreen, "Special Defense", 1, "", "move:focusblast")
             End If
