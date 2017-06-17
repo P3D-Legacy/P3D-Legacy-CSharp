@@ -45266,30 +45266,6 @@
 /processorParam:TextureFormat=Color
 /build:Fonts/TextFont.png
 
-#begin Localization/de/Tokens_de.dat
-/copy:Localization/de/Tokens_de.dat
-
-#begin Localization/en/Tokens_en.dat
-/copy:Localization/en/Tokens_en.dat
-
-#begin Localization/fr/Tokens_fr.dat
-/copy:Localization/fr/Tokens_fr.dat
-
-#begin Localization/id/Tokens_id.dat
-/copy:Localization/id/Tokens_id.dat
-
-#begin Localization/it/Tokens_it.dat
-/copy:Localization/it/Tokens_it.dat
-
-#begin Localization/lt/Tokens_lt.dat
-/copy:Localization/lt/Tokens_lt.dat
-
-#begin Localization/sv/Tokens_sv.dat
-/copy:Localization/sv/Tokens_sv.dat
-
-#begin Localization/tr/Tokens_tr.dat
-/copy:Localization/tr/Tokens_tr.dat
-
 #begin Pokemon/Data/115_mega.dat
 /copy:Pokemon/Data/115_mega.dat
 
