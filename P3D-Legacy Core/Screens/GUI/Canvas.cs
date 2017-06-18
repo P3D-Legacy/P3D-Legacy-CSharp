@@ -140,7 +140,7 @@ namespace P3D.Legacy.Core.Screens.GUI
                 int posY = 0;
                 if (allItems > seeAbleItems)
                 {
-                    sizeY = Convert.ToInt32((canSee / allItems) * size.Height);
+                    sizeY = Convert.ToInt32((canSee * size.Height) / allItems);
                     posY = Convert.ToInt32(Math.Abs(selection) * size.Height / allItems);
                 }
                 DrawRectangle(new Rectangle(Convert.ToInt32(position.X), Convert.ToInt32(position.Y) + posY, size.Width, sizeY), color2, scaleToScreen);
@@ -187,7 +187,7 @@ namespace P3D.Legacy.Core.Screens.GUI
                 int posY = 0;
                 if (allItems > seeAbleItems)
                 {
-                    sizeY = Convert.ToInt32((canSee / allItems) * size.Height);
+                    sizeY = Convert.ToInt32((canSee  * size.Height) / allItems);
                     posY = Convert.ToInt32(Math.Abs(selection) * size.Height / allItems);
                 }
                 if (scaleToScreen)
@@ -209,7 +209,7 @@ namespace P3D.Legacy.Core.Screens.GUI
                 int posX = 0;
                 if (allItems > seeAbleItems)
                 {
-                    sizeX = Convert.ToInt32((canSee / allItems) * size.Width);
+                    sizeX = Convert.ToInt32((canSee * size.Width) / allItems);
                     posX = Convert.ToInt32(Math.Abs(selection) * size.Width / allItems);
                 }
                 if (scaleToScreen)
@@ -276,7 +276,7 @@ namespace P3D.Legacy.Core.Screens.GUI
                     stepCount = uSize;
                 }
 
-                float stepSize = Convert.ToSingle(Math.Ceiling(Convert.ToSingle(uSize / stepCount)));
+                float stepSize = Convert.ToSingle(Math.Ceiling(Convert.ToSingle(uSize) / Convert.ToSingle(stepCount)));
 
                 Color[] colorArray = new Color[_width * _height];
 

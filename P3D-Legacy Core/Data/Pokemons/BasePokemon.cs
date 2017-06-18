@@ -1357,7 +1357,7 @@ namespace P3D.Legacy.Core.Pokemon
         /// </summary>
         public Tuple<float, float, float, float, float> GetModelProperties()
         {
-            float scale = Convert.ToSingle(0.6 / PokedexEntry.Height);
+            float scale = Convert.ToSingle(0.6f / PokedexEntry.Height);
             float x = 0f;
             float y = 0f;
             float z = 0f;
@@ -1585,7 +1585,7 @@ namespace P3D.Legacy.Core.Pokemon
             int percent = 100;
             if (HP > 0 && MaxHP > 0)
             {
-                percent = Convert.ToInt32(Math.Ceiling((double) (HP / MaxHP)) * 100);
+                percent = Convert.ToInt32(Math.Ceiling((double) (HP * 100 / MaxHP)));
             }
 
             if (percent <= 50)

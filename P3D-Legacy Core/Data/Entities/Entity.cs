@@ -397,17 +397,17 @@ namespace P3D.Legacy.Core.Entities
             {
                 if (Core.Random.Next(0, 1) == 0)
                 {
-                    Rotation.X += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
-                    Rotation.Z += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
-                    Rotation.Y += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
+                    Rotation.X += (Convert.ToSingle(Core.Random.Next(1, 6) - 3) / 100f) * delta;
+                    Rotation.Z += (Convert.ToSingle(Core.Random.Next(1, 6) - 3) / 100f) * delta;
+                    Rotation.Y += (Convert.ToSingle(Core.Random.Next(1, 6) - 3) / 100f) * delta;
 
-                    Position.X += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
-                    Position.Z += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
-                    Position.Y += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100);
+                    Position.X += (Convert.ToSingle(Core.Random.Next(1, 6) - 3) / 100f) * delta;
+                    Position.Z += (Convert.ToSingle(Core.Random.Next(1, 6) - 3) / 100f) * delta;
+                    Position.Y += (Convert.ToSingle(Core.Random.Next(1, 6) - 3) / 100f);
 
-                    Scale.X += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
-                    Scale.Z += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
-                    Scale.Y += Convert.ToSingle((Core.Random.Next(1, 6) - 3) / 100) * delta;
+                    Scale.X += (Convert.ToSingle(Core.Random.Next(1, 6) - 3) / 100f) * delta;
+                    Scale.Z += (Convert.ToSingle(Core.Random.Next(1, 6) - 3) / 100f) * delta;
+                    Scale.Y += (Convert.ToSingle(Core.Random.Next(1, 6) - 3) / 100f) * delta;
 
                     CreatedWorld = false;
                 }
@@ -580,7 +580,7 @@ namespace P3D.Legacy.Core.Entities
                 {
                     if ((Model != null))
                     {
-                        int c = Convert.ToInt32(Model.VertexBuffer.VertexCount / 3);
+                        int c = Convert.ToInt32(Convert.ToSingle(Model.VertexBuffer.VertexCount) / 3.0f);
                         int min = 0;
 
                         for (var i = 0; i <= TextureIndex.Length - 1; i++)
