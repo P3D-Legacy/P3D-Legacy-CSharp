@@ -33,7 +33,7 @@ namespace P3D.Legacy.Core.Objects
 
             Rows = rows;
             Columns = columns;
-            AnimationSpeed = Convert.ToSingle(1 / animationSpeed);
+            AnimationSpeed = (1.0f / Convert.ToSingle(animationSpeed));
 
             TotalElapsed = 0;
             CurrentRow = startRow;
