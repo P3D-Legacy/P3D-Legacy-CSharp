@@ -677,7 +677,7 @@ Public Class Level
             Core.ServersManager.PlayerManager.UpdatePlayers()
         End If
 
-        If(_offsetMapUpdateDelay > 20)
+        If (_offsetMapUpdateDelay > Core.GameOptions.LoadOffsetMaps - 1) Then
             _offsetMapUpdateDelay = 0
             MapOffsetRenderer.Update(gameTime)
         End If
