@@ -62,6 +62,11 @@ namespace P3D.Legacy.Core.World
 
             OffsetMaps[mapName].Floors.Add(newEnt);
         }
+        public void RemoveFloor(string mapName, Entity ent)
+        {
+            if (OffsetMaps.ContainsKey(mapName) && OffsetMaps[mapName].Floors.Contains(ent))
+                OffsetMaps[mapName].Floors.Remove(ent);
+        }
         public void Clear()
         {
             foreach (var mapRenderer in OffsetMaps.Values)

@@ -732,7 +732,11 @@ Public Class LevelLoader
                         f.SeasonColorTexture = SeasonTexture
                         f.LoadSeasonTextures()
                         f.IsOffsetMapContent = loadOffsetMap
-                        floorList.Add(f)
+                        If loadOffsetMap Then
+                            Screen.Level.MapOffsetRenderer.AddFloor(MapOrigin, f)
+                        Else
+                            floorList.Add(f)
+                        End If
                     End If
                 Next
             Next
@@ -743,7 +747,10 @@ Public Class LevelLoader
                         If i < floorList.Count Then
                             Dim floor As Entity = floorList(i)
                             If floor.Position.X = Position.X + x And floor.Position.Y = Position.Y And floor.Position.Z = Position.Z + z Then
-                                floorList.RemoveAt(i)
+                                floorList.Remove(floor)
+                                If loadOffsetMap Then
+                                    Screen.Level.MapOffsetRenderer.RemoveFloor(MapOrigin, floor)
+                                End If
                                 i -= 1
                             End If
                         End If
