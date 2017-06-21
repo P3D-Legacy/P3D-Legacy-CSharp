@@ -338,7 +338,7 @@ namespace P3D.Legacy.Core.GameJolt.Profiles
         private static Texture2D GetEmblemBackgroundTexture(string emblemName)
         {
             //Don't load from TextureManager, because ContentPack emblems are not allowed.
-            return Core.Content.Load<Texture2D>("Textures|Emblem|" + emblemName);
+            return new ContentFolder().GetTexture("Textures|Emblem|" + emblemName);
         }
 
         public static Microsoft.Xna.Framework.Color GetEmblemFontColor(string emblemName)
