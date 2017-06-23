@@ -1583,22 +1583,22 @@ namespace P3D.Legacy.Core.Pokemon
         {
             float Pitch = 0f;
             int percent = 100;
-            if (HP > 0 && MaxHP > 0)
+            if (HP >= 0 && MaxHP > 0)
             {
                 percent = Convert.ToInt32(Math.Ceiling((double) (HP * 100 / MaxHP)));
             }
 
             if (percent <= 50)
             {
-                Pitch = -0.4f;
+                Pitch = -0.1f;
             }
-            if (percent <= 15)
+            if (percent <= 15 || this.Status != StatusProblems.None)
             {
-                Pitch = -0.8f;
+                Pitch = -0.2f;
             }
             if (percent == 0)
             {
-                Pitch = -1f;
+                Pitch = -0.3f;
             }
 
             SoundEffectManager.PlayPokemonCry(Number, Pitch, 0f);
