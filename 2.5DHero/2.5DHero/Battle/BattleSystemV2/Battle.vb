@@ -453,7 +453,7 @@ Namespace BattleSystem
                 End Select
                 p.ReloadDefinitions()
                 p.CalculateStats()
-                p.LoadMegaAbility()
+                p.LoadAltAbility()
                 Me.ChangeCameraAngel(1, own, BattleScreen)
                 BattleScreen.BattleQuery.Add(New ToggleEntityQueryObject(own, ToggleEntityQueryObject.BattleEntities.OwnPokemon, PokemonForms.GetOverworldSpriteName(p), 0, 1, -1, -1))
                 BattleScreen.BattleQuery.Add(New TextQueryObject(_base & " has Mega Evolved!"))
@@ -462,6 +462,9 @@ Namespace BattleSystem
         End Sub
         'Checks if any pokemon is mega evolving, order based on speed
         Public Sub MegaEvolCheck(ByVal BattleScreen As BattleScreen) 'Implements IBattle.MegaEvolCheck
+            If Not (BattleScreen.IsMegaEvolvingOwn OrElse BattleScreen.IsMegaEvolvingOpp) Then
+                Exit Sub
+            End If
             If BattleCalculation.MovesFirst(BattleScreen) Then
                 If BattleScreen.IsMegaEvolvingOwn Then
                     DoMegaEvolution(BattleScreen, True)
@@ -1033,16 +1036,16 @@ Namespace BattleSystem
         Public Sub DoAttackRound(ByVal BattleScreen As BattleScreen, ByVal own As Boolean, ByVal moveUsed As Attack) 'Implements IBattle.DoAttackRound
             'p: the attacking pokemon
             'op: the target pokemon
-            Dim p As Pokemon = BattleScreen.OwnPokemon
-            Dim op As Pokemon = BattleScreen.OppPokemon
+            Dim p As Pokemon
+            Dim op As Pokemon
             If own Then
+                p = BattleScreen.OwnPokemon
+                op = BattleScreen.OppPokemon
                 BattleScreen.FieldEffects.OwnLastMove = moveUsed
             Else
-                BattleScreen.FieldEffects.OppLastMove = moveUsed
-            End If
-            If Not own Then
                 p = BattleScreen.OppPokemon
                 op = BattleScreen.OwnPokemon
+                BattleScreen.FieldEffects.OppLastMove = moveUsed
             End If
             If WildHasEscaped Then
                 WildHasEscaped = False
@@ -1230,16 +1233,6 @@ Namespace BattleSystem
                         ReduceHP(damage, own, own, BattleScreen, p.GetDisplayName() & " hurt itself in confusion.", "confusiondamage")
                         moveUsed.HurtItselfInConfusion(own, BattleScreen)
                         Exit Sub
-                    End If
-                End If
-            End If
-
-            If op.HP > 0 And op.Status <> BasePokemon.StatusProblems.Fainted Then
-                If Not p.Item Is Nothing Then
-                    If p.Item.Name.ToLower() = "king's rock" Or p.Item.Name.ToLower() = "razor fang" And BattleScreen.FieldEffects.CanUseItem(own) = True And BattleScreen.FieldEffects.CanUseOwnItem(own, BattleScreen) = True Then
-                        If Core.Random.Next(0, 100) < 10 Then
-                            op.AddVolatileStatus(BasePokemon.VolatileStatus.Flinch)
-                        End If
                     End If
                 End If
             End If
@@ -1879,6 +1872,16 @@ Namespace BattleSystem
                                         moveUsed.MoveHits(own, BattleScreen)
                                     End If
                                 End If
+                                If op.HP > 0 AndAlso op.Status <> Pokemon.StatusProblems.Fainted Then
+                                    If Not p.Item Is Nothing Then
+                                        If p.Item.Name.ToLower() = "king's rock" Or p.Item.Name.ToLower() = "razor fang" And BattleScreen.FieldEffects.CanUseItem(own) = True And BattleScreen.FieldEffects.CanUseOwnItem(own, BattleScreen) = True Then
+                                            If Core.Random.Next(0, 100) < 10 Then
+                                                InflictFlinch(Not own, own, BattleScreen, "", "item:king's rock")
+                                            End If
+                                        End If
+                                    End If
+                                End If
+
                                 moveUsed.MoveRecoil(own, BattleScreen)
                                 moveUsed.MoveRecharge(own, BattleScreen)
                                 If op.HP > 0 Then
@@ -4424,6 +4427,9 @@ Namespace BattleSystem
                                 End If
                             End If
                             SwitchOutOpp(BattleScreen, -1)
+                            If BattleScreen.IsTrainerBattle AndAlso Not BattleScreen.IsRemoteBattle Then
+                                HasSwitchedInOpp = False 'since opponents dont do after fainting switch rounds in PvE
+                            End If
                         End If
 
                         ChangeCameraAngel(0, True, BattleScreen)
@@ -6451,8 +6457,8 @@ Namespace BattleSystem
         End Sub
 
         Public Sub SwitchInOpp(ByVal BattleScreen As BattleScreen, ByVal FirstTime As Boolean, ByVal index As Integer) 'Implements IBattle.SwitchInOpp
-            HasSwitchedInOpp = True
             If FirstTime = False Then
+                HasSwitchedInOpp = True
                 ChangeCameraAngel(1, False, BattleScreen)
                 BattleScreen.BattleQuery.Add(New TextQueryObject(BattleScreen.Trainer.Name & ": ""Come back, " & BattleScreen.OppPokemon.GetDisplayName() & "!"""))
 

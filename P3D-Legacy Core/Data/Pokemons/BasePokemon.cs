@@ -723,7 +723,7 @@ namespace P3D.Legacy.Core.Pokemon
         /// </summary>
         public abstract void ResetTemp();
 
-        public abstract void LoadMegaAbility();
+        public abstract void LoadAltAbility();
 
         public abstract void RestoreAbility();
 

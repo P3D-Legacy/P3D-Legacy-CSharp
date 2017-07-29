@@ -56,9 +56,9 @@ namespace P3D.Legacy.Core.Resources
             ModelList.Clear();
         }
 
-        public static Texture2D DrawModelToTexture(string modelName, Vector2 texSize, Vector3 modelPosition, Vector3 cameraPosition, Vector3 cameraRotation, float scale, bool enableLight)
+        public static Texture2D DrawModelToTexture(string modelName, RenderTarget2D renderTarget, Vector3 modelPosition, Vector3 cameraPosition, Vector3 cameraRotation, float scale, bool enableLight)
         {
-            RenderTarget2D renderTarget = new RenderTarget2D(Core.GraphicsDevice, Convert.ToInt32(texSize.X), Convert.ToInt32(texSize.Y), false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8);
+            //RenderTarget2D renderTarget = new RenderTarget2D(Core.GraphicsDevice, Convert.ToInt32(texSize.X), Convert.ToInt32(texSize.Y), false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8);
             Core.GraphicsDevice.SetRenderTarget(renderTarget);
             Core.GraphicsDevice.Clear(Color.Transparent);
 
