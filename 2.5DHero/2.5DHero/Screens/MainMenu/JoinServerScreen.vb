@@ -48,9 +48,6 @@ Public Class JoinServerScreen
 
         Me.ServerList.Add(localServer)
 
-        dim saveFolder = new SaveFolder()
-        saveFolder.ServerListFile.WriteAllText("Official Pokémon3D Server,karp.pokemon3d.net:15124")
-
         If LoadOnlineServers = True Then        
             Dim data() As String = new SaveFolder().ServerListFile.ReadAllLines()
             If data.Length > 0 Then
