@@ -76,13 +76,12 @@ namespace P3D.Legacy.Core.Resources.Managers.Music
         public string MusicNamePlaying => CurrentMusicName;
         public bool IsPlaying => CurrentMusic?.IsPlaying ?? false;
 
-        private bool _isMuted;
-        private bool IsMuted
+        public bool IsMuted
         {
-            get { return _isMuted; }
+            get { return MediaPlayer.IsMuted; }
             set
             {
-                _isMuted = value;
+                MediaPlayer.IsMuted = value;
                 if (MediaPlayer.IsMuted)
                 {
                     Pause();

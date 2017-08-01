@@ -9,6 +9,8 @@ namespace P3D.Legacy.Core.Resources.Managers.Music
     {
         public static MusicTrack MusicTrack { get; } = new MusicTrack();
 
+        public static bool IsMuted => MusicTrack.IsMuted;
+
         public static float Volume { get { return MusicTrack.Volume; } set { MusicTrack.Volume = value; } }
 
         public static bool MusicExists(string musicName) => GetMusic(musicName, false) != null;
