@@ -150,11 +150,15 @@ namespace P3D.Legacy.Core
             foreach (var localizationFile in LocalizationFiles)
             {
                 var token = localizationFile.GetString(s);
+
+
                 if (Core.Player != null)
                 {
                     token = token.Replace("<playername>", Core.Player.Name);
                     token = token.Replace("<rivalname>", Core.Player.RivalName);
                 }
+                if (token == "")
+                    break;
                 return token;
             }
             return string.IsNullOrEmpty(defaultValue) ? s : defaultValue;
