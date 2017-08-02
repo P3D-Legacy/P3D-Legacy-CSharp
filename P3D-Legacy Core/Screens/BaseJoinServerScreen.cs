@@ -19,10 +19,8 @@ namespace P3D.Legacy.Core.Screens
 
         public static void AddServerMessage(string m, string server_name)
         {
-            if (System.IO.File.Exists(GameController.GamePath + "\\Save\\server_list.dat") == false)
-            {
-                System.IO.File.WriteAllText(GameController.GamePath + "\\Save\\server_list.dat", "");
-            }
+            if (!System.IO.File.Exists(GameController.GamePath + "\\Save\\server_list.dat"))
+                System.IO.File.WriteAllText(GameController.GamePath + "\\Save\\server_list.dat", "Official Pokémon3D Server,karp.pokemon3d.net:15124");
 
             string newData = "";
 

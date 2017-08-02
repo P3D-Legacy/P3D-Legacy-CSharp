@@ -41,6 +41,7 @@ namespace P3D.Legacy.Core
         public static void Load(CultureInfo language)
         {
             LocalizationTokens.Clear();
+            LocalizationFiles.Clear();
 
             Language = language;
 
