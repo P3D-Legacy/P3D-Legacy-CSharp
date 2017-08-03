@@ -41,8 +41,9 @@ namespace P3D.Legacy.Core
             }
             if (KeyBoardHandler.KeyPressed(Core.KeyBindings.MuteMusic) && Core.CurrentScreen.CanMuteMusic)
             {
-                MusicManager.Mute(!MediaPlayer.IsMuted);
-                SoundEffectManager.Mute(MediaPlayer.IsMuted);
+                Core.GameOptions.Muted = !Core.GameOptions.Muted;
+                MusicManager.Mute(Core.GameOptions.Muted);
+                SoundEffectManager.Mute(Core.GameOptions.Muted);
                 Options.SaveOptions(Core.GameOptions);
                 Core.CurrentScreen.ToggledMute();
             }
