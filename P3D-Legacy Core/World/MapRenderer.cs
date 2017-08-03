@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using P3D.Legacy.Core.Debug;
+using P3D.Legacy.Core.DebugC;
 using P3D.Legacy.Core.Entities;
 using P3D.Legacy.Core.Resources.Models;
 using P3D.Legacy.Core.Screens;
@@ -55,13 +56,13 @@ namespace P3D.Legacy.Core.World
             for (var i = Floors.Count - 1; i >= 0; i--)
             {
                 Floors[i].Render(Effect);
-                DebugDisplay.MaxVertices += Floors[i].VertexCount;
+                RenderTracker.MaxVertices += Floors[i].VertexCount;
             }
 
             for (var i = Entities.Count - 1; i >= 0; i--)
             {
                 Entities[i].Render(Effect);
-                DebugDisplay.MaxVertices += Entities[i].VertexCount;
+                RenderTracker.MaxVertices += Entities[i].VertexCount;
             }
         }
 

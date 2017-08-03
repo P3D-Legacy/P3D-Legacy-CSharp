@@ -1,6 +1,7 @@
 Imports System.Globalization
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Debug
+Imports P3D.Legacy.Core.DebugC
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.Input
@@ -642,9 +643,9 @@ Public Class Level
         Me._backdropRenderer.Draw()
 
         'Reset the Debug values.
-        DebugDisplay.DrawnVertices = 0
-        DebugDisplay.MaxVertices = 0
-        DebugDisplay.MaxDistance = 0
+        RenderTracker.DrawnVertices = 0
+        RenderTracker.MaxVertices = 0
+        RenderTracker.MaxDistance = 0
 
         MapOffsetRenderer.Draw()
         MapRenderer.Draw()

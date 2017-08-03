@@ -130,6 +130,12 @@ namespace P3D.Legacy.Core.DebugC
             return this;
         }
 
+        public MngStringBuilder Append(bool b)
+        {
+            this.StringBuilder.Append(b);
+
+            return this;
+        }
 
         public MngStringBuilder Append(StringBuilder s)
         {

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-
+using P3D.Legacy.Core.DebugC;
 using P3D.Legacy.Core.Entities.Other;
 using P3D.Legacy.Core.Input;
 using P3D.Legacy.Core.Resources;
@@ -65,7 +65,7 @@ namespace P3D.Legacy.Core
                 Options.SaveOptions(Core.GameOptions);
             }
 
-            if (KeyBoardHandler.KeyPressed(Keys.L) && KeyBoardHandler.KeyDown(Core.KeyBindings.DebugControl))
+            if (KeyBoardHandler.KeyDown(Core.KeyBindings.DebugControl))
                 Logger.DisplayLog = !Logger.DisplayLog;
 
             if (KeyBoardHandler.KeyPressed(Keys.B) && KeyBoardHandler.KeyDown(Core.KeyBindings.DebugControl))

@@ -1,17 +1,16 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
-
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-
-using P3D.Legacy.Core.Input;
+using P3D.Legacy.Core.Debug;
 using P3D.Legacy.Core.Screens;
 
 namespace P3D.Legacy.Core.DebugC
 {
-    public class DebugScreen
+    public class DebugScreen : DrawableGameComponent
     {
         private SpriteBatch _spriteBatch;
         private SpriteFont _monospaceFont;
@@ -31,30 +30,19 @@ namespace P3D.Legacy.Core.DebugC
         private bool _offFrame = true;
         private static bool _clearCommand;
 
-        // Console
-        public static bool ConsoleOpen;
-
-        public void Initialize(GraphicsDevice graphicsDevice)
+        public DebugScreen(Game game) : base(game)
         {
-            _spriteBatch = new SpriteBatch(graphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _monospaceFont = new ContentManager(Game.Services, "Content").Load<SpriteFont>("Fonts/monospace");
         }
 
-        public void LoadContent(ContentManager content)
-        {
-            //_monospaceFont = FontManager.ChatFont;
-            _monospaceFont = content.Load<SpriteFont>("Fonts/monospace");
-        }
-
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             _offFrame = gameTime.TotalGameTime.Milliseconds % 1000 <= 500;
-
-            if (KeyBoardHandler.KeyPressed(Keys.I))
-                ConsoleOpen = !ConsoleOpen;
         }
-        public void Draw(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
-            if (ConsoleOpen)
+            if (Core.CurrentScreen.CanDrawDebug && Core.GameOptions.ShowDebug)
             {
                 _fps = 0.9 * _fps + 0.1 * (1000 / gameTime.ElapsedGameTime.TotalMilliseconds);
 
@@ -83,24 +71,63 @@ namespace P3D.Legacy.Core.DebugC
                 _spriteBatch.Begin();
 
 
+                var isDebugString = "";
+                if (GameController.IS_DEBUG_ACTIVE)
+                    isDebugString = " (Debugmode / " + File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location) + ")";
+
+                var actionScriptActive = true;
+                if (Core.CurrentScreen is BaseOverworldScreen screen)
+                    actionScriptActive = screen.ActionScriptIsReady;
+
+                var thirdPersonString = "";
+                if (Screen.Camera is BaseOverworldCamera camera && camera.ThirdPerson)
+                        thirdPersonString = camera.ThirdPersonOffset.ToString();
+
+                var contentPacksString = "";
+                if (Core.GameOptions.ContentPackNames.Any())
+                {
+                    var contentPackString = "";
+                    foreach (var contentPackName in Core.GameOptions.ContentPackNames)
+                    {
+                        if (!string.IsNullOrEmpty(contentPackString))
+                            contentPackString += ", ";
+   
+                        contentPackString += contentPackName;
+                    }
+                    contentPackString = "Loaded ContentPacks: " + contentPackString;
+                    contentPacksString += Environment.NewLine + contentPackString;
+                }
+
                 var totalmemory = GC.GetTotalMemory(false);
                 if (_maxGcMemory < totalmemory)
                     _maxGcMemory = totalmemory;
+
 
                 //clear
                 _mngStringBuilder.Length = 0;
 
                 _mngStringBuilder
-                    .Append(GameController.GAMENAME).Append(" ").Append(GameController.GAMEDEVELOPMENTSTAGE).Append(" ").Append(GameController.GAMEVERSION).AppendLine()
-                    .Append("Main Thread: ").AppendTrim(gameTime.ElapsedGameTime.TotalMilliseconds).Append(" ms").AppendLine()
-                    .Append("FPS: ").Append((int) Math.Round(_fps)).Append(" ... ").Append((int) Math.Round(_smoothfpsShow)).Append(" > ").Append((int) Math.Round(_minfps)).AppendLine()
+                    .Append(GameController.GAMENAME).Append(" ").Append(GameController.GAMEDEVELOPMENTSTAGE).Append(" ")
+                    .Append(GameController.GAMEVERSION).Append(" ").Append(isDebugString).AppendLine()
+                    .Append("Main Thread: ").AppendTrim(gameTime.ElapsedGameTime.TotalMilliseconds).Append(" ms")
+                    .AppendLine()
+                    .Append("FPS: ").Append((int) Math.Round(_fps)).Append(" ... ")
+                    .Append((int) Math.Round(_smoothfpsShow)).Append(" > ").Append((int) Math.Round(_minfps))
+                    .AppendLine()
                     .Append(Core.WindowSize.Width).Append(" x ").Append(Core.WindowSize.Height).AppendLine()
-                    .Append("Memory(GC): ").Append(totalmemory / 1024 / 1024).Append(" ... ").Append(_maxGcMemory / 1024 / 1024).AppendLine()
+                    .Append("Memory(GC): ").Append(totalmemory / 1024 / 1024).Append(" ... ")
+                    .Append(_maxGcMemory / 1024 / 1024).AppendLine()
                     .Append("X: ").AppendTrim(Screen.Camera.Position.X).AppendLine()
                     .Append("Y: ").AppendTrim(Screen.Camera.Position.Y).AppendLine()
                     .Append("Z: ").AppendTrim(Screen.Camera.Position.Z).AppendLine()
                     .Append("Yaw: ").AppendTrim(Screen.Camera.Yaw).AppendLine()
-                    .Append("Pitch: ").AppendTrim(Screen.Camera.Pitch).AppendLine();
+                    .Append("Pitch: ").AppendTrim(Screen.Camera.Pitch).AppendLine()
+                    .Append("ThirdPerson: ").Append(thirdPersonString).AppendLine()
+                    .Append("ActionScript: ").Append(actionScriptActive).AppendLine()
+                    .Append("DrawnVertices: ").Append(RenderTracker.DrawnVertices).AppendLine()
+                    .Append("MaxVertices: ").Append(RenderTracker.MaxVertices).AppendLine()
+                    .Append("MaxDistance: ").Append(RenderTracker.MaxDistance).AppendLine()
+                    .Append(contentPacksString);
 
                 if (Core.GameOptions.ContentPackNames.Any())
                 {

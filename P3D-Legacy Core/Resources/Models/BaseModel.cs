@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using P3D.Legacy.Core.Debug;
+using P3D.Legacy.Core.DebugC;
 using P3D.Legacy.Core.Entities;
 using P3D.Legacy.Core.Resources.Models.Blocks;
 using P3D.Legacy.Core.Screens;
@@ -156,7 +157,7 @@ namespace P3D.Legacy.Core.Resources.Models
 
                     Core.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, VertexBuffer.VertexCount / 3);
 
-                    DebugDisplay.DrawnVertices += VertexBuffer.VertexCount / 3;
+                    RenderTracker.DrawnVertices += VertexBuffer.VertexCount / 3;
                 }
             }
             else
@@ -168,14 +169,14 @@ namespace P3D.Legacy.Core.Resources.Models
                         ApplyTexture(effect, textures[entity.TextureIndex[i / 3]]);
 
                         Core.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, i, 1);
-                        DebugDisplay.DrawnVertices += 1;
+                        RenderTracker.DrawnVertices += 1;
                     }
                 }
             }
 
             Screen.Effect.DiffuseColor = effectDiffuseColor;
-            if (DebugDisplay.MaxDistance < entity.CameraDistance)
-                DebugDisplay.MaxDistance = (int) entity.CameraDistance;
+            if (RenderTracker.MaxDistance < entity.CameraDistance)
+                RenderTracker.MaxDistance = (int) entity.CameraDistance;
         }
 
         /*

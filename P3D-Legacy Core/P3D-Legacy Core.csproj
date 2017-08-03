@@ -73,6 +73,7 @@
     <Compile Include="Data\Entities\Entity.cs" />
     <Compile Include="DebugC\DebugScreen.cs" />
     <Compile Include="DebugC\MngStringBuilder.cs" />
+    <Compile Include="DebugC\RenderTracker.cs" />
     <Compile Include="Extensions\BoundingFrustumExtension.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Resources\Managers\Sound\SoundEffectManager.cs" />
@@ -194,12 +195,10 @@
     <Compile Include="Server\Interfaces\IServersManager.cs" />
     <Compile Include="MainGameFunctions.cs" />
     <Compile Include="CoreSpriteBatch.cs" />
-    <Compile Include="DebugC\DebugDisplay.cs" />
     <Compile Include="Input\Controls.cs" />
     <Compile Include="Input\MouseHandler.cs" />
     <Compile Include="Input\ControllerHandler.cs" />
     <Compile Include="Input\KeyBoardHandler.cs" />
-    <Compile Include="DebugC\FPSMonitor.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\Texture2DExtensions.cs" />
     <Compile Include="Services\GameJolt\SessionManager.cs" />

@@ -227,9 +227,6 @@ namespace P3D.Legacy.Core
                 //        BaseChatScreen.DrawNewMessages();
                 //}
 
-                if (GameOptions.ShowDebug)
-                    DebugDisplay.Draw();
-
                 GameMessage.Draw();
                 OnlineStatus.Draw();
 

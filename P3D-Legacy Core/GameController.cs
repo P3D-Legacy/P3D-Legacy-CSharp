@@ -62,7 +62,6 @@ namespace P3D.Legacy.Core
 
         public GraphicsDeviceManager Graphics;
 
-        public FPSMonitor FPSMonitor;
         public DebugScreen DebugScreen;
 
         public Action<GameController> Action;
@@ -84,8 +83,7 @@ namespace P3D.Legacy.Core
             Window.ClientSizeChanged += Window_ClientSizeChanged;
             Window.ClientSizeChanged += OnResize;
 
-            FPSMonitor = new FPSMonitor();
-            DebugScreen = new DebugScreen();
+            Components.Add(new DebugScreen(this));
 
             var gameHacked = File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "temp"));
             if (gameHacked)
@@ -101,25 +99,20 @@ namespace P3D.Legacy.Core
         {
             Core.Initialize(this);
             Action(this);
-            DebugScreen.Initialize(GraphicsDevice);
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             Core.LoadContent();
-            DebugScreen.LoadContent(Content);
         }
         protected override void UnloadContent() { }
 
         protected override void Update(GameTime gameTime)
         {
             Core.Update(gameTime);
-            base.Update(gameTime);
-
             SessionManager.Update();
-            DebugScreen.Update(gameTime);
-            //FPSMonitor.Update(gameTime);
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -127,9 +120,6 @@ namespace P3D.Legacy.Core
             Core.Draw();
 
             base.Draw(gameTime);
-
-            //FPSMonitor.DrawnFrame();
-            DebugScreen.Draw(gameTime);
         }
 
         //public static string DecSeparator => new NumberFormatInfo().NumberDecimalSeparator;
