@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Drawing.Imaging;
-using System.Globalization;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using P3D.Legacy.Core.DebugC;
+
 using P3D.Legacy.Core.Entities.Other;
 using P3D.Legacy.Core.Input;
 using P3D.Legacy.Core.Resources;
@@ -13,8 +12,8 @@ using P3D.Legacy.Core.Resources.Managers;
 using P3D.Legacy.Core.Resources.Managers.Music;
 using P3D.Legacy.Core.Resources.Managers.Sound;
 using P3D.Legacy.Core.Settings;
-using P3D.Legacy.Core.Storage;
 using P3D.Legacy.Core.Storage.Folders;
+
 using PCLExt.FileStorage;
 
 namespace P3D.Legacy.Core
@@ -58,6 +57,9 @@ namespace P3D.Legacy.Core
 
                 if (KeyBoardHandler.KeyPressed(Keys.S))
                     Core.SetWindowSize(new Vector2(1200, 680));
+
+                if (KeyBoardHandler.KeyPressed(Keys.L))
+                    Logger.DisplayLog = !Logger.DisplayLog;
             }
             if (ControllerHandler.ButtonPressed(Buttons.Back, true))
             {
@@ -65,9 +67,6 @@ namespace P3D.Legacy.Core
                 Core.GameMessage.ShowMessage(Core.GameOptions.GamePadEnabled ? "Enabled XBOX 360 GamePad support." : "Disabled XBOX 360 GamePad support.", 12, FontManager.MainFont, Color.White);
                 Options.SaveOptions(Core.GameOptions);
             }
-
-            if (KeyBoardHandler.KeyDown(Core.KeyBindings.DebugControl))
-                Logger.DisplayLog = !Logger.DisplayLog;
 
             if (KeyBoardHandler.KeyPressed(Keys.B) && KeyBoardHandler.KeyDown(Core.KeyBindings.DebugControl))
                 Core.GameOptions.DrawViewBox = !Core.GameOptions.DrawViewBox;

@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Text;
+using SystemInfoLibrary.Hardware.CPU;
+using SystemInfoLibrary.Hardware.GPU;
+using SystemInfoLibrary.OperatingSystem;
+using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using P3D.Legacy.Core.Debug;
@@ -10,10 +16,11 @@ using P3D.Legacy.Core.Extensions;
 using P3D.Legacy.Core.Resources.Managers;
 using P3D.Legacy.Core.Screens;
 using P3D.Legacy.Core.Screens.GUI;
+using P3D.Legacy.Core.ScriptSystem;
 
 namespace P3D.Legacy.Core.Resources
 {
-    // TODO: Take from my project systeminfo stuff
+    // TODO: Aragas: Take from my project systeminfo stuff
     public class Logger
     {
         public enum LogTypes
@@ -30,33 +37,34 @@ namespace P3D.Legacy.Core.Resources
         private static List<string> History = new List<string>();
 
         public static bool DisplayLog = false;
-        private static string[] ErrorHeaders = {
-        "I AM ERROR!",
-        "Minecraft crashed.",
-        "Missingno.",
-        "1 ERROR",
-        "GET TO DA CHOPPA",
-        "Fire attacks might be super effective...",
-        "Does this help?",
-        "Work! Pleeeeeeeease?",
-        "WHAT IS THIS?",
-        "I find your lack of [ERROR] disturbing.",
-        "Blame Darkfire.",
-        "RTFM",
-        "FEZ II announced.",
-        "At least it's not a Blue Screen.",
-        "Kernel PANIC",
-        "I'm sorry, Dave, I'm afraid I can't do that.",
-        "Never gonna give you up ~",
-        "Wouldn't have happend with Swift.",
-        "Team Rocket blasting off again!",
-        "Snorlax just sat on your computer!",
-        "Wut?",
-        "Mojang buys Microsoft! Get your new Mojang operating system now. With more blocks and scrolls.",
-        "HλLF-LIFE 2 confirmed",
-        "(╯°□°）╯︵ ┻━┻"
 
-    };
+        private static string[] ErrorHeaders =
+        {
+            "I AM ERROR!",
+            "Minecraft crashed.",
+            "Missingno.",
+            "1 ERROR",
+            "GET TO DA CHOPPA",
+            "Fire attacks might be super effective...",
+            "Does this help?",
+            "Work! Pleeeeeeeease?",
+            "WHAT IS THIS?",
+            "I find your lack of [ERROR] disturbing.",
+            "Blame Darkfire.",
+            "RTFM",
+            "FEZ II announced.",
+            "At least it's not a Blue Screen.",
+            "Kernel PANIC",
+            "I'm sorry, Dave, I'm afraid I can't do that.",
+            "Never gonna give you up ~",
+            "Wouldn't have happend with Swift.",
+            "Team Rocket blasting off again!",
+            "Snorlax just sat on your computer!",
+            "Wut?",
+            "Mojang buys Microsoft! Get your new Mojang operating system now. With more blocks and scrolls.",
+            "HλLF-LIFE 2 confirmed",
+            "(╯°□°）╯︵ ┻━┻"
+        };
 
         const string LOGVERSION = "2.4";
         public static void Log(LogTypes LogType, string Message)
@@ -102,20 +110,19 @@ namespace P3D.Legacy.Core.Resources
 
         public static string LogCrash(Exception ex)
         {
-            return String.Empty;
-            /*
+            //return String.Empty;
             try
             {
+                OperatingSystemInfo osInfo = OperatingSystemInfo.GetOperatingSystemInfo();
+
                 int w32ErrorCode = -1;
 
-                var w32 = ex as ComponentModel.Win32Exception;
+                var w32 = ex as Win32Exception;
                 if (w32 != null)
-                {
                     w32ErrorCode = w32.ErrorCode;
-                }
 
                 string logName = "";
-                var _with1 = My.Computer.Clock.LocalTime;
+                var _with1 = DateTime.Now.ToLocalTime();
                 string month = _with1.Month.ToString(NumberFormatInfo.InvariantInfo);
                 if (month.Length == 1)
                 {
@@ -159,7 +166,7 @@ namespace P3D.Legacy.Core.Resources
                 if ((Core.Player != null))
                 {
                     OnlineInformation = "GameJolt Account: " + Core.Player.IsGameJoltSave.ToString(NumberFormatInfo.InvariantInfo).ToUpper();
-                    if (Core.Player.IsGameJoltSave == true)
+                    if (Core.Player.IsGameJoltSave)
                     {
                         OnlineInformation += " (" + Core.GameJoltSave.GameJoltID + ")";
                     }
@@ -170,7 +177,7 @@ namespace P3D.Legacy.Core.Resources
                 {
                     if (Core.CurrentScreen.Identification == Screen.Identifications.OverworldScreen)
                     {
-                        if (((BaseOverworldScreen) Core.CurrentScreen).ActionScript.IsReady == false)
+                        if (!((BaseOverworldScreen) Core.CurrentScreen).ActionScriptIsReady)
                         {
                             ScriptInfo = "Actionscript: " + ActionScript.CSL().ScriptName + "; Line: " + ActionScript.CSL().CurrentLine;
                         }
@@ -178,7 +185,7 @@ namespace P3D.Legacy.Core.Resources
                 }
 
                 string ServerInfo = "FALSE";
-                if (BaseConnectScreen.Connected == true)
+                if (BaseConnectScreen.Connected)
                 {
                     ServerInfo = "TRUE (" + BaseJoinServerScreen.SelectedServer.GetName() + "/" + BaseJoinServerScreen.SelectedServer.GetAddressString() + ")";
                 }
@@ -186,7 +193,7 @@ namespace P3D.Legacy.Core.Resources
                 string GameEnvironment = "[No Game Environment loaded]";
                 if ((Core.CurrentScreen != null))
                 {
-                    GameEnvironment = Core.CurrentScreen.Identification.ToString(NumberFormatInfo.InvariantInfo);
+                    GameEnvironment = Core.CurrentScreen.Identification.ToString();
                 }
 
                 string IsSandboxMode = "False";
@@ -200,7 +207,7 @@ namespace P3D.Legacy.Core.Resources
                 string ScreenState = "[Screen state object not available]";
                 if ((Core.CurrentScreen != null))
                 {
-                    ScreenState = "Screen state for the current screen (" + Core.CurrentScreen.Identification.ToString(NumberFormatInfo.InvariantInfo) + ")" + Environment.NewLine + Environment.NewLine + Core.CurrentScreen.GetScreenStatus();
+                    ScreenState = "Screen state for the current screen (" + Core.CurrentScreen.Identification + ")" + Environment.NewLine + Environment.NewLine + Core.CurrentScreen.GetScreenStatus();
                 }
 
                 string architectureString = "32 Bit";
@@ -209,7 +216,29 @@ namespace P3D.Legacy.Core.Resources
                     architectureString = "64 Bit";
                 }
 
-                string specs = "Operating system: " + My.Computer.Info.OSFullName + " [" + My.Computer.Info.OSVersion + "]" + Environment.NewLine + "Core architecture: " + architectureString + Environment.NewLine + "System time: " + My.Computer.Clock.LocalTime.ToString(NumberFormatInfo.InvariantInfo) + Environment.NewLine + "System language: " + Globalization.CultureInfo.CurrentCulture.EnglishName + "(" + Globalization.CultureInfo.CurrentCulture.ThreeLetterWindowsLanguageName + ") / Loaded game language: " + Localization.LanguageSuffix + Environment.NewLine + "Decimal separator: " + GameController.DecSeparator + Environment.NewLine + "Available physical memory: " + Math.Round((My.Computer.Info.TotalPhysicalMemory / Math.Pow(1024, 3)), 2).ToString(NumberFormatInfo.InvariantInfo) + " Gigabyte" + Environment.NewLine + "Available logical processors: " + Environment.ProcessorCount.ToString(NumberFormatInfo.InvariantInfo);
+                var specs = 
+$@"Software:
+    OS: {osInfo.Name} {osInfo.Architecture} [{(Type.GetType("Mono.Runtime") != null ? "Mono" : ".NET")}]
+    Language: {CultureInfo.CurrentCulture.EnglishName}, LCID {osInfo.LocaleID}
+    Framework: Version {osInfo.FrameworkVersion}
+Hardware:
+{RecursiveCPU(osInfo.Hardware.CPUs, 0)}
+{RecursiveGPU(osInfo.Hardware.GPUs, 0)}
+    RAM:
+        Memory Total: {osInfo.Hardware.RAM.Total} KB
+        Memory Free: {osInfo.Hardware.RAM.Free} KB";
+                /*
+                string specs = "Operating system: " + osInfo.Name + " [" + Environment.OSVersion + "]" +
+                               Environment.NewLine + "Core architecture: " + architectureString + Environment.NewLine +
+                               "System time: " + DateTime.Now.ToLocalTime().ToString(NumberFormatInfo.InvariantInfo) +
+                               Environment.NewLine + "System language: " + CultureInfo.CurrentCulture.EnglishName +
+                               "(" + CultureInfo.CurrentCulture.ThreeLetterWindowsLanguageName +
+                               ") / Loaded game language: " + Localization.Language.Name + Environment.NewLine +
+                               "Decimal separator: " + GameController.DecSeparator + Environment.NewLine +
+                               "Available physical memory: " + osInfo.Hardware.RAM.Free +
+                               "Available logical processors: " +
+                               Environment.ProcessorCount.ToString(NumberFormatInfo.InvariantInfo);
+                */
 
                 string innerException = "NOTHING";
                 if ((ex.InnerException != null))
@@ -241,6 +270,7 @@ namespace P3D.Legacy.Core.Resources
                 Exception BaseException = ex.GetBaseException();
 
                 string data = "NOTHING";
+                /*
                 if ((ex.Data != null))
                 {
                     data = "Items: " + ex.Data.Count;
@@ -253,17 +283,19 @@ namespace P3D.Legacy.Core.Resources
                             {
                                 data += Environment.NewLine;
                             }
-                            data += "[" + ex.Data.Keys(i).ToString(NumberFormatInfo.InvariantInfo) + ": \"" + ex.Data.Values(i).ToString(NumberFormatInfo.InvariantInfo) + "\"]";
+                            data += "[" + ex.Data.Keys[i].ToString(NumberFormatInfo.InvariantInfo) + ": \"" + ex.Data.Values[i].ToString(NumberFormatInfo.InvariantInfo) + "\"]";
                         }
                     }
                 }
+                */
 
                 ErrorInformation informationItem = new ErrorInformation(ex);
 
-                ObjectDump objDump = new ObjectDump(Core.CurrentScreen);
-                string screenDump = objDump.Dump;
+                //ObjectDump objDump = new ObjectDump(Core.CurrentScreen);
+                //string screenDump = objDump.Dump;
+                string screenDump = "";
 
-                string content = "Kolben Games Crash Log V " + LOGVERSION + Environment.NewLine + GameController.GAMENAME + " has crashed!" + Environment.NewLine + "// " + ErrorHeaders(Random.Next(0, ErrorHeaders.Length)) + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + "Game information:" + Environment.NewLine + Environment.NewLine + gameInformation + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + ScreenState + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + "System specifications:" + Environment.NewLine + Environment.NewLine + specs + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + ".Net installation information:" + Environment.NewLine + Environment.NewLine + DotNetVersion.GetInstalled() + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + GetGraphicsCardInformation() + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + "Error information:" + Environment.NewLine + Environment.NewLine + "Message: " + message + Environment.NewLine + "InnerException: " + innerException + Environment.NewLine + "BaseException: " + BaseException.Message + Environment.NewLine + "HelpLink: " + helpLink + Environment.NewLine + "Data: " + data + Environment.NewLine + "Source: " + source + Environment.NewLine + "Win32 Errorcode: " + w32ErrorCode.ToString(NumberFormatInfo.InvariantInfo) + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + informationItem.ToString(NumberFormatInfo.InvariantInfo) + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + "CallStack: " + Environment.NewLine + Environment.NewLine + StackTrace + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + "Enviornment dump: " + Environment.NewLine + Environment.NewLine + screenDump + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + "You should report this error." + Environment.NewLine + Environment.NewLine + "Go to \"http://pokemon3d.net/forum/forums/6/create-thread\" to report this crash there.";
+                string content = "Kolben Games Crash Log V " + LOGVERSION + Environment.NewLine + GameController.GAMENAME + " has crashed!" + Environment.NewLine + "// " + ErrorHeaders[new Random().Next(0, ErrorHeaders.Length)] + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + "Game information:" + Environment.NewLine + Environment.NewLine + gameInformation + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + ScreenState + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + "System specifications:" + Environment.NewLine + Environment.NewLine + specs + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + ".Net installation information:" + Environment.NewLine + Environment.NewLine + DotNetVersion.GetInstalled() + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + GetGraphicsCardInformation() + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + "Error information:" + Environment.NewLine + Environment.NewLine + "Message: " + message + Environment.NewLine + "InnerException: " + innerException + Environment.NewLine + "BaseException: " + BaseException.Message + Environment.NewLine + "HelpLink: " + helpLink + Environment.NewLine + "Data: " + data + Environment.NewLine + "Source: " + source + Environment.NewLine + "Win32 Errorcode: " + w32ErrorCode.ToString(NumberFormatInfo.InvariantInfo) + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + informationItem + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + "CallStack: " + Environment.NewLine + Environment.NewLine + StackTrace + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + "Enviornment dump: " + Environment.NewLine + Environment.NewLine + screenDump + Environment.NewLine + Environment.NewLine + CRASHLOGSEPARATOR + Environment.NewLine + Environment.NewLine + "You should report this error." + Environment.NewLine + Environment.NewLine + "Go to \"http://pokemon3d.net/forum/forums/6/create-thread\" to report this crash there.";
 
                 File.WriteAllText(GameController.GamePath + "\\" + logName, content);
 
@@ -280,14 +312,42 @@ namespace P3D.Legacy.Core.Resources
             }
 
             return "";
-            */
+        }
+        private static string RecursiveCPU(IList<CPUInfo> cpus, int index)
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat(
+$@"    CPU{index}:
+        Name: {cpus[index].Name}
+        Brand: {cpus[index].Brand}
+        Architecture: {cpus[index].Architecture}
+        Cores: {cpus[index].Cores}");
+
+            if (index + 1 < cpus.Count)
+                sb.AppendFormat(RecursiveCPU(cpus, ++index));
+
+            return sb.ToString();
+        }
+        private static string RecursiveGPU(IList<GPUInfo> gpus, int index)
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat(
+$@"    GPU{index}:
+        Name: {gpus[index].Name}
+        Brand: {gpus[index].Brand}
+        Resolution: {gpus[index].Resolution} {gpus[index].RefreshRate} Hz
+        Memory Total: {gpus[index].MemoryTotal} KB");
+
+            if (index + 1 < gpus.Count)
+                sb.AppendFormat(RecursiveGPU(gpus, ++index));
+
+            return sb.ToString();
         }
 
 
         static string longestStackEntryName = "GameModeManager.SetGameModePointer";
         public static void Debug(string message)
         {
-			return;
             string stackTraceEntry = Environment.StackTrace.SplitAtNewline()[3];
 
             while (stackTraceEntry.StartsWith(" "))
@@ -306,13 +366,13 @@ namespace P3D.Legacy.Core.Resources
                 while (stackOutput.Length < longestStackEntryName.Length)
                     stackOutput += " ";
 
-            //Debug.Print(stackOutput + Constants.vbTab + "| " + message);
-            History.Add("(" + GetLogTime(System.DateTime.Now) + ") " + message);
+            System.Diagnostics.Debug.Print(stackOutput + "\t" + "| " + message);
+            History.Add("(" + GetLogTime(DateTime.Now) + ") " + message);
         }
 
         public static void DrawLog()
         {
-            if (DisplayLog == true && History.Count > 0 && (FontManager.ChatFont != null))
+            if (DisplayLog && History.Count > 0 && FontManager.ChatFont != null)
             {
                 List<string> items = new List<string>();
                 int max = History.Count - 1;
@@ -370,38 +430,6 @@ namespace P3D.Legacy.Core.Resources
             }
 
             return hour + ":" + minute + ":" + second;
-        }
-
-        private static string GetGraphicsCardInformation()
-        {
-            return String.Empty;
-            /*
-            string CardName = "";
-            string CardRAM = "";
-
-            ManagementObjectSearcher WmiSelect = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_VideoController");
-
-            foreach (ManagementObject WmiResults in WmiSelect.Get())
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(CardName))
-                    {
-                        CardName += "; ";
-                        CardRAM += "; ";
-                    }
-
-                    CardName += WmiResults.GetPropertyValue("Name").ToString(NumberFormatInfo.InvariantInfo);
-                    CardRAM += WmiResults.GetPropertyValue("AdapterRAM").ToString(NumberFormatInfo.InvariantInfo);
-
-                }
-                catch (Exception ex)
-                {
-                }
-            }
-
-            return "Graphics Card information:" + Environment.NewLine + Environment.NewLine + "[CardName(s): \"" + CardName + "\"]" + Environment.NewLine + "[CardRAM(s) : \"" + CardRAM + "\"]";
-            */
         }
 
         public class ErrorInformation
@@ -594,38 +622,5 @@ namespace P3D.Legacy.Core.Resources
             }
 
         }
-
     }
-
-
-    /*
-    public static class Logger
-    {
-        public static void Debug(string text)
-        {
-
-        }
-
-        public static void Log(LogTypes type, string text)
-        {
-
-
-        }
-
-        public enum LogTypes
-        {
-            ErrorMessage,
-            Warning,
-            Message,
-            Debug
-        }
-
-        public static bool DisplayLog { get; set; }
-
-        public static void DrawLog()
-        {
-            
-        }
-    }
-    */
 }
