@@ -49,7 +49,7 @@ namespace P3D.Legacy.Core.Network
                                 }
                                 else
                                 {
-                                    if (Core.Player.IsGamejoltSave)
+                                    if (Core.Player.IsGameJoltSave)
                                     {
                                         string GJID = playerList[(x - 1) * 10 + (y - 1)].GameJoltId;
                                         if (!string.IsNullOrEmpty(GJID) && Core.GameJoltSave.Friends.Contains(GJID))

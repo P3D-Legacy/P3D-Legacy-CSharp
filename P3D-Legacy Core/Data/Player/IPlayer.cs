@@ -15,7 +15,7 @@ namespace P3D.Legacy.Core.Interfaces
     {
         string Name { get; set; }
         string RivalName { get; set; }
-        bool IsGamejoltSave { get; set; }
+        bool IsGameJoltSave { get; set; }
         string startMap { get; set; }
         void DrawLevelUp();
 

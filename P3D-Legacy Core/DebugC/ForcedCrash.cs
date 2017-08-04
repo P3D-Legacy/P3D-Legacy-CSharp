@@ -30,7 +30,7 @@ namespace P3D.Legacy.Core.Debug
             bool canCrash = true;
             if (Core.Player.loadedSave)
             {
-                if (Core.Player.IsGamejoltSave || !Core.Player.SandBoxMode)
+                if (Core.Player.IsGameJoltSave || !Core.Player.SandBoxMode)
                 {
                     canCrash = false;
                 }

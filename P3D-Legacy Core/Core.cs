@@ -216,7 +216,7 @@ namespace P3D.Legacy.Core
 
                 if (Player != null)
                 {
-                    if (Player.IsGamejoltSave)
+                    if (Player.IsGameJoltSave)
                         Emblem.DrawNewEmblems();
                     Player.DrawLevelUp();
                 }

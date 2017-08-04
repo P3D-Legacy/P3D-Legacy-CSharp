@@ -342,7 +342,7 @@ Public Class Player
         End Set
     End Property
 
-    Public Property IsGameJoltSave() As Boolean Implements IPlayer.IsGamejoltSave
+    Public Property IsGameJoltSave() As Boolean Implements IPlayer.IsGameJoltSave
         Get
             Assert("_isgamejoltsave", _isGamejoltSave)
             Return _isGamejoltSave

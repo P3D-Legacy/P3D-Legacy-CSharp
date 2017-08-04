@@ -1058,7 +1058,7 @@ namespace P3D.Legacy.Core.GameJolt.Profiles
 
         public static void AchieveEmblem(string emblem)
         {
-            if (Core.Player.IsGamejoltSave == true)
+            if (Core.Player.IsGameJoltSave == true)
             {
                 if (Core.GameJoltSave.AchievedEmblems.Contains(emblem.ToLower()) == false)
                 {

@@ -103,7 +103,7 @@ namespace P3D.Legacy.Core.GameJolt
                 SessionStarted = false;
                 Status = "Idle";
 
-                if (Core.Player.IsGamejoltSave)
+                if (Core.Player.IsGameJoltSave)
                     BaseConnectScreen.Setup(Screen.CreateConnectScreen(BaseConnectScreen.Modes.Disconnect, "Disconnected", "The GameJolt server doesn't respond.", Core.CurrentScreen));
             }
         }
