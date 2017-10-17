@@ -1,7 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.Globalization
+
 Imports P3D.Legacy.Core
-Imports P3D.Legacy.Core.Data
 Imports P3D.Legacy.Core.GameModes
 Imports P3D.Legacy.Core.Input
 Imports P3D.Legacy.Core.Pokemon
@@ -9,12 +9,11 @@ Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Resources.Managers.Music
 Imports P3D.Legacy.Core.Resources.Managers.Sound
-Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
-Imports P3D.Legacy.Core.Storage
 Imports P3D.Legacy.Core.Storage.Folders
-Imports PCLExt.FileStorage
+
+Imports PCLExt.FileStorage.Extensions
 
 Public Class NewGameScreen
     Inherits BaseNewGameScreen

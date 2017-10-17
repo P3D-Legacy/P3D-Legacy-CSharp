@@ -1,8 +1,7 @@
 ﻿Imports System.Drawing
-Imports System.Globalization
-Imports System.IO
 Imports System.Net.Sockets
 Imports System.Net
+
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.Input
@@ -12,9 +11,9 @@ Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Server
-Imports P3D.Legacy.Core.Storage
 Imports P3D.Legacy.Core.Storage.Folders
-Imports PCLExt.FileStorage
+
+Imports PCLExt.FileStorage.Extensions
 
 Public Class JoinServerScreen
     Inherits BaseJoinServerScreen

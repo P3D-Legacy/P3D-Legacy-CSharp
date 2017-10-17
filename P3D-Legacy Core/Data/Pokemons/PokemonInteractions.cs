@@ -15,7 +15,7 @@ using P3D.Legacy.Core.Screens;
 using P3D.Legacy.Core.Security;
 using P3D.Legacy.Core.World;
 
-using PCLExt.FileStorage;
+using PCLExt.FileStorage.Extensions;
 
 namespace P3D.Legacy.Core.Pokemon
 {

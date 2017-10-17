@@ -1,6 +1,6 @@
 Imports System.Globalization
+
 Imports P3D.Legacy.Core
-Imports P3D.Legacy.Core.Debug
 Imports P3D.Legacy.Core.DebugC
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
@@ -10,11 +10,10 @@ Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Resources.Managers.Music
 Imports P3D.Legacy.Core.Resources.Managers.Sound
-Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.World
 
-Imports PCLExt.FileStorage
+Imports PCLExt.FileStorage.Extensions
 
 ''' <summary>
 ''' A class that manages the collection of entities to represent a map.

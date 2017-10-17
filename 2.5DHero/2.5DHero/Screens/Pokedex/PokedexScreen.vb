@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing
 Imports System.Globalization
+
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.GameJolt.Profiles
 Imports P3D.Legacy.Core.Input
@@ -7,11 +8,13 @@ Imports P3D.Legacy.Core.Pokemon
 Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Resources.Managers.Sound
-Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.Screens.GUI
 Imports P3D.Legacy.Core.Security
+
 Imports PCLExt.FileStorage
+Imports PCLExt.FileStorage.Extensions
+Imports PCLExt.FileStorage.Files
 
 Public Class PokedexSelectScreen
 
@@ -191,7 +194,7 @@ Public Class PokedexHabitatScreen
         For Each file As String In System.IO.Directory.GetFiles(GameModeManager.ActiveGameMode.PokeFolder.Path, "*.*", IO.SearchOption.AllDirectories)
             If file.EndsWith(".poke") = True Then
                 ' TODO: Fix
-                dim ifile = FileSystem.GetFileFromPath(file)
+                dim ifile = new FileFromPath(file)
                 Dim fileName As String = file.Remove(0, (GameModeManager.ActiveGameMode.PokeFolder.Path & "\").Length - 1)
                 Dim newHabitat As New PokedexScreen.Habitat(ifile)
                 Dim exists As Boolean = False
@@ -1341,7 +1344,7 @@ Public Class PokedexViewScreen
         For Each file As String In System.IO.Directory.GetFiles(GameModeManager.ActiveGameMode.PokeFolder.Path, "*.*", IO.SearchOption.AllDirectories)
             If file.EndsWith(".poke") = True Then
                 Dim fileName As String = file.Remove(0, (GameModeManager.ActiveGameMode.PokeFolder.Path & "\").Length - 1)
-                Dim newHabitat As New PokedexScreen.Habitat(FileSystem.GetFileFromPath(file))
+                Dim newHabitat As New PokedexScreen.Habitat(new FileFromPath(file))
                 Dim exists As Boolean = False
                 For Each h As PokedexScreen.Habitat In Me.HabitatList
                     If h.Name.ToLower() = newHabitat.Name.ToLower() Then
@@ -1351,7 +1354,7 @@ Public Class PokedexViewScreen
                     End If
                 Next
                 If exists = False AndAlso Core.Player.PokeFiles.Contains(fileName) = True Then
-                    HabitatList.Add(New PokedexScreen.Habitat(FileSystem.GetFileFromPath(file)))
+                    HabitatList.Add(New PokedexScreen.Habitat(new FileFromPath(file)))
                 End If
             End If
         Next

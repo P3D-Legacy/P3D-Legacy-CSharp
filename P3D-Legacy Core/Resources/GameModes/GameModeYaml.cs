@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
 
 using P3D.Legacy.Core.GameModes.YamlConverters;
 using P3D.Legacy.Core.Resources;
-using P3D.Legacy.Core.Storage;
 using P3D.Legacy.Core.Storage.Folders;
 
 using PCLExt.FileStorage;
+using PCLExt.FileStorage.Extensions;
 
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;

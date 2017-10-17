@@ -1,19 +1,18 @@
 ﻿Imports System.Globalization
+
 Imports P3D.Legacy.Core
 Imports P3D.Legacy.Core.Entities
 Imports P3D.Legacy.Core.Entities.Other
 Imports P3D.Legacy.Core.GameJolt
 Imports P3D.Legacy.Core.GameJolt.Profiles
-Imports P3D.Legacy.Core.HelperClasses
-Imports P3D.Legacy.Core.Resources
 Imports P3D.Legacy.Core.Resources.Managers
 Imports P3D.Legacy.Core.Resources.Managers.Music
 Imports P3D.Legacy.Core.Resources.Managers.Sound
-Imports P3D.Legacy.Core.Resources.Sound
 Imports P3D.Legacy.Core.Screens
 Imports P3D.Legacy.Core.ScriptSystem
 Imports P3D.Legacy.Core.Security
-Imports PCLExt.FileStorage
+
+Imports PCLExt.FileStorage.Extensions
 
 Public Class NPC
     Inherits BaseNPC

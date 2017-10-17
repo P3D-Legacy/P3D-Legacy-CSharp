@@ -8,9 +8,10 @@ using P3D.Legacy.Core.Resources;
 using P3D.Legacy.Core.Resources.Managers.Music;
 using P3D.Legacy.Core.Resources.Managers.Sound;
 using P3D.Legacy.Core.Settings.YamlConverters;
-using P3D.Legacy.Core.Storage;
 using P3D.Legacy.Core.Storage.Folders;
+
 using PCLExt.FileStorage;
+using PCLExt.FileStorage.Extensions;
 
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;

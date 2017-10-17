@@ -10,8 +10,8 @@ using P3D.Legacy.Core.Extensions;
 using P3D.Legacy.Core.Pokemon;
 using P3D.Legacy.Core.Resources;
 using P3D.Legacy.Core.Resources.Managers;
-using P3D.Legacy.Core.Security;
-using PCLExt.FileStorage;
+
+using PCLExt.FileStorage.Extensions;
 
 namespace P3D.Legacy.Core.Battle
 {
